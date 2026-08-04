@@ -7,7 +7,7 @@
       "latestVersionName": "1.0",
       "versionCode": 68,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralCar-system.apk",
-      "sha256": "98da57f32fe529a3e7d98fcf38c7a100a974ac18b41bf1cc19d436e5649fb025",
+      "sha256": "f60b4ab8ba3f47096ec8e5c6cb9eecbe09c82a77c47648fdb30c6594db850493",
       "releaseNotes": "App điều khiển trên đầu xe (build system)."
     },
     {
@@ -16,7 +16,7 @@
       "latestVersionName": "1.0",
       "versionCode": 1,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralPhone.apk",
-      "sha256": "d148dcd254ce5caf654f41fad50497d0c004b73b1ed5493b5452366a253e894b",
+      "sha256": "0d2898bac4c426ef5ee94aa7b904f58f560e63273bfa1e11cc43038ac8366ee5",
       "releaseNotes": "App điều khiển trên điện thoại."
     }
   ]
