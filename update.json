@@ -1,0 +1,8 @@
+{
+  "type": "update_check",
+  "latestVersionName": "1.0",
+  "versionCode": 68,
+  "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralCar-system.apk",
+  "sha256": "98da57f32fe529a3e7d98fcf38c7a100a974ac18b41bf1cc19d436e5649fb025",
+  "releaseNotes": ""
+}
