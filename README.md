@@ -26,14 +26,13 @@
 4. [Cách cài](#cách-cài)
 5. [Kích hoạt mở thêm gì?](#kích-hoạt-mở-thêm-gì)
 6. [Báo lỗi / góp ý](#báo-lỗi--góp-ý)
-7. [Ghi chú kỹ thuật](#ghi-chú-kỹ-thuật)
 
 ## 📦 Các app trong kho này
 
 | File | Cài ở đâu | Trạng thái | Chức năng tóm tắt |
 |---|---|---|---|
 | `CentralCar-system(Không cài).apk` | 🚗 Màn hình xe Geely EX2 (Android 9) | ⚠️ Beta | App chạy trên xe: thông số lên thanh trạng thái, điều khiển xe qua VHAL, giọng nói tiếng Việt, điều khiển từ xa 4G, cài app + cập nhật |
-| `CentralPhone(Không cài).apk` | 📱 Điện thoại Android · iOS (đang phát triển) | ⚠️ Beta | Điều khiển + xem trạng thái xe từ xa (Bluetooth / WiFi / 4G), điều hoà, cửa & kính, quản lý app trên xe, cài APK không cần ADB |
+| `CentralPhone(Không cài).apk` | 📱 Điện thoại Android · iOS (bản iOS chưa public) | ⚠️ Beta | Điều khiển + xem trạng thái xe từ xa (Bluetooth / WiFi / 4G), điều hoà, cửa & kính, quản lý app trên xe, cài APK không cần ADB |
 | `CentralPC(MacOS).dmg` | 💻 Máy Mac (Apple Silicon) | ✅ Chính thức | App quản lý trên máy tính: cứu hộ ADB, cài app cho xe, điều khiển xe, hệ thống cấp mã |
 | `CentralPC(Windows).exe` | 💻 Máy Windows | ✅ Chính thức | Bản Windows của CentralPC — cùng chức năng như bản macOS |
 
@@ -55,8 +54,8 @@
   khoá/mở cửa, kính, tắt màn hình…) + 15 câu hỏi trả lời bằng giọng nói (query TTS) +
   mở app bằng tên — wake word + nút PTT, 3 tầng khớp lệnh, sửa câu lệnh từ phone
 - **Màn hình đen (blackout)** khi lái đêm + nút nổi truy cập nhanh (floater)
-- **Điều khiển từ xa qua 4G** (cloud relay) · **cập nhật từ GitHub** (verify SHA-256)
-- **Nhận lệnh + cài APK từ xa** qua server `:44700` / `:8876` — không cần ADB/máy tính
+- **Điều khiển từ xa qua 4G** (cloud relay) · **cập nhật từ GitHub**
+- **Nhận lệnh + cài APK từ xa** — không cần ADB/máy tính
 - **Watchdog chống crash/bootloop** (tự khôi phục, an toàn)
 
 ### 📱 CentralPhone — app điện thoại (Android · iOS)
@@ -70,20 +69,19 @@
 - **Điều hoà**: A/C, nhiệt độ ±0.5°C, quạt gió, tuần hoàn, chế độ nhanh ECO, sấy kính
 - **Quản lý app trên xe từ xa**: mở app, ẩn/hiện (không mất dữ liệu), gỡ cài đặt, gỡ kẹt PIP,
   chia màn hình 2 app
-- **Cài APK lên xe không cần ADB** (đẩy qua `:8876`): chọn file hoặc **App store tải & cài tự
-  động** (verify SHA-256)
+- **Cài APK lên xe không cần ADB**: chọn file hoặc **App store tải & cài tự động**
 - **Đồng bộ cài đặt xe**: widget thanh trạng thái, lịch đèn viền, auto-window, auto-WiFi,
   ghi nhớ chế độ lái/regen
 - **Cập nhật CentralCar từ GitHub** — xe không cần internet (phone tải rồi đẩy qua)
 
 ### 💻 CentralPC — app máy tính (macOS / Windows)
 
-- **Cứu hộ qua ADB**: hướng dẫn mở khoá ADB (firmware 1111/1114), tự tính mã kỹ thuật theo giờ,
-  kiểm tra kết nối — adb nhúng sẵn trong app
+- **Cứu hộ qua ADB**: hướng dẫn mở khoá, tự tính mã kỹ thuật theo giờ, kiểm tra kết nối —
+  adb nhúng sẵn trong app
 - **Tab ⚡ Cài nhanh**: bấm 1 nút là tải + cài (SmartTube, Waze, VietMap…) — hỗ trợ link
   GitHub / Google Drive / tải trực tiếp
-- **Cài từ file / folder**: kéo-thả APK/XAPK/APKS/APKM, chọn đúng ABI, Doze whitelist chống
-  giết nền, xử lý xung đột chữ ký, quét folder cài hàng loạt
+- **Cài từ file / folder**: kéo-thả APK/XAPK/APKS/APKM, tự chọn đúng loại máy, chống bị hệ
+  thống giết nền, xử lý xung đột khi cài, quét folder cài hàng loạt
 - **Quản lý package trên xe**: ẩn/hiện app (không mất dữ liệu), gỡ cài đặt, đánh dấu yêu thích
 - **Công cụ thiết bị**: chia màn hình 2 app, gỡ kẹt PIP, chạy lệnh shell tuỳ ý
 - **Điều khiển xe trực tiếp** (không qua ADB): chế độ lái, hồi năng lượng, AVAS, đèn viền, WiFi,
@@ -95,14 +93,14 @@
 
 ```
 CentralPC (máy tính) ──── ADB (Wi-Fi) ────► xe ── cài APK · quản trị · cứu hộ
-CentralPhone (điện thoại) ── TCP :44700 / Bluetooth / Cloud (4G) ──► CentralCar ── VHAL ──► xe
-CentralPhone ────────────── HTTP :8876 ────────────► CentralCar ── cài APK từ xa (không cần ADB)
+CentralPhone ── Bluetooth / WiFi / Cloud (4G) ──► CentralCar ── VHAL ──► xe
+CentralPhone ──────────────────────────────────────► CentralCar ── cài APK từ xa (không cần ADB)
 ```
 
 ## 🛠 Cách cài
 
 - **Lên xe (CentralCar):** dùng CentralPC trên máy tính (mục Cài nhanh / Cài app) cài
-  `CentralCar-system(Không cài).apk`, hoặc `adb install` trực tiếp.
+  `CentralCar-system(Không cài).apk`.
 - **Lên điện thoại (CentralPhone):** tải `CentralPhone(Không cài).apk`, cho phép cài từ nguồn
   không rõ (Cài đặt → Bảo mật), cài như APK thường. Mở app → chọn transport Bluetooth / WiFi /
   Cloud để kết nối xe.
@@ -111,7 +109,7 @@ CentralPhone ────────────── HTTP :8876 ────�
 
 ## 🔑 Kích hoạt mở thêm gì?
 
-CentralPC **dùng được ngay không cần kích hoạt** (cài app cho xe, quản lý file, chạy lệnh adb…).
+CentralPC **dùng được ngay không cần kích hoạt** (cài app cho xe, quản lý file…).
 Kích hoạt bằng **mã + số điện thoại** (do quản trị viên cấp — 1 mã = 1 người, 1 máy mặc định)
 sẽ mở thêm:
 
@@ -125,10 +123,3 @@ sẽ mở thêm:
   không ổn định…
 - Gửi về **quản trị viên / nhà phát triển** kèm: đang chạy bản nào, thao tác gì thì lỗi,
   ảnh chụp màn hình (nếu chụp được).
-
-## 👨‍💻 Ghi chú kỹ thuật
-
-- Xe/phone **từ chối cài nếu SHA-256 sai/thiếu** — mọi bản đặt lên đây phải verify trước khi push.
-- APK chỉ đặt bản **system platform-signed** (bản user build không có quyền uid system,
-  ghi VHAL/quản trị app sẽ lỗi).
-- Quy trình phát hành tự động: `publish-artifacts.sh` trong repo code (tự build + đẩy lên đây).
