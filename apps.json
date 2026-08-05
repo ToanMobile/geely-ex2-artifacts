@@ -1,23 +1,4 @@
 {
   "type": "app_catalog",
-  "apps": [
-    {
-      "packageName": "com.techlead.app.geely.car",
-      "name": "CentralCar",
-      "latestVersionName": "1.1",
-      "versionCode": 69,
-      "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralCar-system.apk",
-      "sha256": "505586b25004347bbe034342533f92e49aa294e100d0cbfae9080e4aa87a5276",
-      "releaseNotes": "Voice nâng cấp toàn diện (73 lệnh + 15 query + edit từ phone)"
-    },
-    {
-      "packageName": "com.techlead.app.geely.phone",
-      "name": "CentralPhone",
-      "latestVersionName": "1.2",
-      "versionCode": 3,
-      "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralPhone.apk",
-      "sha256": "0dfd2f53e7402eb21ae413f8acf0dc7a5da3e023721b915eed318832b1c049fc",
-      "releaseNotes": "KMP iOS: shell 6 tab + Settings + Cloud transport (Supabase Realtime)"
-    }
-  ]
+  "apps": []
 }
