@@ -32,12 +32,24 @@ URL public, không cần token GitHub).
    `APP_CATALOG_URL` → `https://raw.githubusercontent.com/<user>/<repo-public>/main/...`
    rồi build lại CentralCar + CentralPhone.
 
+## 4 app trong repo này — cái nào dùng cho thiết bị nào
+
+| File | Dành cho | Chức năng |
+|---|---|---|
+| `CentralCar-system(Không cài).apk` | **Màn hình xe Geely EX2** (Android 9, ký AOSP platform — có quyền hệ thống) | App chạy trên xe: hiển thị thông số (tốc độ, pin, nhiệt độ), điều khiển xe qua VHAL (gương, kính, khoá…), ra lệnh giọng nói (wake word + PTT, Vosk local + Google dự phòng), nhận lệnh từ xa qua cloud relay (Supabase Realtime), App store cài thêm app cho xe, kiểm tra cập nhật. **⚠️ BETA — không nên cài** |
+| `CentralPhone(Không cài).apk` | **Điện thoại Android** | App điều khiển xe từ xa: gửi lệnh tới xe qua cloud relay (không cần cùng Wi-Fi), App store cài app cho xe từ xa, chỉnh sửa câu lệnh giọng nói. Viết bằng Kotlin Multiplatform (bản iOS mới là shell tạm). **⚠️ BETA — không nên cài** |
+| `CentralPC(MacOS).dmg` | **Máy Mac** (Apple Silicon) | App quản lý CentralPC: kết nối xe qua ADB (Wi-Fi, mở giao diện web `localhost:8848`), cài/gỡ app cho xe, chạy lệnh adb, cấu hình, hệ thống cấp phép bản quyền (mã kích hoạt + số điện thoại qua Supabase). Đây là bản phát hành chính thức. |
+| `CentralPC(Windows).exe` | **Máy Windows** | Bản Windows của CentralPC — cùng chức năng như bản macOS. |
+
+**Quy tắc tên file:** APK có chữ `(Không cài)` là **đang thử nghiệm (beta)** — tải về xem/đánh giá
+thì được, **chưa nên cài** lên xe/điện thoại dùng hằng ngày. Bản nào hết beta sẽ bỏ chữ này.
+
 ## Ghi chú
 
 - `update.json`/`apps.json` trỏ `ToanMobile/geely-ex2-artifacts/main` (repo public riêng —
   quyết định 2026-08-04). **404 cho tới khi repo được tạo + push**:
   tạo tại https://github.com/new?name=geely-ex2-artifacts&visibility=public rồi đẩy
-  `update.json` + `apps.json` + `CentralCar-system.apk` + `CentralPhone.apk` vào nhánh main.
+  `update.json` + `apps.json` + APK vào nhánh main.
 - Xe/phone **từ chối cài nếu SHA-256 sai/thiếu** — verify trước khi push.
 - APK chỉ nên đặt bản **system platform-signed** (bản user build không có quyền uid system,
   ghi VHAL/quản trị app sẽ lỗi).
