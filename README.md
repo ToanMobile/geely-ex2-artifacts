@@ -25,7 +25,7 @@
 3. [Sơ đồ kết nối](#sơ-đồ-kết-nối)
 4. [Cách cài](#cách-cài)
 5. [Kích hoạt mở thêm gì?](#kích-hoạt-mở-thêm-gì)
-6. [Báo lỗi / góp ý](#báo-lỗi--góp-ý)
+6. [Báo lỗi / góp ý](#-báo-lỗi--góp-ý)
 
 ## 📦 Các app trong kho này
 
