@@ -33,7 +33,7 @@
 | File | Cài ở đâu | Trạng thái | Chức năng tóm tắt |
 |---|---|---|---|
 | `CentralCar-system(Không cài).apk` | 🚗 Màn hình xe Geely EX2 (Android 9) | ⚠️ Beta | App chạy trên xe: thông số lên thanh trạng thái, điều khiển xe qua VHAL, giọng nói tiếng Việt, điều khiển từ xa 4G, cài app + cập nhật |
-| `CentralPhone(Không cài).apk` | 📱 Điện thoại Android | ⚠️ Beta | Điều khiển + xem trạng thái xe từ xa (Bluetooth / WiFi / 4G), điều hoà, cửa & kính, quản lý app trên xe, cài APK không cần ADB |
+| `CentralPhone(Không cài).apk` | 📱 Điện thoại Android · iOS (đang phát triển) | ⚠️ Beta | Điều khiển + xem trạng thái xe từ xa (Bluetooth / WiFi / 4G), điều hoà, cửa & kính, quản lý app trên xe, cài APK không cần ADB |
 | `CentralPC(MacOS).dmg` | 💻 Máy Mac (Apple Silicon) | ✅ Chính thức | App quản lý trên máy tính: cứu hộ ADB, cài app cho xe, điều khiển xe, hệ thống cấp mã |
 | `CentralPC(Windows).exe` | 💻 Máy Windows | ✅ Chính thức | Bản Windows của CentralPC — cùng chức năng như bản macOS |
 
@@ -59,7 +59,10 @@
 - **Nhận lệnh + cài APK từ xa** qua server `:44700` / `:8876` — không cần ADB/máy tính
 - **Watchdog chống crash/bootloop** (tự khôi phục, an toàn)
 
-### 📱 CentralPhone — app điện thoại
+### 📱 CentralPhone — app điện thoại (Android · iOS)
+
+*Viết bằng Kotlin Multiplatform — một bộ code chạy cả Android lẫn iOS. Repo này phát hành
+bản Android (APK); bản iOS đang phát triển (shell 6 tab + Settings + Cloud transport).*
 
 - **6 tab**: Tổng quan · Lái xe · Điều khiển · Điều hoà · Ứng dụng · Cài đặt
 - **3 cách kết nối xe**: Bluetooth / WiFi cùng mạng / Cloud (4G) — tự reconnect, chạy nền
