@@ -61,9 +61,6 @@
 
 ### 📱 CentralPhone — app điện thoại (Android · iOS)
 
-*Viết bằng Kotlin Multiplatform — một bộ code chạy cả Android lẫn iOS. Repo này phát hành
-bản Android (APK); bản iOS đang phát triển (shell 6 tab + Settings + Cloud transport).*
-
 - **6 tab**: Tổng quan · Lái xe · Điều khiển · Điều hoà · Ứng dụng · Cài đặt
 - **3 cách kết nối xe**: Bluetooth / WiFi cùng mạng / Cloud (4G) — tự reconnect, chạy nền
 - **Tổng quan**: tốc độ + pin %, chế độ lái, nhiệt độ, gear, odometer, quãng đường còn đi được,
