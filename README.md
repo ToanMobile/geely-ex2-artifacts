@@ -3,7 +3,10 @@
 > ⚠️ **TRẠNG THÁI: BETA — ĐANG THỬ NGHIỆM, CHƯA NÊN CÀI**
 >
 > CentralCar / CentralPhone trong repo này đang ở giai đoạn **thử nghiệm (beta)** —
-> chưa kiểm thử đầy đủ trên xe thật. **KHÔNG NÊN CÀI** lên xe/điện thoại dùng hằng ngày.
+> được **team phát triển thử nghiệm trên xe thật**, chưa hoàn tất toàn bộ quá trình
+> kiểm thử. **Sẽ chính thức release khi quá trình test trên xe thật đạt yêu cầu.**
+>
+> **KHÔNG NÊN CÀI** lên xe/điện thoại dùng hằng ngày khi chưa tới thời điểm đó.
 > Cài tức là tự chịu trách nhiệm: app có thể lỗi, chưa ổn định, hoặc làm thay đổi hành vi
 > hệ thống trên xe. Báo lỗi/góp ý gửi về nhà phát triển trước khi dùng đại trà.
 
