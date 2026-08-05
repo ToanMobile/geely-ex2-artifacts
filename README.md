@@ -51,8 +51,9 @@
 - **Đèn viền nội thất**: bật/tắt + lịch hẹn giờ (chạy ngầm kể cả sau reboot)
 - **AVAS**: tắt tiếng bíp cảnh báo người đi bộ + chỉnh âm lượng loa
 - **Cửa & kính**: hé kính tự động khi mở cửa, đóng kính khi đóng cửa (tự bỏ qua khi xe chạy)
-- **Giọng nói tiếng Việt** (~35 lệnh: đèn viền, WiFi, điều hoà, chế độ lái, khoá/mở cửa, kính,
-  tắt màn hình…) — 3 tầng khớp lệnh + phản hồi bằng giọng nói (TTS)
+- **Giọng nói tiếng Việt**: 73 lệnh điều khiển (đèn viền, WiFi, điều hoà, chế độ lái,
+  khoá/mở cửa, kính, tắt màn hình…) + 15 câu hỏi trả lời bằng giọng nói (query TTS) +
+  mở app bằng tên — wake word + nút PTT, 3 tầng khớp lệnh, sửa câu lệnh từ phone
 - **Màn hình đen (blackout)** khi lái đêm + nút nổi truy cập nhanh (floater)
 - **Điều khiển từ xa qua 4G** (cloud relay) · **cập nhật từ GitHub** (verify SHA-256)
 - **Nhận lệnh + cài APK từ xa** qua server `:44700` / `:8876` — không cần ADB/máy tính
