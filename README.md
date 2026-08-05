@@ -22,8 +22,12 @@ chạy trên một thiết bị khác nhau, xem bảng bên dưới.
 | `CentralPC(MacOS).dmg` | **Máy Mac** (Apple Silicon) | App quản lý trên máy tính: kết nối xe qua ADB, giao diện web `localhost:8848`, cài/gỡ app cho xe, chạy lệnh adb, cấu hình. |
 | `CentralPC(Windows).exe` | **Máy Windows** | Bản Windows của CentralPC — cùng chức năng như bản macOS. |
 
+> ✅ **CentralPC (`.dmg` / `.exe`) đã được kiểm thử và phát hành chính thức** — không còn ở
+> giai đoạn beta. Chỉ **CentralCar / CentralPhone** đang beta và chưa nên cài.
+
 **Quy tắc tên file:** APK có chữ `(Không cài)` là **đang thử nghiệm (beta)** — tải về xem/đánh
 giá thì được, **chưa nên cài** lên xe/điện thoại dùng hằng ngày. Bản nào hết beta sẽ bỏ chữ này.
+**CentralPC không mang chữ `(Không cài)`** — bản này **đã được kiểm thử và phát hành chính thức**.
 
 ## Cách cài
 
