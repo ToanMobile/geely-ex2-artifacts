@@ -18,7 +18,7 @@ chạy trên một thiết bị khác nhau, xem bảng bên dưới.
 | File | Cài ở đâu | Chức năng |
 |---|---|---|
 | `CentralCar-system(Không cài).apk` | **Màn hình xe Geely EX2** (Android 9) | App chạy trên xe: hiển thị thông số (tốc độ, pin, nhiệt độ), điều khiển xe qua VHAL (gương, kính, khoá…), ra lệnh giọng nói (wake word + PTT, nhận diện tiếng Việt, Vosk local + Google dự phòng), nhận lệnh từ xa qua cloud relay, App store cài thêm app cho xe, kiểm tra cập nhật. |
-| `CentralPhone(Không cài).apk` | **Điện thoại Android** | App điều khiển xe từ xa: gửi lệnh tới xe qua cloud relay (không cần cùng Wi-Fi), App store cài app cho xe từ xa, chỉnh sửa câu lệnh giọng nói. |
+| `CentralPhone(Không cài).apk` | **Điện thoại Android** | App điều khiển xe từ xa: gửi lệnh tới xe qua cloud relay (không cần cùng Wi-Fi), chỉnh sửa câu lệnh giọng nói. **Sắp tới: cài app cho xe online qua cloud — giống CentralPC (cài app lên xe từ xa, không cần ADB/máy tính).** |
 | `CentralPC(MacOS).dmg` | **Máy Mac** (Apple Silicon) | App quản lý trên máy tính: kết nối xe qua ADB, giao diện web `localhost:8848`, cài/gỡ app cho xe, chạy lệnh adb, cấu hình. |
 | `CentralPC(Windows).exe` | **Máy Windows** | Bản Windows của CentralPC — cùng chức năng như bản macOS. |
 
