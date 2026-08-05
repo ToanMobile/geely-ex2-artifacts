@@ -1,5 +1,12 @@
 # Thư mục artifacts — bản phát hành APK
 
+> ⚠️ **TRẠNG THÁI: BETA — ĐANG THỬ NGHIỆM, CHƯA NÊN CÀI**
+>
+> CentralCar / CentralPhone trong repo này đang ở giai đoạn **thử nghiệm (beta)** —
+> chưa kiểm thử đầy đủ trên xe thật. **KHÔNG NÊN CÀI** lên xe/điện thoại dùng hằng ngày.
+> Cài tức là tự chịu trách nhiệm: app có thể lỗi, chưa ổn định, hoặc làm thay đổi hành vi
+> hệ thống trên xe. Báo lỗi/góp ý gửi về nhà phát triển trước khi dùng đại trà.
+
 Quyết định 2026-08-03: **code repo (`ToanMobile/GeelyEx2`) giữ private** — APK phát hành +
 `update.json` + `apps.json` được đẩy sang **một repo GitHub public riêng** (xe/phone tải qua
 URL public, không cần token GitHub).
