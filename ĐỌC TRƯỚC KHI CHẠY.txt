@@ -1,0 +1,67 @@
+CENTRALPC — CÁCH CHẠY TRÊN MACOS
+============================================
+
+CÀI ĐẶT (chỉ làm 1 lần)
+-----------------------
+1. Mở file CentralPC(MacOS).dmg (bấm đúp).
+2. Kéo "CentralPC" thả vào thư mục Applications ngay bên cạnh.
+3. Tháo (eject) ổ đĩa "CentralPC" trên Desktop.
+
+
+LẦN MỞ ĐẦU TIÊN — macOS SẼ CHẶN, ĐÂY LÀ BÌNH THƯỜNG
+---------------------------------------------------
+App này không mua chữ ký của Apple (999 USD/năm) nên macOS mặc định chặn.
+KHÔNG phải app bị lỗi hay nhiễm virus. Làm theo đúng thứ tự sau:
+
+1. Vào Launchpad hoặc thư mục Applications, bấm đúp "CentralPC".
+2. Hiện bảng báo không mở được → bấm Done / Xong.
+3. Mở  Menu Apple  →  System Settings  →  Privacy & Security
+   (máy tiếng Việt: Cài đặt Hệ thống → Quyền riêng tư & Bảo mật).
+4. Kéo xuống cuối, thấy dòng nhắc về "CentralPC" → bấm  Open Anyway / Vẫn mở.
+5. Nhập mật khẩu máy Mac (hoặc Touch ID).
+6. Hiện bảng hỏi lại → bấm  Open / Mở.
+
+Từ lần thứ hai trở đi bấm đúp là chạy thẳng, không hỏi nữa.
+
+
+KHI CHẠY ĐÚNG THÌ THẤY GÌ
+-------------------------
+- Một cửa sổ Terminal hiện ra, có dòng:
+      CentralPC đang chạy tại: http://127.0.0.1:8848/
+- Trình duyệt tự mở trang điều khiển.
+- Nếu trình duyệt không tự mở: tự gõ địa chỉ http://127.0.0.1:8848/ vào trình duyệt.
+
+KÍCH HOẠT MÃ DÙNG APP
+----------------------
+- Lần đầu mở, app hiện màn hình yêu cầu MÃ KÍCH HOẠT và SỐ ĐIỆN THOẠI do
+  quản trị viên cấp. Mỗi mã dùng cho 1 người, mặc định 1 máy — không chia sẻ.
+- Chưa có mã thì không dùng được app (không cài/gỡ/điều khiển được xe).
+- Khi mất mạng (vào trong xe không có internet), app vẫn chạy bình thường
+  trong thời gian cho phép kể từ lần kiểm tra thành công gần nhất. Hết hạn
+  thì chỉ cần nối mạng một lần để kiểm tra lại.
+
+DỮ LIỆU APP GỬI VỀ MÁY CHỦ (minh bạch)
+---------------------------------------
+Khi kích hoạt và mỗi lần mở app có mạng, app gửi: số điện thoại, mã máy
+(đã băm SHA-256, không lộ thông tin phần cứng), tên máy, hệ điều hành, phiên
+bản app và địa chỉ IP. Dữ liệu dùng để quản lý việc cấp phép — KHÔNG thu
+thập vị trí, danh sách app đã cài hay nội dung thao tác trên xe.
+
+
+TẮT APP: bấm vào cửa sổ Terminal rồi nhấn Control + C, hoặc đóng cửa sổ Terminal.
+
+
+LỖI THƯỜNG GẶP
+--------------
+* Bấm đúp mà chỉ hiện cửa sổ Terminal trắng, không có chữ gì:
+  Bạn đang mở nhầm file thực thi trần đã bị mất quyền chạy khi gửi qua
+  Zalo/Messenger/Google Drive/USB. Hãy dùng file .dmg theo hướng dẫn ở trên.
+
+* "App bị hỏng, hãy chuyển vào Thùng rác":
+  Mở Terminal, gõ đúng dòng dưới rồi Enter, nhập mật khẩu máy:
+      xattr -dr com.apple.quarantine "/Applications/CentralPC.app"
+  Sau đó mở lại app.
+
+* Không kết nối được xe:
+  Máy Mac và xe phải chung một mạng Wi-Fi, và xe phải đã bật chế độ ADB
+  (xem nút "Hướng dẫn mở khoá" ngay trong app).
