@@ -1,8 +1,9 @@
 {
   "type": "update_check",
   "latestVersionName": "1.1",
-  "versionCode": 69,
+  "versionCode": 70,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CentralCar-system(Kh%C3%B4ng%20c%C3%A0i).apk",
-  "sha256": "505586b25004347bbe034342533f92e49aa294e100d0cbfae9080e4aa87a5276",
-  "releaseNotes": "Voice control nâng cấp: tầng số, edit câu lệnh từ phone, 15 query TTS, mở app, kính theo góc"
+  "sha256": "acd86fac4c7f91ee02b80333ee1ee9e14a3dc5b87e9b8cf725887df87e3597ce",
+  "releaseNotes": "CentralCar v1.1(70)",
+  "channel": "stable"
 }
