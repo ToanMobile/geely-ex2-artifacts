@@ -4,20 +4,20 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.0.41",
-      "versionCode": 141,
+      "latestVersionName": "1.0.42",
+      "versionCode": 142,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "5f2291ead6fe9666423e7b4dfc70976d3114987741d55ae6979e72a20ac0a887",
-      "releaseNotes": "CarConnect v1.0.41(141)"
+      "sha256": "abce0fa37cdfdc3229230ea5f03cef16eda761756665dd8455d317739a5a3e5e",
+      "releaseNotes": "CarConnect v1.0.42(142)"
     },
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.0.30",
-      "versionCode": 130,
+      "latestVersionName": "1.0.31",
+      "versionCode": 131,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "f01cd85a2bf5e3f32aec02d124b39de961c92cadce334685815d636716d6e33c",
-      "releaseNotes": "PhoneConnect v1.0.30(130)"
+      "sha256": "7253110a8e8d0a61045755f25bcc04a285f51a0076c73529eff327f6aae6027b",
+      "releaseNotes": "PhoneConnect v1.0.31(131)"
     }
   ]
 }

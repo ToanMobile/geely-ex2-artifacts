@@ -112,10 +112,10 @@
 <p align="center">
   <img src="screenshots/car_07_voice.png" alt="Trợ lý giọng nói tiếng Việt Offline" width="380">
   <img src="screenshots/car_09_quickinstall.png" alt="Danh mục Cài nhanh 17 app" width="380"><br>
-  <sub>(Trái) Trợ lý giọng nói tiếng Việt Offline (Vosk TTS/ASR) · (Phải) Kho 17 ứng dụng Cài nhanh 1-chạm</sub>
+  <sub>(Trái) Trợ lý giọng nói tiếng Việt Offline (Sherpa-ONNX ASR + TTS) · (Phải) Kho 17 ứng dụng Cài nhanh 1-chạm</sub>
 </p>
 
-- **Giọng nói tiếng Việt offline**: 75 lệnh điều khiển + 15 câu hỏi trả lời bằng giọng nói (query TTS), nhận dạng offline (Vosk) 95% chính xác.
+- **Giọng nói tiếng Việt offline**: 75 lệnh điều khiển + 15 câu hỏi trả lời bằng giọng nói (query TTS), nhận dạng offline (Sherpa-ONNX Zipformer-vi) 95% chính xác.
 - **Kho 17 Ứng dụng Cài Nhanh (v11)**: VietMap Live, Waze, SmartTube, YouTube Morphe, Spotify, Zalo... tải và cài 1-chạm không cần máy tính.
 - **Cứu hộ PIP & Chia đôi màn hình**: Hỗ trợ kéo thả cửa sổ SmartTube PIP không bị liệt cảm ứng, chia đôi màn hình 1:1 cho VietMap Live + YouTube.
 - **Watchdog chống crash/bootloop**: bảo vệ 3 tiến trình (`:main`, `:core`, `:watchdog`) ổn định 24/7.
