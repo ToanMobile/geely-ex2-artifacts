@@ -1204,10 +1204,44 @@ function getSession() {
   }
 }
 
+function getEffectiveServiceKey() {
+  const session = getSession();
+  if (session && session.service_key && !session.service_key.includes("DEFAULT_KEY") && session.service_key.trim().length > 15) {
+    return session.service_key.trim();
+  }
+  const local = localStorage.getItem("geely_admin_service_key");
+  if (local && !local.includes("DEFAULT_KEY") && local.trim().length > 15) {
+    return local.trim();
+  }
+  if (CONFIG.supabaseServiceKey && !CONFIG.supabaseServiceKey.includes("DEFAULT_KEY") && CONFIG.supabaseServiceKey.trim().length > 15) {
+    return CONFIG.supabaseServiceKey.trim();
+  }
+  return "";
+}
+
+function showConfigMissingWarning() {
+  let warnEl = $("serviceKeyWarnBanner");
+  if (!warnEl) {
+    warnEl = document.createElement("div");
+    warnEl.id = "serviceKeyWarnBanner";
+    warnEl.style.cssText = "background:linear-gradient(90deg, #dc2626, #b91c1c); color:#fff; padding:12px 18px; border-radius:10px; margin-bottom:18px; font-size:14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 14px rgba(220,38,38,0.25); border:1px solid #f87171";
+    warnEl.innerHTML = `<span>⚠️ <b>Chưa có Supabase Service Role Key:</b> Cần Service Key để tải và quản lý licenses. Vui lòng bấm <b>⚙️ Cấu hình</b> để dán key.</span> <button onclick="openSettingsModal()" style="background:#fff; color:#b91c1c; border:none; padding:6px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-size:13px">⚙️ Nhập Key</button>`;
+    const container = document.querySelector(".container");
+    if (container) container.insertBefore(warnEl, container.firstChild);
+  }
+  warnEl.style.display = "flex";
+}
+
+function hideConfigMissingWarning() {
+  const warnEl = $("serviceKeyWarnBanner");
+  if (warnEl) warnEl.style.display = "none";
+}
+
 function setSession(s) {
   currentSession = s;
-  if (s && s.service_key) {
+  if (s && s.service_key && !s.service_key.includes("DEFAULT_KEY")) {
     CONFIG.supabaseServiceKey = s.service_key;
+    localStorage.setItem("geely_admin_service_key", s.service_key);
   }
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
 }
@@ -1220,9 +1254,15 @@ function clearSession() {
 
 function checkAuthUI() {
   const session = getSession();
-  if (session && session.session_token && session.service_key) {
+  if (session && session.session_token) {
     currentSession = session;
-    CONFIG.supabaseServiceKey = session.service_key;
+    const effKey = getEffectiveServiceKey();
+    if (effKey) {
+      CONFIG.supabaseServiceKey = effKey;
+      hideConfigMissingWarning();
+    } else {
+      showConfigMissingWarning();
+    }
     $("loginScreen").style.display = "none";
     $("dashboardWrap").style.display = "block";
     $("headerAdminBadge").textContent = "👑 " + (session.admin_name || "Admin") + " (" + (session.admin_phone || "") + ")";
@@ -1380,13 +1420,13 @@ function handleLogout() {
 // ==================== SETTINGS MODAL ====================
 function openSettingsModal() {
   $("cfgSbUrl").value = CONFIG.supabaseUrl;
-  $("cfgSbKey").value = CONFIG.supabaseServiceKey;
+  $("cfgSbKey").value = getEffectiveServiceKey();
   $("settingsMask").style.display = "flex";
 }
 function closeSettingsModal() { $("settingsMask").style.display = "none"; }
 function saveSettings() {
   CONFIG.supabaseUrl = $("cfgSbUrl").value.trim() || DEFAULT_CONFIG.supabaseUrl;
-  CONFIG.supabaseServiceKey = $("cfgSbKey").value.trim() || DEFAULT_CONFIG.supabaseServiceKey;
+  CONFIG.supabaseServiceKey = $("cfgSbKey").value.trim();
 
   // Dọn nốt token GitHub cũ còn sót trong trình duyệt từ bản trước.
   localStorage.removeItem("geely_admin_gh_token");
@@ -1395,9 +1435,18 @@ function saveSettings() {
   localStorage.setItem("geely_admin_sb_url", CONFIG.supabaseUrl);
   localStorage.setItem("geely_admin_service_key", CONFIG.supabaseServiceKey);
 
+  // Đồng bộ vào session hiện tại
+  const session = getSession();
+  if (session) {
+    session.service_key = CONFIG.supabaseServiceKey;
+    setSession(session);
+  }
+
+  hideConfigMissingWarning();
   closeSettingsModal();
   alert("Đã lưu cấu hình thành công!");
   loadKeys();
+  loadSalesData();
   loadQuickInstallCatalog();
 }
 function resetDefaultSettings() {
@@ -1461,12 +1510,11 @@ window.addEventListener("DOMContentLoaded", () => {
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
   const url = CONFIG.supabaseUrl;
-  const session = getSession();
-  const key = CONFIG.supabaseServiceKey || (session && session.service_key) || localStorage.getItem("geely_admin_service_key") || "";
+  const key = getEffectiveServiceKey();
   
   if (!key) {
-    checkAuthUI();
-    throw new Error("Chưa đăng nhập Quản trị viên. Vui lòng đăng nhập bằng số điện thoại & OTP Telegram.");
+    showConfigMissingWarning();
+    throw new Error("Chưa có Service Role Key. Vui lòng bấm ⚙️ Cấu hình ở góc trên để dán Supabase Service Key.");
   }
 
   const headers = {
@@ -1478,9 +1526,8 @@ async function api(path, opts = {}) {
     let detail = "";
     try { detail = (await res.json()).message || ""; } catch (e) {}
     if (res.status === 401 || res.status === 403) {
-      clearSession();
-      checkAuthUI();
-      throw new Error("Phiên làm việc Quản trị viên đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.");
+      showConfigMissingWarning();
+      throw new Error("Supabase Service Key không hợp lệ hoặc đã bị thu hồi (HTTP " + res.status + "). Vui lòng bấm ⚙️ Cấu hình để cập nhật.");
     }
     throw new Error("HTTP " + res.status + (detail ? ": " + detail : ""));
   }
