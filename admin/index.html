@@ -3374,7 +3374,7 @@ async function testTelegramNoti() {
 async function registerTelegramWebhook() {
   const token = TELEGRAM_BOT_TOKEN_FIXED;
   const sbUrl = CONFIG.supabaseUrl.replace(/\/$/, "");
-  const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
+  const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseAnonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
   const webhookUrl = prompt("Nhập Webhook URL cho Telegram Bot (Mặc định gọi thẳng REST RPC Supabase 24/7):", defaultWebhook);
   if (!webhookUrl) return;
 
