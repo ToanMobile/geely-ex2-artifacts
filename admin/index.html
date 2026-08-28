@@ -306,7 +306,7 @@
     <!-- Bước 1: Nhập Số điện thoại -->
     <div id="loginStepPhone">
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên *</label>
-      <input id="loginPhoneInput" placeholder="VD: 0333332093" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
+      <input id="loginPhoneInput" placeholder="Số điện thoại" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
       <div class="hint">Nhập số điện thoại đã được cấp quyền Quản trị để nhận mã OTP qua Telegram.</div>
 
       <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">
@@ -1282,7 +1282,7 @@ async function requestLoginOtp(isResend = false) {
   const btn = isResend ? $("btnResendOtp") : $("btnRequestOtp");
 
   if (!phone || phone.length < 9) {
-    showMsg(msgEl, "err", "Vui lòng nhập số điện thoại Quản trị viên hợp lệ (VD: 0333332093)");
+    showMsg(msgEl, "err", "Vui lòng nhập số điện thoại Quản trị viên hợp lệ");
     phoneInput.focus();
     return;
   }
