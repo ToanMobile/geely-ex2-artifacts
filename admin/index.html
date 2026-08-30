@@ -319,7 +319,7 @@
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px">
         <div>👤 Admin: <b id="loginAdminName">--</b></div>
         <div>📱 SĐT: <b id="loginTargetPhone" class="mono">--</b></div>
-        <div class="hint" style="margin-top:4px; color:var(--ok)">✅ Đã gửi mã OTP về Telegram (<a href="https://t.me/TranDatGeelyAppbot" target="_blank" style="color:var(--primary); text-decoration:underline">@TranDatGeelyAppbot</a> / <a href="https://t.me/ToanAgent1993Bot" target="_blank" style="color:var(--primary); text-decoration:underline">@ToanAgent1993Bot</a>).</div>
+        <div id="loginBotHint" class="hint" style="margin-top:4px; color:var(--ok)">✅ Đã gửi mã OTP về Telegram.</div>
       </div>
 
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Nhập mã OTP 6 chữ số *</label>
@@ -1189,15 +1189,24 @@ const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&l
 
 // ==================== QUẢN LÝ PHIÊN ĐĂNG NHẬP (SESSION & OTP) ====================
 const SESSION_KEY = "geely_admin_session";
+const SESSION_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000; // Lưu phiên đăng nhập 3 ngày (72 giờ)
 let currentSession = null;
 let otpCountdownInterval = null;
 
 function getSession() {
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY);
+    let raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) raw = sessionStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const s = JSON.parse(raw);
     if (!s || !s.session_token) return null;
+
+    // Kiểm tra hết hạn phiên (3 ngày)
+    const loginTime = s.login_timestamp || (s.logged_in_at ? new Date(s.logged_in_at).getTime() : 0);
+    if (loginTime > 0 && (Date.now() - loginTime > SESSION_MAX_AGE_MS)) {
+      clearSession();
+      return null;
+    }
     return s;
   } catch (e) {
     return null;
@@ -1238,17 +1247,22 @@ function hideConfigMissingWarning() {
 }
 
 function setSession(s) {
+  if (!s) return;
+  s.login_timestamp = Date.now(); // Lưu thời điểm đăng nhập để tính hạn 3 ngày
   currentSession = s;
-  if (s && s.service_key && !s.service_key.includes("DEFAULT_KEY")) {
+  if (s.service_key && !s.service_key.includes("DEFAULT_KEY")) {
     CONFIG.supabaseServiceKey = s.service_key;
     localStorage.setItem("geely_admin_service_key", s.service_key);
   }
+  localStorage.setItem(SESSION_KEY, JSON.stringify(s));
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
 }
 
 function clearSession() {
   currentSession = null;
-  CONFIG.supabaseServiceKey = localStorage.getItem("geely_admin_service_key") || "";
+  CONFIG.supabaseServiceKey = "";
+  localStorage.removeItem("geely_admin_service_key");
+  localStorage.removeItem(SESSION_KEY);
   sessionStorage.removeItem(SESSION_KEY);
 }
 
@@ -1350,6 +1364,21 @@ async function requestLoginOtp(isResend = false) {
     $("loginAdminName").textContent = data.admin_name || "Quản trị viên";
     $("loginTargetPhone").textContent = data.phone || phone;
     $("loginOtpInput").value = "";
+
+    // Hiển thị đích danh Bot Telegram được bắn OTP
+    const botHintEl = $("loginBotHint");
+    if (botHintEl) {
+      if (data.bot_link && data.bot_name) {
+        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="${esc(data.bot_link)}" target="_blank" style="color:var(--primary); text-decoration:underline">${esc(data.bot_name)}</a>).`;
+      } else if (phone === "0333332093") {
+        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="https://t.me/ToanAgent1993Bot" target="_blank" style="color:var(--primary); text-decoration:underline">@ToanAgent1993Bot</a>).`;
+      } else if (phone === "0762629292") {
+        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="https://t.me/TranDatGeelyAppbot" target="_blank" style="color:var(--primary); text-decoration:underline">@TranDatGeelyAppbot</a>).`;
+      } else {
+        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Bot Telegram.`;
+      }
+    }
+
     showMsg(msgEl, "ok", data.message || "Đã gửi mã OTP thành công! Kiểm tra tin nhắn Telegram.");
     switchLoginStep("otp");
     startOtpCountdown(data.expires_in_seconds || 300);
@@ -2139,7 +2168,7 @@ const DEFAULT_QI_CATALOG = {
     { "name": "CarConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk", "packageName": "com.techlead.app.geely.car", "targets": ["pc"] },
     { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "targets": ["pc"] },
     { "name": "VietMap Live", "url": "https://drive.google.com/file/d/1NKYB46fYqLkBvEWTirtzznZa3m0uNo8O/view?usp=sharing", "packageName": "vn.vietmap.live" },
-    { "name": "Waze Mod", "url": "https://wazemod.chisadin.id.vn/api/download/cmrqjhq0k000504l7hb18lu7j", "packageName": "com.waze" },
+    { "name": "Waze Mod", "url": "https://wazemod.chisadin.id.vn/api/download/cmraxy0ub0001h0vbc3ckgov4", "packageName": "com.waze" },
     { "name": "SmartTube", "url": "https://drive.google.com/file/d/1nUntFyxIaUcfdKX5FHNyNfynzd6qQiQ0/view?usp=sharing", "packageName": "org.smarttube.stable" },
     { "name": "MicroG", "url": "https://drive.google.com/file/d/1TeBWfrtb88E46HCnaLkHBWq0JdGftf1d/view?usp=sharing", "packageName": "com.google.android.gms" },
     { "name": "VTV Go", "url": "https://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=sharing", "packageName": "vn.vtv.vtvgo" },
