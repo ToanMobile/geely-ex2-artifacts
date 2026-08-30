@@ -305,8 +305,8 @@
 
     <!-- Bước 1: Nhập Số điện thoại -->
     <div id="loginStepPhone">
-      <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên *</label>
-      <input id="loginPhoneInput" placeholder="Số điện thoại" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
+      <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên</label>
+      <input id="loginPhoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ví dụ: 0333332093 / 0762629292" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
       <div class="hint">Nhập số điện thoại đã được cấp quyền Quản trị để nhận mã OTP qua Telegram.</div>
 
       <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">
@@ -323,7 +323,7 @@
       </div>
 
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Nhập mã OTP 6 chữ số *</label>
-      <input id="loginOtpInput" class="otp-field" maxlength="6" placeholder="••••••" onkeydown="if(event.key==='Enter')verifyLoginOtp()" oninput="if(this.value.length===6)verifyLoginOtp()">
+      <input id="loginOtpInput" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" class="otp-field" maxlength="6" placeholder="••••••" onkeydown="if(event.key==='Enter')verifyLoginOtp()" oninput="this.value=this.value.replace(/\D/g,''); if(this.value.length===6)verifyLoginOtp()">
       
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px">
         <span id="loginTimerText" class="hint" style="margin:0">Mã có hiệu lực: <b id="loginCountdown" class="mono">05:00</b></span>
@@ -1250,20 +1250,28 @@ function setSession(s) {
   if (!s) return;
   s.login_timestamp = Date.now(); // Lưu thời điểm đăng nhập để tính hạn 3 ngày
   currentSession = s;
-  if (s.service_key && !s.service_key.includes("DEFAULT_KEY")) {
-    CONFIG.supabaseServiceKey = s.service_key;
-    localStorage.setItem("geely_admin_service_key", s.service_key);
-  }
-  localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-  sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  try {
+    if (s.service_key && !s.service_key.includes("DEFAULT_KEY")) {
+      CONFIG.supabaseServiceKey = s.service_key;
+      localStorage.setItem("geely_admin_service_key", s.service_key);
+    }
+    localStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  } catch (e) {}
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
+  } catch (e) {}
 }
 
 function clearSession() {
   currentSession = null;
   CONFIG.supabaseServiceKey = "";
-  localStorage.removeItem("geely_admin_service_key");
-  localStorage.removeItem(SESSION_KEY);
-  sessionStorage.removeItem(SESSION_KEY);
+  try {
+    localStorage.removeItem("geely_admin_service_key");
+    localStorage.removeItem(SESSION_KEY);
+  } catch (e) {}
+  try {
+    sessionStorage.removeItem(SESSION_KEY);
+  } catch (e) {}
 }
 
 function checkAuthUI() {
