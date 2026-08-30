@@ -1,9 +1,9 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.0.58",
-  "versionCode": 158,
+  "latestVersionName": "1.0.59",
+  "versionCode": 159,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "e79f3573b56b9f01b1f9ab8cd0774cca0a25c6698c348e31bc60d57105340b04",
-  "releaseNotes": "CarConnect v1.0.58(158)",
+  "sha256": "4549bfe3b6d9aae8f259dcd518a8d0c8f29008631cc47b20a2445b151fcc413e",
+  "releaseNotes": "- Tự hé kính khi mở cửa: nay chạy được thật. Trước đây bật công tắc mà kính không bao giờ hạ, vì app hiểu sai mã trạng thái cửa của đầu xe nên tưởng cửa lúc nào cũng đang mở.\n- Mức hé đổi từ 5% sang 7% — mô-tơ kính từ chối mọi lệnh dưới 7%, đặt 5% là kính đứng im.\n- Công tắc gộp còn một dòng cho cả 4 cửa thay vì 4 dòng riêng.\n- Gạt công tắc trên màn hình xe nay hiện sang điện thoại ngay, không phải đợi kết nối lại.\n- Lệnh kính báo kết quả trung thực hơn: trước đây có lúc báo \"đã đóng kín\" trong khi kính vẫn hở.",
   "channel": "stable"
 }
