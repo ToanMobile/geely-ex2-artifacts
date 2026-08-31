@@ -4,20 +4,20 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.0.59",
-      "versionCode": 159,
+      "latestVersionName": "1.0.60",
+      "versionCode": 160,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "4549bfe3b6d9aae8f259dcd518a8d0c8f29008631cc47b20a2445b151fcc413e",
-      "releaseNotes": "- Tự hé kính khi mở cửa: nay chạy được thật. Trước đây bật công tắc mà kính không bao giờ hạ, vì app hiểu sai mã trạng thái cửa của đầu xe nên tưởng cửa lúc nào cũng đang mở.\n- Mức hé đổi từ 5% sang 7% — mô-tơ kính từ chối mọi lệnh dưới 7%, đặt 5% là kính đứng im.\n- Công tắc gộp còn một dòng cho cả 4 cửa thay vì 4 dòng riêng.\n- Gạt công tắc trên màn hình xe nay hiện sang điện thoại ngay, không phải đợi kết nối lại.\n- Lệnh kính báo kết quả trung thực hơn: trước đây có lúc báo \"đã đóng kín\" trong khi kính vẫn hở."
+      "sha256": "1b41a588f90b8e434ec9d258987185b5b992d7a36ed0f20109a8d9ce3874d051",
+      "releaseNotes": "CarConnect v1.0.60(160)"
     },
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.0.44",
-      "versionCode": 144,
+      "latestVersionName": "1.0.45",
+      "versionCode": 145,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "b961192c3a7bcc2a06717278cdf7bafac759b26574ef1e38349114ddceb58e86",
-      "releaseNotes": "- Màn Cài đặt xe: mục tự hé kính gộp còn một dòng cho cả 4 cửa.\n- Không còn gạt được công tắc khi chưa kết nối xe — trước đây gạt xong nó tự nhảy về chỗ cũ."
+      "sha256": "581337ad1e2380f31a91d6b15e50820620b62321c8cc93bf3c24f55928fc75f5",
+      "releaseNotes": "PhoneConnect v1.0.45(145)"
     }
   ]
 }
