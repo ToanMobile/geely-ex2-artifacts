@@ -1608,7 +1608,12 @@ function setCreateRoleDefaults() {
     expHintEl.textContent = "Mã PCConnect mặc định Vĩnh viễn.";
     if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
   } else if (r === "admin") {
-    hintEl.textContent = "Dành riêng cho Dev & Tester: Nhận cả Xe và PC (20 máy test), không đặt trần PC.";
+    // 01/09/2026 — mã `admin` KHÔNG chỉ là "mã nhiều máy": `admin_request_login_otp` coi mọi
+    // SĐT gắn với license role='admin' đang active là ADMIN ĐƯỢC PHÉP ĐĂNG NHẬP, và
+    // `admin_verify_login_otp` trả về khoá service_role. Cấp mã admin = mở thêm một cửa vào.
+    hintEl.innerHTML = "Dành riêng cho Dev &amp; Tester: nhận cả Xe và PC (20 máy test), không đặt trần PC.<br>" +
+      "<b>⚠️ Mã này TẠO LUÔN QUYỀN ĐĂNG NHẬP TRANG QUẢN TRỊ</b> cho số điện thoại gắn với nó — " +
+      "chỉ cấp cho người anh thật sự tin.";
     expHintEl.textContent = "Mã Admin mặc định Vĩnh viễn.";
     if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
   }
