@@ -649,6 +649,16 @@
             </label>
           </div>
 
+          <!-- Token bot: 01/09/2026 KHÔNG nhúng cứng nữa — xem getTelegramBotToken() -->
+          <div style="margin-top:14px">
+            <label>Token bot Telegram (@BotFather)</label>
+            <input id="salesTelegramBotToken" type="password" autocomplete="off" spellcheck="false"
+                   placeholder="Để TRỐNG nếu không đổi">
+            <div class="hint" id="salesTelegramBotTokenHint" style="margin-top:4px">
+              Token lưu ở <code>sales_settings.telegram_bot_token</code> trên máy chủ, KHÔNG nằm trong trang này.
+            </div>
+          </div>
+
           <!-- Danh sách từng Chat ID riêng biệt -->
           <div style="margin-top:14px">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px">
@@ -2906,6 +2916,11 @@ async function loadSalesData() {
 
     setTelegramChatIdsToUI(s.telegram_chat_id || "5218387973, 1641294365");
     $("salesTelegramNotiEnabled").checked = (s.telegram_noti_enabled !== false);
+    // KHÔNG đổ token ra ô: để trống = giữ nguyên. Chỉ báo máy chủ đã có hay chưa.
+    $("salesTelegramBotToken").value = "";
+    $("salesTelegramBotTokenHint").textContent = s.telegram_bot_token
+      ? "✅ Máy chủ đã có token. Để trống nếu không muốn đổi."
+      : "⚠️ Máy chủ CHƯA có token — Telegram sẽ không chạy tới khi dán token vào đây rồi bấm Lưu.";
 
     renderSalesOrdersTable();
     renderPriceLocksTable();
@@ -3148,7 +3163,45 @@ async function saveSalesBankInfo() {
 }
 
 // ==================== TELEGRAM BOT CONFIG & CHAT ID LIST ====================
-const TELEGRAM_BOT_TOKEN_FIXED = "8364590394:AAEOga83hu06acnz3jLCvUe2Rt1JnSi4wNk";
+// 🔴 01/09/2026 — GỠ TOKEN NHÚNG CỨNG.
+//
+// Token bot thật từng nằm plaintext ngay tại đây và được dùng ở 4 chỗ bên dưới. Mà chính file
+// này được **deploy CÔNG KHAI** (toanmobile.github.io/geely-ex2-artifacts/admin/, repo artifacts
+// là PUBLIC) ⇒ ai mở trang cũng đọc được token, tức là **làm chủ con bot**: cướp webhook duyệt
+// đơn, đọc mọi tin nhắn gửi tới bot. Đo 01/09/2026: token đó còn sống trên trang public từ
+// 28/08/2026 cho tới lúc chủ xe /revoke.
+//
+// Máy chủ đã có sẵn chỗ đúng từ bản siết 31/08: cột `sales_settings.telegram_bot_token`
+// (mặc định RỖNG). Nay client lấy lúc chạy qua `admin_get_sales_data` — RPC phải đăng nhập —
+// đúng khuôn mẫu đã dùng cho `telegram_webhook_secret`.
+//
+// ⚠️ ĐỪNG đặt lại giá trị mặc định ở đây, kể cả "token test". Trang này là trang CÔNG KHAI.
+async function getTelegramBotToken() {
+  const fromUi = ($("salesTelegramBotToken") || {}).value;
+  if (fromUi && fromUi.trim()) return fromUi.trim();
+  let t = ((window._salesData || {}).settings || {}).telegram_bot_token || "";
+  if (!t) {
+    try {
+      const res = await api("/rest/v1/rpc/admin_get_sales_data", { method: "POST", body: "{}" });
+      const data = await res.json();
+      window._salesData = data;
+      t = ((data || {}).settings || {}).telegram_bot_token || "";
+    } catch (e) {
+      // để rỗng — mọi nơi gọi đều fail-closed và nói rõ lý do
+    }
+  }
+  return t;
+}
+
+/** Fail-closed dùng chung cho 3 nút gọi thẳng api.telegram.org. */
+async function requireTelegramBotToken() {
+  const t = await getTelegramBotToken();
+  if (!t) {
+    showMsg($("salesTelegramSaveMsg"), "err",
+      "Chưa có token bot — dán token (@BotFather) vào ô 'Token bot Telegram' rồi bấm Lưu cấu hình.");
+  }
+  return t;
+}
 
 function getTelegramChatItemsFromUI() {
   const container = $("telegramChatListContainer");
@@ -3268,11 +3321,15 @@ async function saveTelegramBotConfig() {
     const chatIdsString = items.map(it => it.name ? `${it.id} (${it.name})` : it.id).join(", ");
 
     const settingsPayload = {
-      telegram_bot_token: TELEGRAM_BOT_TOKEN_FIXED,
       telegram_chat_id: chatIdsString,
       telegram_noti_enabled: $("salesTelegramNotiEnabled").checked,
       admin_note: "Cập nhật cấu hình Telegram Bot Toàn Agent duyệt đơn"
     };
+    // Ô trống = GIỮ NGUYÊN token cũ: `admin_save_sales_settings` dùng
+    // `coalesce(p_settings->>'telegram_bot_token', telegram_bot_token)` nên field vắng mặt
+    // không ghi đè. Gửi chuỗi rỗng mới là xoá mất token.
+    const tokenMoi = ($("salesTelegramBotToken").value || "").trim();
+    if (tokenMoi) settingsPayload.telegram_bot_token = tokenMoi;
 
     await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
@@ -3289,7 +3346,8 @@ async function saveTelegramBotConfig() {
 }
 
 async function fetchTelegramChatId() {
-  const token = TELEGRAM_BOT_TOKEN_FIXED;
+  const token = await requireTelegramBotToken();
+  if (!token) return;
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang quét tin nhắn mới nhất từ Bot...");
   try {
     const res = await fetch("https://api.telegram.org/bot" + token + "/getUpdates?offset=-10&limit=10");
@@ -3330,7 +3388,8 @@ async function testTelegramNoti() {
     return;
   }
 
-  const token = TELEGRAM_BOT_TOKEN_FIXED;
+  const token = await requireTelegramBotToken();
+  if (!token) return;
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang gửi tin nhắn test tới " + items.length + " Chat ID...");
   try {
     const successList = [];
@@ -3409,18 +3468,47 @@ async function testTelegramNoti() {
 }
 
 async function registerTelegramWebhook() {
-  const token = TELEGRAM_BOT_TOKEN_FIXED;
+  const token = await requireTelegramBotToken();
+  if (!token) return;
   const sbUrl = CONFIG.supabaseUrl.replace(/\/$/, "");
   const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseAnonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
   const webhookUrl = prompt("Nhập Webhook URL cho Telegram Bot (Mặc định gọi thẳng REST RPC Supabase 24/7):", defaultWebhook);
   if (!webhookUrl) return;
+
+  // 31/08/2026 — BẮT BUỘC GỬI KÈM secret_token.
+  //
+  // Từ bản schema 31/08, `handle_telegram_webhook` có cổng bí mật: gọi mà không kèm
+  // `X-Telegram-Bot-Api-Secret-Token` đúng thì trả `{"ok":false,"reason":"unauthorized"}`.
+  // Cái bẫy: đó vẫn là **HTTP 200**, nên Telegram coi như GIAO THÀNH CÔNG, không báo lỗi,
+  // không dồn hàng đợi. Đăng ký webhook thiếu bí mật = mọi lượt bấm Duyệt/Huỷ trên Telegram
+  // rơi vào hư không mà KHÔNG có dấu hiệu nào — đơn hàng không bao giờ được duyệt.
+  // Vì vậy ở đây fail-closed: chưa lấy được bí mật thì KHÔNG đăng ký.
+  let webhookSecret = ((window._salesData || {}).settings || {}).telegram_webhook_secret || "";
+  if (!webhookSecret) {
+    try {
+      const cfgRes = await api("/rest/v1/rpc/admin_get_sales_data", { method: "POST", body: "{}" });
+      const cfgData = await cfgRes.json();
+      window._salesData = cfgData;
+      webhookSecret = ((cfgData || {}).settings || {}).telegram_webhook_secret || "";
+    } catch (e) {
+      // để rỗng — nhánh dưới sẽ dừng và nói rõ
+    }
+  }
+  if (!webhookSecret) {
+    showMsg($("salesTelegramSaveMsg"), "err", "Chưa có telegram_webhook_secret — không đăng ký webhook");
+    alert("❌ Chưa lấy được bí mật webhook (telegram_webhook_secret).\n\n" +
+          "Đăng ký khi thiếu bí mật sẽ tạo ra một webhook CHẾT IM LẶNG: Telegram vẫn nhận HTTP 200 " +
+          "nên tưởng gửi thành công, còn Supabase thì từ chối, và đơn hàng KHÔNG BAO GIỜ được duyệt.\n\n" +
+          "Hãy dán lại supabase/schema.sql (bản 31/08 trở đi) rồi bấm Tải lại dữ liệu bán hàng.");
+    return;
+  }
 
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang đăng ký Webhook...");
   try {
     const res = await fetch("https://api.telegram.org/bot" + token + "/setWebhook", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: webhookUrl })
+      body: JSON.stringify({ url: webhookUrl, secret_token: webhookSecret })
     });
     const data = await res.json();
     if (data.ok) {
