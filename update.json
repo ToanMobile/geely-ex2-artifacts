@@ -1,9 +1,9 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.0.65",
-  "versionCode": 165,
+  "latestVersionName": "1.0.66",
+  "versionCode": 166,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "871df2a43b4096e9136294aa7ee58ea3f070be1a78b18a7c112e7ca704b90b82",
-  "releaseNotes": "- Nghe chính xác hơn: tắt bộ lọc tiếng ồn và bỏ ràng buộc từ khoá của bản trước — hai thứ này đo lại trên kho ghi âm thật thì làm xe nghe tệ hơn, và từng khiến xe làm sai lệnh.\n- Hết lỗi đóng nhầm cửa kính: nói \"đóng kính tài lái\" trước đây xe đóng toàn bộ kính còn lại.\n- Nói \"tắt tiếng cảnh báo\" không còn bị hiểu thành tắt WiFi.\n- Nói hụt câu kiểu \"mở ứng dụng nhé\" không còn bị hiểu thành đóng hết ứng dụng.\n- Xe đang chạy không còn bị chặn lệnh nào: chia đôi màn hình, mở 2 ứng dụng, đóng ứng dụng… đều làm được khi đang lái. Vẫn hỏi lại trước khi chỉnh kính, chế độ lái và phanh tái sinh.\n- Mở bài hát trên YouTube nay ra thẳng trang kết quả tìm kiếm thay vì chỉ mở app.",
+  "sha256": "9624232027f648d8cd1f05538cce17b237d0ff72ac6bb30962964ebeb11640e5",
+  "releaseNotes": "CarConnect v1.0.66(166)",
   "channel": "stable"
 }
