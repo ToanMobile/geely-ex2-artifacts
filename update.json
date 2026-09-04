@@ -1,9 +1,9 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.0.64",
-  "versionCode": 164,
+  "latestVersionName": "1.0.65",
+  "versionCode": 165,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "c1ceafc6d3df25645efbd281b3a9551b3d3a54b36803848b8f17a349a1697150",
-  "releaseNotes": "CarConnect v1.0.64(164)",
+  "sha256": "871df2a43b4096e9136294aa7ee58ea3f070be1a78b18a7c112e7ca704b90b82",
+  "releaseNotes": "CarConnect v1.0.65(165)",
   "channel": "stable"
 }
