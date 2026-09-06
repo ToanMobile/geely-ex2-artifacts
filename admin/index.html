@@ -36,6 +36,7 @@
     --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc;
     --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe;
     --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a;
+    --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
     --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5;
     --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8;
     --ok: #57c47e; --err: #e08a8a;
@@ -100,6 +101,7 @@
   .tag.pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
   .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); }
   .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
+  .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); }
   .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); }
   .tag.hidden { background: var(--tag-hidden-bg); color: var(--tag-hidden-text); }
   .tag.dev-car { background: var(--tag-car-bg); color: var(--tag-car-text); }
@@ -406,9 +408,10 @@
         <div>
           <label>Quyền sử dụng (Role)</label>
           <select id="role">
-            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần)</option>
-            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe)</option>
-            <option value="admin">👑 Quản trị / Dev / Tester (Nhiều Xe + Nhiều PC)</option>
+            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option>
+            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option>
+            <option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
+            <option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
           </select>
           <div class="hint" id="roleHint">Khách mua xe dùng 1 đầu xe + nhiều PC trên laptop cá nhân.</div>
         </div>
@@ -451,6 +454,7 @@
           <button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button>
           <button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button>
           <button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button>
+          <button class="ghost small" data-filter="dev" onclick="setFilter('dev', this)">🛠️ Dev</button>
           <button class="ghost small" data-filter="active" onclick="setFilter('active', this)">🟢 Đang dùng</button>
           <button class="ghost small" data-filter="revoked" onclick="setFilter('revoked', this)">🔴 Đã thu hồi</button>
           <button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
@@ -997,9 +1001,10 @@
         <div>
           <label>Quyền sử dụng (Role)</label>
           <select id="edRole">
-            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần)</option>
-            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe)</option>
-            <option value="admin">👑 Quản trị / Dev / Tester (Nhiều Xe + Nhiều PC)</option>
+            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option>
+            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option>
+            <option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
+            <option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
           </select>
         </div>
         <div>
@@ -1595,9 +1600,9 @@ function setCreateRoleDefaults() {
   const hintEl = $("roleHint");
   const expHintEl = $("expiryHint");
 
-  // Trần PC mặc định theo role: mã Dev/Tester phải để trống (nhiều máy tự do),
+  // Trần PC mặc định theo role: mã Dev/Admin phải để trống (nhiều máy tự do),
   // nếu không mã nội bộ dính trần 3 trong khi max_devices của nó là 20.
-  $("maxPcDevices").value = (r === "admin" ? "" : "2");
+  $("maxPcDevices").value = (r === "admin" || r === "dev" ? "" : "2");
 
   if (r === "car") {
     hintEl.textContent = "Khách mua xe (mặc định kèm PC): 1 đầu xe Android + số máy tính theo ô bên cạnh.";
@@ -1611,10 +1616,14 @@ function setCreateRoleDefaults() {
     // 01/09/2026 — mã `admin` KHÔNG chỉ là "mã nhiều máy": `admin_request_login_otp` coi mọi
     // SĐT gắn với license role='admin' đang active là ADMIN ĐƯỢC PHÉP ĐĂNG NHẬP, và
     // `admin_verify_login_otp` trả về khoá service_role. Cấp mã admin = mở thêm một cửa vào.
-    hintEl.innerHTML = "Dành riêng cho Dev &amp; Tester: nhận cả Xe và PC (20 máy test), không đặt trần PC.<br>" +
+    hintEl.innerHTML = "Dành riêng cho Quản trị viên tối cao: nhận cả Xe và PC (20 máy test), không đặt trần PC, chạy cả Prod và Dev.<br>" +
       "<b>⚠️ Mã này TẠO LUÔN QUYỀN ĐĂNG NHẬP TRANG QUẢN TRỊ</b> cho số điện thoại gắn với nó — " +
       "chỉ cấp cho người anh thật sự tin.";
     expHintEl.textContent = "Mã Admin mặc định Vĩnh viễn.";
+    if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
+  } else if (r === "dev") {
+    hintEl.innerHTML = "Dành cho Lập trình viên Dev: nhận cả Xe và PC (20 máy test), chạy CẢ môi trường Production lẫn Dev bình thường (không có quyền admin quản trị).";
+    expHintEl.textContent = "Mã Dev mặc định Vĩnh viễn.";
     if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
   }
   syncCreateExpiryUI();
@@ -1656,7 +1665,7 @@ async function createKey() {
     }
     const body = {
       p_owner_name: name, p_owner_phone: phone, p_note: $("note").value.trim() || null,
-      p_max_devices: (selectedRole === "admin" ? 20 : 1),
+      p_max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
       p_expires_at: forever ? null : expDate + "T23:59:59+07:00",
       p_role: selectedRole,
       p_max_activations: maxAct,
@@ -1686,7 +1695,8 @@ async function createKey() {
 function roleLabel(r) {
   if (r === "car") return "🚗 Xe (+PC)";
   if (r === "pc") return "💻 Chỉ PC";
-  if (r === "admin") return "👑 Admin / Dev";
+  if (r === "admin") return "👑 Admin";
+  if (r === "dev") return "🛠️ Dev";
   return r || "Xe (+PC)";
 }
 function roleBadge(r) {
@@ -1770,6 +1780,7 @@ function renderTable() {
   if (currentFilter === "car") filtered = filtered.filter(r => (r.role || "car") === "car");
   else if (currentFilter === "pc") filtered = filtered.filter(r => r.role === "pc");
   else if (currentFilter === "admin") filtered = filtered.filter(r => r.role === "admin");
+  else if (currentFilter === "dev") filtered = filtered.filter(r => r.role === "dev");
   else if (currentFilter === "active") filtered = filtered.filter(r => r.active);
   else if (currentFilter === "revoked") filtered = filtered.filter(r => !r.active);
 
@@ -2024,7 +2035,8 @@ const REASONS_VI = {
   too_many_devices: "đã đủ số lượng đầu xe cho phép",
   too_many_activations: "mã đã dùng hết số lần kích hoạt cho phép",
   device_kicked: "máy này đã bị đá ra khỏi mã",
-  too_many_attempts: "nhập sai số điện thoại quá nhiều lần — tạm khoá 15 phút"
+  too_many_attempts: "nhập sai số điện thoại quá nhiều lần — tạm khoá 15 phút",
+  dev_role_required: "bản thử nghiệm (Dev) chỉ dành cho tài khoản Dev"
 };
 
 function makeAdminMachineId() { return "admin-check-" + Math.random().toString(36).slice(2, 10); }
@@ -2122,7 +2134,7 @@ async function saveEdit() {
         owner_name: name,
         owner_phone: phone,
         note: $("edNote").value.trim() || null,
-        max_devices: (selectedRole === "admin" ? 20 : 1),
+        max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
         max_activations: maxAct,
         max_pc_devices: maxPc,
         expires_at: forever ? null : expDate + "T23:59:59+07:00",
@@ -2687,7 +2699,7 @@ function computeClientSideStats() {
       if (!exp) pcLife++; else pcYear++;
       if (isAct && isExpired) pcExp++;
       if (!isAct) pcRev++;
-    } else if (role === "admin") {
+    } else if (role === "admin" || role === "dev") {
       adminTotal++;
       if (isAct) adminActive++;
     }
