@@ -1698,6 +1698,7 @@ async function verifyLoginOtp() {
       loadSalesData();
       renderQuickInstallTable();
       loadQuickInstallCatalog();
+      loadAppUpdateConfig();
     }, 400);
   } catch (err) {
     showMsg(msgEl, "err", "❌ " + err.message);
@@ -1805,6 +1806,7 @@ window.addEventListener("DOMContentLoaded", () => {
     loadSalesData();
     renderQuickInstallTable();
     loadQuickInstallCatalog();
+    loadAppUpdateConfig();
   }
 });
 
@@ -4014,10 +4016,17 @@ async function loadAppUpdateConfig() {
   const msg = $("fuStatusMsg");
   showMsg(msg, "", "⏳ Đang tải cấu hình cập nhật từ Supabase...");
   try {
-    const res = await api("/rest/v1/rpc/get_app_update_config", {
+    const key = getEffectiveServiceKey() || CONFIG.supabaseAnonKey;
+    const res = await fetch(CONFIG.supabaseUrl + "/rest/v1/rpc/get_app_update_config", {
       method: "POST",
+      headers: {
+        "apikey": key,
+        "Authorization": "Bearer " + key,
+        "Content-Type": "application/json"
+      },
       body: "{}"
     });
+    if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
     if (data && (data.car || data.phone)) {
       window._appUpdateConfig = data;
@@ -4048,7 +4057,7 @@ function renderAppUpdateConfigUI() {
   $("car_downloadUrl").value = car.downloadUrl || "";
   $("car_sha256").value = car.sha256 || "";
   $("car_releaseNotes").value = car.releaseNotes || "";
-  $("car_minVersionCode").value = car.minVersionCode || "";
+  $("car_minVersionCode").value = car.minVersionCode != null ? car.minVersionCode : "";
   renderRulesTable("car");
 
   // Phone fields
@@ -4057,7 +4066,7 @@ function renderAppUpdateConfigUI() {
   $("phone_downloadUrl").value = phone.downloadUrl || "";
   $("phone_sha256").value = phone.sha256 || "";
   $("phone_releaseNotes").value = phone.releaseNotes || "";
-  $("phone_minVersionCode").value = phone.minVersionCode || "";
+  $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "";
   renderRulesTable("phone");
 }
 
@@ -4069,7 +4078,15 @@ function renderRulesTable(app) {
   const rules = (window._appUpdateConfig[app] && window._appUpdateConfig[app].forceRules) || [];
 
   if (!rules.length) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:16px">Chưa có quy tắc ép nâng cấp nào. Tất cả máy cũ sẽ theo chế độ cập nhật thông thường (trừ khi minVersionCode > 0).</td></tr>`;
+    const appLabel = app === "car" ? "xe" : "điện thoại";
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px 16px; background:var(--panel2); border-radius:8px">
+      <div style="font-size:24px; margin-bottom:6px">📋</div>
+      <div style="font-weight:600; color:var(--text); margin-bottom:4px">Chưa có quy tắc ép nâng cấp nào cho ${app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)"}</div>
+      <div class="hint" style="max-width:520px; margin:0 auto 12px; font-size:12px; line-height:1.5">
+        Hiện tại tất cả ${appLabel} chạy bản cũ đều được phép cập nhật tự nguyện (không bị chặn màn hình). Nếu muốn ép tất cả các bản cũ, bạn chỉ cần điền ô <b>minVersionCode</b> ở trên. Nếu muốn ép một số bản cụ thể, hãy thêm quy tắc mới.
+      </div>
+      <button class="small" onclick="openAddForceRuleModal('${app}')">➕ Thêm quy tắc ép version ngay</button>
+    </td></tr>`;
     return;
   }
 
