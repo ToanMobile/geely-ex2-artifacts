@@ -395,6 +395,7 @@
     <button class="tab-btn" id="tabBtnSales" onclick="switchTab('sales')">💳 Bán hàng & Đơn hàng (VietQR)</button>
     <button class="tab-btn" id="tabBtnAnalytics" onclick="switchTab('analytics')">📊 Thống kê & Báo cáo</button>
     <button class="tab-btn" id="tabBtnQuickInstall" onclick="switchTab('quickInstall')">📦 Danh mục Cài nhanh</button>
+    <button class="tab-btn" id="tabBtnForceUpdate" onclick="switchTab('forceUpdate')">🚀 Ép Cập nhật (OTA)</button>
   </div>
 
   <!-- ================= TAB 1: MÃ KÍCH HOẠT (SUPABASE) ================= -->
@@ -944,6 +945,181 @@
       </div>
     </div>
 
+    <!-- ================= TAB 5: ÉP CẬP NHẬT (FORCE UPDATE / OTA) ================= -->
+    <div id="tabContentForceUpdate" class="tab-content">
+      <div class="panel">
+        <div class="toolbar">
+          <div>
+            <h2 style="margin:0; font-size:15px; color:var(--text); display:flex; align-items:center; gap:8px">
+              Cấu hình Cập nhật & Ép nâng cấp (Force Update)
+              <span id="fuVersionBadge" class="tag car mono">v--</span>
+            </h2>
+            <div class="hint">Quản lý phiên bản phát hành và quy tắc ép buộc nâng cấp cho Đầu xe (CarConnect) & Điện thoại (PhoneConnect).</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+            <button class="ghost small" onclick="loadAppUpdateConfig()">🔄 Tải lại từ Supabase</button>
+            <button id="btnSaveFu" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase (Tăng v+1)</button>
+            <button class="ghost small" onclick="exportUpdateJson('car')">📋 Copy update.json (Xe)</button>
+            <button class="ghost small" onclick="exportUpdateJson('phone')">📋 Copy apps.json (Phone)</button>
+          </div>
+        </div>
+
+        <div class="warn" style="margin-top:10px; margin-bottom:14px; line-height:1.6">
+          <b>💡 Cơ chế hoạt động & An toàn:</b><br>
+          • <b>Hiệu lực tức thì:</b> Xe và Điện thoại ưu tiên đọc cấu hình từ Supabase RPC (1s sau khi lưu), nếu không có mạng sẽ fallback về GitHub CDN.<br>
+          • <b>Chọn phiên bản đích tùy ý:</b> Cho phép chọn bất kỳ version cũ nào để ép lên một version đích cụ thể (không nhất thiết là bản mới nhất).<br>
+          • <b>An toàn khi lái xe:</b> CarConnect trên xe chỉ cài đặt khi xe đang đỗ (P). Nếu xe đang di chuyển, cập nhật sẽ tự động hoãn và chờ xe dừng đỗ.
+        </div>
+
+        <!-- App Switcher Sub-tabs -->
+        <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px">
+          <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
+          <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại (PhoneConnect)</button>
+        </div>
+
+        <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
+
+        <!-- Form: CAR CONNECT -->
+        <div id="fuPanelCar">
+          <!-- Section: Phiên bản mới nhất -->
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
+            <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
+              <span>📦 Phiên bản mới nhất (Latest Release)</span>
+            </h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
+              <div>
+                <label>Tên phiên bản mới nhất (latestVersionName) *</label>
+                <input id="car_latestVersionName" placeholder="VD: 1.0.68">
+              </div>
+              <div>
+                <label>Mã build mới nhất (versionCode) *</label>
+                <input id="car_versionCode" type="number" placeholder="VD: 168">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Link tải file APK chính thức (downloadUrl) *</label>
+                <input id="car_downloadUrl" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label>
+                <input id="car_sha256" class="mono" placeholder="VD: 4a2f8c... (64 ký tự hex)">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Ghi chú phiên bản (Release Notes)</label>
+                <textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Ép nâng cấp (Force Update) -->
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:0">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px">
+              <div>
+                <h3 style="font-size:14px; color:var(--danger); display:flex; align-items:center; gap:6px; margin:0">
+                  <span>⚠️ Chính sách Ép cập nhật (Force Update Policy)</span>
+                </h3>
+                <div class="hint" style="margin:2px 0 0">Người dùng các bản cũ bị ép sẽ thấy thông báo chặn toàn màn hình và bắt buộc cài đặt.</div>
+              </div>
+              <button class="small" onclick="openAddForceRuleModal('car')">➕ Thêm quy tắc ép version</button>
+            </div>
+
+            <!-- Ngưỡng tối thiểu -->
+            <div style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
+              <div class="row" style="margin-top:6px">
+                <input id="car_minVersionCode" type="number" style="max-width:180px" placeholder="0 = Tắt">
+                <span class="hint" style="margin:0; align-self:center">Mọi xe có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
+              </div>
+            </div>
+
+            <!-- Bảng các rule linh hoạt -->
+            <div style="overflow-x:auto">
+              <table id="car_rulesTable">
+                <thead><tr>
+                  <th style="width:40px">#</th>
+                  <th>Bản cũ bị ép (Điều kiện)</th>
+                  <th>Phiên bản đích cần ép lên</th>
+                  <th>Thông điệp ép hiển thị</th>
+                  <th>Link APK đích</th>
+                  <th style="text-align:right; width:120px">Thao tác</th>
+                </tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form: PHONE CONNECT -->
+        <div id="fuPanelPhone" style="display:none">
+          <!-- Section: Phiên bản mới nhất -->
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
+            <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
+              <span>📦 Phiên bản mới nhất (Latest Release)</span>
+            </h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
+              <div>
+                <label>Tên phiên bản mới nhất (latestVersionName) *</label>
+                <input id="phone_latestVersionName" placeholder="VD: 1.0.53">
+              </div>
+              <div>
+                <label>Mã build mới nhất (versionCode) *</label>
+                <input id="phone_versionCode" type="number" placeholder="VD: 153">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Link tải file APK chính thức (downloadUrl) *</label>
+                <input id="phone_downloadUrl" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label>
+                <input id="phone_sha256" class="mono" placeholder="VD: 3b1e... (64 ký tự hex)">
+              </div>
+              <div style="grid-column: 1 / -1">
+                <label>Ghi chú phiên bản (Release Notes)</label>
+                <textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section: Ép nâng cấp (Force Update) -->
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:0">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px">
+              <div>
+                <h3 style="font-size:14px; color:var(--danger); display:flex; align-items:center; gap:6px; margin:0">
+                  <span>⚠️ Chính sách Ép cập nhật (Force Update Policy)</span>
+                </h3>
+                <div class="hint" style="margin:2px 0 0">Điện thoại chạy bản cũ bị ép sẽ bị khoá modal yêu cầu cập nhật ngay.</div>
+              </div>
+              <button class="small" onclick="openAddForceRuleModal('phone')">➕ Thêm quy tắc ép version</button>
+            </div>
+
+            <!-- Ngưỡng tối thiểu -->
+            <div style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
+              <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
+              <div class="row" style="margin-top:6px">
+                <input id="phone_minVersionCode" type="number" style="max-width:180px" placeholder="0 = Tắt">
+                <span class="hint" style="margin:0; align-self:center">Mọi điện thoại có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
+              </div>
+            </div>
+
+            <!-- Bảng các rule linh hoạt -->
+            <div style="overflow-x:auto">
+              <table id="phone_rulesTable">
+                <thead><tr>
+                  <th style="width:40px">#</th>
+                  <th>Bản cũ bị ép (Điều kiện)</th>
+                  <th>Phiên bản đích cần ép lên</th>
+                  <th>Thông điệp ép hiển thị</th>
+                  <th>Link APK đích</th>
+                  <th style="text-align:right; width:120px">Thao tác</th>
+                </tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <!-- Modal Xác nhận Thay đổi Bảng giá -->
@@ -1130,6 +1306,73 @@
       <div class="actions">
         <button id="btnSaveQiItem" onclick="saveQiItem()">Xác nhận</button>
         <button class="ghost" onclick="closeQiModal()">Huỷ</button>
+      </div>
+    </div>
+  <!-- Modal Thêm / Sửa Force Update Rule -->
+  <div class="modal-mask" id="fuRuleModalMask" style="display:none" onclick="if(event.target===this)closeFuRuleModal()">
+    <div class="modal" style="max-width:680px">
+      <h3 id="fuRuleModalTitle">Thêm quy tắc ép nâng cấp</h3>
+      <div class="hint" id="fuRuleModalSubtitle">Chỉ định phiên bản cũ bị ép và phiên bản đích cần ép lên.</div>
+
+      <div class="panel" style="background:var(--panel2); margin-top:14px; margin-bottom:12px">
+        <label style="font-weight:600; color:var(--text); margin-bottom:8px">1. Điều kiện: Phiên bản cũ nào bị ép cập nhật?</label>
+        <div class="grid" style="grid-template-columns: 1fr 1fr">
+          <div style="grid-column: 1 / -1">
+            <label>Danh sách mã build cũ bị ép (matchVersionCodes) *</label>
+            <input id="fuRuleMatchCodes" placeholder="VD: 140, 142, 145 (cách nhau bởi dấu phẩy)">
+            <div class="hint">Nhập các mã build (versionCode) cụ thể muốn ép.</div>
+          </div>
+          <div style="grid-column: 1 / -1">
+            <label>Hoặc mọi mã build nhỏ hơn (minVersionCode)</label>
+            <input id="fuRuleMinCode" type="number" placeholder="VD: 150 (hoặc để trống)">
+            <div class="hint">Để trống nếu chỉ so khớp theo danh sách trên.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="background:var(--panel2); margin-bottom:12px">
+        <label style="font-weight:600; color:var(--text); margin-bottom:8px">2. Phiên bản đích cần ép lên (Target Version)</label>
+        <div style="margin-bottom:10px; display:flex; gap:16px; flex-wrap:wrap">
+          <label class="chk"><input type="radio" name="fuTargetType" id="fuTargetTypeLatest" value="latest" checked onchange="onFuTargetTypeChange()"> Lên bản mới nhất (Latest)</label>
+          <label class="chk"><input type="radio" name="fuTargetType" id="fuTargetTypeCustom" value="custom" onchange="onFuTargetTypeChange()"> Chỉ định phiên bản cụ thể (Custom Version)</label>
+        </div>
+        <div id="fuCustomTargetFields" style="display:none">
+          <div class="grid" style="grid-template-columns: 1fr 1fr">
+            <div>
+              <label>Mã build đích (targetVersionCode) *</label>
+              <input id="fuRuleTargetCode" type="number" placeholder="VD: 160">
+            </div>
+            <div>
+              <label>Tên phiên bản đích (targetVersionName)</label>
+              <input id="fuRuleTargetName" placeholder="VD: 1.0.60">
+            </div>
+            <div style="grid-column: 1 / -1">
+              <label>Link tải APK đích (targetDownloadUrl) *</label>
+              <input id="fuRuleTargetUrl" placeholder="https://.../CarConnect-1.0.60.apk">
+            </div>
+            <div style="grid-column: 1 / -1">
+              <label>Mã băm SHA-256 của file APK đích (Tùy chọn)</label>
+              <input id="fuRuleTargetSha" class="mono" placeholder="VD: a1b2c3... (tùy chọn)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="background:var(--panel2); margin-bottom:12px">
+        <label style="font-weight:600; color:var(--text); margin-bottom:8px">3. Thông báo hiển thị cho người dùng</label>
+        <div>
+          <label>Lý do ép hiển thị trong modal trên xe/điện thoại (message)</label>
+          <input id="fuRuleMessage" placeholder="VD: Phiên bản bạn đang dùng gặp lỗi nghiêm trọng, bắt buộc nâng cấp để tiếp tục sử dụng an toàn.">
+        </div>
+        <div style="margin-top:8px">
+          <label>Ghi chú bản cập nhật (releaseNotes)</label>
+          <textarea id="fuRuleReleaseNotes" rows="2" placeholder="VD: Vá lỗi rò rỉ bộ nhớ và sửa lỗi màn hình lùi xe."></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btnSaveFuRule" onclick="saveFuRule()">Lưu quy tắc</button>
+        <button class="ghost" onclick="closeFuRuleModal()">Huỷ</button>
       </div>
     </div>
   </div>
@@ -1534,6 +1777,12 @@ function switchTab(tabId) {
     $("tabContentQuickInstall").classList.add("active");
     if (!window._qiCatalogLoaded) {
       loadQuickInstallCatalog();
+    }
+  } else if (tabId === "forceUpdate") {
+    $("tabBtnForceUpdate").classList.add("active");
+    $("tabContentForceUpdate").classList.add("active");
+    if (!window._appUpdateConfigLoaded) {
+      loadAppUpdateConfig();
     }
   }
 }
@@ -3708,6 +3957,461 @@ async function purgeTestData(mode = "orders_only") {
     await loadAnalytics();
   } catch (err) {
     alert("❌ Lỗi khi dọn dữ liệu: " + err.message);
+  }
+}
+
+// ==================== TAB 5: ÉP CẬP NHẬT (FORCE UPDATE / OTA) ====================
+window._appUpdateConfig = {
+  version: 1,
+  car: {
+    latestVersionName: "1.0.68",
+    versionCode: 168,
+    downloadUrl: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
+    sha256: "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743",
+    releaseNotes: "CarConnect v1.0.68(168)",
+    channel: "stable",
+    minVersionCode: 0,
+    forceRules: []
+  },
+  phone: {
+    packageName: "com.techlead.app.geely.phone",
+    name: "PhoneConnect",
+    latestVersionName: "1.0.53",
+    versionCode: 153,
+    downloadUrl: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
+    sha256: "c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad",
+    releaseNotes: "PhoneConnect v1.0.53(153)",
+    minVersionCode: 0,
+    forceRules: []
+  }
+};
+window._appUpdateConfigLoaded = false;
+window._currentFuApp = "car";
+window._editingRuleApp = "car";
+window._editingRuleIndex = -1;
+
+function fuEscapeHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function switchFuApp(app) {
+  window._currentFuApp = app;
+  if (app === "car") {
+    $("fuSubCarBtn").classList.add("active");
+    $("fuSubPhoneBtn").classList.remove("active");
+    $("fuPanelCar").style.display = "block";
+    $("fuPanelPhone").style.display = "none";
+  } else {
+    $("fuSubCarBtn").classList.remove("active");
+    $("fuSubPhoneBtn").classList.add("active");
+    $("fuPanelCar").style.display = "none";
+    $("fuPanelPhone").style.display = "block";
+  }
+}
+
+async function loadAppUpdateConfig() {
+  const msg = $("fuStatusMsg");
+  showMsg(msg, "", "⏳ Đang tải cấu hình cập nhật từ Supabase...");
+  try {
+    const res = await api("/rest/v1/rpc/get_app_update_config", {
+      method: "POST",
+      body: "{}"
+    });
+    const data = await res.json();
+    if (data && (data.car || data.phone)) {
+      window._appUpdateConfig = data;
+    }
+    if (!window._appUpdateConfig.car) window._appUpdateConfig.car = {};
+    if (!window._appUpdateConfig.phone) window._appUpdateConfig.phone = {};
+    if (!Array.isArray(window._appUpdateConfig.car.forceRules)) window._appUpdateConfig.car.forceRules = [];
+    if (!Array.isArray(window._appUpdateConfig.phone.forceRules)) window._appUpdateConfig.phone.forceRules = [];
+    window._appUpdateConfigLoaded = true;
+    renderAppUpdateConfigUI();
+    showMsg(msg, "ok", "Đã tải cấu hình cập nhật từ Supabase (Phiên bản v" + (window._appUpdateConfig.version || 1) + ")");
+  } catch (err) {
+    showMsg(msg, "err", "Lỗi khi tải cấu hình cập nhật: " + err.message);
+    renderAppUpdateConfigUI();
+  }
+}
+
+function renderAppUpdateConfigUI() {
+  const cfg = window._appUpdateConfig || {};
+  const car = cfg.car || {};
+  const phone = cfg.phone || {};
+
+  $("fuVersionBadge").textContent = "v" + (cfg.version || 1);
+
+  // Car fields
+  $("car_latestVersionName").value = car.latestVersionName || "";
+  $("car_versionCode").value = car.versionCode || "";
+  $("car_downloadUrl").value = car.downloadUrl || "";
+  $("car_sha256").value = car.sha256 || "";
+  $("car_releaseNotes").value = car.releaseNotes || "";
+  $("car_minVersionCode").value = car.minVersionCode || "";
+  renderRulesTable("car");
+
+  // Phone fields
+  $("phone_latestVersionName").value = phone.latestVersionName || "";
+  $("phone_versionCode").value = phone.versionCode || "";
+  $("phone_downloadUrl").value = phone.downloadUrl || "";
+  $("phone_sha256").value = phone.sha256 || "";
+  $("phone_releaseNotes").value = phone.releaseNotes || "";
+  $("phone_minVersionCode").value = phone.minVersionCode || "";
+  renderRulesTable("phone");
+}
+
+function renderRulesTable(app) {
+  const table = $(app + "_rulesTable");
+  if (!table) return;
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+  const rules = (window._appUpdateConfig[app] && window._appUpdateConfig[app].forceRules) || [];
+
+  if (!rules.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:16px">Chưa có quy tắc ép nâng cấp nào. Tất cả máy cũ sẽ theo chế độ cập nhật thông thường (trừ khi minVersionCode > 0).</td></tr>`;
+    return;
+  }
+
+  rules.forEach((rule, idx) => {
+    const tr = document.createElement("tr");
+
+    // Điều kiện match
+    let condHtml = "";
+    if (rule.matchVersionCodes && rule.matchVersionCodes.length > 0) {
+      condHtml += rule.matchVersionCodes.map(c => `<span class="tag off mono" style="margin:1px">${c}</span>`).join(" ");
+    }
+    if (rule.minVersionCode != null && rule.minVersionCode > 0) {
+      if (condHtml) condHtml += "<br>";
+      condHtml += `<span class="hint" style="margin:0">Hoặc build &lt; ${rule.minVersionCode}</span>`;
+    }
+    if (!condHtml) condHtml = `<span class="hint" style="margin:0">Không có điều kiện</span>`;
+
+    // Target
+    let targetHtml = "";
+    if (rule.targetVersionCode && rule.targetVersionCode > 0) {
+      const name = rule.targetVersionName ? `v${rule.targetVersionName}` : `Mã ${rule.targetVersionCode}`;
+      targetHtml = `<span class="tag car mono" style="font-weight:bold">${name} (${rule.targetVersionCode})</span> <span class="tag admin" style="font-size:10px">Chỉ định</span>`;
+    } else {
+      const latestCode = window._appUpdateConfig[app]?.versionCode || "--";
+      const latestName = window._appUpdateConfig[app]?.latestVersionName || "";
+      targetHtml = `<span class="tag pc mono">Bản mới nhất (v${latestName} / ${latestCode})</span>`;
+    }
+
+    // APK URL
+    const url = rule.targetDownloadUrl || (window._appUpdateConfig[app]?.downloadUrl || "");
+    const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
+
+    tr.innerHTML = `
+      <td class="mono">${idx + 1}</td>
+      <td>${condHtml}</td>
+      <td>${targetHtml}</td>
+      <td style="max-width:240px; font-size:12px">${fuEscapeHtml(rule.message || "(Mặc định)")}</td>
+      <td>${urlDisplay}</td>
+      <td style="text-align:right">
+        <div class="actions" style="justify-content:flex-end">
+          <button class="ghost small" onclick="openEditForceRuleModal('${app}', ${idx})">✏️ Sửa</button>
+          <button class="ghost small danger" onclick="deleteForceRule('${app}', ${idx})">🗑️ Xoá</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function syncFormToConfig() {
+  if (!window._appUpdateConfig.car) window._appUpdateConfig.car = {};
+  if (!window._appUpdateConfig.phone) window._appUpdateConfig.phone = {};
+
+  window._appUpdateConfig.car.latestVersionName = ($("car_latestVersionName").value || "").trim();
+  window._appUpdateConfig.car.versionCode = parseInt($("car_versionCode").value, 10) || 0;
+  window._appUpdateConfig.car.downloadUrl = ($("car_downloadUrl").value || "").trim();
+  window._appUpdateConfig.car.sha256 = ($("car_sha256").value || "").trim();
+  window._appUpdateConfig.car.releaseNotes = ($("car_releaseNotes").value || "").trim();
+  window._appUpdateConfig.car.minVersionCode = parseInt($("car_minVersionCode").value, 10) || 0;
+  window._appUpdateConfig.car.channel = "stable";
+
+  window._appUpdateConfig.phone.packageName = "com.techlead.app.geely.phone";
+  window._appUpdateConfig.phone.name = "PhoneConnect";
+  window._appUpdateConfig.phone.latestVersionName = ($("phone_latestVersionName").value || "").trim();
+  window._appUpdateConfig.phone.versionCode = parseInt($("phone_versionCode").value, 10) || 0;
+  window._appUpdateConfig.phone.downloadUrl = ($("phone_downloadUrl").value || "").trim();
+  window._appUpdateConfig.phone.sha256 = ($("phone_sha256").value || "").trim();
+  window._appUpdateConfig.phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
+  window._appUpdateConfig.phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
+}
+
+async function saveAppUpdateConfig() {
+  const btn = $("btnSaveFu");
+  const msg = $("fuStatusMsg");
+
+  syncFormToConfig();
+
+  const car = window._appUpdateConfig.car;
+  const phone = window._appUpdateConfig.phone;
+
+  if (!car.latestVersionName || !car.versionCode || !car.downloadUrl) {
+    alert("❌ Vui lòng nhập đầy đủ Tên version, Mã build và Link tải APK cho Đầu xe (CarConnect).");
+    switchFuApp("car");
+    return;
+  }
+  if (!car.downloadUrl.startsWith("http://") && !car.downloadUrl.startsWith("https://")) {
+    alert("❌ Link tải APK của Đầu xe phải bắt đầu bằng http:// hoặc https://");
+    switchFuApp("car");
+    return;
+  }
+  if (!car.sha256) {
+    if (!confirm("⚠️ Lưu ý: Đầu xe (CarConnect) đang để trống mã băm SHA-256.\n\n" +
+        "CarConnect là ứng dụng hệ thống (system app) yêu cầu SHA-256 để xác thực an toàn. Nếu để trống, xe sẽ từ chối cài đặt (lỗi 'thiếu mã băm SHA-256').\n\n" +
+        "Bạn có chắc chắn muốn lưu mà không có SHA-256 không?")) {
+      switchFuApp("car");
+      $("car_sha256").focus();
+      return;
+    }
+  }
+
+  if (!phone.latestVersionName || !phone.versionCode || !phone.downloadUrl) {
+    alert("❌ Vui lòng nhập đầy đủ Tên version, Mã build và Link tải APK cho Điện thoại (PhoneConnect).");
+    switchFuApp("phone");
+    return;
+  }
+  if (!phone.downloadUrl.startsWith("http://") && !phone.downloadUrl.startsWith("https://")) {
+    alert("❌ Link tải APK của Điện thoại phải bắt đầu bằng http:// hoặc https://");
+    switchFuApp("phone");
+    return;
+  }
+
+  const currentVer = window._appUpdateConfig.version || 1;
+  if (!confirm("Xác nhận lưu cấu hình Cập nhật & Ép nâng cấp lên Supabase?\n\n" +
+      "Phiên bản cấu hình sẽ tự tăng từ v" + currentVer + " -> v" + (currentVer + 1) + ".\n" +
+      "Cả Đầu xe và Điện thoại sẽ nhận chỉ thị nâng cấp mới này ngay lập tức.")) {
+    return;
+  }
+
+  btn.disabled = true;
+  showMsg(msg, "", "⏳ Đang lưu cấu hình lên Supabase...");
+
+  try {
+    const res = await api("/rest/v1/rpc/admin_save_app_update_config", {
+      method: "POST",
+      body: JSON.stringify({
+        p_payload: window._appUpdateConfig,
+        p_admin_by: "admin-keys.html"
+      })
+    });
+    const out = await res.json();
+    if (!out || out.success !== true) throw new Error((out && out.reason) || "Máy chủ từ chối lưu");
+
+    window._appUpdateConfig.version = out.version;
+    $("fuVersionBadge").textContent = "v" + out.version;
+    showMsg(msg, "ok", "🎉 ĐÃ LƯU THÀNH CÔNG! Phiên bản cấu hình: v" + out.version);
+    alert("🎉 Thành công!\n\nĐã lưu cấu hình cập nhật bản v" + out.version + " lên Supabase.\nĐầu xe và Điện thoại sẽ áp dụng ngay tức thì.");
+  } catch (err) {
+    showMsg(msg, "err", "Lỗi khi lưu cấu hình: " + err.message);
+    alert("❌ Lưu thất bại: " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Modal Thêm / Sửa Force Update Rule
+function openAddForceRuleModal(app) {
+  window._editingRuleApp = app;
+  window._editingRuleIndex = -1;
+  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
+  $("fuRuleModalTitle").textContent = "Thêm quy tắc ép nâng cấp — " + appLabel;
+  $("fuRuleModalSubtitle").textContent = "Chỉ định các bản cũ bị ép và phiên bản đích cần nâng cấp.";
+  
+  $("fuRuleMatchCodes").value = "";
+  $("fuRuleMinCode").value = "";
+  $("fuTargetTypeLatest").checked = true;
+  $("fuCustomTargetFields").style.display = "none";
+  $("fuRuleTargetCode").value = "";
+  $("fuRuleTargetName").value = "";
+  $("fuRuleTargetUrl").value = "";
+  $("fuRuleTargetSha").value = "";
+  $("fuRuleMessage").value = "";
+  $("fuRuleReleaseNotes").value = "";
+
+  $("fuRuleModalMask").style.display = "flex";
+}
+
+function openEditForceRuleModal(app, idx) {
+  window._editingRuleApp = app;
+  window._editingRuleIndex = idx;
+  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
+  const rule = window._appUpdateConfig[app].forceRules[idx];
+  if (!rule) return;
+
+  $("fuRuleModalTitle").textContent = "Sửa quy tắc ép nâng cấp #" + (idx + 1) + " — " + appLabel;
+  $("fuRuleModalSubtitle").textContent = "Chỉ định các bản cũ bị ép và phiên bản đích cần nâng cấp.";
+
+  $("fuRuleMatchCodes").value = (rule.matchVersionCodes || []).join(", ");
+  $("fuRuleMinCode").value = (rule.minVersionCode != null && rule.minVersionCode > 0) ? rule.minVersionCode : "";
+
+  const isCustom = Boolean(rule.targetVersionCode && rule.targetVersionCode > 0);
+  if (isCustom) {
+    $("fuTargetTypeCustom").checked = true;
+    $("fuCustomTargetFields").style.display = "block";
+    $("fuRuleTargetCode").value = rule.targetVersionCode;
+    $("fuRuleTargetName").value = rule.targetVersionName || "";
+    $("fuRuleTargetUrl").value = rule.targetDownloadUrl || "";
+    $("fuRuleTargetSha").value = rule.targetSha256 || "";
+  } else {
+    $("fuTargetTypeLatest").checked = true;
+    $("fuCustomTargetFields").style.display = "none";
+    $("fuRuleTargetCode").value = "";
+    $("fuRuleTargetName").value = "";
+    $("fuRuleTargetUrl").value = "";
+    $("fuRuleTargetSha").value = "";
+  }
+
+  $("fuRuleMessage").value = rule.message || "";
+  $("fuRuleReleaseNotes").value = rule.releaseNotes || "";
+
+  $("fuRuleModalMask").style.display = "flex";
+}
+
+function closeFuRuleModal() {
+  $("fuRuleModalMask").style.display = "none";
+  window._editingRuleIndex = -1;
+}
+
+function onFuTargetTypeChange() {
+  const isCustom = $("fuTargetTypeCustom").checked;
+  $("fuCustomTargetFields").style.display = isCustom ? "block" : "none";
+}
+
+function saveFuRule() {
+  const app = window._editingRuleApp;
+  const rawCodes = ($("fuRuleMatchCodes").value || "").trim();
+  const rawMin = ($("fuRuleMinCode").value || "").trim();
+
+  const matchVersionCodes = rawCodes.split(",")
+    .map(s => parseInt(s.trim(), 10))
+    .filter(n => !isNaN(n) && n > 0);
+
+  const minVersionCode = rawMin ? parseInt(rawMin, 10) : null;
+
+  if (!matchVersionCodes.length && (!minVersionCode || minVersionCode <= 0)) {
+    alert("❌ Vui lòng nhập ít nhất một điều kiện: Danh sách mã build cũ (matchVersionCodes) hoặc Mã build nhỏ hơn (minVersionCode).");
+    return;
+  }
+
+  const isCustom = $("fuTargetTypeCustom").checked;
+  let targetVersionCode = 0;
+  let targetVersionName = "";
+  let targetDownloadUrl = "";
+  let targetSha256 = "";
+
+  if (isCustom) {
+    targetVersionCode = parseInt($("fuRuleTargetCode").value, 10) || 0;
+    targetVersionName = ($("fuRuleTargetName").value || "").trim();
+    targetDownloadUrl = ($("fuRuleTargetUrl").value || "").trim();
+    targetSha256 = ($("fuRuleTargetSha").value || "").trim();
+
+    if (targetVersionCode <= 0) {
+      alert("❌ Với phiên bản đích chỉ định, Mã build đích (targetVersionCode) phải là số nguyên > 0.");
+      return;
+    }
+    if (!targetDownloadUrl) {
+      alert("❌ Vui lòng nhập Link tải APK đích (targetDownloadUrl).");
+      return;
+    }
+    if (!targetDownloadUrl.startsWith("http://") && !targetDownloadUrl.startsWith("https://")) {
+      alert("❌ Link tải APK đích phải bắt đầu bằng http:// hoặc https://");
+      return;
+    }
+    if (app === "car" && !targetSha256) {
+      if (!confirm("⚠️ Lưu ý: Đầu xe (CarConnect) yêu cầu mã băm SHA-256 để xác thực an toàn trước khi cài đặt.\n\n" +
+          "Nếu để trống SHA-256, xe sẽ từ chối cài đặt bản đích này (lỗi 'thiếu mã băm SHA-256').\n\n" +
+          "Bạn có chắc chắn muốn lưu quy tắc này mà không có SHA-256 không?")) {
+        $("fuRuleTargetSha").focus();
+        return;
+      }
+    }
+  }
+
+  const message = ($("fuRuleMessage").value || "").trim();
+  const releaseNotes = ($("fuRuleReleaseNotes").value || "").trim();
+
+  const ruleObj = {
+    matchVersionCodes: matchVersionCodes,
+    minVersionCode: (minVersionCode && minVersionCode > 0) ? minVersionCode : null,
+    targetVersionCode: targetVersionCode,
+    targetVersionName: targetVersionName,
+    targetDownloadUrl: targetDownloadUrl,
+    targetSha256: targetSha256,
+    releaseNotes: releaseNotes,
+    message: message
+  };
+
+  if (!window._appUpdateConfig[app]) window._appUpdateConfig[app] = {};
+  if (!Array.isArray(window._appUpdateConfig[app].forceRules)) window._appUpdateConfig[app].forceRules = [];
+
+  if (window._editingRuleIndex >= 0) {
+    window._appUpdateConfig[app].forceRules[window._editingRuleIndex] = ruleObj;
+  } else {
+    window._appUpdateConfig[app].forceRules.push(ruleObj);
+  }
+
+  closeFuRuleModal();
+  renderRulesTable(app);
+  showMsg($("fuStatusMsg"), "ok", "Đã cập nhật quy tắc trong bộ nhớ. Nhớ bấm \"💾 Lưu lên Supabase\" để áp dụng.");
+}
+
+function deleteForceRule(app, idx) {
+  if (!confirm("Xác nhận xoá quy tắc ép nâng cấp #" + (idx + 1) + "?")) return;
+  window._appUpdateConfig[app].forceRules.splice(idx, 1);
+  renderRulesTable(app);
+  showMsg($("fuStatusMsg"), "ok", "Đã xoá quy tắc. Nhớ bấm \"💾 Lưu lên Supabase\" để áp dụng.");
+}
+
+function exportUpdateJson(app) {
+  syncFormToConfig();
+  let jsonString = "";
+  if (app === "car") {
+    const car = window._appUpdateConfig.car || {};
+    const obj = {
+      latestVersionName: car.latestVersionName || "1.0.68",
+      versionCode: car.versionCode || 168,
+      downloadUrl: car.downloadUrl || "",
+      sha256: car.sha256 || "",
+      releaseNotes: car.releaseNotes || "",
+      channel: car.channel || "stable",
+      minVersionCode: car.minVersionCode || 0,
+      forceRules: car.forceRules || []
+    };
+    jsonString = JSON.stringify(obj, null, 2);
+  } else {
+    const phone = window._appUpdateConfig.phone || {};
+    const obj = {
+      version: window._appUpdateConfig.version || 1,
+      apps: [
+        {
+          packageName: phone.packageName || "com.techlead.app.geely.phone",
+          name: phone.name || "PhoneConnect",
+          latestVersionName: phone.latestVersionName || "1.0.53",
+          versionCode: phone.versionCode || 153,
+          downloadUrl: phone.downloadUrl || "",
+          sha256: phone.sha256 || "",
+          releaseNotes: phone.releaseNotes || "",
+          minVersionCode: phone.minVersionCode || 0,
+          forceRules: phone.forceRules || []
+        }
+      ]
+    };
+    jsonString = JSON.stringify(obj, null, 2);
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(jsonString).then(() => {
+      alert("📋 Đã sao chép cấu hình JSON (" + (app === "car" ? "update.json" : "apps.json") + ") vào Clipboard!\n\nBạn có thể dán vào file tương ứng trên GitHub artifacts nếu cần.");
+    }).catch(() => {
+      prompt("Sao chép JSON dưới đây:", jsonString);
+    });
+  } else {
+    prompt("Sao chép JSON dưới đây:", jsonString);
   }
 }
 </script>
