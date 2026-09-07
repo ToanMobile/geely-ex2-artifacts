@@ -988,16 +988,16 @@
           <!-- Section: Phiên bản mới nhất -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
-              <span>📦 Phiên bản mới nhất (Latest Release)</span>
+              <span>📦 Phiên bản mới nhất (Latest Release — Production)</span>
             </h3>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
               <div>
                 <label>Tên phiên bản mới nhất (latestVersionName) *</label>
-                <input id="car_latestVersionName" value="1.0.68" placeholder="VD: 1.0.68">
+                <input id="car_latestVersionName" value="1.0.67" placeholder="VD: 1.0.67">
               </div>
               <div>
                 <label>Mã build mới nhất (versionCode) *</label>
-                <input id="car_versionCode" type="number" value="168" placeholder="VD: 168">
+                <input id="car_versionCode" type="number" value="167" placeholder="VD: 167">
               </div>
               <div style="grid-column: 1 / -1">
                 <label>Link tải file APK chính thức (downloadUrl) *</label>
@@ -1009,7 +1009,7 @@
               </div>
               <div style="grid-column: 1 / -1">
                 <label>Ghi chú phiên bản (Release Notes)</label>
-                <textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối...">CarConnect v1.0.68(168) — Hỗ trợ chia đôi 2 app 1:1, điều hướng VietMap/Google Maps, tìm nhạc rảnh tay, tự động cập nhật ngầm Silent Background OTA khi về P.</textarea>
+                <textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối...">CarConnect v1.0.67(167) — Hỗ trợ chia đôi 2 app 1:1, điều hướng VietMap/Google Maps, tìm nhạc rảnh tay, tự động cập nhật ngầm Silent Background OTA khi về P.</textarea>
               </div>
             </div>
           </div>
@@ -1019,7 +1019,7 @@
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📋 Danh mục Phiên bản Đầu xe & Thao tác Ép Cập nhật Nhanh</span>
             </h3>
-            <div class="hint" style="margin:0 0 10px">Các bản build đã phát hành thực tế. Bạn có thể bấm <b>⚡ Ép bản này</b> để tạo ngay quy tắc chặn bản cũ và buộc nâng cấp lên v1.0.68.</div>
+            <div class="hint" style="margin:0 0 10px">Các bản build đã phát hành thực tế. Bạn có thể bấm <b>⚡ Ép bản này</b> để tạo ngay quy tắc chặn bản cũ và buộc nâng cấp lên v1.0.67.</div>
             <div style="overflow-x:auto">
               <table>
                 <thead>
@@ -1033,20 +1033,11 @@
                 </thead>
                 <tbody id="car_knownVersionsBody">
                   <tr>
-                    <td><b>v1.0.68</b> <span class="tag car">Mới nhất</span></td>
-                    <td class="mono">168</td>
-                    <td style="font-size:12px; color:var(--muted)">07/09/2026</td>
-                    <td><span class="tag on">🟢 Đang phục vụ (Official)</span></td>
-                    <td style="text-align:right"><span class="hint">Bản đích</span></td>
-                  </tr>
-                  <tr>
-                    <td><b>v1.0.67</b></td>
+                    <td><b>v1.0.67</b> <span class="tag car">Production (Bản chuẩn)</span></td>
                     <td class="mono">167</td>
                     <td style="font-size:12px; color:var(--muted)">31/08/2026</td>
-                    <td id="car_stat_167"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
-                    <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('car', 167, '1.0.67')">⚡ Ép 167 ➔ Lên 168</button>
-                    </td>
+                    <td><span class="tag on">🟢 Đang phục vụ (Official)</span></td>
+                    <td style="text-align:right"><span class="hint">Bản đích</span></td>
                   </tr>
                   <tr>
                     <td><b>v1.0.66</b></td>
@@ -1054,7 +1045,7 @@
                     <td style="font-size:12px; color:var(--muted)">24/08/2026</td>
                     <td id="car_stat_166"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
                     <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('car', 166, '1.0.66')">⚡ Ép 166 ➔ Lên 168</button>
+                      <button class="small ghost" onclick="quickAddForceRule('car', 166, '1.0.66')">⚡ Ép 166 ➔ Lên 167</button>
                     </td>
                   </tr>
                   <tr>
@@ -1063,7 +1054,16 @@
                     <td style="font-size:12px; color:var(--muted)">18/08/2026</td>
                     <td id="car_stat_165"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
                     <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('car', 165, '1.0.65')">⚡ Ép 165 ➔ Lên 168</button>
+                      <button class="small ghost" onclick="quickAddForceRule('car', 165, '1.0.65')">⚡ Ép 165 ➔ Lên 167</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b>v1.0.64</b></td>
+                    <td class="mono">164</td>
+                    <td style="font-size:12px; color:var(--muted)">10/08/2026</td>
+                    <td id="car_stat_164"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
+                    <td style="text-align:right">
+                      <button class="small ghost" onclick="quickAddForceRule('car', 164, '1.0.64')">⚡ Ép 164 ➔ Lên 167</button>
                     </td>
                   </tr>
                 </tbody>
@@ -1088,7 +1088,7 @@
               <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
               <div class="row" style="margin-top:6px; flex-wrap:wrap; gap:8px">
                 <input id="car_minVersionCode" type="number" value="0" style="max-width:140px" placeholder="0 = Tắt" oninput="syncFormToConfig(); updateKnownVersionsStatus('car')">
-                <button type="button" class="small ghost" onclick="setQuickMinVersionCode('car', 168)">⚡ Ép toàn bộ xe cũ (&lt; 168) lên 1.0.68</button>
+                <button type="button" class="small ghost" onclick="setQuickMinVersionCode('car', 167)">⚡ Ép toàn bộ xe cũ (&lt; 167) lên 1.0.67</button>
                 <button type="button" class="small ghost" onclick="setQuickMinVersionCode('car', 0)">⚪ Tắt ép toàn bộ (Về 0)</button>
               </div>
               <span class="hint" style="margin-top:4px; display:block">Mọi xe có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
@@ -1116,16 +1116,16 @@
           <!-- Section: Phiên bản mới nhất -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
-              <span>📦 Phiên bản mới nhất (Latest Release)</span>
+              <span>📦 Phiên bản mới nhất (Latest Release — Production)</span>
             </h3>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
               <div>
                 <label>Tên phiên bản mới nhất (latestVersionName) *</label>
-                <input id="phone_latestVersionName" value="1.0.53" placeholder="VD: 1.0.53">
+                <input id="phone_latestVersionName" value="1.0.52" placeholder="VD: 1.0.52">
               </div>
               <div>
                 <label>Mã build mới nhất (versionCode) *</label>
-                <input id="phone_versionCode" type="number" value="153" placeholder="VD: 153">
+                <input id="phone_versionCode" type="number" value="152" placeholder="VD: 152">
               </div>
               <div style="grid-column: 1 / -1">
                 <label>Link tải file APK chính thức (downloadUrl) *</label>
@@ -1137,7 +1137,7 @@
               </div>
               <div style="grid-column: 1 / -1">
                 <label>Ghi chú phiên bản (Release Notes)</label>
-                <textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi...">PhoneConnect v1.0.53(153) — Quản trị thư viện nhạc cá nhân, cài đặt hình nền 16:9 tự động xoay, ghép đôi 1 chạm QR code, giám sát telemetry và điều khiển xe từ xa.</textarea>
+                <textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi...">PhoneConnect v1.0.52(152) — Quản trị thư viện nhạc cá nhân, cài đặt hình nền 16:9 tự động xoay, ghép đôi 1 chạm QR code, giám sát telemetry và điều khiển xe từ xa.</textarea>
               </div>
             </div>
           </div>
@@ -1147,7 +1147,7 @@
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📋 Danh mục Phiên bản Điện thoại & Thao tác Ép Cập nhật Nhanh</span>
             </h3>
-            <div class="hint" style="margin:0 0 10px">Các bản build PhoneConnect đã phát hành. Bấm <b>⚡ Ép bản này</b> để buộc người dùng điện thoại nâng cấp.</div>
+            <div class="hint" style="margin:0 0 10px">Các bản build PhoneConnect đã phát hành. Bấm <b>⚡ Ép bản này</b> để buộc người dùng điện thoại nâng cấp lên v1.0.52.</div>
             <div style="overflow-x:auto">
               <table>
                 <thead>
@@ -1161,20 +1161,11 @@
                 </thead>
                 <tbody id="phone_knownVersionsBody">
                   <tr>
-                    <td><b>v1.0.53</b> <span class="tag phone">Mới nhất</span></td>
-                    <td class="mono">153</td>
-                    <td style="font-size:12px; color:var(--muted)">07/09/2026</td>
-                    <td><span class="tag on">🟢 Đang phục vụ (Official)</span></td>
-                    <td style="text-align:right"><span class="hint">Bản đích</span></td>
-                  </tr>
-                  <tr>
-                    <td><b>v1.0.52</b></td>
+                    <td><b>v1.0.52</b> <span class="tag phone">Production (Bản chuẩn)</span></td>
                     <td class="mono">152</td>
                     <td style="font-size:12px; color:var(--muted)">31/08/2026</td>
-                    <td id="phone_stat_152"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
-                    <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('phone', 152, '1.0.52')">⚡ Ép 152 ➔ Lên 153</button>
-                    </td>
+                    <td><span class="tag on">🟢 Đang phục vụ (Official)</span></td>
+                    <td style="text-align:right"><span class="hint">Bản đích</span></td>
                   </tr>
                   <tr>
                     <td><b>v1.0.51</b></td>
@@ -1182,7 +1173,7 @@
                     <td style="font-size:12px; color:var(--muted)">24/08/2026</td>
                     <td id="phone_stat_151"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
                     <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('phone', 151, '1.0.51')">⚡ Ép 151 ➔ Lên 153</button>
+                      <button class="small ghost" onclick="quickAddForceRule('phone', 151, '1.0.51')">⚡ Ép 151 ➔ Lên 152</button>
                     </td>
                   </tr>
                   <tr>
@@ -1191,7 +1182,16 @@
                     <td style="font-size:12px; color:var(--muted)">18/08/2026</td>
                     <td id="phone_stat_150"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
                     <td style="text-align:right">
-                      <button class="small ghost" onclick="quickAddForceRule('phone', 150, '1.0.50')">⚡ Ép 150 ➔ Lên 153</button>
+                      <button class="small ghost" onclick="quickAddForceRule('phone', 150, '1.0.50')">⚡ Ép 150 ➔ Lên 152</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b>v1.0.49</b></td>
+                    <td class="mono">149</td>
+                    <td style="font-size:12px; color:var(--muted)">10/08/2026</td>
+                    <td id="phone_stat_149"><span class="tag off">⚪ Tự nguyện (Chưa ép)</span></td>
+                    <td style="text-align:right">
+                      <button class="small ghost" onclick="quickAddForceRule('phone', 149, '1.0.49')">⚡ Ép 149 ➔ Lên 152</button>
                     </td>
                   </tr>
                 </tbody>
@@ -1216,7 +1216,7 @@
               <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
               <div class="row" style="margin-top:6px; flex-wrap:wrap; gap:8px">
                 <input id="phone_minVersionCode" type="number" value="0" style="max-width:140px" placeholder="0 = Tắt" oninput="syncFormToConfig(); updateKnownVersionsStatus('phone')">
-                <button type="button" class="small ghost" onclick="setQuickMinVersionCode('phone', 153)">⚡ Ép toàn bộ đt cũ (&lt; 153) lên 1.0.53</button>
+                <button type="button" class="small ghost" onclick="setQuickMinVersionCode('phone', 152)">⚡ Ép toàn bộ đt cũ (&lt; 152) lên 1.0.52</button>
                 <button type="button" class="small ghost" onclick="setQuickMinVersionCode('phone', 0)">⚪ Tắt ép toàn bộ (Về 0)</button>
               </div>
               <span class="hint" style="margin-top:4px; display:block">Mọi điện thoại có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
@@ -4088,11 +4088,11 @@ async function purgeTestData(mode = "orders_only") {
 window._appUpdateConfig = {
   version: 1,
   car: {
-    latestVersionName: "1.0.68",
-    versionCode: 168,
+    latestVersionName: "1.0.67",
+    versionCode: 167,
     downloadUrl: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
     sha256: "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743",
-    releaseNotes: "CarConnect v1.0.68(168)",
+    releaseNotes: "CarConnect v1.0.67(167)",
     channel: "stable",
     minVersionCode: 0,
     forceRules: []
@@ -4100,11 +4100,11 @@ window._appUpdateConfig = {
   phone: {
     packageName: "com.techlead.app.geely.phone",
     name: "PhoneConnect",
-    latestVersionName: "1.0.53",
-    versionCode: 153,
+    latestVersionName: "1.0.52",
+    versionCode: 152,
     downloadUrl: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
     sha256: "c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad",
-    releaseNotes: "PhoneConnect v1.0.53(153)",
+    releaseNotes: "PhoneConnect v1.0.52(152)",
     minVersionCode: 0,
     forceRules: []
   }
@@ -4174,21 +4174,21 @@ function renderAppUpdateConfigUI() {
   if ($("fuVersionBadge")) $("fuVersionBadge").textContent = "v" + (cfg.version || 1);
 
   // Car fields
-  if ($("car_latestVersionName")) $("car_latestVersionName").value = car.latestVersionName || "1.0.68";
-  if ($("car_versionCode")) $("car_versionCode").value = car.versionCode || 168;
+  if ($("car_latestVersionName")) $("car_latestVersionName").value = car.latestVersionName || "1.0.67";
+  if ($("car_versionCode")) $("car_versionCode").value = car.versionCode || 167;
   if ($("car_downloadUrl")) $("car_downloadUrl").value = car.downloadUrl || "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk";
   if ($("car_sha256")) $("car_sha256").value = car.sha256 || "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743";
-  if ($("car_releaseNotes")) $("car_releaseNotes").value = car.releaseNotes || "CarConnect v1.0.68(168) — Hỗ trợ chia đôi 2 app 1:1, điều hướng VietMap/Google Maps, tìm nhạc rảnh tay, tự động cập nhật ngầm Silent Background OTA khi về P.";
+  if ($("car_releaseNotes")) $("car_releaseNotes").value = car.releaseNotes || "CarConnect v1.0.67(167) — Hỗ trợ chia đôi 2 app 1:1, điều hướng VietMap/Google Maps, tìm nhạc rảnh tay, tự động cập nhật ngầm Silent Background OTA khi về P.";
   if ($("car_minVersionCode")) $("car_minVersionCode").value = car.minVersionCode != null ? car.minVersionCode : "0";
   renderRulesTable("car");
   updateKnownVersionsStatus("car");
 
   // Phone fields
-  if ($("phone_latestVersionName")) $("phone_latestVersionName").value = phone.latestVersionName || "1.0.53";
-  if ($("phone_versionCode")) $("phone_versionCode").value = phone.versionCode || 153;
+  if ($("phone_latestVersionName")) $("phone_latestVersionName").value = phone.latestVersionName || "1.0.52";
+  if ($("phone_versionCode")) $("phone_versionCode").value = phone.versionCode || 152;
   if ($("phone_downloadUrl")) $("phone_downloadUrl").value = phone.downloadUrl || "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk";
   if ($("phone_sha256")) $("phone_sha256").value = phone.sha256 || "c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad";
-  if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phone.releaseNotes || "PhoneConnect v1.0.53(153) — Quản trị thư viện nhạc cá nhân, cài đặt hình nền 16:9 tự động xoay, ghép đôi 1 chạm QR code, giám sát telemetry và điều khiển xe từ xa.";
+  if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phone.releaseNotes || "PhoneConnect v1.0.52(152) — Quản trị thư viện nhạc cá nhân, cài đặt hình nền 16:9 tự động xoay, ghép đôi 1 chạm QR code, giám sát telemetry và điều khiển xe từ xa.";
   if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "0";
   renderRulesTable("phone");
   updateKnownVersionsStatus("phone");
@@ -4199,7 +4199,7 @@ function updateKnownVersionsStatus(app) {
   const minVer = parseInt(cfg.minVersionCode, 10) || 0;
   const rules = cfg.forceRules || [];
 
-  const knownCodes = app === "car" ? [167, 166, 165] : [152, 151, 150];
+  const knownCodes = app === "car" ? [166, 165, 164] : [151, 150, 149];
   knownCodes.forEach(code => {
     const statEl = $(app + "_stat_" + code);
     if (!statEl) return;
@@ -4238,7 +4238,7 @@ function quickAddForceRule(app, oldBuild, oldVer) {
   openAddForceRuleModal(app);
   if ($("fuRuleMatchCodes")) $("fuRuleMatchCodes").value = String(oldBuild);
   const appTitle = app === "car" ? "CarConnect" : "PhoneConnect";
-  const targetVer = (window._appUpdateConfig && window._appUpdateConfig[app] && window._appUpdateConfig[app].latestVersionName) || (app === "car" ? "1.0.68" : "1.0.53");
+  const targetVer = (window._appUpdateConfig && window._appUpdateConfig[app] && window._appUpdateConfig[app].latestVersionName) || (app === "car" ? "1.0.67" : "1.0.52");
   if ($("fuRuleMessage")) $("fuRuleMessage").value = `${appTitle} phiên bản v${oldVer} (Build ${oldBuild}) đã cũ. Vui lòng nâng cấp lên v${targetVer} để sử dụng các tính năng mới nhất và đảm bảo an toàn.`;
 }
 
@@ -4265,7 +4265,7 @@ function renderRulesTable(app) {
   if (!rules.length) {
     const appLabel = app === "car" ? "xe" : "điện thoại";
     const appName = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
-    const latestCode = app === "car" ? 168 : 153;
+    const latestCode = app === "car" ? 167 : 152;
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px 16px; background:var(--panel2); border-radius:8px">
       <div style="font-size:24px; margin-bottom:6px">📋</div>
       <div style="font-weight:600; color:var(--text); margin-bottom:4px">Chưa có quy tắc ép nâng cấp nào cho ${appName}</div>
@@ -4581,8 +4581,8 @@ function exportUpdateJson(app) {
   if (app === "car") {
     const car = window._appUpdateConfig.car || {};
     const obj = {
-      latestVersionName: car.latestVersionName || "1.0.68",
-      versionCode: car.versionCode || 168,
+      latestVersionName: car.latestVersionName || "1.0.67",
+      versionCode: car.versionCode || 167,
       downloadUrl: car.downloadUrl || "",
       sha256: car.sha256 || "",
       releaseNotes: car.releaseNotes || "",
@@ -4599,8 +4599,8 @@ function exportUpdateJson(app) {
         {
           packageName: phone.packageName || "com.techlead.app.geely.phone",
           name: phone.name || "PhoneConnect",
-          latestVersionName: phone.latestVersionName || "1.0.53",
-          versionCode: phone.versionCode || 153,
+          latestVersionName: phone.latestVersionName || "1.0.52",
+          versionCode: phone.versionCode || 152,
           downloadUrl: phone.downloadUrl || "",
           sha256: phone.sha256 || "",
           releaseNotes: phone.releaseNotes || "",
