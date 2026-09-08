@@ -26,21 +26,21 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.0.69",
-    "versionCode": 169,
+    "latestVersionName": "1.0.70",
+    "versionCode": 170,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "52e07ae17bf5ec31e907af3fe5fc95d8faeb18944ca3ba20efcd1cb558a2a4b5",
-    "releaseNotes": "- Nút nổi truy cập nhanh: một nút tròn luôn nổi trên màn hình, chạm là ra bảng điều khiển nhanh. Kéo thả tự dính mép, tự mờ đi khi không dùng, và tự chọn được những chức năng muốn hiện.\n- Quản lý nhạc & hình nền từ điện thoại: xem, nghe thử, xoá nhạc và ảnh nền trên xe ngay trên điện thoại; đặt hình nền hoặc để xe tự đổi ảnh luân phiên.\n- Điều hoà thêm hướng gió: chọn thổi mặt, thổi chân, mặt và chân, hay sấy kính. Có thêm chế độ đảo gió tự động — cứ 90 giây xe tự luân phiên mặt và chân cho đều hơi mát.\n- Mở cốp trước, mở khoá cốp sau bằng giọng nói hoặc từ điện thoại.\n- Ghép đôi điện thoại bằng mã QR: khỏi gõ tay địa chỉ IP và mã kết nối. Mã chỉ sống 2 phút rồi tự hết hạn cho an toàn.\n- Chế độ bảo dưỡng 1 chạm: ẩn hết nút nổi và biểu tượng tuỳ biến trước khi mang xe đi bảo hành, xong bấm một lần là trả lại y như cũ.\n- Trợ lý hỏi đáp (mặc định TẮT, bật trong Cài đặt): bấm giữ nút nói rồi hỏi một câu hỏi thật, xe trả lời. Nghe nhầm câu lệnh thì xe vẫn nói \"chưa hiểu\" chứ không trả lời bừa.\n- Tự cập nhật ngầm: xe tự kiểm tra bản mới 30 phút một lần và chỉ cài khi đã đỗ, không cần mở ứng dụng. Thêm phím nhạc trên vô-lăng và biểu tượng nhiệt độ pin trên thanh trạng thái.",
+    "sha256": "d08eff71fce6902a9eea25838e2d7b3bb7c7950983be74940f869c2f0007c923",
+    "releaseNotes": "CarConnect v1.0.70(170)",
     "channel": "develop"
   },
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.54",
-    "versionCode": 154,
+    "latestVersionName": "1.0.55",
+    "versionCode": 155,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "1eb505c5cff75aa3031ce38c0a5190b0356b4c2a10054ead3e2b9b21c010213e",
-    "releaseNotes": "- Quản lý nhạc & hình nền trên xe: xem danh sách, nghe thử ngay trên điện thoại, xoá bớt, gửi bài mới lên xe, đặt ảnh nền hoặc bật tự đổi ảnh luân phiên.\n- Quét mã QR trên xe để ghép đôi: không phải gõ tay địa chỉ IP, cổng hay mã kết nối nữa.\n- Mất sóng không mất lệnh: lệnh bấm lúc rớt kết nối được xếp hàng và tự gửi lại khi nối lại được.\n- Nhắc cập nhật rõ ràng hơn: có bản bắt buộc thì hiện hẳn hộp thoại kèm lý do, không để lỡ.\n- Điều khiển thêm hướng gió điều hoà, đảo gió tự động, mở cốp trước và mở khoá cốp sau."
+    "sha256": "fea5eaa2a7ee5d0906671935f32af703d163010244f8e308fba05a58359b5145",
+    "releaseNotes": "PhoneConnect v1.0.55(155)"
   },
   "apps": [
     {
