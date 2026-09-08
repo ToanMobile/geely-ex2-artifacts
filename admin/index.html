@@ -979,6 +979,9 @@
         <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px">
           <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
           <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại (PhoneConnect)</button>
+          <span style="flex:1"></span>
+          <button class="tab-btn active" id="fuEnvProdBtn" onclick="switchFuEnv('prod')" title="Cấu hình cho bản phát hành chính thức (car / phone)">🟢 Production</button>
+          <button class="tab-btn" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình RIÊNG cho bản Dev (carDev / phoneDev) — bản Dev không dùng chung cấu hình với Production">🧪 Dev</button>
         </div>
 
         <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
@@ -4110,6 +4113,31 @@ window._appUpdateConfig = {
   }
 };
 window._appUpdateConfigLoaded = false;
+// Môi trường đang chỉnh: "prod" -> nhánh car/phone, "dev" -> nhánh carDev/phoneDev.
+// Vì sao phải tách: app chọn nhánh theo BuildConfig.APP_ENV (AppUpdateConfig.carFor/phoneFor).
+// Gộp chung một nhánh thì xe cài bản Dev bị chào bản stable ngay khi stable vượt versionCode —
+// đúng cái bẫy "bản debug bị AppUpdater đè" (audit 08/09/2026).
+window._fuEnv = "prod";
+
+function fuKey(app) {
+  return window._fuEnv === "dev" ? (app === "car" ? "carDev" : "phoneDev") : app;
+}
+
+function fuNode(app) {
+  const k = fuKey(app);
+  if (!window._appUpdateConfig[k]) window._appUpdateConfig[k] = {};
+  if (!Array.isArray(window._appUpdateConfig[k].forceRules)) window._appUpdateConfig[k].forceRules = [];
+  return window._appUpdateConfig[k];
+}
+
+function switchFuEnv(env) {
+  syncFormToConfig();               // giữ lại thứ đang gõ dở của môi trường cũ
+  window._fuEnv = env;
+  $("fuEnvProdBtn").classList.toggle("active", env === "prod");
+  $("fuEnvDevBtn").classList.toggle("active", env === "dev");
+  renderAppUpdateConfigUI();
+}
+
 window._currentFuApp = "car";
 window._editingRuleApp = "car";
 window._editingRuleIndex = -1;
@@ -4150,13 +4178,13 @@ async function loadAppUpdateConfig() {
     });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
-    if (data && (data.car || data.phone)) {
+    if (data && (data.car || data.phone || data.carDev || data.phoneDev)) {
       window._appUpdateConfig = data;
     }
-    if (!window._appUpdateConfig.car) window._appUpdateConfig.car = {};
-    if (!window._appUpdateConfig.phone) window._appUpdateConfig.phone = {};
-    if (!Array.isArray(window._appUpdateConfig.car.forceRules)) window._appUpdateConfig.car.forceRules = [];
-    if (!Array.isArray(window._appUpdateConfig.phone.forceRules)) window._appUpdateConfig.phone.forceRules = [];
+    ["car", "phone", "carDev", "phoneDev"].forEach(function (k) {
+      if (!window._appUpdateConfig[k]) window._appUpdateConfig[k] = {};
+      if (!Array.isArray(window._appUpdateConfig[k].forceRules)) window._appUpdateConfig[k].forceRules = [];
+    });
     window._appUpdateConfigLoaded = true;
     renderAppUpdateConfigUI();
     showMsg(msg, "ok", "Đã tải cấu hình cập nhật từ Supabase (Phiên bản v" + (window._appUpdateConfig.version || 1) + ")");
@@ -4168,8 +4196,8 @@ async function loadAppUpdateConfig() {
 
 function renderAppUpdateConfigUI() {
   const cfg = window._appUpdateConfig || {};
-  const car = cfg.car || {};
-  const phone = cfg.phone || {};
+  const car = cfg[fuKey("car")] || {};
+  const phone = cfg[fuKey("phone")] || {};
 
   if ($("fuVersionBadge")) $("fuVersionBadge").textContent = "v" + (cfg.version || 1);
 
@@ -4195,7 +4223,7 @@ function renderAppUpdateConfigUI() {
 }
 
 function updateKnownVersionsStatus(app) {
-  const cfg = (window._appUpdateConfig && window._appUpdateConfig[app]) || {};
+  const cfg = (window._appUpdateConfig && window._appUpdateConfig[fuKey(app)]) || {};
   const minVer = parseInt(cfg.minVersionCode, 10) || 0;
   const rules = cfg.forceRules || [];
 
@@ -4238,7 +4266,7 @@ function quickAddForceRule(app, oldBuild, oldVer) {
   openAddForceRuleModal(app);
   if ($("fuRuleMatchCodes")) $("fuRuleMatchCodes").value = String(oldBuild);
   const appTitle = app === "car" ? "CarConnect" : "PhoneConnect";
-  const targetVer = (window._appUpdateConfig && window._appUpdateConfig[app] && window._appUpdateConfig[app].latestVersionName) || (app === "car" ? "1.0.67" : "1.0.52");
+  const targetVer = (window._appUpdateConfig && window._appUpdateConfig[fuKey(app)] && window._appUpdateConfig[fuKey(app)].latestVersionName) || (app === "car" ? "1.0.67" : "1.0.52");
   if ($("fuRuleMessage")) $("fuRuleMessage").value = `${appTitle} phiên bản v${oldVer} (Build ${oldBuild}) đã cũ. Vui lòng nâng cấp lên v${targetVer} để sử dụng các tính năng mới nhất và đảm bảo an toàn.`;
 }
 
@@ -4260,7 +4288,7 @@ function renderRulesTable(app) {
   if (!table) return;
   const tbody = table.querySelector("tbody");
   tbody.innerHTML = "";
-  const rules = (window._appUpdateConfig[app] && window._appUpdateConfig[app].forceRules) || [];
+  const rules = (window._appUpdateConfig[fuKey(app)] && window._appUpdateConfig[fuKey(app)].forceRules) || [];
 
   if (!rules.length) {
     const appLabel = app === "car" ? "xe" : "điện thoại";
@@ -4299,13 +4327,13 @@ function renderRulesTable(app) {
       const name = rule.targetVersionName ? `v${rule.targetVersionName}` : `Mã ${rule.targetVersionCode}`;
       targetHtml = `<span class="tag car mono" style="font-weight:bold">${name} (${rule.targetVersionCode})</span> <span class="tag admin" style="font-size:10px">Chỉ định</span>`;
     } else {
-      const latestCode = window._appUpdateConfig[app]?.versionCode || "--";
-      const latestName = window._appUpdateConfig[app]?.latestVersionName || "";
+      const latestCode = window._appUpdateConfig[fuKey(app)]?.versionCode || "--";
+      const latestName = window._appUpdateConfig[fuKey(app)]?.latestVersionName || "";
       targetHtml = `<span class="tag pc mono">Bản mới nhất (v${latestName} / ${latestCode})</span>`;
     }
 
     // APK URL
-    const url = rule.targetDownloadUrl || (window._appUpdateConfig[app]?.downloadUrl || "");
+    const url = rule.targetDownloadUrl || (window._appUpdateConfig[fuKey(app)]?.downloadUrl || "");
     const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
 
     tr.innerHTML = `
@@ -4326,25 +4354,25 @@ function renderRulesTable(app) {
 }
 
 function syncFormToConfig() {
-  if (!window._appUpdateConfig.car) window._appUpdateConfig.car = {};
-  if (!window._appUpdateConfig.phone) window._appUpdateConfig.phone = {};
+  const _car = fuNode("car");
+  const _phone = fuNode("phone");
 
-  window._appUpdateConfig.car.latestVersionName = ($("car_latestVersionName").value || "").trim();
-  window._appUpdateConfig.car.versionCode = parseInt($("car_versionCode").value, 10) || 0;
-  window._appUpdateConfig.car.downloadUrl = ($("car_downloadUrl").value || "").trim();
-  window._appUpdateConfig.car.sha256 = ($("car_sha256").value || "").trim();
-  window._appUpdateConfig.car.releaseNotes = ($("car_releaseNotes").value || "").trim();
-  window._appUpdateConfig.car.minVersionCode = parseInt($("car_minVersionCode").value, 10) || 0;
-  window._appUpdateConfig.car.channel = "stable";
+  _car.latestVersionName = ($("car_latestVersionName").value || "").trim();
+  _car.versionCode = parseInt($("car_versionCode").value, 10) || 0;
+  _car.downloadUrl = ($("car_downloadUrl").value || "").trim();
+  _car.sha256 = ($("car_sha256").value || "").trim();
+  _car.releaseNotes = ($("car_releaseNotes").value || "").trim();
+  _car.minVersionCode = parseInt($("car_minVersionCode").value, 10) || 0;
+  _car.channel = window._fuEnv === "dev" ? "develop" : "stable";
 
-  window._appUpdateConfig.phone.packageName = "com.techlead.app.geely.phone";
-  window._appUpdateConfig.phone.name = "PhoneConnect";
-  window._appUpdateConfig.phone.latestVersionName = ($("phone_latestVersionName").value || "").trim();
-  window._appUpdateConfig.phone.versionCode = parseInt($("phone_versionCode").value, 10) || 0;
-  window._appUpdateConfig.phone.downloadUrl = ($("phone_downloadUrl").value || "").trim();
-  window._appUpdateConfig.phone.sha256 = ($("phone_sha256").value || "").trim();
-  window._appUpdateConfig.phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
-  window._appUpdateConfig.phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
+  _phone.packageName = "com.techlead.app.geely.phone";
+  _phone.name = "PhoneConnect";
+  _phone.latestVersionName = ($("phone_latestVersionName").value || "").trim();
+  _phone.versionCode = parseInt($("phone_versionCode").value, 10) || 0;
+  _phone.downloadUrl = ($("phone_downloadUrl").value || "").trim();
+  _phone.sha256 = ($("phone_sha256").value || "").trim();
+  _phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
+  _phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
 }
 
 async function saveAppUpdateConfig() {
@@ -4353,8 +4381,8 @@ async function saveAppUpdateConfig() {
 
   syncFormToConfig();
 
-  const car = window._appUpdateConfig.car;
-  const phone = window._appUpdateConfig.phone;
+  const car = fuNode("car");
+  const phone = fuNode("phone");
 
   if (!car.latestVersionName || !car.versionCode || !car.downloadUrl) {
     alert("❌ Vui lòng nhập đầy đủ Tên version, Mã build và Link tải APK cho Đầu xe (CarConnect).");
@@ -4390,7 +4418,9 @@ async function saveAppUpdateConfig() {
   const currentVer = window._appUpdateConfig.version || 1;
   if (!confirm("Xác nhận lưu cấu hình Cập nhật & Ép nâng cấp lên Supabase?\n\n" +
       "Phiên bản cấu hình sẽ tự tăng từ v" + currentVer + " -> v" + (currentVer + 1) + ".\n" +
-      "Cả Đầu xe và Điện thoại sẽ nhận chỉ thị nâng cấp mới này ngay lập tức.")) {
+      "Đang lưu nhánh: " + (window._fuEnv === "dev" ? "🧪 DEV (carDev / phoneDev)" : "🟢 PRODUCTION (car / phone)") + ".\n" +
+      "Nhánh còn lại KHÔNG bị đụng tới.\n" +
+      "Cả Đầu xe và Điện thoại chạy đúng nhánh đó sẽ nhận chỉ thị nâng cấp mới ngay lập tức.")) {
     return;
   }
 
@@ -4446,7 +4476,7 @@ function openEditForceRuleModal(app, idx) {
   window._editingRuleApp = app;
   window._editingRuleIndex = idx;
   const appLabel = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
-  const rule = window._appUpdateConfig[app].forceRules[idx];
+  const rule = window._appUpdateConfig[fuKey(app)].forceRules[idx];
   if (!rule) return;
 
   $("fuRuleModalTitle").textContent = "Sửa quy tắc ép nâng cấp #" + (idx + 1) + " — " + appLabel;
@@ -4552,13 +4582,12 @@ function saveFuRule() {
     message: message
   };
 
-  if (!window._appUpdateConfig[app]) window._appUpdateConfig[app] = {};
-  if (!Array.isArray(window._appUpdateConfig[app].forceRules)) window._appUpdateConfig[app].forceRules = [];
+  fuNode(app);
 
   if (window._editingRuleIndex >= 0) {
-    window._appUpdateConfig[app].forceRules[window._editingRuleIndex] = ruleObj;
+    window._appUpdateConfig[fuKey(app)].forceRules[window._editingRuleIndex] = ruleObj;
   } else {
-    window._appUpdateConfig[app].forceRules.push(ruleObj);
+    window._appUpdateConfig[fuKey(app)].forceRules.push(ruleObj);
   }
 
   closeFuRuleModal();
@@ -4569,7 +4598,7 @@ function saveFuRule() {
 
 function deleteForceRule(app, idx) {
   if (!confirm("Xác nhận xoá quy tắc ép nâng cấp #" + (idx + 1) + "?")) return;
-  window._appUpdateConfig[app].forceRules.splice(idx, 1);
+  window._appUpdateConfig[fuKey(app)].forceRules.splice(idx, 1);
   renderRulesTable(app);
   updateKnownVersionsStatus(app);
   showMsg($("fuStatusMsg"), "ok", "Đã xoá quy tắc. Nhớ bấm \"💾 Lưu lên Supabase\" để áp dụng.");
@@ -4579,7 +4608,7 @@ function exportUpdateJson(app) {
   syncFormToConfig();
   let jsonString = "";
   if (app === "car") {
-    const car = window._appUpdateConfig.car || {};
+    const car = window._appUpdateConfig[fuKey("car")] || {};
     const obj = {
       latestVersionName: car.latestVersionName || "1.0.67",
       versionCode: car.versionCode || 167,
@@ -4592,7 +4621,7 @@ function exportUpdateJson(app) {
     };
     jsonString = JSON.stringify(obj, null, 2);
   } else {
-    const phone = window._appUpdateConfig.phone || {};
+    const phone = window._appUpdateConfig[fuKey("phone")] || {};
     const obj = {
       version: window._appUpdateConfig.version || 1,
       apps: [
