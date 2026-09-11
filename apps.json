@@ -26,11 +26,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.0.76",
-    "versionCode": 176,
+    "latestVersionName": "1.0.77",
+    "versionCode": 177,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "17ffb9d3fa8d803c80caae6b3ad687ca2dcc25a6d34d0a47dbe0109c034fc122",
-    "releaseNotes": "- Chuẩn hóa đa ngôn ngữ toàn diện: 100% tài nguyên giao diện tiếng Việt & tiếng Anh khớp nhau hoàn hảo.\n- Nâng cấp giao diện điều khiển: Tối ưu hoá thanh TopBar, thanh Dock Flyme Auto OEM và các thẻ điều khiển trạng thái xe.\n- Tiện ích và cập nhật OTA: Cải thiện thông báo tiến trình tải và cập nhật phiên bản mới trực quan trên màn hình xe.",
+    "sha256": "708b2c0f75bdcc94b9c43db0cefe906f3902a145d97104be075e9ec9cf3c4fcc",
+    "releaseNotes": "CarConnect v1.0.77(177)",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -38,11 +38,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.61",
-    "versionCode": 161,
+    "latestVersionName": "1.0.62",
+    "versionCode": 162,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "fd330747c1ad3a43f88c8afcd4a2521143e21dcdef7859b583524a0ae2d5e16d",
-    "releaseNotes": "- Chuẩn hóa đa ngôn ngữ song ngữ: Hoàn thiện 100% giao diện tiếng Việt và tiếng Anh cho tất cả các màn hình điều khiển.\n- Giao diện thẻ cập nhật & nhật ký: Tối ưu độ tương phản chế độ tối (Dark mode) và làm mới danh mục nhật ký hành trình.\n- Thao tác nhanh mượt mà: Nâng cấp trải nghiệm điều khiển cửa, kính xe, cốp trước và sổ theo dõi bảo dưỡng điện tử.",
+    "sha256": "10fbc45aaf53ecd00231dd535e1576e4d09076485c3baad2e40ac9ea6529070e",
+    "releaseNotes": "PhoneConnect v1.0.62(162)",
     "minVersionCode": 0,
     "forceRules": []
   },
