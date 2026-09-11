@@ -29,7 +29,7 @@
     "latestVersionName": "1.0.75",
     "versionCode": 175,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "d8d550653bd8781d6557e272f0a59f29a99faa48545e0a57dd04047b2129c3e3",
+    "sha256": "d0433e807461c0e249fcc3a5828a22a620c4ed921b73ec015ae5b7fae365fd80",
     "releaseNotes": "CarConnect v1.0.75(175)",
     "channel": "develop",
     "minVersionCode": 0,
@@ -41,7 +41,7 @@
     "latestVersionName": "1.0.60",
     "versionCode": 160,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "01b3d7a85b91a8fac84775ac5564f9b58d739d724ce53b151239543df9ccb3ef",
+    "sha256": "0cdd24d1a859436384e391dcbe27cd08660bbeca2405046db8947907af4d925a",
     "releaseNotes": "PhoneConnect v1.0.60(160)",
     "minVersionCode": 0,
     "forceRules": []
