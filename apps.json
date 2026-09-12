@@ -26,11 +26,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.0.77",
-    "versionCode": 177,
+    "latestVersionName": "1.0.78",
+    "versionCode": 178,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "708b2c0f75bdcc94b9c43db0cefe906f3902a145d97104be075e9ec9cf3c4fcc",
-    "releaseNotes": "CarConnect v1.0.77(177)",
+    "sha256": "0ccbba292b4e42ec880f3119617e42bfd45014af6bd3c0628f220f1a03ecbb65",
+    "releaseNotes": "- Sửa nghe nhầm nguy hiểm: nói \"mở cửa sổ\" trước đây có lúc bị hiểu thành mở khoá cửa xe, \"mở cốp trước\" thành mở cốp sau. Nay khi câu ngắn có thể là phần đầu của một câu dài hơn thì xe chờ nghe hết câu. Nói hai lệnh \"phát ...\" sát nhau cũng không còn gõ lẫn từ khoá cũ vào lượt sau.\n- Tôn trọng lựa chọn tắt micro: ai đã tắt \"nghe liên tục\" thì cập nhật xong xe vẫn giữ nguyên là tắt. Bản trước lỡ bật lại mà không hỏi — nay không còn.\n- Nghe trọn câu hơn: không nuốt tiếng đầu khi nói liền tay, và câu ghép như \"bật điều hoà và đóng kính\" tách được thành hai lệnh.\n- Nghe không rõ thì nói rõ lý do: thay vì im lặng, xe cho biết đang quá ồn, giọng quá nhỏ, hay chưa nghe được câu nào.\n- Gọi \"Hi Geely\" không cần chạm: xe lắng nghe từ khoá đánh thức liên tục, mặc định bật. Muốn xe chỉ nghe khi bấm nút thì tắt mục nghe liên tục trong Cài đặt giọng nói.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -38,11 +38,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.62",
-    "versionCode": 162,
+    "latestVersionName": "1.0.63",
+    "versionCode": 163,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "10fbc45aaf53ecd00231dd535e1576e4d09076485c3baad2e40ac9ea6529070e",
-    "releaseNotes": "PhoneConnect v1.0.62(162)",
+    "sha256": "dd7bad195abb62b38092f6cd886470b87e791ff47231620482b8ee9dd36ca197",
+    "releaseNotes": "- Bản đồng bộ số hiệu với ứng dụng trên xe. Không có thay đổi nào về tính năng hay giao diện.",
     "minVersionCode": 0,
     "forceRules": []
   },
