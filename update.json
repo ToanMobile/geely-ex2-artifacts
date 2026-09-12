@@ -26,11 +26,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.0.79",
-    "versionCode": 179,
+    "latestVersionName": "1.0.81",
+    "versionCode": 181,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "e0f3570c4b38e535093b188daf850b5f240e2e19d43aa59741ed1e1e53252a50",
-    "releaseNotes": "- Bấm nút micro ngắt lời xe tức thì (Barge-In): khi xe đang nói phản hồi, người lái bấm nút mic trên vô-lăng xe sẽ im lặng ngay và lắng nghe trọn vẹn câu lệnh mới, không bị nuốt âm nửa giây đầu và nhạc không tự ý phát át tiếng người lái.\n- Triệt tiêu hiện tượng đơ CPU khi chạm nút: bấm nút nhanh hoặc tiếng click cơ học không còn làm nghẽn CPU hay làm tắt nhầm micro.\n- Tránh kích hoạt nhầm: các câu nói thông thường như \"ghi lý do\" không còn kích hoạt nhầm tính năng giọng nói.\n- Tối ưu kho dữ liệu: dọn sạch và đồng bộ dữ liệu kiểm thử thực tế giúp ứng dụng nhẹ hơn và phản hồi ổn định hơn.",
+    "sha256": "86a97405ef8abc2b5f69ccacefcc1d4b6fe31dd89c964e24c871dedad433743b",
+    "releaseNotes": "- Xe không còn tự đoán mức quạt khi nghe không rõ: trước đây có lúc bạn nói một câu không hề nhắc con số nào mà xe vẫn tự đặt quạt về mức 1 hoặc mức 3. Nay nghe không rõ thì xe im, không đoán bừa.\n- \"Giảm độ sáng\" nay đúng là giảm sáng: trước đây câu này làm màn hình tắt đen hoàn toàn, che cả bản đồ và camera lùi. Nay màn chỉ giảm còn 30 % và vẫn dùng được. Muốn tắt hẳn thì nói \"tắt màn hình\" như cũ.\n- Nhận lệnh nhanh hơn rõ rệt: đo trên xe khi bấm nút nói, thời gian máy giải mã giảm khoảng một nửa.\n- Không còn mất lệnh khi bạn nói câu dài: câu dài mà máy giải mã hơi lâu thì trước đây bị bỏ luôn dù đã nghe đúng; nay xe chờ thêm một chút để trả lời bạn.\n- \"Tắt TV Go\" nay đóng đúng ứng dụng thay vì có lúc mở nó lên.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -38,11 +38,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.64",
-    "versionCode": 164,
+    "latestVersionName": "1.0.66",
+    "versionCode": 166,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "9280453229ab01f6f7804182e6ff9aeee5101093af960a86e972215dd440ce01",
-    "releaseNotes": "- Bản đồng bộ số hiệu tương thích với ứng dụng trên xe. Không có thay đổi về tính năng hay giao diện.",
+    "sha256": "7c4b94b41cef9bef3898bb7af7c9f65681daafc1740fada79bd9d9024dc59715",
+    "releaseNotes": "- Đồng bộ theo bản CarConnect 1.0.80. Không có thay đổi nào ở phía điện thoại.",
     "minVersionCode": 0,
     "forceRules": []
   },
