@@ -70,5 +70,7 @@
       "sha256": "faaa37d6eb0127776d9c4b7ca3e69533681c885908492b1e4731c2dfe582d814",
       "releaseNotes": "- Đồng bộ theo bản CarConnect 1.1.0. Không có thay đổi nào ở phía điện thoại."
     }
-  ]
+  ],
+  "minVersionCode": 1100,
+  "forceRules": []
 }
