@@ -14,7 +14,7 @@
     "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
     "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
     "channel": "stable",
-    "minVersionCode": 0,
+    "minVersionCode": 1100,
     "forceRules": []
   },
   "phone": {
@@ -58,7 +58,8 @@
       "versionCode": 1100,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
       "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
-      "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng."
+      "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
+      "minVersionCode": 1100
     },
     {
       "packageName": "com.techlead.app.geely.phone",
