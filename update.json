@@ -1,28 +1,32 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.0.67",
-  "versionCode": 167,
+  "latestVersionName": "1.1.0",
+  "versionCode": 1100,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743",
-  "releaseNotes": "CarConnect v1.0.67(167)",
+  "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
+  "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
   "channel": "stable",
   "car": {
     "type": "update_check",
-    "latestVersionName": "1.0.67",
-    "versionCode": 167,
+    "latestVersionName": "1.1.0",
+    "versionCode": 1100,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-    "sha256": "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743",
-    "releaseNotes": "CarConnect v1.0.67(167)",
-    "channel": "stable"
+    "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
+    "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
+    "channel": "stable",
+    "minVersionCode": 0,
+    "forceRules": []
   },
   "phone": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.52",
-    "versionCode": 152,
+    "latestVersionName": "1.1.0",
+    "versionCode": 1100,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-    "sha256": "c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad",
-    "releaseNotes": "PhoneConnect v1.0.52(152)"
+    "sha256": "faaa37d6eb0127776d9c4b7ca3e69533681c885908492b1e4731c2dfe582d814",
+    "releaseNotes": "- Đồng bộ theo bản CarConnect 1.1.0. Không có thay đổi nào ở phía điện thoại.",
+    "minVersionCode": 0,
+    "forceRules": []
   },
   "carDev": {
     "type": "update_check",
@@ -50,20 +54,20 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.0.67",
-      "versionCode": 167,
+      "latestVersionName": "1.1.0",
+      "versionCode": 1100,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743",
-      "releaseNotes": "CarConnect v1.0.67(167)"
+      "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
+      "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng."
     },
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.0.52",
-      "versionCode": 152,
+      "latestVersionName": "1.1.0",
+      "versionCode": 1100,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad",
-      "releaseNotes": "PhoneConnect v1.0.52(152)"
+      "sha256": "faaa37d6eb0127776d9c4b7ca3e69533681c885908492b1e4731c2dfe582d814",
+      "releaseNotes": "- Đồng bộ theo bản CarConnect 1.1.0. Không có thay đổi nào ở phía điện thoại."
     }
   ]
 }
