@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.0.81",
-    "versionCode": 181,
+    "latestVersionName": "1.1.2",
+    "versionCode": 1102,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "86a97405ef8abc2b5f69ccacefcc1d4b6fe31dd89c964e24c871dedad433743b",
-    "releaseNotes": "- Xe không còn tự đoán mức quạt khi nghe không rõ: trước đây có lúc bạn nói một câu không hề nhắc con số nào mà xe vẫn tự đặt quạt về mức 1 hoặc mức 3. Nay nghe không rõ thì xe im, không đoán bừa.\n- \"Giảm độ sáng\" nay đúng là giảm sáng: trước đây câu này làm màn hình tắt đen hoàn toàn, che cả bản đồ và camera lùi. Nay màn chỉ giảm còn 30 % và vẫn dùng được. Muốn tắt hẳn thì nói \"tắt màn hình\" như cũ.\n- Nhận lệnh nhanh hơn rõ rệt: đo trên xe khi bấm nút nói, thời gian máy giải mã giảm khoảng một nửa.\n- Không còn mất lệnh khi bạn nói câu dài: câu dài mà máy giải mã hơi lâu thì trước đây bị bỏ luôn dù đã nghe đúng; nay xe chờ thêm một chút để trả lời bạn.\n- \"Tắt TV Go\" nay đóng đúng ứng dụng thay vì có lúc mở nó lên.",
+    "sha256": "ee941ff166288413f066092d2bf7b384abf326f06fb19ad085913a4874287602",
+    "releaseNotes": "- \"Điều hòa mát nhất\" không còn bị hiểu thành nóng nhất: xe khách 14/09 nói câu này, xe đặt 32 °C và đọc \"Nhiệt độ 32 độ\"; \"bật điều hòa mức thấp nhất\" từng thành quạt MẠNH NHẤT, \"làm nóng nhanh\" từng thành bật lạnh. Nay xe không bao giờ đảo mát ↔ nóng, thấp ↔ cao khi phải đoán câu gần đúng (im rồi hỏi lại còn hơn làm ngược), và có sẵn các câu \"điều hòa/máy lạnh mát nhất, lạnh nhất, mức thấp nhất, làm ấm nhanh\".\n- Lạnh nhất là 17 °C (mức \"Lo\" của xe), không phải 16: bản cũ gửi 16 nên xe từ chối và báo \"Đã bỏ qua\" (7 lượt trên xe khách 14/09). Nói \"mười sáu độ\" xe vẫn hiểu và đặt 17; điện thoại/màn hình xe cũng không cho chỉnh dưới 17.\n- \"Chuyển sang chế độ comford\" (xe nghe sai chữ cuối của comfort) nay hiểu lại như bản 1.0.67, vẫn hỏi xác nhận trước khi đổi chế độ lái.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.0.66",
-    "versionCode": 166,
+    "latestVersionName": "1.1.2",
+    "versionCode": 1102,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "7c4b94b41cef9bef3898bb7af7c9f65681daafc1740fada79bd9d9024dc59715",
-    "releaseNotes": "- Đồng bộ theo bản CarConnect 1.0.80. Không có thay đổi nào ở phía điện thoại.",
+    "sha256": "59f40aad7eed45557b2dce592a26518866e6a57940cc1473123ff497db4f086d",
+    "releaseNotes": "- Xe từ chối vì thiếu mã bảo vệ thì có nút \"Quét QR ngay\" (cài APK, đẩy tệp) — không còn phải tự mò vào Cài đặt để ghép mã; chụp màn hình xe không còn đòi mã.\n- Màn Điều hoà: nhiệt độ thấp nhất chỉnh được là 17 °C (mức \"Lo\" của xe) — trước cho kéo xuống 16 nhưng xe không nhận.\n- Máy ảo/thử nghiệm: banner \"Có bản cập nhật mới\" giả không còn tự bật (chỉ khi bật cờ thử).",
     "minVersionCode": 0,
     "forceRules": []
   },
