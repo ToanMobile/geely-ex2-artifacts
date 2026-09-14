@@ -1,18 +1,18 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.1.0",
-  "versionCode": 1100,
+  "latestVersionName": "1.1.1",
+  "versionCode": 1101,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
-  "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
+  "sha256": "2c1449277ce7c4b851c2c2e636d4eb39549cc367155adaaf8d4cb08995a623b2",
+  "releaseNotes": "- Giọng nói sau khi cập nhật không còn \"Đang xử lý…\" hàng phút: 1.1.0 đổi sang mô hình nhận dạng mới nên xe khách phải tải lại (~vài phút); trong lúc tải, bản cũ để việc tải chiếm luôn luồng xử lý giọng nói — bấm nói là treo tới khi tải xong (đo trên xe khách 14/09: 5,6 phút). Nay tải chạy luồng riêng; tải lỗi (xe vừa boot chưa có Wi-Fi) tự thử lại giãn dần 30 s → 10 phút và tải ngay khi có mạng trở lại — cả mô hình chính lẫn mô hình \"Hi Geely\".\n- Hết toast \"Vui lòng kết nối điện thoại với xe bằng cáp dữ liệu USB…\" khi bấm nút nói trên vô-lăng: toast này của phần mềm CarPlay trong xe, app nay tự tắt riêng toast của phần mềm đó lúc khởi động (CarPlay/Android Auto vẫn dùng bình thường, chỉ mất mấy toast phụ như \"Đã kết nối\").\n- Chưa có mô hình nhận dạng (đang tải sau cập nhật) thì xe báo \"Đang tải model nhận dạng giọng nói, chưa nghe được\" và KHÔNG tạm dùng nhận dạng đám mây thay thế (chủ xe chốt 14/09) — giọng nói trong cabin không bay lên máy chủ trong lúc chờ; chọn \"Trực tuyến\" trong Cài đặt thì vẫn dùng đám mây như cũ.\n- Lượt nói đầu tiên ngay sau khi app khởi động không còn chờ bảng kéo câu dựng xong (tối đa 2,5 s rồi dùng câu nghe thô).\n- Điều khiển từ xa qua 4G nay ký từng lệnh: xe chỉ nhận lệnh có chữ ký đúng khoá relay, gửi trong vòng 5 phút và không lặp lại — kẻ lạ vào được kênh cũng không giả được điện thoại của bạn. Phải cập nhật CẢ xe lẫn PhoneConnect lên 1.1.1; điện thoại bản cũ sẽ nhận thông báo \"Cập nhật PhoneConnect để dùng điều khiển từ xa\".\n- Khoá relay phải đủ mạnh: nhập khoá ngắn hơn 16 ký tự hex thì xe từ chối và báo rõ; nút sinh khoá / mã QR nay tạo khoá 32 ký tự.\n- Cài app, tắt máy, đóng mọi ứng dụng, sửa kho câu lệnh từ điện thoại luôn cần mã bảo vệ (QR) kể cả khi công tắc \"Yêu cầu token\" đang tắt — lệnh điều hoà, kính, cửa… vẫn như cũ.\n- Kho câu lệnh giọng nói tải từ điện thoại không còn nhận được lệnh nguy hiểm (gỡ app, tắt máy…).",
   "channel": "stable",
   "car": {
     "type": "update_check",
-    "latestVersionName": "1.1.0",
-    "versionCode": 1100,
+    "latestVersionName": "1.1.1",
+    "versionCode": 1101,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-    "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
-    "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
+    "sha256": "2c1449277ce7c4b851c2c2e636d4eb39549cc367155adaaf8d4cb08995a623b2",
+    "releaseNotes": "- Giọng nói sau khi cập nhật không còn \"Đang xử lý…\" hàng phút: 1.1.0 đổi sang mô hình nhận dạng mới nên xe khách phải tải lại (~vài phút); trong lúc tải, bản cũ để việc tải chiếm luôn luồng xử lý giọng nói — bấm nói là treo tới khi tải xong (đo trên xe khách 14/09: 5,6 phút). Nay tải chạy luồng riêng; tải lỗi (xe vừa boot chưa có Wi-Fi) tự thử lại giãn dần 30 s → 10 phút và tải ngay khi có mạng trở lại — cả mô hình chính lẫn mô hình \"Hi Geely\".\n- Hết toast \"Vui lòng kết nối điện thoại với xe bằng cáp dữ liệu USB…\" khi bấm nút nói trên vô-lăng: toast này của phần mềm CarPlay trong xe, app nay tự tắt riêng toast của phần mềm đó lúc khởi động (CarPlay/Android Auto vẫn dùng bình thường, chỉ mất mấy toast phụ như \"Đã kết nối\").\n- Chưa có mô hình nhận dạng (đang tải sau cập nhật) thì xe báo \"Đang tải model nhận dạng giọng nói, chưa nghe được\" và KHÔNG tạm dùng nhận dạng đám mây thay thế (chủ xe chốt 14/09) — giọng nói trong cabin không bay lên máy chủ trong lúc chờ; chọn \"Trực tuyến\" trong Cài đặt thì vẫn dùng đám mây như cũ.\n- Lượt nói đầu tiên ngay sau khi app khởi động không còn chờ bảng kéo câu dựng xong (tối đa 2,5 s rồi dùng câu nghe thô).\n- Điều khiển từ xa qua 4G nay ký từng lệnh: xe chỉ nhận lệnh có chữ ký đúng khoá relay, gửi trong vòng 5 phút và không lặp lại — kẻ lạ vào được kênh cũng không giả được điện thoại của bạn. Phải cập nhật CẢ xe lẫn PhoneConnect lên 1.1.1; điện thoại bản cũ sẽ nhận thông báo \"Cập nhật PhoneConnect để dùng điều khiển từ xa\".\n- Khoá relay phải đủ mạnh: nhập khoá ngắn hơn 16 ký tự hex thì xe từ chối và báo rõ; nút sinh khoá / mã QR nay tạo khoá 32 ký tự.\n- Cài app, tắt máy, đóng mọi ứng dụng, sửa kho câu lệnh từ điện thoại luôn cần mã bảo vệ (QR) kể cả khi công tắc \"Yêu cầu token\" đang tắt — lệnh điều hoà, kính, cửa… vẫn như cũ.\n- Kho câu lệnh giọng nói tải từ điện thoại không còn nhận được lệnh nguy hiểm (gỡ app, tắt máy…).",
     "channel": "stable",
     "minVersionCode": 1100,
     "forceRules": []
@@ -20,11 +20,11 @@
   "phone": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.0",
-    "versionCode": 1100,
+    "latestVersionName": "1.1.1",
+    "versionCode": 1101,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-    "sha256": "faaa37d6eb0127776d9c4b7ca3e69533681c885908492b1e4731c2dfe582d814",
-    "releaseNotes": "- Đồng bộ theo bản CarConnect 1.1.0. Không có thay đổi nào ở phía điện thoại.",
+    "sha256": "dc366ab3d8a880a9647fd578cd16a09d7159c1704de345bb45f0a2e4b0dbb3f6",
+    "releaseNotes": "- Điều khiển từ xa qua 4G ký từng lệnh — cần CarConnect 1.1.1 trên xe; xe bản cũ sẽ hiện \"Xe chưa cập nhật\" trong lịch sử lệnh.\n- Khoá relay: chỉ lưu khi đủ 16 ký tự hex trở lên, gõ sai định dạng là báo đỏ ngay dưới ô nhập.\n- Gỡ lối cài thử ẩn khỏi bản phát hành; tắt sao lưu token/khoá relay lên đám mây của Android.\n- Bản cập nhật phải có chữ ký của chủ dự án (như CarConnect 1.1.1): danh mục thiếu/sai chữ ký thì app không tải; tự cập nhật luôn đòi mã SHA của file APK.\n- Chuyển sang kênh Dev không còn báo \"có bản mới\" rồi cài thất bại khi kênh đó chưa có bản cao hơn bản đang cài.\n- Tra địa chỉ hành trình gửi toạ độ làm tròn ~100 m và giãn cách ≥1 giây khi phải dùng máy chủ ngoài; lệnh gửi qua 4G lúc mạng đứt báo lỗi ngay thay vì im lặng.\n- Chữ dưới thanh kính: \"Kính đi thẳng, không hỏi lại — cẩn thận khi xe đang chạy.\"\n- Kênh 4G: xe trả 3 dòng liên tiếp không qua xác minh chữ ký thì điện thoại ĐÓNG kênh và rơi về Wi-Fi/Bluetooth, không giữ kết nối \"đã nối\" mà bỏ mọi dòng; kho ứng dụng (Cửa hàng) chỉ nhận danh mục có chữ ký, như bản cập nhật.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -54,21 +54,21 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.1.0",
-      "versionCode": 1100,
+      "latestVersionName": "1.1.1",
+      "versionCode": 1101,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "5d451be1d3b402e34ab6e4e1caa553e23a6f00678577f81bc72eb23a557c0279",
-      "releaseNotes": "- Gọi \"Hi Geely\" đánh thức xe trở lại: từ bản 11/09 xe chỉ nghe bằng bộ nhận từ khoá mới nên câu gọi quen thuộc không còn tác dụng. Nay xe nghe lại bằng đúng cách đã chạy ổn trước đây, bộ nhận từ khoá chỉ là lớp cộng thêm; gọi xong xe không mở phiên nghe hai lần.\n- Không đẩy tiếng trong cabin lên đám mây khi rảnh: khi xe đang ở chế độ nhận dạng trực tuyến, lúc không ai gọi xe thì micro không gửi gì ra ngoài.\n- Xe tự báo tình trạng bộ nhận từ khoá trong nhật ký để lần sau nếu \"Hi Geely\" không ăn, biết ngay là do đâu.\n- Bản 1.0.67/1.0.68 trên các xe khác có tiếng lại: gói giọng đọc bị mất trên máy chủ từ 08/09 khiến xe chỉ kêu \"bíp\" — đã đưa lại, không cần cập nhật app cũng có tiếng.",
+      "sha256": "2c1449277ce7c4b851c2c2e636d4eb39549cc367155adaaf8d4cb08995a623b2",
+      "releaseNotes": "- Giọng nói sau khi cập nhật không còn \"Đang xử lý…\" hàng phút: 1.1.0 đổi sang mô hình nhận dạng mới nên xe khách phải tải lại (~vài phút); trong lúc tải, bản cũ để việc tải chiếm luôn luồng xử lý giọng nói — bấm nói là treo tới khi tải xong (đo trên xe khách 14/09: 5,6 phút). Nay tải chạy luồng riêng; tải lỗi (xe vừa boot chưa có Wi-Fi) tự thử lại giãn dần 30 s → 10 phút và tải ngay khi có mạng trở lại — cả mô hình chính lẫn mô hình \"Hi Geely\".\n- Hết toast \"Vui lòng kết nối điện thoại với xe bằng cáp dữ liệu USB…\" khi bấm nút nói trên vô-lăng: toast này của phần mềm CarPlay trong xe, app nay tự tắt riêng toast của phần mềm đó lúc khởi động (CarPlay/Android Auto vẫn dùng bình thường, chỉ mất mấy toast phụ như \"Đã kết nối\").\n- Chưa có mô hình nhận dạng (đang tải sau cập nhật) thì xe báo \"Đang tải model nhận dạng giọng nói, chưa nghe được\" và KHÔNG tạm dùng nhận dạng đám mây thay thế (chủ xe chốt 14/09) — giọng nói trong cabin không bay lên máy chủ trong lúc chờ; chọn \"Trực tuyến\" trong Cài đặt thì vẫn dùng đám mây như cũ.\n- Lượt nói đầu tiên ngay sau khi app khởi động không còn chờ bảng kéo câu dựng xong (tối đa 2,5 s rồi dùng câu nghe thô).\n- Điều khiển từ xa qua 4G nay ký từng lệnh: xe chỉ nhận lệnh có chữ ký đúng khoá relay, gửi trong vòng 5 phút và không lặp lại — kẻ lạ vào được kênh cũng không giả được điện thoại của bạn. Phải cập nhật CẢ xe lẫn PhoneConnect lên 1.1.1; điện thoại bản cũ sẽ nhận thông báo \"Cập nhật PhoneConnect để dùng điều khiển từ xa\".\n- Khoá relay phải đủ mạnh: nhập khoá ngắn hơn 16 ký tự hex thì xe từ chối và báo rõ; nút sinh khoá / mã QR nay tạo khoá 32 ký tự.\n- Cài app, tắt máy, đóng mọi ứng dụng, sửa kho câu lệnh từ điện thoại luôn cần mã bảo vệ (QR) kể cả khi công tắc \"Yêu cầu token\" đang tắt — lệnh điều hoà, kính, cửa… vẫn như cũ.\n- Kho câu lệnh giọng nói tải từ điện thoại không còn nhận được lệnh nguy hiểm (gỡ app, tắt máy…).",
       "minVersionCode": 1100
     },
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.1.0",
-      "versionCode": 1100,
+      "latestVersionName": "1.1.1",
+      "versionCode": 1101,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "faaa37d6eb0127776d9c4b7ca3e69533681c885908492b1e4731c2dfe582d814",
-      "releaseNotes": "- Đồng bộ theo bản CarConnect 1.1.0. Không có thay đổi nào ở phía điện thoại."
+      "sha256": "dc366ab3d8a880a9647fd578cd16a09d7159c1704de345bb45f0a2e4b0dbb3f6",
+      "releaseNotes": "- Điều khiển từ xa qua 4G ký từng lệnh — cần CarConnect 1.1.1 trên xe; xe bản cũ sẽ hiện \"Xe chưa cập nhật\" trong lịch sử lệnh.\n- Khoá relay: chỉ lưu khi đủ 16 ký tự hex trở lên, gõ sai định dạng là báo đỏ ngay dưới ô nhập.\n- Gỡ lối cài thử ẩn khỏi bản phát hành; tắt sao lưu token/khoá relay lên đám mây của Android.\n- Bản cập nhật phải có chữ ký của chủ dự án (như CarConnect 1.1.1): danh mục thiếu/sai chữ ký thì app không tải; tự cập nhật luôn đòi mã SHA của file APK.\n- Chuyển sang kênh Dev không còn báo \"có bản mới\" rồi cài thất bại khi kênh đó chưa có bản cao hơn bản đang cài.\n- Tra địa chỉ hành trình gửi toạ độ làm tròn ~100 m và giãn cách ≥1 giây khi phải dùng máy chủ ngoài; lệnh gửi qua 4G lúc mạng đứt báo lỗi ngay thay vì im lặng.\n- Chữ dưới thanh kính: \"Kính đi thẳng, không hỏi lại — cẩn thận khi xe đang chạy.\"\n- Kênh 4G: xe trả 3 dòng liên tiếp không qua xác minh chữ ký thì điện thoại ĐÓNG kênh và rơi về Wi-Fi/Bluetooth, không giữ kết nối \"đã nối\" mà bỏ mọi dòng; kho ứng dụng (Cửa hàng) chỉ nhận danh mục có chữ ký, như bản cập nhật."
     }
   ],
   "minVersionCode": 1100,
