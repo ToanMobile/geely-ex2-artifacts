@@ -2679,8 +2679,6 @@ function renderQuickInstallTable() {
       '<td>' + targetsBadge + '</td>' +
       '<td style="text-align:right">' +
         '<div class="actions" style="justify-content:flex-end">' +
-          '<button class="ghost small" onclick="moveQiItem(' + idx + ', -1)" ' + (idx === 0 ? 'disabled' : '') + ' title="Di chuyển lên">▲</button>' +
-          '<button class="ghost small" onclick="moveQiItem(' + idx + ', 1)" ' + (idx === apps.length - 1 ? 'disabled' : '') + ' title="Di chuyển xuống">▼</button>' +
           '<button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button>' +
           '<button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button>' +
         '</div>' +
@@ -2689,7 +2687,7 @@ function renderQuickInstallTable() {
   });
 }
 
-// Chuyển 1 app tới vị trí bất kỳ (15/09/2026): dùng chung cho ▲▼, ô số vị trí và kéo-thả.
+// Chuyển 1 app tới vị trí bất kỳ (15/09/2026): dùng chung cho ô số vị trí và kéo-thả (▲▼ từng nấc đã bỏ).
 // Không đổi chỗ (swap) mà rút ra rồi chèn vào ⇒ các app ở giữa giữ nguyên thứ tự tương đối.
 function moveQiItemTo(from, to) {
   const apps = window._qiCatalog.apps;
@@ -2702,10 +2700,6 @@ function moveQiItemTo(from, to) {
 
   renderQuickInstallTable();
   showMsg($("qiStatusMsg"), "ok", 'Đã chuyển "' + item.name + '" tới vị trí ' + (to + 1) + ' (chưa lưu — bấm "Lưu lên Supabase" khi hoàn tất).');
-}
-
-function moveQiItem(index, direction) {
-  moveQiItemTo(index, index + direction);
 }
 
 // Kéo-thả hàng trong bảng Cài nhanh. Chỉ bắt đầu kéo khi mousedown vào tay cầm ⠿ (tay cầm bật
