@@ -117,6 +117,12 @@
   .msg { margin-top: 10px; font-size: 13px; }
   .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
   .actions { display: flex; gap: 5px; flex-wrap: wrap; }
+  /* Danh mục Cài nhanh: đổi vị trí nhanh (15/09/2026) — ô số vị trí + tay cầm kéo-thả */
+  input.qi-pos { width: 52px; padding: 3px 4px; font-family: var(--mono); font-size: 12px; text-align: center; }
+  .qi-drag { cursor: grab; color: var(--muted); user-select: none; font-size: 16px; padding: 0 4px; }
+  tr.qi-dragging { opacity: .4; }
+  tr.qi-drop-before td { border-top: 2px solid var(--accent); }
+  tr.qi-drop-after td { border-bottom: 2px solid var(--accent); }
   .hint { color: var(--muted); font-size: 12px; margin-top: 5px; }
   .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
   .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; }
@@ -525,7 +531,8 @@
       <div style="overflow-x:auto; margin-top:12px">
         <table id="qiTable">
           <thead><tr>
-            <th style="width:40px">#</th>
+            <th style="width:28px" title="Kéo-thả để đổi vị trí"></th>
+            <th style="width:64px" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th>
             <th>Tên hiển thị</th>
             <th>Package Name (ID)</th>
             <th>Link tải APK</th>
@@ -2628,7 +2635,7 @@ function renderQuickInstallTable() {
   }
 
   if (!filteredIndices.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="hint" style="text-align:center; padding:24px">Không tìm thấy ứng dụng nào phù hợp.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="hint" style="text-align:center; padding:24px">Không tìm thấy ứng dụng nào phù hợp.</td></tr>';
     return;
   }
 
@@ -2662,10 +2669,12 @@ function renderQuickInstallTable() {
       : '<span style="color:var(--muted)">-</span>';
 
     tr.innerHTML = 
-      '<td class="mono" style="color:var(--muted)">' + (idx + 1) + '</td>' +
+      '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
+      '<td><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
+        'onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
       '<td><b>' + esc(app.name) + '</b></td>' +
       '<td class="mono">' + esc(app.packageName) + '</td>' +
-      '<td class="url-cell" title="' + esc(app.url) + '"><a href="' + esc(app.url) + '" target="_blank" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
+      '<td class="url-cell" title="' + esc(app.url) + '"><a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
       '<td>' + prereqBadge + '</td>' +
       '<td>' + targetsBadge + '</td>' +
       '<td style="text-align:right">' +
@@ -2680,18 +2689,70 @@ function renderQuickInstallTable() {
   });
 }
 
-function moveQiItem(index, direction) {
+// Chuyển 1 app tới vị trí bất kỳ (15/09/2026): dùng chung cho ▲▼, ô số vị trí và kéo-thả.
+// Không đổi chỗ (swap) mà rút ra rồi chèn vào ⇒ các app ở giữa giữ nguyên thứ tự tương đối.
+function moveQiItemTo(from, to) {
   const apps = window._qiCatalog.apps;
-  const targetIndex = index + direction;
-  if (targetIndex < 0 || targetIndex >= apps.length) return;
+  if (!Number.isInteger(to)) { renderQuickInstallTable(); return; }
+  to = Math.max(0, Math.min(apps.length - 1, to));
+  if (from < 0 || from >= apps.length || from === to) { renderQuickInstallTable(); return; }
 
-  const temp = apps[index];
-  apps[index] = apps[targetIndex];
-  apps[targetIndex] = temp;
+  const [item] = apps.splice(from, 1);
+  apps.splice(to, 0, item);
 
   renderQuickInstallTable();
-  showMsg($("qiStatusMsg"), "ok", 'Đã đổi thứ tự (chưa lưu lên GitHub — bấm "Lưu lên GitHub" khi hoàn tất).');
+  showMsg($("qiStatusMsg"), "ok", 'Đã chuyển "' + item.name + '" tới vị trí ' + (to + 1) + ' (chưa lưu — bấm "Lưu lên Supabase" khi hoàn tất).');
 }
+
+function moveQiItem(index, direction) {
+  moveQiItemTo(index, index + direction);
+}
+
+// Kéo-thả hàng trong bảng Cài nhanh. Chỉ bắt đầu kéo khi mousedown vào tay cầm ⠿ (tay cầm bật
+// tr.draggable; dragend tắt lại) để bấm nút/chọn chữ trong hàng không vô tình kéo.
+(function bindQiDragDrop() {
+  const tbody = $("qiTable").querySelector("tbody");
+  let fromIdx = -1;
+  const clearMarks = () => tbody.querySelectorAll(".qi-drop-before, .qi-drop-after").forEach(tr => tr.classList.remove("qi-drop-before", "qi-drop-after"));
+  tbody.addEventListener("dragstart", e => {
+    const tr = e.target.closest("tr");
+    if (!tr || !tr.draggable) { e.preventDefault(); return; }
+    fromIdx = parseInt(tr.dataset.index, 10);
+    tr.classList.add("qi-dragging");
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", String(fromIdx));
+  });
+  tbody.addEventListener("dragover", e => {
+    if (fromIdx < 0) return;
+    const tr = e.target.closest("tr");
+    if (!tr || !tr.dataset.index) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    clearMarks();
+    const r = tr.getBoundingClientRect();
+    tr.classList.add(e.clientY < r.top + r.height / 2 ? "qi-drop-before" : "qi-drop-after");
+  });
+  tbody.addEventListener("drop", e => {
+    if (fromIdx < 0) return;
+    const tr = e.target.closest("tr");
+    if (!tr || !tr.dataset.index) return;
+    e.preventDefault();
+    const overIdx = parseInt(tr.dataset.index, 10);
+    const r = tr.getBoundingClientRect();
+    const before = e.clientY < r.top + r.height / 2;
+    // Vị trí đích tính SAU khi rút phần tử kéo ra khỏi mảng
+    let to = before ? overIdx : overIdx + 1;
+    if (fromIdx < to) to -= 1;
+    const from = fromIdx; fromIdx = -1;
+    moveQiItemTo(from, to);
+  });
+  tbody.addEventListener("dragend", e => {
+    fromIdx = -1; clearMarks();
+    const tr = e.target.closest("tr");
+    if (tr) { tr.classList.remove("qi-dragging"); tr.draggable = false; }
+  });
+  tbody.addEventListener("mouseup", () => tbody.querySelectorAll("tr[draggable=true]").forEach(tr => tr.draggable = false));
+})();
 
 function deleteQiItem(index) {
   const item = window._qiCatalog.apps[index];
