@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.2",
-    "versionCode": 1102,
+    "latestVersionName": "1.1.3",
+    "versionCode": 1103,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "ee941ff166288413f066092d2bf7b384abf326f06fb19ad085913a4874287602",
-    "releaseNotes": "- \"Điều hòa mát nhất\" không còn bị hiểu thành nóng nhất: xe khách 14/09 nói câu này, xe đặt 32 °C và đọc \"Nhiệt độ 32 độ\"; \"bật điều hòa mức thấp nhất\" từng thành quạt MẠNH NHẤT, \"làm nóng nhanh\" từng thành bật lạnh. Nay xe không bao giờ đảo mát ↔ nóng, thấp ↔ cao khi phải đoán câu gần đúng (im rồi hỏi lại còn hơn làm ngược), và có sẵn các câu \"điều hòa/máy lạnh mát nhất, lạnh nhất, mức thấp nhất, làm ấm nhanh\".\n- Lạnh nhất là 17 °C (mức \"Lo\" của xe), không phải 16: bản cũ gửi 16 nên xe từ chối và báo \"Đã bỏ qua\" (7 lượt trên xe khách 14/09). Nói \"mười sáu độ\" xe vẫn hiểu và đặt 17; điện thoại/màn hình xe cũng không cho chỉnh dưới 17.\n- \"Chuyển sang chế độ comford\" (xe nghe sai chữ cuối của comfort) nay hiểu lại như bản 1.0.67, vẫn hỏi xác nhận trước khi đổi chế độ lái.",
+    "sha256": "caa6db2bdbcfef419d3f21c00b124bcfb26407144cb8c6233228a0ddb36dbbfe",
+    "releaseNotes": "- Xe không còn tự ý làm việc khác khi nghe nhầm: nói \"mở cốp xe\" từng bị hiểu thành \"mở chốt xe\", \"dừng sạc\" từng thành \"dừng phát\" (tắt nhạc). Nay gặp những câu này xe im và hỏi lại thay vì làm bừa. Mở rộng cho cả các câu về tốc độ, độ sáng, khử sương và giờ giấc.\n- \"Sấy kính\" hiểu lại bình thường: bản thử trước đó vô tình chặn nhầm chính câu này.\n- \"Xác nhận\" và \"chốt cửa\" không còn bị nghe nhầm sang chuyện sạc pin / cốp xe.\n- Micro không còn bị bỏ quên khi bấm nói lúc xe đang khởi động: trước đây nếu thả nút nói sớm trong lúc xe chưa sẵn sàng, micro có thể ở trạng thái mở ngầm. Nay luôn được đóng đúng lúc.\n- Xe thôi chỉnh chế độ lái / hồi năng lượng lúc đang ngủ: mỗi lần khởi động hoặc thức giấc, xe từng thử ghi lại các thiết lập này kể cả khi máy chưa nổ — vừa không có tác dụng vừa tốn điện. Nay chỉ làm khi xe thật sự sẵn sàng; lúc anh ngồi trong xe chưa nổ máy thì vẫn chỉnh được như cũ.\n- Nút \"Tối ưu Google Maps cho đầu xe\": chỉnh sẵn Maps cho màn hình xe (bỏ nghiêng 3D và lớp giao thông cho đỡ giật). Bấm trong Cài đặt → Màn hình & hệ thống, hoặc tự chạy sau khi cài Maps.\n- Gọi \"Hi Geely\" dùng bộ nhận dạng mới, nhẹ hơn cho máy. ⚠️ Bản này bật lại tính năng nghe gọi tên; nếu thấy xe nóng hoặc Maps giật thì tắt trong Cài đặt → Giọng nói và báo lại.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.2",
-    "versionCode": 1102,
+    "latestVersionName": "1.1.3",
+    "versionCode": 1103,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "59f40aad7eed45557b2dce592a26518866e6a57940cc1473123ff497db4f086d",
-    "releaseNotes": "- Xe từ chối vì thiếu mã bảo vệ thì có nút \"Quét QR ngay\" (cài APK, đẩy tệp) — không còn phải tự mò vào Cài đặt để ghép mã; chụp màn hình xe không còn đòi mã.\n- Màn Điều hoà: nhiệt độ thấp nhất chỉnh được là 17 °C (mức \"Lo\" của xe) — trước cho kéo xuống 16 nhưng xe không nhận.\n- Máy ảo/thử nghiệm: banner \"Có bản cập nhật mới\" giả không còn tự bật (chỉ khi bật cờ thử).",
+    "sha256": "98dbc33e0068653971b6b55dbb40fdbd7889a3741113b42315d3cca1aec76420",
+    "releaseNotes": "- Quét QR ghép đôi xong là dùng được ngay: trước đây sau khi quét, thẻ cài đặt vẫn trỏ về địa chỉ xe cũ nên hay báo lỗi kết nối cho tới khi mở lại app.\n- Nút \"Tối ưu Google Maps cho đầu xe\" trong màn Ứng dụng, chỉnh Maps trên xe ngay từ điện thoại.\n- Nhiệt độ điều hòa chỉnh từ điện thoại dùng chung giới hạn với xe (17–32 °C), không còn lệch.",
     "minVersionCode": 0,
     "forceRules": []
   },
