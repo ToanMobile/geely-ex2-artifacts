@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.3",
-    "versionCode": 1103,
+    "latestVersionName": "1.1.4",
+    "versionCode": 1104,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "caa6db2bdbcfef419d3f21c00b124bcfb26407144cb8c6233228a0ddb36dbbfe",
-    "releaseNotes": "- Xe không còn tự ý làm việc khác khi nghe nhầm: nói \"mở cốp xe\" từng bị hiểu thành \"mở chốt xe\", \"dừng sạc\" từng thành \"dừng phát\" (tắt nhạc). Nay gặp những câu này xe im và hỏi lại thay vì làm bừa. Mở rộng cho cả các câu về tốc độ, độ sáng, khử sương và giờ giấc.\n- \"Sấy kính\" hiểu lại bình thường: bản thử trước đó vô tình chặn nhầm chính câu này.\n- \"Xác nhận\" và \"chốt cửa\" không còn bị nghe nhầm sang chuyện sạc pin / cốp xe.\n- Micro không còn bị bỏ quên khi bấm nói lúc xe đang khởi động: trước đây nếu thả nút nói sớm trong lúc xe chưa sẵn sàng, micro có thể ở trạng thái mở ngầm. Nay luôn được đóng đúng lúc.\n- Xe thôi chỉnh chế độ lái / hồi năng lượng lúc đang ngủ: mỗi lần khởi động hoặc thức giấc, xe từng thử ghi lại các thiết lập này kể cả khi máy chưa nổ — vừa không có tác dụng vừa tốn điện. Nay chỉ làm khi xe thật sự sẵn sàng; lúc anh ngồi trong xe chưa nổ máy thì vẫn chỉnh được như cũ.\n- Nút \"Tối ưu Google Maps cho đầu xe\": chỉnh sẵn Maps cho màn hình xe (bỏ nghiêng 3D và lớp giao thông cho đỡ giật). Bấm trong Cài đặt → Màn hình & hệ thống, hoặc tự chạy sau khi cài Maps.\n- Gọi \"Hi Geely\" dùng bộ nhận dạng mới, nhẹ hơn cho máy. ⚠️ Bản này bật lại tính năng nghe gọi tên; nếu thấy xe nóng hoặc Maps giật thì tắt trong Cài đặt → Giọng nói và báo lại.",
+    "sha256": "2576fcf3e008bfb6c20c83f212e9187468a1583ae81efb70eba18fa5d7599350",
+    "releaseNotes": "- Phím chuyển bài trên vô-lăng đã chạy với YouTube Music, YouTube và Spotify — bấm tiến/lùi là đổi bài, không nhảy hai bài. (Spotify gói Free không cho lùi bài — giới hạn của Spotify.)\n- Xe hỏi lại thì cứ nói \"có\" / \"phải\" / \"dạ\": câu hỏi xác nhận (mở kính, đổi chế độ lái khi đang chạy) nay đứng yên chờ bạn trả lời và xe tự mở mic — không phải bấm nút nói nữa. Muốn hủy thì nói \"không\" hoặc \"hủy\".\n- Hiểu đúng hơn khi mở app: \"khởi động YouTube\" không còn bị hiểu thành đóng app; \"mở maps\" không còn mở nhầm VTV Go; \"mở / nghe nhạc YouTube\" mở YouTube Music; \"mở Google Maps\", \"mở YouTube Music\" mở đúng bản đang cài trên xe.\n- Chia đôi màn hình bằng giọng nói dễ tính hơn: \"chia hai ứng dụng Google Maps và YouTube\" mà xe nghe chệch chữ nối (\"là\", \"rồi\", \"qua\"…) vẫn hiểu.\n- Google Maps không còn mất định vị sau khi tắt/bật xe: xe tự bật lại cài đặt vị trí mỗi lần khởi động (chỉ khi trên xe có cài Maps).\n- Chọn kênh Ổn định / Thử nghiệm không còn tự tải bản mới — chạm ô kênh chỉ để xem, muốn tải thì bấm \"Tải về & cài đặt\". Nút \"Kiểm tra cập nhật\" vẫn tải và cài luôn như cũ.\n- Trợ lý giọng nói không còn tắt đột ngột khi màn hình xe đổi sáng/tối (lỗi của bản 1.1.3).\n- Tên ứng dụng hiện đúng tên người đọc được, không còn hiện tên kỹ thuật kiểu \"com.google…\".",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.3",
-    "versionCode": 1103,
+    "latestVersionName": "1.1.4",
+    "versionCode": 1104,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "98dbc33e0068653971b6b55dbb40fdbd7889a3741113b42315d3cca1aec76420",
-    "releaseNotes": "- Quét QR ghép đôi xong là dùng được ngay: trước đây sau khi quét, thẻ cài đặt vẫn trỏ về địa chỉ xe cũ nên hay báo lỗi kết nối cho tới khi mở lại app.\n- Nút \"Tối ưu Google Maps cho đầu xe\" trong màn Ứng dụng, chỉnh Maps trên xe ngay từ điện thoại.\n- Nhiệt độ điều hòa chỉnh từ điện thoại dùng chung giới hạn với xe (17–32 °C), không còn lệch.",
+    "sha256": "ccb42546b09eecb5323c6bf25f50327ff4521526e1564628590ca9f91953305b",
+    "releaseNotes": "- Bản đồng bộ số hiệu với xe. Không có thay đổi nào trên điện thoại.",
     "minVersionCode": 0,
     "forceRules": []
   },
