@@ -993,17 +993,41 @@
         </div>
 
         
-    <!-- T0024 OTA Signature -->
-    <div class="card" style="margin-top: 20px; border-left: 4px solid var(--accent)">
-      <h3>🔒 Chữ ký OTA (Bắt buộc cho Client 1.1.1+)</h3>
-      <div class="hint" style="margin-bottom: 10px;">
-        1. Bấm <b>Tải JSON để ký</b> (tải file .json đã bóc version).<br>
-        2. Chạy lệnh: <code>./scripts/ota-sign-config.sh &lt;file.json&gt;</code>.<br>
-        3. Dán <b>khối JSON output</b> (gồm payload_raw và payload_sig) vào ô dưới.<br>
-        Lưu ý: Nếu không có chữ ký, client 1.1.1+ sẽ bỏ qua bản cập nhật này.
+    <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
+    <div class="panel" style="margin-top: 20px; border-left: 4px solid var(--accent)">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px">
+        <h3 style="margin:0; font-size:15px; color:var(--text)">🔒 Chữ ký OTA (Bắt buộc cho Client 1.1.1+)</h3>
+        <span id="otaKeyBadge" class="tag off" style="font-size:12px">⚪ Chưa nạp khoá riêng</span>
       </div>
-      <button class="ghost small" style="margin-bottom: 10px;" onclick="downloadJsonForSigning()">⬇️ Tải JSON để ký</button>
-      <textarea id="otaSignatureBlock" rows="4" placeholder='{"payload_raw": "...", "payload_sig": "..."}' style="width: 100%; font-family: monospace;"></textarea>
+
+      <!-- Khu vực nạp khoá riêng để tự ký 1-click -->
+      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:12px">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px">
+          <div>
+            <div style="font-weight:600; font-size:13px; color:var(--text)">⚡ Chế độ Tự động ký 1-Click (Web Crypto ECDSA)</div>
+            <div id="otaKeyStatusText" style="font-size:12px; color:var(--muted); margin-top:2px">
+              Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự ký và lưu ngay khi bạn bấm "Lưu cấu hình".
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+            <input type="file" id="otaKeyFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyFile(event)">
+            <button type="button" class="small" onclick="$('otaKeyFileInput').click()">📂 Nạp ota_private.pem</button>
+            <button type="button" class="small ghost" onclick="promptPasteOtaKey()">📝 Dán text</button>
+            <button type="button" class="small danger" id="btnForgetOtaKey" style="display:none" onclick="forgetOtaKey()">🗑️ Xoá khoá</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint" style="margin-bottom: 10px;">
+        💡 <b>Cách hoạt động:</b> Nếu đã nạp khoá, bạn chỉ cần bấm nút <b>"💾 Lưu lên Supabase"</b> bên trên — hệ thống sẽ <b>tự động ký</b> và gửi thẳng lên máy chủ.<br>
+        Nếu muốn ký ngoài Terminal: Bấm <b>Tải JSON</b> ➔ Chạy script <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom: 10px; flex-wrap:wrap">
+        <button type="button" class="small ghost" id="btnManualAutoSign" onclick="doManualAutoSign()">✍️ Ký tự động ngay</button>
+        <button type="button" class="small ghost" onclick="downloadJsonForSigning()">⬇️ Tải JSON để ký ngoài</button>
+        <button type="button" class="small ghost" onclick="copyTerminalSignCommand()">📋 Copy lệnh ký Terminal</button>
+      </div>
+      <textarea id="otaSignatureBlock" rows="3" placeholder='{"payload_raw": "...", "payload_sig": "..."}' style="width: 100%; font-family: monospace; font-size: 11px;"></textarea>
     </div>
     
 <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
@@ -1200,6 +1224,42 @@
 
       </div>
     </div>
+
+  <!-- Modal Cảnh báo Thiếu Chữ ký OTA -->
+  <div class="modal-mask" id="otaUnsignedMask" style="display:none" onclick="if(event.target===this)closeOtaUnsignedModal()">
+    <div class="modal" style="max-width:580px">
+      <h3 style="color:var(--warn); margin-bottom:8px">⚠️ Ô 'Khối chữ ký OTA' đang TRỐNG</h3>
+      <div class="hint" style="font-size:13px; line-height:1.5; color:var(--text)">
+        Client 1.1.1+ chỉ nhận cấu hình có chữ ký ECDSA (<code>payload_raw</code> + <code>payload_sig</code>).<br>
+        Lưu không ký = <b>mọi xe và điện thoại 1.1.1+ sẽ KHÔNG thấy bản mới</b>.
+      </div>
+
+      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-top:14px">
+        <div style="font-weight:600; margin-bottom:4px; font-size:13px">⚡ Cách 1: Nạp khoá riêng để Tự ký ngay (Khuyến nghị)</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:8px">
+          Chọn file <code>ota_private.pem</code> từ thư mục <code>~/.config/geely-ota/</code>. Web sẽ lưu lại trên máy bạn và tự ký ngay lập tức.
+        </div>
+        <input type="file" id="otaKeyModalFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyModalFileInput(event)">
+        <button type="button" class="small" onclick="$('otaKeyModalFileInput').click()">📂 Nạp ota_private.pem & Ký Lưu luôn</button>
+      </div>
+
+      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-top:10px">
+        <div style="font-weight:600; margin-bottom:4px; font-size:13px">💻 Cách 2: Ký bằng Terminal máy publish</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:8px">
+          Chạy script <code>./scripts/ota/ota-sign-config.sh</code> trên máy có khoá riêng:
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap">
+          <button type="button" class="small ghost" onclick="downloadJsonForSigning()">⬇️ Tải JSON để ký</button>
+          <button type="button" class="small ghost" onclick="copyTerminalSignCommand()">📋 Copy lệnh Terminal</button>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center">
+        <button type="button" class="danger small" onclick="confirmSaveUnsigned()">⚠️ Vẫn lưu KHÔNG chữ ký (Bản ≤ 1.1.0)</button>
+        <button type="button" class="ghost small" onclick="closeOtaUnsignedModal()">Huỷ</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal Xác nhận Thay đổi Bảng giá -->
   <div class="modal-mask" id="savePricesConfirmMask" style="display:none" onclick="if(event.target===this)closeSavePricesConfirmModal()">
@@ -2271,6 +2331,7 @@ function closeDevices() { $("devBox").style.display = "none"; }
 
 const ACT_RESULT_VI = {
   ok: '<span class="tag on">✅ Kích hoạt OK</span>',
+  migrated: '<span class="tag car">🔄 Di trú mã máy</span>',
   too_many_devices: '<span class="tag off">⛔ Quá số máy</span>',
   too_many_activations: '<span class="tag off">⛔ Hết lượt kích hoạt</span>',
   role_not_allowed: '<span class="tag off">⛔ Sai loại thiết bị</span>'
@@ -4226,6 +4287,8 @@ function renderAppUpdateConfigUI() {
   if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "0";
   renderRulesTable("phone");
   renderKnownVersions("phone");
+
+  updateOtaKeyStatusUI();
 }
 
 /**
@@ -4452,12 +4515,284 @@ function syncFormToConfig() {
 }
 
 
+// ==========================================
+// OTA ECDSA P-256 Web Crypto Auto-Signing
+// ==========================================
+
+const OTA_PRIV_KEY_STORAGE = "geely_ota_priv_key_pem";
+
+function getStoredOtaPrivateKey() {
+  try {
+    return localStorage.getItem(OTA_PRIV_KEY_STORAGE) || window._otaPrivKeyPem || "";
+  } catch (e) {
+    return window._otaPrivKeyPem || "";
+  }
+}
+
+function setStoredOtaPrivateKey(pem) {
+  pem = (pem || "").trim();
+  window._otaPrivKeyPem = pem;
+  try {
+    if (pem) {
+      localStorage.setItem(OTA_PRIV_KEY_STORAGE, pem);
+    } else {
+      localStorage.removeItem(OTA_PRIV_KEY_STORAGE);
+    }
+  } catch (e) {}
+  updateOtaKeyStatusUI();
+}
+
+function updateOtaKeyStatusUI() {
+  const pem = getStoredOtaPrivateKey();
+  const badge = $("otaKeyBadge");
+  const text = $("otaKeyStatusText");
+  const btnForget = $("btnForgetOtaKey");
+  if (!badge) return;
+  if (pem) {
+    badge.className = "tag on";
+    badge.textContent = "🟢 Đã nạp khoá riêng (Tự động ký 1-click)";
+    if (text) text.innerHTML = '<span style="color:var(--ok)">✓ Khoá ECDSA P-256 đã sẵn sàng. Web sẽ tự động ký và lưu ngay khi bạn bấm nút "Lưu lên Supabase".</span>';
+    if (btnForget) btnForget.style.display = "inline-flex";
+  } else {
+    badge.className = "tag off";
+    badge.textContent = "⚪ Chưa nạp khoá riêng";
+    if (text) text.innerHTML = 'Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự động ký mỗi khi bạn bấm Lưu.';
+    if (btnForget) btnForget.style.display = "none";
+  }
+}
+
+function forgetOtaKey() {
+  if (confirm("Xoá khoá riêng OTA đã lưu khỏi trình duyệt này?")) {
+    setStoredOtaPrivateKey("");
+    alert("Đã xoá khoá riêng khỏi trình duyệt.");
+  }
+}
+
+function handleOtaKeyFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const content = e.target.result || "";
+    if (!content.includes("PRIVATE KEY")) {
+      alert("❌ File không chứa private key hợp lệ (phải có -----BEGIN ... PRIVATE KEY-----).");
+      return;
+    }
+    setStoredOtaPrivateKey(content);
+    alert("✅ Đã nạp thành công khoá riêng OTA!\nTừ giờ web sẽ tự động ký 1-click mỗi khi bạn bấm Lưu cấu hình.");
+    doManualAutoSign(true);
+  };
+  reader.readAsText(file);
+  event.target.value = "";
+}
+
+function promptPasteOtaKey() {
+  const val = prompt("Dán nội dung khoá riêng private key ECDSA (bắt đầu bằng -----BEGIN ... PRIVATE KEY-----):");
+  if (!val) return;
+  if (!val.includes("PRIVATE KEY")) {
+    alert("❌ Chuỗi dán không chứa private key hợp lệ.");
+    return;
+  }
+  setStoredOtaPrivateKey(val);
+  alert("✅ Đã nạp thành công khoá riêng OTA!");
+  doManualAutoSign(true);
+}
+
+function openOtaUnsignedModal() {
+  const mask = $("otaUnsignedMask");
+  if (mask) mask.style.display = "flex";
+}
+
+function closeOtaUnsignedModal() {
+  const mask = $("otaUnsignedMask");
+  if (mask) mask.style.display = "none";
+}
+
+function confirmSaveUnsigned() {
+  closeOtaUnsignedModal();
+  saveAppUpdateConfig(true);
+}
+
+function handleOtaKeyModalFileInput(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const content = e.target.result || "";
+    if (!content.includes("PRIVATE KEY")) {
+      alert("❌ File không chứa private key hợp lệ (phải có -----BEGIN ... PRIVATE KEY-----).");
+      return;
+    }
+    setStoredOtaPrivateKey(content);
+    closeOtaUnsignedModal();
+    alert("✅ Đã nạp khoá riêng OTA thành công! Tiếp tục lưu cấu hình...");
+    await saveAppUpdateConfig();
+  };
+  reader.readAsText(file);
+  event.target.value = "";
+}
+
+// Canonical JSON generation matching scripts/lib/ota_canonical.py
+function canonicalJsonString(obj) {
+  if (obj === null || typeof obj !== "object") {
+    return JSON.stringify(obj);
+  }
+  if (Array.isArray(obj)) {
+    return "[" + obj.map(canonicalJsonString).join(",") + "]";
+  }
+  const keys = Object.keys(obj).filter(k => obj[k] !== undefined).sort();
+  const pairs = keys.map(k => JSON.stringify(k) + ":" + canonicalJsonString(obj[k]));
+  return "{" + pairs.join(",") + "}";
+}
+
 function stripMeta(cfg) {
   const c = JSON.parse(JSON.stringify(cfg));
   delete c.version;
   delete c.payload_raw;
   delete c.payload_sig;
   return c;
+}
+
+function getCanonicalOtaPayload(cfg) {
+  return canonicalJsonString(stripMeta(cfg));
+}
+
+// Convert IEEE P1363 (64 bytes: r || s) signature to ASN.1 DER format (compatible with OpenSSL & Java SHA256withECDSA)
+function p1363ToDer(sig) {
+  let r = Array.from(sig.slice(0, 32));
+  let s = Array.from(sig.slice(32, 64));
+  while (r[0] === 0 && r.length > 1) r.shift();
+  if (r[0] >= 0x80) r.unshift(0);
+  while (s[0] === 0 && s.length > 1) s.shift();
+  if (s[0] >= 0x80) s.unshift(0);
+  const len = r.length + s.length + 4;
+  return new Uint8Array([0x30, len, 0x02, r.length, ...r, 0x02, s.length, ...s]);
+}
+
+function pemToDer(pem) {
+  const cleanBase64 = (pem || "")
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l => !l.startsWith("---") && l.length > 0)
+    .join("");
+  const binStr = atob(cleanBase64);
+  const len = binStr.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binStr.charCodeAt(i);
+  }
+  return bytes;
+}
+
+function base64url(bytes) {
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function bytesToBase64(bytes) {
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+async function importEcPrivateKey(pemStr) {
+  const der = pemToDer(pemStr);
+  const subtle = window.crypto.subtle;
+  // Try PKCS#8 first
+  try {
+    return await subtle.importKey(
+      "pkcs8",
+      der.buffer,
+      { name: "ECDSA", namedCurve: "P-256" },
+      false,
+      ["sign"]
+    );
+  } catch (e) {
+    // If SEC1 (BEGIN EC PRIVATE KEY), extract d and pubkey (X, Y) to construct JWK
+    const d = der.slice(7, 39);
+    const pubTag = [0xa1, 0x44, 0x03, 0x42, 0x00, 0x04];
+    let pubIdx = -1;
+    for (let i = 0; i <= der.length - pubTag.length - 64; i++) {
+      let match = true;
+      for (let j = 0; j < pubTag.length; j++) {
+        if (der[i + j] !== pubTag[j]) { match = false; break; }
+      }
+      if (match) { pubIdx = i; break; }
+    }
+    let x, y;
+    if (pubIdx >= 0) {
+      const start = pubIdx + pubTag.length;
+      x = der.slice(start, start + 32);
+      y = der.slice(start + 32, start + 64);
+    }
+    const jwk = {
+      kty: "EC",
+      crv: "P-256",
+      d: base64url(d),
+      ...(x && y ? { x: base64url(x), y: base64url(y) } : {})
+    };
+    return await subtle.importKey(
+      "jwk",
+      jwk,
+      { name: "ECDSA", namedCurve: "P-256" },
+      false,
+      ["sign"]
+    );
+  }
+}
+
+async function signOtaPayload(cfg) {
+  const pem = getStoredOtaPrivateKey();
+  if (!pem) return null;
+  const rawCanonical = getCanonicalOtaPayload(cfg);
+  const key = await importEcPrivateKey(pem);
+  const data = new TextEncoder().encode(rawCanonical);
+  const rawSig = new Uint8Array(await window.crypto.subtle.sign(
+    { name: "ECDSA", hash: "SHA-256" },
+    key,
+    data
+  ));
+  const derSig = p1363ToDer(rawSig);
+  const sigB64 = bytesToBase64(derSig);
+  return {
+    payload_raw: rawCanonical,
+    payload_sig: sigB64
+  };
+}
+
+async function doManualAutoSign(silent) {
+  syncFormToConfig();
+  const pem = getStoredOtaPrivateKey();
+  if (!pem) {
+    alert("❌ Chưa có khoá riêng ota_private.pem!\nVui lòng bấm '📂 Nạp ota_private.pem' để nạp khoá trước.");
+    return;
+  }
+  try {
+    const res = await signOtaPayload(window._appUpdateConfig);
+    if (res) {
+      $("otaSignatureBlock").value = JSON.stringify(res);
+      if (!silent) {
+        alert("✅ Đã tự động ký OTA thành công!\nKhối JSON chữ ký đã được điền vào ô bên dưới.");
+      }
+    }
+  } catch (e) {
+    alert("❌ Lỗi khi ký: " + (e.message || e));
+  }
+}
+
+function copyTerminalSignCommand() {
+  const cmd = 'export OTA_SIGN_KEY="$(cat ~/.config/geely-ota/ota_private.pem)" && ./scripts/ota/ota-sign-config.sh ~/Downloads/ota_config_to_sign.json';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(cmd);
+    alert("📋 Đã copy lệnh Terminal vào clipboard:\n\n" + cmd + "\n\n(Nhớ bấm 'Tải JSON để ký ngoài' trước khi chạy lệnh)");
+  } else {
+    prompt("Copy lệnh dưới đây để chạy trong Terminal:", cmd);
+  }
 }
 
 function downloadJsonForSigning() {
@@ -4472,7 +4807,7 @@ function downloadJsonForSigning() {
   URL.revokeObjectURL(url);
 }
 
-async function saveAppUpdateConfig() {
+async function saveAppUpdateConfig(allowUnsigned) {
   const btn = $("btnSaveFu");
   const msg = $("fuStatusMsg");
 
@@ -4480,41 +4815,9 @@ async function saveAppUpdateConfig() {
     return alert("❌ Chưa tải xong cấu hình hiện tại từ máy chủ (hoặc tải lỗi). Không thể lưu đè vì sẽ làm mất dữ liệu của các kênh khác.\n\nVui lòng làm mới trang (F5) để thử lại.");
   }
 
-
   syncFormToConfig();
-  
-  let p_payload_raw = null;
-  let p_payload_sig = null;
-  const sigBlock = ($("otaSignatureBlock").value || "").trim();
-  if (sigBlock) {
-    try {
-      const parsedSig = JSON.parse(sigBlock);
-      p_payload_raw = parsedSig.payload_raw || null;
-      p_payload_sig = parsedSig.payload_sig || null;
-    } catch (e) {
-      alert("❌ Lỗi: Khối chữ ký OTA không phải là JSON hợp lệ.");
-      return;
-    }
-    if (!p_payload_raw || !p_payload_sig) {
-      alert("❌ Khối chữ ký thiếu payload_raw hoặc payload_sig. Chạy lại scripts/ota-sign-config.sh rồi dán nguyên khối JSON nó in ra.");
-      return;
-    }
-  }
-  if (!sigBlock) {
-    // 14/09/2026 (bugs S15): T0021 — xe/phone 1.1.1+ FAIL-CLOSED khi thiếu chữ ký ⇒ lưu không ký là
-    // cả đội mất cập nhật im lặng. Chỉ cho qua khi người dùng gõ đúng chữ xác nhận.
-    const goi = prompt(
-      "⚠️ Ô 'Khối chữ ký OTA' đang TRỐNG.\n\n" +
-      "Client 1.1.1+ chỉ nhận cấu hình có chữ ký ECDSA (payload_raw + payload_sig). Lưu không ký = mọi xe/điện thoại 1.1.1+ sẽ KHÔNG thấy bản mới.\n\n" +
-      "Cách đúng: trên máy publish chạy  export OTA_SIGN_KEY=\"$(cat ~/.config/geely-ota/ota_private.pem)\" && scripts/ota-sign-config.sh  rồi dán khối JSON nó in ra vào ô chữ ký.\n\n" +
-      "Vẫn muốn lưu KHÔNG chữ ký (chỉ cho đội xe ≤ 1.1.0)? Gõ đúng chữ: KHONG KY",
-      "",
-    );
-    if (goi !== "KHONG KY") { showMsg(msg, "err", "Đã huỷ lưu — cấu hình chưa có chữ ký OTA."); return; }
-  }
 
   const car = fuNode("car");
-
   const phone = fuNode("phone");
 
   if (!car.latestVersionName || !car.versionCode || !car.downloadUrl) {
@@ -4548,6 +4851,48 @@ async function saveAppUpdateConfig() {
     return;
   }
 
+  // Nếu đã nạp khoá riêng: luôn luôn tự động ký lại cấu hình mới nhất từ form (tránh stale signature)
+  let sigBlock = ($("otaSignatureBlock").value || "").trim();
+  if (getStoredOtaPrivateKey()) {
+    try {
+      showMsg(msg, "", "⏳ Đang tự động ký OTA bằng khoá riêng (Web Crypto)...");
+      const signed = await signOtaPayload(window._appUpdateConfig);
+      if (signed) {
+        sigBlock = JSON.stringify(signed);
+        $("otaSignatureBlock").value = sigBlock;
+        showMsg(msg, "ok", "✓ Đã tự động ký OTA thành công!");
+      }
+    } catch (e) {
+      alert("❌ Lỗi khi tự động ký OTA: " + (e.message || e));
+      return;
+    }
+  }
+
+  let p_payload_raw = null;
+  let p_payload_sig = null;
+  if (sigBlock) {
+    try {
+      const parsedSig = JSON.parse(sigBlock);
+      p_payload_raw = parsedSig.payload_raw || null;
+      p_payload_sig = parsedSig.payload_sig || null;
+    } catch (e) {
+      alert("❌ Lỗi: Khối chữ ký OTA không phải là JSON hợp lệ.");
+      return;
+    }
+    if (!p_payload_raw || !p_payload_sig) {
+      alert("❌ Khối chữ ký thiếu payload_raw hoặc payload_sig. Chạy lại scripts/ota/ota-sign-config.sh rồi dán nguyên khối JSON nó in ra.");
+      return;
+    }
+  }
+  if (!sigBlock) {
+    // 14/09/2026 (bugs S15): T0021 — xe/phone 1.1.1+ FAIL-CLOSED khi thiếu chữ ký ⇒ lưu không ký là
+    // cả đội mất cập nhật im lặng. Chỉ cho qua khi xác nhận lưu không ký.
+    if (!allowUnsigned) {
+      openOtaUnsignedModal();
+      return;
+    }
+  }
+
   const currentVer = window._appUpdateConfig.version || 1;
   
   const currentKeys = Object.keys(window._appUpdateConfig).filter(k => k !== 'version');
@@ -4562,7 +4907,7 @@ async function saveAppUpdateConfig() {
   
   if (!confirm("Xác nhận lưu cấu hình Cập nhật & Ép nâng cấp lên Supabase?\n\n" +
       warningMsg +
-      (sigBlock ? "Chữ ký OTA: CÓ (payload_raw + payload_sig từ scripts/ota-sign-config.sh).\n\n" : "Chữ ký OTA: KHÔNG — client 1.1.1+ sẽ từ chối cấu hình này.\n\n") +
+      (sigBlock ? "Chữ ký OTA: CÓ (payload_raw + payload_sig từ scripts/ota/ota-sign-config.sh).\n\n" : "Chữ ký OTA: KHÔNG — client 1.1.1+ sẽ từ chối cấu hình này.\n\n") +
       "Phiên bản cấu hình sẽ tự tăng từ v" + currentVer + " -> v" + (currentVer + 1) + ".\n" +
       "Đang lưu nhánh: " + (window._fuEnv === "dev" ? "🧪 DEV (carDev / phoneDev)" : "🟢 PRODUCTION (car / phone)") + ".\n" +
       "Nhánh còn lại (trong savingKeys) KHÔNG bị thay đổi nội dung nếu bạn không sửa form.\n\n" +
