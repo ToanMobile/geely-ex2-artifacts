@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.4",
-    "versionCode": 1104,
+    "latestVersionName": "1.1.6",
+    "versionCode": 1106,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "2576fcf3e008bfb6c20c83f212e9187468a1583ae81efb70eba18fa5d7599350",
-    "releaseNotes": "- Phím chuyển bài trên vô-lăng đã chạy với YouTube Music, YouTube và Spotify — bấm tiến/lùi là đổi bài, không nhảy hai bài. (Spotify gói Free không cho lùi bài — giới hạn của Spotify.)\n- Xe hỏi lại thì cứ nói \"có\" / \"phải\" / \"dạ\": câu hỏi xác nhận (mở kính, đổi chế độ lái khi đang chạy) nay đứng yên chờ bạn trả lời và xe tự mở mic — không phải bấm nút nói nữa. Muốn hủy thì nói \"không\" hoặc \"hủy\".\n- Hiểu đúng hơn khi mở app: \"khởi động YouTube\" không còn bị hiểu thành đóng app; \"mở maps\" không còn mở nhầm VTV Go; \"mở / nghe nhạc YouTube\" mở YouTube Music; \"mở Google Maps\", \"mở YouTube Music\" mở đúng bản đang cài trên xe.\n- Chia đôi màn hình bằng giọng nói dễ tính hơn: \"chia hai ứng dụng Google Maps và YouTube\" mà xe nghe chệch chữ nối (\"là\", \"rồi\", \"qua\"…) vẫn hiểu.\n- Google Maps không còn mất định vị sau khi tắt/bật xe: xe tự bật lại cài đặt vị trí mỗi lần khởi động (chỉ khi trên xe có cài Maps).\n- Chọn kênh Ổn định / Thử nghiệm không còn tự tải bản mới — chạm ô kênh chỉ để xem, muốn tải thì bấm \"Tải về & cài đặt\". Nút \"Kiểm tra cập nhật\" vẫn tải và cài luôn như cũ.\n- Trợ lý giọng nói không còn tắt đột ngột khi màn hình xe đổi sáng/tối (lỗi của bản 1.1.3).\n- Tên ứng dụng hiện đúng tên người đọc được, không còn hiện tên kỹ thuật kiểu \"com.google…\".",
+    "sha256": "478d054fc683903104acf6c5dba6e554754caa607975429efe1723d9757b9ca6",
+    "releaseNotes": "- Ghép đôi 1 chạm với điện thoại: popup toàn màn hình \"<máy> muốn ghép đôi · mã XXXX — Từ chối / Cho phép\"; chỉ nhận qua Wi‑Fi/Bluetooth, 1 yêu cầu/lúc, khoá 5 phút sau 3 lần từ chối.\n- Hình nền từ điện thoại đổi ngay trên màn hình xe (trước đây launcher Flyme bỏ qua ảnh chưa đăng ký): ô hình nền của CarConnect trong bộ sưu tập ROM — đăng ký 1 lần (chạm \"Áp dụng\" trên xe), sau đó mọi ảnh gửi lên tự chuyển 1920×1080 và áp ngay, không chạm.\n- Bộ nhận dạng giọng nói tải về có tiến độ rõ ràng: xe nâng cấp từ bản 1.0.x phải tải lại bộ nhận dạng tiếng Việt (56 MB). Nay màn Giọng nói và Cài đặt ➔ Cập nhật hiện % đang tải, nói rõ \"xe chưa có mạng\" thay vì \"thử lại sau ít phút\", có nút Tải lại; mất mạng giữa chừng thì lần sau tải tiếp, không tải lại từ đầu.\n- Gọi \"Hi Geely\" nhận nhiều giọng hơn: xe từng bác oan cách gọi của khách (nghe thành \"hi gi li\"); nay nhận đúng và không còn báo \"Lệnh không chính xác\" khi bạn vừa gọi xong chưa kịp ra lệnh.\n- Nói câu có ngắt vẫn hiểu trọn: \"máy lạnh … hai lăm độ\" (ngắt giữa chừng) nay đặt đúng 25 °C thay vì chỉ bật điều hoà.\n- Lấy gió trong / gió ngoài giữ đúng trạng thái: nói \"gió ngoài\" khi xe đã gió ngoài không còn bị lật ngược; thêm cách nói \"mở tuần hoàn\", \"đóng gió trong\".\n- Sấy gương đọc/ghi đúng kênh xe (bản trước có thể lỗi im lặng).\n- Cập nhật ứng dụng không còn chặn khi xe đang chạy; bản tải dở được giữ lại tới khi cài xong.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.4",
-    "versionCode": 1104,
+    "latestVersionName": "1.1.7",
+    "versionCode": 1107,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "ccb42546b09eecb5323c6bf25f50327ff4521526e1564628590ca9f91953305b",
-    "releaseNotes": "- Bản đồng bộ số hiệu với xe. Không có thay đổi nào trên điện thoại.",
+    "sha256": "e463c797e0c94e8bfc1cd4ef0c9746b2d39873452c3fbda05019039d19c4be4f",
+    "releaseNotes": "- Ghép đôi 1 chạm (cả Android lẫn iOS): không cần quét QR khi đã nối Wi‑Fi/Bluetooth — bấm \"Ghép đôi 1 chạm\", xe hiện hộp xác nhận to với mã 4 số, chạm \"Cho phép\" trên xe là xong. QR vẫn giữ để ghép từ xa.\n- Hình nền: chọn ảnh trong danh sách trên xe → hộp xem trước \"Đặt hình nền này ngay\" (iOS giống Android); xe đổi ngay, app đánh dấu đúng ảnh đang dùng. Ảnh chụp dọc không còn bị xoay ngang.\n- iOS: hết 2 khối trắng thừa cuối trang Nhạc & Hình nền; các hộp xác nhận trên trang con hiện đúng chỗ.\n- Ra lệnh khi chưa nối được xe: lệnh được xếp hàng và tự gửi khi nối lại (lệnh kính/khoá cửa chỉ giữ 5 phút để an toàn).\n- Đồng bộ mã lệnh với xe bản 1.1.6.\n- Chế độ lái & hồi năng: chạm là đổi ngay, không còn hộp thoại hỏi lại trên điện thoại (chỉ ra lệnh bằng giọng nói xe mới hỏi).\n- Nút nào xe báo chưa đọc được tín hiệu sẽ có dòng nhắc, lệnh vẫn được gửi (không khoá nút).\n- Quét mã QR: mã sai hoặc đã hết hạn nay báo ngay và cho quét tiếp, không còn đứng im; rung nhẹ khi quét trúng.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -72,5 +72,16 @@
     }
   ],
   "minVersionCode": 1100,
-  "forceRules": []
+  "forceRules": [],
+  "phoneIosDev": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect iOS",
+    "minVersionCode": 0,
+    "forceRules": [],
+    "latestVersionName": "1.1.7",
+    "versionCode": 1107,
+    "downloadUrl": "itms-beta://",
+    "sha256": "",
+    "releaseNotes": "- Ghép đôi 1 chạm (cả Android lẫn iOS): không cần quét QR khi đã nối Wi‑Fi/Bluetooth — bấm \"Ghép đôi 1 chạm\", xe hiện hộp xác nhận to với mã 4 số, chạm \"Cho phép\" trên xe là xong. QR vẫn giữ để ghép từ xa.\n- Hình nền: chọn ảnh trong danh sách trên xe → hộp xem trước \"Đặt hình nền này ngay\" (iOS giống Android); xe đổi ngay, app đánh dấu đúng ảnh đang dùng. Ảnh chụp dọc không còn bị xoay ngang.\n- iOS: hết 2 khối trắng thừa cuối trang Nhạc & Hình nền; các hộp xác nhận trên trang con hiện đúng chỗ.\n- Ra lệnh khi chưa nối được xe: lệnh được xếp hàng và tự gửi khi nối lại (lệnh kính/khoá cửa chỉ giữ 5 phút để an toàn).\n- Đồng bộ mã lệnh với xe bản 1.1.6.\n- Chế độ lái & hồi năng: chạm là đổi ngay, không còn hộp thoại hỏi lại trên điện thoại (chỉ ra lệnh bằng giọng nói xe mới hỏi).\n- Nút nào xe báo chưa đọc được tín hiệu sẽ có dòng nhắc, lệnh vẫn được gửi (không khoá nút).\n- Quét mã QR: mã sai hoặc đã hết hạn nay báo ngay và cho quét tiếp, không còn đứng im; rung nhẹ khi quét trúng."
+  }
 }
