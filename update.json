@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.6",
-    "versionCode": 1106,
+    "latestVersionName": "1.1.8",
+    "versionCode": 1108,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "478d054fc683903104acf6c5dba6e554754caa607975429efe1723d9757b9ca6",
-    "releaseNotes": "- Ghép đôi 1 chạm với điện thoại: popup toàn màn hình \"<máy> muốn ghép đôi · mã XXXX — Từ chối / Cho phép\"; chỉ nhận qua Wi‑Fi/Bluetooth, 1 yêu cầu/lúc, khoá 5 phút sau 3 lần từ chối.\n- Hình nền từ điện thoại đổi ngay trên màn hình xe (trước đây launcher Flyme bỏ qua ảnh chưa đăng ký): ô hình nền của CarConnect trong bộ sưu tập ROM — đăng ký 1 lần (chạm \"Áp dụng\" trên xe), sau đó mọi ảnh gửi lên tự chuyển 1920×1080 và áp ngay, không chạm.\n- Bộ nhận dạng giọng nói tải về có tiến độ rõ ràng: xe nâng cấp từ bản 1.0.x phải tải lại bộ nhận dạng tiếng Việt (56 MB). Nay màn Giọng nói và Cài đặt ➔ Cập nhật hiện % đang tải, nói rõ \"xe chưa có mạng\" thay vì \"thử lại sau ít phút\", có nút Tải lại; mất mạng giữa chừng thì lần sau tải tiếp, không tải lại từ đầu.\n- Gọi \"Hi Geely\" nhận nhiều giọng hơn: xe từng bác oan cách gọi của khách (nghe thành \"hi gi li\"); nay nhận đúng và không còn báo \"Lệnh không chính xác\" khi bạn vừa gọi xong chưa kịp ra lệnh.\n- Nói câu có ngắt vẫn hiểu trọn: \"máy lạnh … hai lăm độ\" (ngắt giữa chừng) nay đặt đúng 25 °C thay vì chỉ bật điều hoà.\n- Lấy gió trong / gió ngoài giữ đúng trạng thái: nói \"gió ngoài\" khi xe đã gió ngoài không còn bị lật ngược; thêm cách nói \"mở tuần hoàn\", \"đóng gió trong\".\n- Sấy gương đọc/ghi đúng kênh xe (bản trước có thể lỗi im lặng).\n- Cập nhật ứng dụng không còn chặn khi xe đang chạy; bản tải dở được giữ lại tới khi cài xong.",
+    "sha256": "3575f94392acb46aec4a52930bef58fd47873b43c4cd6c97367f945e82e4afdf",
+    "releaseNotes": "- Nhận diện giọng nói \"Hi Geely\" siêu nhẹ và tức thì: Tích hợp mô hình nhận diện từ khóa chuyên dụng mới siêu nhẹ (chỉ ~140 KB), phản hồi cực nhanh dưới 50ms, bảo vệ tuyệt đối bản quyền.\n- Tiết kiệm pin và giải phóng tải phần cứng xe: Tối ưu gom khung âm thanh 160ms giúp giảm 50% số lần xử lý và khóa luồng nền chạy trên lõi phụ, giữ màn hình xe luôn mượt mà 60 FPS khi đang dẫn đường bản đồ.\n- Không nuốt âm, không rụng chữ: Bộ đệm âm thanh thông minh 2 giây lưu trọn vẹn giọng nói khi ra lệnh liền mạch \"Hi Geely mở điều hòa 24 độ\", xe hiểu ngay không cần ngắt quãng.\n- Bảo mật tệp và chống lỗi nguồn điện: Cơ chế lưu trữ nguyên tử chống hỏng tệp khi tắt mở xe đột ngột, phân quyền bảo mật cấp hệ thống chống sao chép trái phép.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.7",
-    "versionCode": 1107,
+    "latestVersionName": "1.1.8",
+    "versionCode": 1108,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "e463c797e0c94e8bfc1cd4ef0c9746b2d39873452c3fbda05019039d19c4be4f",
-    "releaseNotes": "- Ghép đôi 1 chạm (cả Android lẫn iOS): không cần quét QR khi đã nối Wi‑Fi/Bluetooth — bấm \"Ghép đôi 1 chạm\", xe hiện hộp xác nhận to với mã 4 số, chạm \"Cho phép\" trên xe là xong. QR vẫn giữ để ghép từ xa.\n- Hình nền: chọn ảnh trong danh sách trên xe → hộp xem trước \"Đặt hình nền này ngay\" (iOS giống Android); xe đổi ngay, app đánh dấu đúng ảnh đang dùng. Ảnh chụp dọc không còn bị xoay ngang.\n- iOS: hết 2 khối trắng thừa cuối trang Nhạc & Hình nền; các hộp xác nhận trên trang con hiện đúng chỗ.\n- Ra lệnh khi chưa nối được xe: lệnh được xếp hàng và tự gửi khi nối lại (lệnh kính/khoá cửa chỉ giữ 5 phút để an toàn).\n- Đồng bộ mã lệnh với xe bản 1.1.6.\n- Chế độ lái & hồi năng: chạm là đổi ngay, không còn hộp thoại hỏi lại trên điện thoại (chỉ ra lệnh bằng giọng nói xe mới hỏi).\n- Nút nào xe báo chưa đọc được tín hiệu sẽ có dòng nhắc, lệnh vẫn được gửi (không khoá nút).\n- Quét mã QR: mã sai hoặc đã hết hạn nay báo ngay và cho quét tiếp, không còn đứng im; rung nhẹ khi quét trúng.",
+    "sha256": "6e033b30f454510964961ec7427cdb79a3961d93a2fcf58d333b2a1ca610712f",
+    "releaseNotes": "- Đồng bộ toàn diện với hệ thống xe bản 1.1.8: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.\n- Tối ưu trải nghiệm điều khiển tức thì: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,10 +78,10 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.1.7",
-    "versionCode": 1107,
+    "latestVersionName": "1.1.8",
+    "versionCode": 1108,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- Ghép đôi 1 chạm (cả Android lẫn iOS): không cần quét QR khi đã nối Wi‑Fi/Bluetooth — bấm \"Ghép đôi 1 chạm\", xe hiện hộp xác nhận to với mã 4 số, chạm \"Cho phép\" trên xe là xong. QR vẫn giữ để ghép từ xa.\n- Hình nền: chọn ảnh trong danh sách trên xe → hộp xem trước \"Đặt hình nền này ngay\" (iOS giống Android); xe đổi ngay, app đánh dấu đúng ảnh đang dùng. Ảnh chụp dọc không còn bị xoay ngang.\n- iOS: hết 2 khối trắng thừa cuối trang Nhạc & Hình nền; các hộp xác nhận trên trang con hiện đúng chỗ.\n- Ra lệnh khi chưa nối được xe: lệnh được xếp hàng và tự gửi khi nối lại (lệnh kính/khoá cửa chỉ giữ 5 phút để an toàn).\n- Đồng bộ mã lệnh với xe bản 1.1.6.\n- Chế độ lái & hồi năng: chạm là đổi ngay, không còn hộp thoại hỏi lại trên điện thoại (chỉ ra lệnh bằng giọng nói xe mới hỏi).\n- Nút nào xe báo chưa đọc được tín hiệu sẽ có dòng nhắc, lệnh vẫn được gửi (không khoá nút).\n- Quét mã QR: mã sai hoặc đã hết hạn nay báo ngay và cho quét tiếp, không còn đứng im; rung nhẹ khi quét trúng."
+    "releaseNotes": "- Đồng bộ toàn diện với hệ thống xe bản 1.1.8: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.\n- Tối ưu trải nghiệm điều khiển tức thì: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe."
   }
 }
