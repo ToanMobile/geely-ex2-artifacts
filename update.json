@@ -1,18 +1,18 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.1.5",
-  "versionCode": 1105,
+  "latestVersionName": "1.2.0",
+  "versionCode": 1200,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "e20845d300a22be15d4fd78e61a03df931dce610cb8a732b20c4799cb7e966b4",
-  "releaseNotes": "- 🗺️ Google Maps tích hợp tối ưu mượt mà 60 FPS: Tự động chuyển sang chế độ 2D siêu nhẹ, tắt toà nhà 3D và giao thông nặng nề, xoay theo hướng xe và tắt hiệu ứng chuyển động toàn hệ thống ngay khi cài đặt — phản hồi tức thì 0ms, không còn lag giật.\n- 🎧 YouTube Music & Spotify chạy ngầm bất tử: Nghe nhạc xuyên suốt cả chuyến đi! Chuyển sang app khác hoặc ẩn xuống nền xe không bao giờ bị hệ thống tự động tắt nhạc giữa chừng như trước.\n- 📱 Chia đôi màn hình vừa dẫn đường vừa nghe nhạc: Thoải mái mở song song Vietmap Live / Google Maps bên cạnh YouTube / Spotify. Nhạc vẫn phát ngầm liên tục, đặc biệt xe tự động giảm nhỏ âm lượng nhạc thông minh mỗi khi có thông báo tốc độ hoặc cảnh báo phạt nguội.\n- 🔘 Phím nổi đa năng tiện ích (Quick Floater): Nút nổi thông minh kéo thả mọi vị trí trên màn hình. Đang xem bản đồ chỉ cần chạm nhẹ là chỉnh ngay chế độ lái (Sport/Comfort/Eco), mức hồi năng, quạt gió điều hoà hoặc tắt đen màn hình nghỉ ngơi mà không cần bấm thoát ra ngoài.\n- 🎵 Phím vô-lăng chuyển bài chuẩn xác: Nút chuyển bài tới/lui trên vô-lăng nhận diện hoàn hảo với YouTube Music, YouTube và Spotify — bấm một nấc đổi đúng một bài, không còn bị nhảy cóc 2 bài liên tiếp (Spotify gói Free không hỗ trợ lùi bài do giới hạn từ app).\n- 🗣️ Xác nhận giọng nói rảnh tay: Khi xe hỏi lại để xác nhận an toàn (hạ kính, đổi chế độ lái lúc đang chạy), xe sẽ tự động mở mic chờ nghe. Các bác chỉ cần nói tự nhiên \"có\" / \"phải\" / \"dạ\" hoặc \"không\" / \"hủy\" mà không cần bấm lại nút nói trên vô-lăng.\n- 🧭 Mở app & bản đồ thông minh hơn: Nói \"khởi động YouTube\" xe hiểu là mở app (không còn bị nghe nhầm thành đóng app); nói \"mở maps\" mở đúng bản đồ (không mở nhầm VTV Go); nói \"mở nhạc YouTube\" mở chuẩn YouTube Music; lệnh chia đôi màn hình (\"chia hai ứng dụng Google Maps và YouTube\") nhận diện mượt mà kể cả khi có từ đệm.\n- 📍 Google Maps giữ định vị GPS ổn định: Không còn hiện tượng mất vị trí, đứng yên chấm xanh sau mỗi lần tắt / bật lại máy xe.",
+  "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
+  "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
   "channel": "stable",
   "car": {
     "type": "update_check",
-    "latestVersionName": "1.1.5",
-    "versionCode": 1105,
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-    "sha256": "e20845d300a22be15d4fd78e61a03df931dce610cb8a732b20c4799cb7e966b4",
-    "releaseNotes": "- 🗺️ Google Maps tích hợp tối ưu mượt mà 60 FPS: Tự động chuyển sang chế độ 2D siêu nhẹ, tắt toà nhà 3D và giao thông nặng nề, xoay theo hướng xe và tắt hiệu ứng chuyển động toàn hệ thống ngay khi cài đặt — phản hồi tức thì 0ms, không còn lag giật.\n- 🎧 YouTube Music & Spotify chạy ngầm bất tử: Nghe nhạc xuyên suốt cả chuyến đi! Chuyển sang app khác hoặc ẩn xuống nền xe không bao giờ bị hệ thống tự động tắt nhạc giữa chừng như trước.\n- 📱 Chia đôi màn hình vừa dẫn đường vừa nghe nhạc: Thoải mái mở song song Vietmap Live / Google Maps bên cạnh YouTube / Spotify. Nhạc vẫn phát ngầm liên tục, đặc biệt xe tự động giảm nhỏ âm lượng nhạc thông minh mỗi khi có thông báo tốc độ hoặc cảnh báo phạt nguội.\n- 🔘 Phím nổi đa năng tiện ích (Quick Floater): Nút nổi thông minh kéo thả mọi vị trí trên màn hình. Đang xem bản đồ chỉ cần chạm nhẹ là chỉnh ngay chế độ lái (Sport/Comfort/Eco), mức hồi năng, quạt gió điều hoà hoặc tắt đen màn hình nghỉ ngơi mà không cần bấm thoát ra ngoài.\n- 🎵 Phím vô-lăng chuyển bài chuẩn xác: Nút chuyển bài tới/lui trên vô-lăng nhận diện hoàn hảo với YouTube Music, YouTube và Spotify — bấm một nấc đổi đúng một bài, không còn bị nhảy cóc 2 bài liên tiếp (Spotify gói Free không hỗ trợ lùi bài do giới hạn từ app).\n- 🗣️ Xác nhận giọng nói rảnh tay: Khi xe hỏi lại để xác nhận an toàn (hạ kính, đổi chế độ lái lúc đang chạy), xe sẽ tự động mở mic chờ nghe. Các bác chỉ cần nói tự nhiên \"có\" / \"phải\" / \"dạ\" hoặc \"không\" / \"hủy\" mà không cần bấm lại nút nói trên vô-lăng.\n- 🧭 Mở app & bản đồ thông minh hơn: Nói \"khởi động YouTube\" xe hiểu là mở app (không còn bị nghe nhầm thành đóng app); nói \"mở maps\" mở đúng bản đồ (không mở nhầm VTV Go); nói \"mở nhạc YouTube\" mở chuẩn YouTube Music; lệnh chia đôi màn hình (\"chia hai ứng dụng Google Maps và YouTube\") nhận diện mượt mà kể cả khi có từ đệm.\n- 📍 Google Maps giữ định vị GPS ổn định: Không còn hiện tượng mất vị trí, đứng yên chấm xanh sau mỗi lần tắt / bật lại máy xe.",
+    "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
+    "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
     "channel": "stable",
     "minVersionCode": 1100,
     "forceRules": []
@@ -20,11 +20,11 @@
   "phone": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.5",
-    "versionCode": 1106,
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-    "sha256": "72b6901b70c2828cbc31a4f5ef755665b93119b308d42f0777e8566272f356fc",
-    "releaseNotes": "- Đồng bộ mã lệnh và tối ưu Google Maps trực tiếp trong APK, gỡ bỏ các nút bấm thừa và tinh chỉnh giao diện mượt mà.",
+    "sha256": "b51d370e2fd9821bf083574000de1f286d19a39eccc90302925cb9672a854d4e",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -54,21 +54,21 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.1.5",
-      "versionCode": 1105,
+      "latestVersionName": "1.2.0",
+      "versionCode": 1200,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "e20845d300a22be15d4fd78e61a03df931dce610cb8a732b20c4799cb7e966b4",
-      "releaseNotes": "- 🗺️ Google Maps tích hợp tối ưu mượt mà 60 FPS: Tự động chuyển sang chế độ 2D siêu nhẹ, tắt toà nhà 3D và giao thông nặng nề, xoay theo hướng xe và tắt hiệu ứng chuyển động toàn hệ thống ngay khi cài đặt — phản hồi tức thì 0ms, không còn lag giật.\n- 🎧 YouTube Music & Spotify chạy ngầm bất tử: Nghe nhạc xuyên suốt cả chuyến đi! Chuyển sang app khác hoặc ẩn xuống nền xe không bao giờ bị hệ thống tự động tắt nhạc giữa chừng như trước.\n- 📱 Chia đôi màn hình vừa dẫn đường vừa nghe nhạc: Thoải mái mở song song Vietmap Live / Google Maps bên cạnh YouTube / Spotify. Nhạc vẫn phát ngầm liên tục, đặc biệt xe tự động giảm nhỏ âm lượng nhạc thông minh mỗi khi có thông báo tốc độ hoặc cảnh báo phạt nguội.\n- 🔘 Phím nổi đa năng tiện ích (Quick Floater): Nút nổi thông minh kéo thả mọi vị trí trên màn hình. Đang xem bản đồ chỉ cần chạm nhẹ là chỉnh ngay chế độ lái (Sport/Comfort/Eco), mức hồi năng, quạt gió điều hoà hoặc tắt đen màn hình nghỉ ngơi mà không cần bấm thoát ra ngoài.\n- 🎵 Phím vô-lăng chuyển bài chuẩn xác: Nút chuyển bài tới/lui trên vô-lăng nhận diện hoàn hảo với YouTube Music, YouTube và Spotify — bấm một nấc đổi đúng một bài, không còn bị nhảy cóc 2 bài liên tiếp (Spotify gói Free không hỗ trợ lùi bài do giới hạn từ app).\n- 🗣️ Xác nhận giọng nói rảnh tay: Khi xe hỏi lại để xác nhận an toàn (hạ kính, đổi chế độ lái lúc đang chạy), xe sẽ tự động mở mic chờ nghe. Các bác chỉ cần nói tự nhiên \"có\" / \"phải\" / \"dạ\" hoặc \"không\" / \"hủy\" mà không cần bấm lại nút nói trên vô-lăng.\n- 🧭 Mở app & bản đồ thông minh hơn: Nói \"khởi động YouTube\" xe hiểu là mở app (không còn bị nghe nhầm thành đóng app); nói \"mở maps\" mở đúng bản đồ (không mở nhầm VTV Go); nói \"mở nhạc YouTube\" mở chuẩn YouTube Music; lệnh chia đôi màn hình (\"chia hai ứng dụng Google Maps và YouTube\") nhận diện mượt mà kể cả khi có từ đệm.\n- 📍 Google Maps giữ định vị GPS ổn định: Không còn hiện tượng mất vị trí, đứng yên chấm xanh sau mỗi lần tắt / bật lại máy xe.",
+      "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
+      "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
       "minVersionCode": 1100
     },
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.1.5",
-      "versionCode": 1106,
+      "latestVersionName": "1.2.0",
+      "versionCode": 1200,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "72b6901b70c2828cbc31a4f5ef755665b93119b308d42f0777e8566272f356fc",
-      "releaseNotes": "- Đồng bộ mã lệnh và tối ưu Google Maps trực tiếp trong APK, gỡ bỏ các nút bấm thừa và tinh chỉnh giao diện mượt mà."
+      "sha256": "b51d370e2fd9821bf083574000de1f286d19a39eccc90302925cb9672a854d4e",
+      "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
     }
   ],
   "minVersionCode": 1100,
@@ -83,5 +83,16 @@
     "downloadUrl": "itms-beta://",
     "sha256": "",
     "releaseNotes": "- Đồng bộ toàn diện với hệ thống xe bản 1.1.8: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.\n- Tối ưu trải nghiệm điều khiển tức thì: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe."
+  },
+  "phoneIos": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect iOS",
+    "minVersionCode": 0,
+    "forceRules": [],
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
+    "downloadUrl": "itms-beta://",
+    "sha256": "",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
   }
 }
