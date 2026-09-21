@@ -54,35 +54,27 @@
   
   /* Tabs */
   .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
-  .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px;
-    padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
   .tab-btn:hover { background: var(--panel2); color: var(--text); }
   .tab-btn.active { background: var(--accent); color: #fff; }
-
   .tab-content { display: none; }
   .tab-content.active { display: block; }
-
-  .panel { background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .panel h2 { font-size: 14px; margin-bottom: 12px; color: var(--muted); }
-  .warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn);
-    border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; }
+  .warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
   label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input, select, textarea { width: 100%; background: var(--panel2); color: var(--text);
-    border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 14px; }
+  input, select, textarea { width: 100%; background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 14px; }
   input:focus, select:focus, textarea:focus { outline: 1px solid var(--accent); }
   input[type=password] { font-family: var(--mono); }
-  button { background: var(--accent); color: #fff; border: 0; border-radius: 6px;
-    padding: 9px 16px; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 9px 16px; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
   button:hover { background: var(--accent2); }
   button.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
   button.ghost:hover { background: var(--panel2); }
   button.ghost.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   button.danger { background: var(--danger); }
   button.small { padding: 4px 10px; font-size: 12px; }
-  label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none;
-    cursor: pointer; white-space: nowrap; }
+  label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none; cursor: pointer; white-space: nowrap; }
   label.chk input { width: auto; }
   input:disabled, select:disabled, textarea:disabled { background: var(--bg) !important; color: var(--muted) !important; border: 1px dashed var(--border) !important; cursor: not-allowed !important; opacity: .75; }
   .license-type-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 4px 0 8px; }
@@ -129,26 +121,24 @@
     padding: 12px; font-family: var(--mono); font-size: 20px; letter-spacing: 2px;
     color: var(--keybox-text); text-align: center; margin: 10px 0; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border);
-    vertical-align: middle; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   th { color: var(--muted); font-weight: 500; font-size: 12px; }
   td.mono, .mono { font-family: var(--mono); font-size: 12px; }
+  #salesLogsTable { width: 100%; }
+  #salesLogsTable th:nth-child(1), #salesLogsTable td:nth-child(1) { width: 135px; white-space: nowrap; }
+  #salesLogsTable th:nth-child(2), #salesLogsTable td:nth-child(2) { width: 120px; white-space: nowrap; }
+  #salesLogsTable th:nth-child(3), #salesLogsTable td:nth-child(3) { width: 145px; white-space: nowrap; }
+  #salesLogsTable th:nth-child(4), #salesLogsTable td:nth-child(4) { width: auto; word-break: break-word; }
+  .fu-min-box { transition: all .2s; border-radius: 8px; padding: 12px; }
+  .fu-min-box.is-active { border-color: #f59e0b !important; background: rgba(245,158,11,.08) !important; }
   .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; white-space: nowrap; }
-  .tag.on { background: var(--tag-on-bg); color: var(--tag-on-text); }
-  .tag.off { background: var(--tag-off-bg); color: var(--tag-off-text); }
-  .tag.car { background: var(--tag-car-bg); color: var(--tag-car-text); }
-  .tag.pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
-  .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); }
-  .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
-  .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); }
-  .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); }
+  .tag.on { background: var(--tag-on-bg); color: var(--tag-on-text); } .tag.off { background: var(--tag-off-bg); color: var(--tag-off-text); }
+  .tag.car, .tag.dev-car { background: var(--tag-car-bg); color: var(--tag-car-text); } .tag.pc, .tag.dev-pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
+  .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); } .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
+  .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); } .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); }
   .tag.hidden { background: var(--tag-hidden-bg); color: var(--tag-hidden-text); }
-  .tag.dev-car { background: var(--tag-car-bg); color: var(--tag-car-text); }
-  .tag.dev-pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
-  /* Dòng của tài khoản quản trị: nền riêng + vạch vàng bên trái, luôn nằm trên cùng.
-     Dùng box-shadow inset thay cho border-left để không làm lệch chiều cao ô. */
-  tr.admin-row > td { background: var(--admin-row-bg); }
-  tr.admin-row:hover > td { background: var(--admin-row-bg2); }
+  /* Dòng của tài khoản quản trị: nền riêng + vạch vàng bên trái, luôn nằm trên cùng. */
+  tr.admin-row > td { background: var(--admin-row-bg); } tr.admin-row:hover > td { background: var(--admin-row-bg2); }
   tr.admin-row > td:first-child { box-shadow: inset 3px 0 0 var(--admin-row-line); }
   .msg { margin-top: 10px; font-size: 13px; }
   .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
@@ -156,9 +146,7 @@
   /* Danh mục Cài nhanh: đổi vị trí nhanh (15/09/2026) — ô số vị trí + tay cầm kéo-thả */
   input.qi-pos { width: 52px; padding: 3px 4px; font-family: var(--mono); font-size: 12px; text-align: center; }
   .qi-drag { cursor: grab; color: var(--muted); user-select: none; font-size: 16px; padding: 0 4px; }
-  tr.qi-dragging { opacity: .4; }
-  tr.qi-drop-before td { border-top: 2px solid var(--accent); }
-  tr.qi-drop-after td { border-bottom: 2px solid var(--accent); }
+  tr.qi-dragging { opacity: .4; } tr.qi-drop-before td { border-top: 2px solid var(--accent); } tr.qi-drop-after td { border-bottom: 2px solid var(--accent); }
   .hint { color: var(--muted); font-size: 12px; margin-top: 5px; }
   .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
   .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; }
@@ -753,9 +741,9 @@
         <div style="overflow-x:auto; margin-top:10px">
           <table id="salesLogsTable">
             <thead><tr>
-              <th>Thời gian</th>
-              <th>Người thực hiện</th>
-              <th>Hành động</th>
+              <th style="width:135px">Thời gian</th>
+              <th style="width:120px">Người thực hiện</th>
+              <th style="width:145px">Hành động</th>
               <th>Ghi chú</th>
             </tr></thead>
             <tbody></tbody>
@@ -952,7 +940,7 @@
           </div>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
             <button class="ghost small" onclick="loadAppUpdateConfig()">🔄 Tải lại từ Supabase</button>
-            <button id="btnSaveFu" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase (Tăng v+1)</button>
+            <button id="btnSaveFu" style="background:var(--accent); color:#fff; font-weight:700; box-shadow:0 2px 8px rgba(31,138,77,.35); padding:8px 16px" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase (Tăng v+1)</button>
             <button class="ghost small" onclick="exportUpdateJson('car')">📋 Copy update.json (Xe)</button>
             <button class="ghost small" onclick="exportUpdateJson('phone')">📋 Copy apps.json (Phone)</button>
           </div>
@@ -960,88 +948,80 @@
 
         <div class="warn" style="margin-top:10px; margin-bottom:14px; line-height:1.6">
           <b>💡 Cơ chế hoạt động & An toàn:</b><br>
-          • <b>Hiệu lực tức thì:</b> Xe và Điện thoại ưu tiên đọc cấu hình từ Supabase RPC (1s sau khi lưu), nếu không có mạng sẽ fallback về GitHub CDN.<br>
-          • <b>Chọn phiên bản đích tùy ý:</b> Cho phép chọn bất kỳ version cũ nào để ép lên một version đích cụ thể (không nhất thiết là bản mới nhất).<br>
-          • <b>An toàn khi lái xe:</b> CarConnect trên xe chỉ cài đặt khi xe đang đỗ (P). Nếu xe đang di chuyển, cập nhật sẽ tự động hoãn và chờ xe dừng đỗ.
+          • <b>Hiệu lực tức thì:</b> Xe và Điện thoại ưu tiên đọc cấu hình từ Supabase RPC (1s sau khi lưu), fallback về GitHub CDN.<br>
+          • <b>Chọn phiên bản đích tùy ý:</b> Cho phép chọn bất kỳ version cũ nào để ép lên một version đích cụ thể.<br>
+          • <b>An toàn khi lái xe:</b> CarConnect chỉ cài đặt khi xe đang đỗ (P). Nếu đang di chuyển, cập nhật tự hoãn và chờ xe dừng đỗ.
         </div>
 
-        <!-- App Switcher Sub-tabs -->
-        <div style="display:flex; gap:8px; margin-bottom:16px; border-bottom:1px solid var(--border); padding-bottom:8px">
-          <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
-          <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại (PhoneConnect)</button>
-          <span style="flex:1"></span>
-          <button class="tab-btn active" id="fuEnvProdBtn" onclick="switchFuEnv('prod')" title="Cấu hình cho bản phát hành chính thức (car / phone)">🟢 Production</button>
-          <button class="tab-btn" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình RIÊNG cho bản Dev (carDev / phoneDev) — bản Dev không dùng chung cấu hình với Production">🧪 Dev</button>
+        <!-- App Switcher Sub-tabs & Môi trường -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:10px">
+          <div style="display:flex; gap:8px; align-items:center">
+            <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
+            <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại (PhoneConnect)</button>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center">
+            <span class="hint" style="margin:0; font-size:12px">Môi trường:</span>
+            <button class="tab-btn active small" id="fuEnvProdBtn" onclick="switchFuEnv('prod')" title="Cấu hình bản phát hành chính thức (car/phone)">🟢 Production</button>
+            <button class="tab-btn small" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình bản Dev nội bộ (carDev/phoneDev)">🧪 Dev</button>
+          </div>
         </div>
 
-        
-    <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
-    <div class="panel" style="margin-top: 20px; border-left: 4px solid var(--accent)">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px">
-        <h3 style="margin:0; font-size:15px; color:var(--text)">🔒 Chữ ký OTA (Bắt buộc cho Client 1.1.1+)</h3>
-        <span id="otaKeyBadge" class="tag off" style="font-size:12px">⚪ Chưa nạp khoá riêng</span>
-      </div>
-
-      <!-- Khu vực nạp khoá riêng để tự ký 1-click -->
-      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:12px">
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px">
+        <!-- Dải thông tin Môi trường & Nhánh đang chỉnh sửa -->
+        <div id="fuEnvBanner" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding:8px 12px; background:var(--panel2); border-left:3px solid var(--ok); border-radius:6px; margin-bottom:14px; font-size:12px">
           <div>
-            <div style="font-weight:600; font-size:13px; color:var(--text)">⚡ Chế độ Tự động ký 1-Click (Web Crypto ECDSA)</div>
-            <div id="otaKeyStatusText" style="font-size:12px; color:var(--muted); margin-top:2px">
-              Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự ký và lưu ngay khi bạn bấm "Lưu cấu hình".
+            Đang cấu hình: <b id="fuCurrentAppLabel">🚗 Đầu xe (CarConnect)</b> • Môi trường: <b id="fuCurrentEnvLabel" style="color:var(--ok)">🟢 Production (Phát hành chính thức)</b>
+          </div>
+          <div class="hint" style="margin:0">
+            Nhánh máy chủ: <code id="fuCurrentBranchLabel" class="mono" style="font-weight:700">car</code>
+          </div>
+        </div>
+
+        <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
+        <div class="panel" style="margin-top:0; margin-bottom:14px; border-left:4px solid var(--accent); padding:10px 14px">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
+              <span style="font-weight:600; font-size:13px; color:var(--text)">🔒 Chữ ký OTA (Client 1.1.1+):</span>
+              <span id="otaKeyBadge" class="tag off" style="font-size:11px">⚪ Chưa nạp khoá riêng</span>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
+              <input type="file" id="otaKeyFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyFile(event)">
+              <button type="button" class="small" onclick="$('otaKeyFileInput').click()">📂 Nạp .pem</button>
+              <button type="button" class="small ghost" onclick="promptPasteOtaKey()">📝 Dán text</button>
+              <button type="button" class="small danger" id="btnForgetOtaKey" style="display:none" onclick="forgetOtaKey()">🗑️ Xoá khoá</button>
+              <button type="button" class="small ghost" id="btnToggleOtaAdvanced" onclick="toggleOtaAdvancedSign()">⚙️ Tuỳ chọn nâng cao ▼</button>
             </div>
           </div>
-          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
-            <input type="file" id="otaKeyFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyFile(event)">
-            <button type="button" class="small" onclick="$('otaKeyFileInput').click()">📂 Nạp ota_private.pem</button>
-            <button type="button" class="small ghost" onclick="promptPasteOtaKey()">📝 Dán text</button>
-            <button type="button" class="small danger" id="btnForgetOtaKey" style="display:none" onclick="forgetOtaKey()">🗑️ Xoá khoá</button>
+          <div id="otaKeyStatusText" style="font-size:11px; color:var(--muted); margin-top:4px">
+            Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự ký khi bấm "Lưu lên Supabase".
+          </div>
+          <div id="otaAdvancedSignBox" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid var(--border)">
+            <div class="hint" style="margin-bottom:8px">
+              💡 <b>Cách hoạt động:</b> Đã nạp khoá ➔ bấm "Lưu lên Supabase" sẽ tự ký. Nếu muốn ký ngoài Terminal: Tải JSON ➔ Chạy <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.
+            </div>
+            <div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap">
+              <button type="button" class="small ghost" id="btnManualAutoSign" onclick="doManualAutoSign()">✍️ Ký tự động ngay</button>
+              <button type="button" class="small ghost" onclick="downloadJsonForSigning()">⬇️ Tải JSON</button>
+              <button type="button" class="small ghost" onclick="copyTerminalSignCommand()">📋 Copy lệnh Terminal</button>
+            </div>
+            <textarea id="otaSignatureBlock" rows="3" placeholder='{"payload_raw": "...", "payload_sig": "..."}' style="width:100%; font-family:monospace; font-size:11px"></textarea>
           </div>
         </div>
-      </div>
 
-      <div class="hint" style="margin-bottom: 10px;">
-        💡 <b>Cách hoạt động:</b> Nếu đã nạp khoá, bạn chỉ cần bấm nút <b>"💾 Lưu lên Supabase"</b> bên trên — hệ thống sẽ <b>tự động ký</b> và gửi thẳng lên máy chủ.<br>
-        Nếu muốn ký ngoài Terminal: Bấm <b>Tải JSON</b> ➔ Chạy script <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.
-      </div>
-      <div style="display:flex; gap:8px; margin-bottom: 10px; flex-wrap:wrap">
-        <button type="button" class="small ghost" id="btnManualAutoSign" onclick="doManualAutoSign()">✍️ Ký tự động ngay</button>
-        <button type="button" class="small ghost" onclick="downloadJsonForSigning()">⬇️ Tải JSON để ký ngoài</button>
-        <button type="button" class="small ghost" onclick="copyTerminalSignCommand()">📋 Copy lệnh ký Terminal</button>
-      </div>
-      <textarea id="otaSignatureBlock" rows="3" placeholder='{"payload_raw": "...", "payload_sig": "..."}' style="width: 100%; font-family: monospace; font-size: 11px;"></textarea>
-    </div>
-    
-<div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
+        <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
 
         <!-- Form: CAR CONNECT -->
         <div id="fuPanelCar">
           <!-- Section: Phiên bản mới nhất -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
-              <span>📦 Phiên bản mới nhất (Latest Release — Production)</span>
+              <span>📦 Phiên bản mới nhất (Latest Release — <span id="car_envTitle">Production</span>)</span>
             </h3>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
-              <div>
-                <label>Tên phiên bản mới nhất (latestVersionName) *</label>
-                <input id="car_latestVersionName" value="" placeholder="chưa tải từ máy chủ">
-              </div>
-              <div>
-                <label>Mã build mới nhất (versionCode) *</label>
-                <input id="car_versionCode" type="number" value="" placeholder="chưa tải">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>Link tải file APK chính thức (downloadUrl) *</label>
-                <input id="car_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label>
-                <input id="car_sha256" class="mono" value="1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743" placeholder="VD: 4a2f8c... (64 ký tự hex)">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>Ghi chú phiên bản (Release Notes)</label>
-                <textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối..."></textarea>
-              </div>
+              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="car_latestVersionName" value="" placeholder="chưa tải từ máy chủ"></div>
+              <div><label>Mã build mới nhất (versionCode) *</label><input id="car_versionCode" type="number" value="" placeholder="chưa tải"></div>
+              <div style="grid-column: 1 / -1"><label>Link tải file APK chính thức (downloadUrl) *</label><input id="car_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk"></div>
+              <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label><input id="car_sha256" class="mono" value="1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743" placeholder="VD: 4a2f8c... (64 ký tự hex)"></div>
+              <div style="grid-column: 1 / -1"><label>Ghi chú phiên bản (Release Notes)</label><textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối..."></textarea></div>
             </div>
           </div>
 
@@ -1050,16 +1030,16 @@
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📋 Danh mục Phiên bản Đầu xe & Thao tác Ép Cập nhật Nhanh</span>
             </h3>
-            <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình trên máy chủ (RPC <code>get_app_update_config</code> — cùng nguồn xe đọc); các bản cũ là phiên bản <b>đội xe đang chạy thật</b> (bảng thiết bị của giấy phép). Bấm <b>⚡ Ép</b> để tạo quy tắc chặn bản đó và buộc lên bản đích <span id="car_targetHint" class="mono"></span>.</div>
+            <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình RPC máy chủ; các bản cũ là phiên bản <b>đội xe đang chạy thật</b>. Bấm <b>⚡ Ép</b> để chặn bản đó và buộc lên bản đích <span id="car_targetHint" class="mono"></span>.</div>
             <div style="overflow-x:auto">
               <table>
                 <thead>
                   <tr>
-                    <th>Phiên bản</th>
-                    <th>Mã build</th>
-                    <th>Ngày ra mắt</th>
-                    <th>Trạng thái hiện tại</th>
-                    <th style="text-align:right">Thao tác</th>
+                    <th style="width:170px">Phiên bản</th>
+                    <th style="width:90px; text-align:center">Mã build</th>
+                    <th style="width:160px">Thiết bị đang chạy</th>
+                    <th style="width:180px">Trạng thái hiện tại</th>
+                    <th style="text-align:right; width:180px">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="car_knownVersionsBody">
@@ -1082,25 +1062,28 @@
             </div>
 
             <!-- Ngưỡng tối thiểu -->
-            <div style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
-              <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
-              <div class="row" style="margin-top:6px; flex-wrap:wrap; gap:8px">
+            <div id="car_minBox" class="fu-min-box" style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border)">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
+                <label style="font-weight:600; color:var(--text); margin:0">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
+                <span id="car_minStatusBadge" class="tag off">⚪ Đang tắt (Tự nguyện)</span>
+              </div>
+              <div class="row" style="margin-top:8px; flex-wrap:wrap; gap:8px">
                 <input id="car_minVersionCode" type="number" value="0" style="max-width:140px" placeholder="0 = Tắt" oninput="syncFormToConfig(); updateKnownVersionsStatus('car')">
                 <button type="button" id="car_quickMinBtn" class="small ghost" onclick="setQuickMinVersionCode('car', 0)">⚡ Ép toàn bộ xe cũ lên bản đích</button>
                 <button type="button" class="small ghost" onclick="setQuickMinVersionCode('car', 0)">⚪ Tắt ép toàn bộ (Về 0)</button>
               </div>
-              <span class="hint" style="margin-top:4px; display:block">Mọi xe có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
+              <span class="hint" style="margin-top:6px; display:block">Mọi xe có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
             </div>
 
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="car_rulesTable">
                 <thead><tr>
-                  <th style="width:40px">#</th>
-                  <th>Bản cũ bị ép (Điều kiện)</th>
-                  <th>Phiên bản đích cần ép lên</th>
+                  <th style="width:40px; text-align:center">#</th>
+                  <th style="width:140px">Bản cũ bị ép (Điều kiện)</th>
+                  <th style="width:160px">Phiên bản đích cần ép lên</th>
                   <th>Thông điệp ép hiển thị</th>
-                  <th>Link APK đích</th>
+                  <th style="width:170px">Link APK đích</th>
                   <th style="text-align:right; width:120px">Thao tác</th>
                 </tr></thead>
                 <tbody></tbody>
@@ -1114,34 +1097,19 @@
           <!-- Section: Phiên bản mới nhất -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
-              <span>📦 Phiên bản mới nhất (Latest Release — Production)</span>
+              <span>📦 Phiên bản mới nhất (Latest Release — <span id="phone_envTitle">Production</span>)</span>
             </h3>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
-              <div>
-                <label>Tên phiên bản mới nhất (latestVersionName) *</label>
-                <input id="phone_latestVersionName" value="" placeholder="chưa tải từ máy chủ">
-              </div>
-              <div>
-                <label>Mã build mới nhất (versionCode) *</label>
-                <input id="phone_versionCode" type="number" value="" placeholder="chưa tải">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>Link tải file APK chính thức (downloadUrl) *</label>
-                <input id="phone_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label>
-                <input id="phone_sha256" class="mono" value="c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad" placeholder="VD: 3b1e... (64 ký tự hex)">
-              </div>
-              <div style="grid-column: 1 / -1">
-                <label>📱 iOS — Link cập nhật (TestFlight / App Store) — nhánh <code>phoneIos</code></label>
+              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="phone_latestVersionName" value="" placeholder="chưa tải từ máy chủ"></div>
+              <div><label>Mã build mới nhất (versionCode) *</label><input id="phone_versionCode" type="number" value="" placeholder="chưa tải"></div>
+              <div style="grid-column: 1 / -1"><label>Link tải file APK chính thức (downloadUrl) *</label><input id="phone_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk"></div>
+              <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label><input id="phone_sha256" class="mono" value="c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad" placeholder="VD: 3b1e... (64 ký tự hex)"></div>
+              <div style="grid-column: 1 / -1; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px"><label style="font-weight:600; color:var(--text); margin:0">🍎 Apple iOS — Link cập nhật (TestFlight / App Store)</label><span class="tag phone">Nhánh phoneIos</span></div>
                 <input id="phoneIos_downloadUrl" value="" placeholder="https://testflight.apple.com/join/… (trống = itms-beta:// mở app TestFlight)">
-                <div class="hint">iPhone chỉ đọc nhánh <code>phoneIos</code>/<code>phoneIosDev</code> (19/09/2026) — KHÔNG đọc link APK ở trên. Tên/mã build/ngưỡng ép/ghi chú dùng chung với ô PhoneConnect (script release đồng bộ CFBundleVersion = versionCode). iOS không có SHA nên quy tắc ép trỏ link riêng sẽ bị bỏ qua — muốn ép iOS dùng "Mã build tối thiểu".</div>
+                <div class="hint" style="margin-top:4px">iPhone chỉ đọc nhánh <code>phoneIos</code>/<code>phoneIosDev</code>. Tên/mã build/ngưỡng ép dùng chung với ô PhoneConnect.</div>
               </div>
-              <div style="grid-column: 1 / -1">
-                <label>Ghi chú phiên bản (Release Notes)</label>
-                <textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi..."></textarea>
-              </div>
+              <div style="grid-column: 1 / -1"><label>Ghi chú phiên bản (Release Notes)</label><textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi..."></textarea></div>
             </div>
           </div>
 
@@ -1150,16 +1118,16 @@
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📋 Danh mục Phiên bản Điện thoại & Thao tác Ép Cập nhật Nhanh</span>
             </h3>
-            <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình trên máy chủ. Điện thoại không có bảng thiết bị theo giấy phép nên chỉ liệt kê bản đích và các bản đã có quy tắc ép. Bấm <b>⚡ Ép</b> để buộc lên <span id="phone_targetHint" class="mono"></span>.</div>
+            <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình trên máy chủ. Bấm <b>⚡ Ép</b> để buộc lên <span id="phone_targetHint" class="mono"></span>.</div>
             <div style="overflow-x:auto">
               <table>
                 <thead>
                   <tr>
-                    <th>Phiên bản</th>
-                    <th>Mã build</th>
-                    <th>Ngày ra mắt</th>
-                    <th>Trạng thái hiện tại</th>
-                    <th style="text-align:right">Thao tác</th>
+                    <th style="width:170px">Phiên bản</th>
+                    <th style="width:90px; text-align:center">Mã build</th>
+                    <th style="width:160px">Thiết bị đang chạy</th>
+                    <th style="width:180px">Trạng thái hiện tại</th>
+                    <th style="text-align:right; width:180px">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="phone_knownVersionsBody">
@@ -1182,25 +1150,28 @@
             </div>
 
             <!-- Ngưỡng tối thiểu -->
-            <div style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
-              <label style="font-weight:600; color:var(--text)">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
-              <div class="row" style="margin-top:6px; flex-wrap:wrap; gap:8px">
+            <div id="phone_minBox" class="fu-min-box" style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border)">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
+                <label style="font-weight:600; color:var(--text); margin:0">Ngưỡng build tối thiểu toàn bộ (minVersionCode):</label>
+                <span id="phone_minStatusBadge" class="tag off">⚪ Đang tắt (Tự nguyện)</span>
+              </div>
+              <div class="row" style="margin-top:8px; flex-wrap:wrap; gap:8px">
                 <input id="phone_minVersionCode" type="number" value="0" style="max-width:140px" placeholder="0 = Tắt" oninput="syncFormToConfig(); updateKnownVersionsStatus('phone')">
                 <button type="button" id="phone_quickMinBtn" class="small ghost" onclick="setQuickMinVersionCode('phone', 0)">⚡ Ép toàn bộ đt cũ lên bản đích</button>
                 <button type="button" class="small ghost" onclick="setQuickMinVersionCode('phone', 0)">⚪ Tắt ép toàn bộ (Về 0)</button>
               </div>
-              <span class="hint" style="margin-top:4px; display:block">Mọi điện thoại có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
+              <span class="hint" style="margin-top:6px; display:block">Mọi điện thoại có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
             </div>
 
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="phone_rulesTable">
                 <thead><tr>
-                  <th style="width:40px">#</th>
-                  <th>Bản cũ bị ép (Điều kiện)</th>
-                  <th>Phiên bản đích cần ép lên</th>
+                  <th style="width:40px; text-align:center">#</th>
+                  <th style="width:140px">Bản cũ bị ép (Điều kiện)</th>
+                  <th style="width:160px">Phiên bản đích cần ép lên</th>
                   <th>Thông điệp ép hiển thị</th>
-                  <th>Link APK đích</th>
+                  <th style="width:170px">Link APK đích</th>
                   <th style="text-align:right; width:120px">Thao tác</th>
                 </tr></thead>
                 <tbody></tbody>
@@ -3814,10 +3785,10 @@ function renderSalesLogsTable() {
   logs.forEach(l => {
     const tr = document.createElement("tr");
     tr.innerHTML = 
-      '<td style="font-size:12px; color:var(--muted)">' + formatIsoTime(l.changed_at) + '</td>' +
-      '<td><span class="tag admin">' + esc(l.changed_by) + '</span></td>' +
-      '<td><b>' + esc(l.action) + '</b></td>' +
-      '<td style="font-size:12px">' + esc(l.note) + '</td>';
+      '<td style="font-size:12px; color:var(--muted); white-space:nowrap">' + formatIsoTime(l.changed_at) + '</td>' +
+      '<td style="white-space:nowrap"><span class="tag admin">' + esc(l.changed_by) + '</span></td>' +
+      '<td style="white-space:nowrap"><b style="font-size:12px">' + esc(l.action) + '</b></td>' +
+      '<td style="font-size:12px; word-break:break-word">' + esc(l.note) + '</td>';
     tbody.appendChild(tr);
   });
 }
@@ -4507,11 +4478,34 @@ function fuNode(app) {
   return window._appUpdateConfig[k];
 }
 
+function updateFuHeaderBanner() {
+  const app = window._currentFuApp || "car", env = window._fuEnv || "prod", branch = fuKey(app);
+  if ($("fuCurrentAppLabel")) $("fuCurrentAppLabel").textContent = app === "car" ? "🚗 Đầu xe (CarConnect)" : "📱 Điện thoại (PhoneConnect)";
+  if ($("fuCurrentEnvLabel")) {
+    $("fuCurrentEnvLabel").textContent = env === "prod" ? "🟢 Production (Phát hành chính thức)" : "🧪 Dev (Thử nghiệm nội bộ)";
+    $("fuCurrentEnvLabel").style.color = env === "prod" ? "var(--ok)" : "#38bdf8";
+  }
+  if ($("fuCurrentBranchLabel")) $("fuCurrentBranchLabel").textContent = branch;
+  if ($("car_envTitle")) $("car_envTitle").textContent = env === "prod" ? "Production" : "Dev (Thử nghiệm)";
+  if ($("phone_envTitle")) $("phone_envTitle").textContent = env === "prod" ? "Production" : "Dev (Thử nghiệm)";
+  if ($("fuEnvBanner")) $("fuEnvBanner").style.borderLeftColor = env === "prod" ? "var(--ok)" : "#38bdf8";
+}
+
+function toggleOtaAdvancedSign() {
+  const box = $("otaAdvancedSignBox");
+  if (!box) return;
+  const isHidden = box.style.display === "none";
+  box.style.display = isHidden ? "block" : "none";
+  const btn = $("btnToggleOtaAdvanced");
+  if (btn) btn.textContent = isHidden ? "⚙️ Thu gọn ký Terminal ▲" : "⚙️ Tuỳ chọn nâng cao ▼";
+}
+
 function switchFuEnv(env) {
-  syncFormToConfig();               // giữ lại thứ đang gõ dở của môi trường cũ
+  syncFormToConfig();
   window._fuEnv = env;
   $("fuEnvProdBtn").classList.toggle("active", env === "prod");
   $("fuEnvDevBtn").classList.toggle("active", env === "dev");
+  updateFuHeaderBanner();
   renderAppUpdateConfigUI();
 }
 
@@ -4519,23 +4513,16 @@ window._currentFuApp = "car";
 window._editingRuleApp = "car";
 window._editingRuleIndex = -1;
 
-function fuEscapeHtml(str) {
-  return esc(str);
-}
+function fuEscapeHtml(str) { return esc(str); }
 
 function switchFuApp(app) {
   window._currentFuApp = app;
-  if (app === "car") {
-    $("fuSubCarBtn").classList.add("active");
-    $("fuSubPhoneBtn").classList.remove("active");
-    $("fuPanelCar").style.display = "block";
-    $("fuPanelPhone").style.display = "none";
-  } else {
-    $("fuSubCarBtn").classList.remove("active");
-    $("fuSubPhoneBtn").classList.add("active");
-    $("fuPanelCar").style.display = "none";
-    $("fuPanelPhone").style.display = "block";
-  }
+  const isCar = app === "car";
+  $("fuSubCarBtn").classList.toggle("active", isCar);
+  $("fuSubPhoneBtn").classList.toggle("active", !isCar);
+  $("fuPanelCar").style.display = isCar ? "block" : "none";
+  $("fuPanelPhone").style.display = isCar ? "none" : "block";
+  updateFuHeaderBanner();
 }
 
 async function loadAppUpdateConfig() {
@@ -4596,6 +4583,7 @@ function renderAppUpdateConfigUI() {
   renderKnownVersions("phone");
 
   updateOtaKeyStatusUI();
+  updateFuHeaderBanner();
 }
 
 /**
@@ -4706,6 +4694,18 @@ function updateKnownVersionsStatus(app) {
       statEl.innerHTML = `<span class="tag off">⚪ Tự nguyện (Chưa ép)</span>`;
     }
   });
+  const minBox = $(app + "_minBox"), minBadge = $(app + "_minStatusBadge");
+  if (minBox && minBadge) {
+    if (minVer > 0) {
+      minBox.classList.add("is-active");
+      minBadge.className = "tag danger";
+      minBadge.textContent = "⚠️ ĐANG ÉP TOÀN BỘ (< " + minVer + ")";
+    } else {
+      minBox.classList.remove("is-active");
+      minBadge.className = "tag off";
+      minBadge.textContent = "⚪ Đang tắt (Tự nguyện)";
+    }
+  }
 }
 
 function quickAddForceRule(app, oldBuild, oldVer) {
