@@ -23,7 +23,7 @@
     "latestVersionName": "1.2.0",
     "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-    "sha256": "b51d370e2fd9821bf083574000de1f286d19a39eccc90302925cb9672a854d4e",
+    "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
     "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
     "minVersionCode": 0,
     "forceRules": []
@@ -67,7 +67,7 @@
       "latestVersionName": "1.2.0",
       "versionCode": 1200,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "b51d370e2fd9821bf083574000de1f286d19a39eccc90302925cb9672a854d4e",
+      "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
       "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
     }
   ],
