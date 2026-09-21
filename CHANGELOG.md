@@ -24,8 +24,77 @@ Quy ước:
 
 ---
 
+## CarConnect 1.2.0
+
+- **Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại**: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật "Đang nghe..." khi người ngồi trong xe nói chuyện đời thường.
+- **Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt**: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng ("đổi sang eco", "thay đổi sang chế độ eco", "chuyển sang lái tiết kiệm", "đổi chế độ tiết kiệm"...), phản hồi tức thì và chính xác.
+- **Nâng cấp kho ứng dụng Cài nhanh**: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.
+- **Tối ưu hóa độ ổn định toàn hệ thống**: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.
+
+## PhoneConnect 1.2.0
+
+- **Đồng bộ phiên bản 1.2.0 với xe**: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.
+- **Cải thiện kết nối và trải nghiệm người dùng**: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.
+
+## CarConnect 1.1.9
+
+- **Tự động toàn màn hình khi tắt 1 ứng dụng chia đôi**: Khi đang chia đôi 2 ứng dụng, nếu tắt 1 ứng dụng thì ứng dụng còn lại tự động bung ra toàn màn hình ngay lập tức, không còn bị kẹt nửa màn hình.
+- **Khắc phục lỗi ứng dụng mở mới bị hiển thị dạng cửa sổ nổi**: Tự động dọn dẹp sạch sẽ các vùng cửa sổ chia đôi cũ, giúp ứng dụng mở mới từ màn hình chính luôn hiển thị trọn vẹn toàn màn hình.
+- **Kéo vạch chia đôi siêu mượt mà 60 FPS**: Tối ưu hóa phản hồi cảm ứng mượt mà khi di chuyển vạch chia đôi, tích hợp cơ chế tự động căn chỉnh thông minh vào các tỷ lệ chuẩn (30:70, 50:50, 70:30), bảo vệ trải nghiệm xem video và bản đồ không bị gián đoạn.
+- **Thêm nút "Reset màn hình" trên bảng tiện ích nổi**: Hỗ trợ xử lý nhanh các tình huống kẹt cửa sổ, khôi phục giao diện xe về trạng thái chuẩn với cơ chế chạm 2 bước xác nhận an toàn chống bấm nhầm khi đang lái xe.
+
+## PhoneConnect 1.1.9
+
+- **Đồng bộ phiên bản 1.1.9 với đầu xe**: Nâng cao độ ổn định kết nối và đồng bộ trạng thái hiển thị nhiều cửa sổ với hệ thống xe.
+
+## CarConnect 1.1.8
+
+_(Bỏ số 1.1.7 để nhảy lên 1.1.8 đồng bộ cùng phiên bản PhoneConnect 1.1.8 = mã 1108.)_
+
+- **Nhận diện giọng nói "Hi Geely" siêu nhẹ và tức thì**: Tích hợp mô hình nhận diện từ khóa chuyên dụng mới siêu nhẹ (chỉ ~140 KB), phản hồi cực nhanh dưới 50ms, bảo vệ tuyệt đối bản quyền.
+- **Tiết kiệm pin và giải phóng tải phần cứng xe**: Tối ưu gom khung âm thanh 160ms giúp giảm 50% số lần xử lý và khóa luồng nền chạy trên lõi phụ, giữ màn hình xe luôn mượt mà 60 FPS khi đang dẫn đường bản đồ.
+- **Không nuốt âm, không rụng chữ**: Bộ đệm âm thanh thông minh 2 giây lưu trọn vẹn giọng nói khi ra lệnh liền mạch "Hi Geely mở điều hòa 24 độ", xe hiểu ngay không cần ngắt quãng.
+- **Bảo mật tệp và chống lỗi nguồn điện**: Cơ chế lưu trữ nguyên tử chống hỏng tệp khi tắt mở xe đột ngột, phân quyền bảo mật cấp hệ thống chống sao chép trái phép.
+
+## PhoneConnect 1.1.8
+
+- **Đồng bộ toàn diện với hệ thống xe bản 1.1.8**: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.
+- **Tối ưu trải nghiệm điều khiển tức thì**: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe.
+
+## CarConnect 1.1.6
+
+- **Ghép đôi 1 chạm với điện thoại**: popup toàn màn hình "<máy> muốn ghép đôi · mã XXXX — Từ chối / Cho phép"; chỉ nhận qua Wi‑Fi/Bluetooth, 1 yêu cầu/lúc, khoá 5 phút sau 3 lần từ chối.
+- **Hình nền từ điện thoại đổi ngay trên màn hình xe** (trước đây launcher Flyme bỏ qua ảnh chưa đăng ký): ô hình nền của CarConnect trong bộ sưu tập ROM — đăng ký 1 lần (chạm "Áp dụng" trên xe), sau đó mọi ảnh gửi lên tự chuyển 1920×1080 và áp ngay, không chạm.
+- **Bộ nhận dạng giọng nói tải về có tiến độ rõ ràng**: xe nâng cấp từ bản 1.0.x phải tải lại bộ nhận dạng tiếng Việt (56 MB). Nay màn Giọng nói và Cài đặt ➔ Cập nhật hiện % đang tải, nói rõ "xe chưa có mạng" thay vì "thử lại sau ít phút", có nút Tải lại; mất mạng giữa chừng thì lần sau tải tiếp, không tải lại từ đầu.
+- **Gọi "Hi Geely" nhận nhiều giọng hơn**: xe từng bác oan cách gọi của khách (nghe thành "hi gi li"); nay nhận đúng và không còn báo "Lệnh không chính xác" khi bạn vừa gọi xong chưa kịp ra lệnh.
+- **Nói câu có ngắt vẫn hiểu trọn**: "máy lạnh … hai lăm độ" (ngắt giữa chừng) nay đặt đúng 25 °C thay vì chỉ bật điều hoà.
+- **Lấy gió trong / gió ngoài giữ đúng trạng thái**: nói "gió ngoài" khi xe đã gió ngoài không còn bị lật ngược; thêm cách nói "mở tuần hoàn", "đóng gió trong".
+- **Sấy gương** đọc/ghi đúng kênh xe (bản trước có thể lỗi im lặng).
+- **Cập nhật ứng dụng không còn chặn khi xe đang chạy**; bản tải dở được giữ lại tới khi cài xong.
+- Kỹ thuật: thêm số đo tải bộ nhận dạng, lượt gọi Hi Geely được chấp nhận/bác, và lưu mẫu 2 giây mỗi lần gọi (khi bật "gửi mẫu giọng nói") để huấn luyện bộ nhận gọi tên tiếng Việt.
+
+## PhoneConnect 1.1.7
+
+_(Bỏ số 1.1.6: mã 1106 đã public dưới tên 1.1.5; tên nhảy lên 1.1.7 = mã 1107.)_
+
+- **Ghép đôi 1 chạm** (cả Android lẫn iOS): không cần quét QR khi đã nối Wi‑Fi/Bluetooth — bấm "Ghép đôi 1 chạm", xe hiện hộp xác nhận to với mã 4 số, chạm "Cho phép" trên xe là xong. QR vẫn giữ để ghép từ xa.
+- Hình nền: chọn ảnh trong danh sách trên xe → hộp xem trước "Đặt hình nền này ngay" (iOS giống Android); xe đổi ngay, app đánh dấu đúng ảnh đang dùng. Ảnh chụp dọc không còn bị xoay ngang.
+- iOS: hết 2 khối trắng thừa cuối trang Nhạc & Hình nền; các hộp xác nhận trên trang con hiện đúng chỗ.
+- Ra lệnh khi chưa nối được xe: lệnh được xếp hàng và tự gửi khi nối lại (lệnh kính/khoá cửa chỉ giữ 5 phút để an toàn).
+- Đồng bộ mã lệnh với xe bản 1.1.6.
+- **Chế độ lái & hồi năng: chạm là đổi ngay**, không còn hộp thoại hỏi lại trên điện thoại (chỉ ra lệnh bằng giọng nói xe mới hỏi).
+- Nút nào xe báo chưa đọc được tín hiệu sẽ có dòng nhắc, lệnh vẫn được gửi (không khoá nút).
+- Quét mã QR: mã sai hoặc đã hết hạn nay báo ngay và cho quét tiếp, không còn đứng im; rung nhẹ khi quét trúng.
+- Giờ "Đỗ lúc" giữ đúng thời điểm đỗ, không còn bị cập nhật liên tục khi xe đứng yên.
+- Mở khoá cửa: vì lý do an toàn xe chỉ nhận mở khoá bằng chìa/tay nắm cửa (đo thật 19/09) — bấm trong app nay chỉ nhắc, không gửi lệnh; thêm nút "Đã khóa / Mở khóa" rõ ràng ở Điều khiển.
+- iPhone: xe đổi mạng/đổi IP nay tự tìm lại (trước phải mở lại app); hết hiện tượng rớt nối 35 giây sau khi ra nền; giờ "Đỗ lúc" không còn bị ghi đè khi mất Wi‑Fi tại chỗ đỗ.
+- Cloud 4G (iPhone): sửa phiên cũ hết hạn vẫn mở kênh thứ hai chen phiên mới.
+- Xoay màn hình không còn mất trang đang mở; xoá bản ghi sổ bảo dưỡng phải xác nhận.
+- **iPhone (đồng bộ 100 % với Android)**: gửi nhạc/hình nền lên xe chạy được (trước đây xe luôn từ chối); kết nối Cloud 4G tự nối lại sau khi rớt; báo rõ khi xe từ chối token và có nút "Quét QR ngay"; Kho ứng dụng & Cài nhanh cài thật (tải, kiểm chữ ký/SHA, đẩy lên xe, báo đúng kết quả), quản lý ứng dụng trên xe đủ Ẩn/Hiện/Mở/Gỡ; ảnh chọn từ Photos, xem thumbnail, nghe thử nhạc; gửi tệp lớn không còn tốn RAM và có tiến độ thật; kiểm tra cập nhật iOS an toàn (xác minh chữ ký, ép cập nhật khi cần) và mở đúng TestFlight; app luôn tiếng Việt; token bảo mật lưu trong Keychain.
+
 ## CarConnect 1.1.5
 
+- **🗺️ Google Maps tích hợp tối ưu mượt mà 60 FPS**: Tự động chuyển sang chế độ 2D siêu nhẹ, tắt toà nhà 3D và giao thông nặng nề, xoay theo hướng xe và tắt hiệu ứng chuyển động toàn hệ thống ngay khi cài đặt — phản hồi tức thì 0ms, không còn lag giật.
 - **🎧 YouTube Music & Spotify chạy ngầm bất tử**: Nghe nhạc xuyên suốt cả chuyến đi! Chuyển sang app khác hoặc ẩn xuống nền xe không bao giờ bị hệ thống tự động tắt nhạc giữa chừng như trước.
 - **📱 Chia đôi màn hình vừa dẫn đường vừa nghe nhạc**: Thoải mái mở song song Vietmap Live / Google Maps bên cạnh YouTube / Spotify. Nhạc vẫn phát ngầm liên tục, đặc biệt xe tự động giảm nhỏ âm lượng nhạc thông minh mỗi khi có thông báo tốc độ hoặc cảnh báo phạt nguội.
 - **🔘 Phím nổi đa năng tiện ích (Quick Floater)**: Nút nổi thông minh kéo thả mọi vị trí trên màn hình. Đang xem bản đồ chỉ cần chạm nhẹ là chỉnh ngay chế độ lái (Sport/Comfort/Eco), mức hồi năng, quạt gió điều hoà hoặc tắt đen màn hình nghỉ ngơi mà không cần bấm thoát ra ngoài.
@@ -39,7 +108,7 @@ Quy ước:
 
 ## PhoneConnect 1.1.5
 
-- Bản đồng bộ số hiệu với xe. Không có thay đổi nào trên điện thoại.
+- Đồng bộ mã lệnh và tối ưu Google Maps trực tiếp trong APK, gỡ bỏ các nút bấm thừa và tinh chỉnh giao diện mượt mà.
 
 ## CarConnect 1.1.4
 

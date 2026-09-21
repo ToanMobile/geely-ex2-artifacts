@@ -3,16 +3,16 @@
   "latestVersionName": "1.2.0",
   "versionCode": 1200,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
-  "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+  "sha256": "ca45a0453f284f0a2ca38bbcfa7a988b0b688ca57a6ddec3dc4c4d49d10e5faf",
+  "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
   "channel": "stable",
   "car": {
     "type": "update_check",
     "latestVersionName": "1.2.0",
     "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-    "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
-    "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+    "sha256": "ca45a0453f284f0a2ca38bbcfa7a988b0b688ca57a6ddec3dc4c4d49d10e5faf",
+    "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
     "channel": "stable",
     "minVersionCode": 1100,
     "forceRules": []
@@ -57,8 +57,8 @@
       "latestVersionName": "1.2.0",
       "versionCode": 1200,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "c586787dc3791b27f875617c4ffdcd7554d6810512fd88aade5fe9900986f4f2",
-      "releaseNotes": "- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+      "sha256": "ca45a0453f284f0a2ca38bbcfa7a988b0b688ca57a6ddec3dc4c4d49d10e5faf",
+      "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
       "minVersionCode": 1100
     },
     {
