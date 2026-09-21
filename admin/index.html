@@ -317,7 +317,7 @@
     <!-- Bước 1: Nhập Số điện thoại -->
     <div id="loginStepPhone">
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên</label>
-      <input id="loginPhoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ví dụ: 0333332093 / 0762629292" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
+      <input id="loginPhoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại Quản trị viên (VD: 09xxxxxxxx)" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
       <div class="hint">Nhập số điện thoại đã được cấp quyền Quản trị để nhận mã OTP qua Telegram.</div>
 
       <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">
@@ -413,6 +413,29 @@
     <div class="panel">
       <h2>1. Tạo mã mới</h2>
       <div class="grid">
+        <div style="grid-column: 1 / -1;">
+          <label>Loại mã cấp</label>
+          <div class="row" style="gap:20px; margin-top:6px;">
+            <label class="chk"><input type="radio" name="licenseType" id="typeOfficial" value="official" checked onchange="syncTrialUI()"> 👑 Bản chính thức</label>
+            <label class="chk"><input type="radio" name="licenseType" id="typeTrial" value="trial" onchange="syncTrialUI()"> ⏱️ Mã Dùng thử (Trial)</label>
+          </div>
+        </div>
+        <div id="trialConfigSection" style="display:none; grid-column: 1 / -1; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 6px; padding: 12px;">
+          <label style="color:#60a5fa; font-weight:600;">⏱️ Cấu hình Dùng thử (Trial)</label>
+          <div class="row" style="gap:10px; align-items:center; margin-top:8px; flex-wrap:wrap;">
+            <span>Thời hạn dùng thử:</span>
+            <input id="trialDays" type="number" min="1" max="90" value="3" style="width:70px; text-align:center;" oninput="updateTrialExpiryPreview()">
+            <span>ngày</span>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="small ghost" onclick="setTrialDays(1)">1 ngày</button>
+              <button type="button" class="small ghost" onclick="setTrialDays(3)">3 ngày (mặc định)</button>
+              <button type="button" class="small ghost" onclick="setTrialDays(7)">7 ngày</button>
+              <button type="button" class="small ghost" onclick="setTrialDays(14)">14 ngày</button>
+            </div>
+            <span id="trialExpiryPreview" style="color:var(--muted); font-size:12px; margin-left:auto;"></span>
+          </div>
+          <div class="hint" style="margin-top:6px; color:#93c5fd;">Mã dùng thử tự động khóa tính năng "Cài nhanh", giới hạn 1 xe, 0 PC, offline tối đa 1 ngày, và hoàn nguyên xe khi hết hạn.</div>
+        </div>
         <div><label>Tên chủ mã *</label><input id="ownerName" placeholder="VD: Trần Đạt"></div>
         <div><label>Số điện thoại (Zalo) *</label><input id="ownerPhone" placeholder="VD: 0988123456"></div>
         <div><label>Ghi chú</label><input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345"></div>
@@ -462,6 +485,7 @@
         </div>
         <div class="filters">
           <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button>
+          <button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button>
           <button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button>
           <button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button>
           <button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button>
@@ -1152,6 +1176,11 @@
                 <input id="phone_sha256" class="mono" value="c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad" placeholder="VD: 3b1e... (64 ký tự hex)">
               </div>
               <div style="grid-column: 1 / -1">
+                <label>📱 iOS — Link cập nhật (TestFlight / App Store) — nhánh <code>phoneIos</code></label>
+                <input id="phoneIos_downloadUrl" value="" placeholder="https://testflight.apple.com/join/… (trống = itms-beta:// mở app TestFlight)">
+                <div class="hint">iPhone chỉ đọc nhánh <code>phoneIos</code>/<code>phoneIosDev</code> (19/09/2026) — KHÔNG đọc link APK ở trên. Tên/mã build/ngưỡng ép/ghi chú dùng chung với ô PhoneConnect (script release đồng bộ CFBundleVersion = versionCode). iOS không có SHA nên quy tắc ép trỏ link riêng sẽ bị bỏ qua — muốn ép iOS dùng "Mã build tối thiểu".</div>
+              </div>
+              <div style="grid-column: 1 / -1">
                 <label>Ghi chú phiên bản (Release Notes)</label>
                 <textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi..."></textarea>
               </div>
@@ -1340,6 +1369,21 @@
           </div>
         </div>
       </div>
+      <div id="edTrialBox" style="display:none; margin-top:10px; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); border-radius:6px; padding:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div style="font-weight:600; color:#60a5fa; font-size:13px">⏱️ Mã Dùng thử (Trial)</div>
+          <label class="chk" style="font-size:12px; font-weight:600; color:#10b981; margin:0; cursor:pointer;">
+            <input type="checkbox" id="edConvertToOfficial" onchange="onToggleConvertToOfficial()"> ⭐ Nâng cấp thành Bản chính thức
+          </label>
+        </div>
+        <div class="row" style="gap:8px; margin-top:6px; align-items:center; flex-wrap:wrap;">
+          <span>Gia hạn nhanh:</span>
+          <button type="button" class="small ghost" onclick="quickExtendModal(1)">+1 ngày</button>
+          <button type="button" class="small ghost" onclick="quickExtendModal(3)">+3 ngày</button>
+          <button type="button" class="small ghost" onclick="quickExtendModal(7)">+7 ngày</button>
+          <span id="edTrialStatus" style="font-size:12px; color:var(--muted); margin-left:auto;"></span>
+        </div>
+      </div>
       <div class="row" style="margin-top:10px">
         <button class="ghost small" id="btnResetActivations" onclick="resetActivations()">♻️ Reset bộ đếm kích hoạt về 0</button>
       </div>
@@ -1427,6 +1471,14 @@
           <select id="qiRequiresFirst">
             <option value="">-- Không yêu cầu (Mặc định) --</option>
           </select>
+        </div>
+        <div>
+          <label>Version Name (Phiên bản hiển thị)</label>
+          <input id="qiVersionName" placeholder="VD: 2.4.6, 31.94 (hoặc để trống)">
+        </div>
+        <div>
+          <label>Version Code (Mã build số)</label>
+          <input id="qiVersionCode" type="number" placeholder="VD: 246, 3194 (hoặc để trống)">
         </div>
         <div style="grid-column: 1 / -1">
           <label>Phạm vi hiển thị (Targets)</label>
@@ -1606,6 +1658,14 @@ function getSession() {
   } catch (e) {
     return null;
   }
+}
+
+function getAdminIdentity() {
+  const s = getSession();
+  if (s && s.admin_phone) {
+    return s.admin_name ? `${s.admin_name} (${s.admin_phone})` : s.admin_phone;
+  }
+  return "admin";
 }
 
 function sbHeaders(extra = {}) {
@@ -1832,8 +1892,11 @@ async function verifyLoginOtp() {
   }
 }
 
-function handleLogout() {
+async function handleLogout() {
   if (!confirm("Bạn có chắc chắn muốn đăng xuất khỏi Admin Dashboard?")) return;
+  try {
+    await api("/rest/v1/rpc/admin_logout", { method: "POST" });
+  } catch (_) {}
   clearSession();
   checkAuthUI();
 }
@@ -1926,6 +1989,7 @@ function toggleTheme() { applyTheme(document.body.classList.contains("dark") ? "
 
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(localStorage.getItem("geely_admin_theme") || "light");
+  try { localStorage.removeItem("geely_ota_priv_key_pem"); } catch (e) {}
   
   // T0024: Touch session on load and every 10 mins
   if (getSession()) {
@@ -2024,6 +2088,45 @@ function defaultExpiry() {
 function syncCreateExpiryUI() { $("expiresAt").disabled = $("expiresForever").checked; }
 function syncEditExpiryUI() { $("edExpires").disabled = $("edExpiresForever").checked; }
 
+function syncTrialUI() {
+  const isTrial = $("typeTrial").checked;
+  const trialBox = $("trialConfigSection");
+  if (trialBox) trialBox.style.display = isTrial ? "block" : "none";
+  if (isTrial) {
+    $("role").value = "car";
+    $("role").disabled = true;
+    $("maxActivations").value = "1";
+    $("maxActivations").disabled = true;
+    $("maxPcDevices").value = "0";
+    $("maxPcDevices").disabled = true;
+    $("expiresForever").checked = false;
+    $("expiresForever").disabled = true;
+    $("expiresAt").disabled = true;
+    updateTrialExpiryPreview();
+  } else {
+    $("role").disabled = false;
+    $("maxActivations").disabled = false;
+    $("maxPcDevices").disabled = false;
+    $("expiresForever").disabled = false;
+    setCreateRoleDefaults();
+  }
+}
+
+function setTrialDays(days) {
+  $("trialDays").value = days;
+  updateTrialExpiryPreview();
+}
+
+function updateTrialExpiryPreview() {
+  const days = parseInt($("trialDays").value) || 3;
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const preview = $("trialExpiryPreview");
+  if (preview) {
+    preview.textContent = "Dự kiến hết hạn: " + toDateInput(d) + " (23:59)";
+  }
+}
+
 let createKeyBusy = false;
 async function createKey() {
   if (createKeyBusy) return;
@@ -2035,9 +2138,10 @@ async function createKey() {
     out.classList.remove("show");
     const name = $("ownerName").value.trim(), phone = $("ownerPhone").value.trim();
     if (!name || !phone) { showMsg(out, "err", "Nhập tên chủ mã và số điện thoại."); return; }
+    const isTrial = $("typeTrial").checked;
     const forever = $("expiresForever").checked;
     const expDate = $("expiresAt").value;
-    if (!forever && !expDate) { showMsg(out, "err", 'Chọn hạn dùng hoặc tick "Vĩnh viễn".'); return; }
+    if (!isTrial && !forever && !expDate) { showMsg(out, "err", 'Chọn hạn dùng hoặc tick "Vĩnh viễn".'); return; }
     const selectedRole = $("role").value;
     const maxActRaw = $("maxActivations").value.trim();
     const maxAct = maxActRaw === "" ? null : parseInt(maxActRaw);
@@ -2046,16 +2150,41 @@ async function createKey() {
     }
     const maxPcRaw = $("maxPcDevices").value.trim();
     const maxPc = maxPcRaw === "" ? null : parseInt(maxPcRaw);
-    if (maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 1)) {
+    if (!isTrial && maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 1)) {
       showMsg(out, "err", "Số máy tính tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
     }
+
+    let expIso = null;
+    let maxDevices = 1;
+    let maxPcVal = maxPc;
+    let maxActVal = maxAct;
+    let offlineDays = 14;
+
+    if (isTrial) {
+      const trialDaysRaw = parseInt($("trialDays").value);
+      const trialDays = (!Number.isFinite(trialDaysRaw) || trialDaysRaw < 1) ? 3 : Math.min(trialDaysRaw, 90);
+      const d = new Date();
+      d.setDate(d.getDate() + trialDays);
+      expIso = toDateInput(d) + "T23:59:59+07:00";
+      maxDevices = 1;
+      maxPcVal = 0;
+      maxActVal = 1;
+      offlineDays = 1;
+    } else {
+      expIso = forever ? null : expDate + "T23:59:59+07:00";
+      maxDevices = (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1);
+      offlineDays = 14;
+    }
+
     const body = {
       p_owner_name: name, p_owner_phone: phone, p_note: $("note").value.trim() || null,
-      p_max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
-      p_expires_at: forever ? null : expDate + "T23:59:59+07:00",
-      p_role: selectedRole,
-      p_max_activations: maxAct,
-      p_max_pc_devices: maxPc
+      p_max_devices: maxDevices,
+      p_offline_days: offlineDays,
+      p_expires_at: expIso,
+      p_role: isTrial ? "car" : selectedRole,
+      p_max_activations: maxActVal,
+      p_max_pc_devices: maxPcVal,
+      p_is_trial: isTrial
     };
     try {
       const res = await api("/rest/v1/rpc/admin_create_license", { method: "POST", body: JSON.stringify(body) });
@@ -2066,9 +2195,16 @@ async function createKey() {
         '<button class="ghost small" id="btnCopyKey">📋 Copy mã</button>' +
         '<div class="msg ok"></div>';
       out.querySelector(".keybox").textContent = key;
-      out.querySelector(".msg").textContent = "Đã tạo thành công (" + roleLabel($("role").value) + ", " +
-        (forever ? "Vĩnh viễn" : "Hạn đến " + expDate) + "). Gửi mã + SĐT cho khách.";
-      $("btnCopyKey").addEventListener("click", () => copyKey(key));
+      out.querySelector(".msg").textContent = "Đã tạo thành công (" + (isTrial ? "⏱️ Dùng thử " + ($("trialDays").value || 3) + " ngày" : roleLabel($("role").value) + ", " + (forever ? "Vĩnh viễn" : "Hạn đến " + expDate)) + "). Gửi mã + SĐT cho khách.";
+      $("btnCopyKey").addEventListener("click", () => {
+        copyKey(key);
+        const b = $("btnCopyKey");
+        if (b) {
+          const oldText = b.textContent;
+          b.textContent = "✅ Đã copy mã!";
+          setTimeout(() => { b.textContent = oldText; }, 2000);
+        }
+      });
       out.classList.add("show");
       loadKeys();
     } catch (e) { showMsg(out, "err", "Lỗi: " + e.message); }
@@ -2085,9 +2221,13 @@ function roleLabel(r) {
   if (r === "dev") return "🛠️ Dev";
   return r || "Xe (+PC)";
 }
-function roleBadge(r) {
+function roleBadge(r, isTrial) {
   const role = r || "car";
-  return '<span class="tag ' + role + '">' + roleLabel(role) + '</span>';
+  let html = '<span class="tag ' + role + '">' + roleLabel(role) + '</span>';
+  if (isTrial) {
+    html += ' <span class="tag" style="background:#2563eb; color:#fff;">⏱️ Trial</span>';
+  }
+  return html;
 }
 
 function copyKey(k) {
@@ -2139,16 +2279,34 @@ function formatActivations(r) {
 function rowHtml(r) {
   const adminTag = isAdminPhone(r.owner_phone)
     ? ' <span class="tag admin">👑 Quản trị</span>' : '';
+  let expiryHtml = '';
+  if (r.is_trial) {
+    const isExp = r.expires_at && new Date(r.expires_at) < new Date();
+    if (isExp) {
+      expiryHtml = '<span class="tag off">⛔ Trial hết hạn</span><div class="hint">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "") + '</div>';
+    } else {
+      const daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / (86400 * 1000))) : 0;
+      expiryHtml = '<span class="tag on" style="background:#1d4ed8; color:#fff;">⏱️ Còn ' + daysLeft + ' ngày</span><div class="hint">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "") + '</div>';
+    }
+  } else {
+    expiryHtml = (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "Vĩnh viễn");
+  }
+  const trialExtendBtns = r.is_trial
+    ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button>' +
+      '<button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>'
+    : '';
+
   return '<td class="mono"><b>' + esc(r.key) + '</b></td>' +
     '<td>' + esc(r.owner_name) + adminTag + '</td>' +
     '<td class="mono">' + esc(r.owner_phone) + '</td>' +
-    '<td>' + roleBadge(r.role) + '</td>' +
+    '<td>' + roleBadge(r.role, r.is_trial) + '</td>' +
     '<td>' + formatDeviceCount(r) + '</td>' +
     '<td>' + formatActivations(r) + '</td>' +
     '<td>' + esc(r.note || "") + '</td>' +
-    '<td class="mono">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "Vĩnh viễn") + '</td>' +
+    '<td class="mono">' + expiryHtml + '</td>' +
     '<td><span class="tag ' + (r.active ? "on" : "off") + '">' + (r.active ? "Đang dùng" : "Đã thu hồi") + '</span></td>' +
     '<td><div class="actions">' +
+      trialExtendBtns +
       '<button class="ghost small" data-act="edit">Sửa</button>' +
       '<button class="ghost small" data-act="devices">Máy (' + (r.devices || []).length + ')</button>' +
       '<button class="ghost small" data-act="test">Kiểm tra</button>' +
@@ -2163,7 +2321,8 @@ function renderTable() {
 
   let filtered = window._allRows.slice();
 
-  if (currentFilter === "car") filtered = filtered.filter(r => (r.role || "car") === "car");
+  if (currentFilter === "trial") filtered = filtered.filter(r => r.is_trial);
+  else if (currentFilter === "car") filtered = filtered.filter(r => (r.role || "car") === "car");
   else if (currentFilter === "pc") filtered = filtered.filter(r => r.role === "pc");
   else if (currentFilter === "admin") filtered = filtered.filter(r => r.role === "admin");
   else if (currentFilter === "dev") filtered = filtered.filter(r => r.role === "dev");
@@ -2217,11 +2376,34 @@ function onSearchChange() {
   renderTable();
 }
 
+async function extendTrialKey(key, days) {
+  const r = window._editData[key];
+  if (!r) return;
+  const currentExp = r.expires_at ? new Date(r.expires_at) : new Date();
+  let base = currentExp > new Date() ? currentExp : new Date();
+  if (currentExp <= new Date()) {
+    base.setHours(23, 59, 59, 999);
+  }
+  base.setDate(base.getDate() + days);
+  const newIso = base.toISOString();
+  try {
+    await api("/rest/v1/licenses?key=eq." + encodeURIComponent(key), {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", "Prefer": "return=minimal" },
+      body: JSON.stringify({ expires_at: newIso, active: true })
+    });
+    alert("Đã gia hạn mã trial " + key + " thêm " + days + " ngày! (Hạn mới: " + toDateInput(base) + ")");
+    loadKeys();
+  } catch (e) {
+    alert("Lỗi gia hạn: " + e.message);
+  }
+}
+
 async function loadKeys() {
   const msg = $("listMsg");
   msg.textContent = "";
   try {
-    const res = await api("/rest/v1/licenses?select=key,owner_name,owner_phone,note,active,max_devices,max_pc_devices,activation_count,max_activations,last_activated_at,expires_at,created_at,role,devices(id,machine_id,phone,ip,hostname,os,app_version,use_count,first_seen,last_seen,kicked_at,kick_attempts,last_kick_attempt_at)&order=created_at.desc&limit=500");
+    const res = await api("/rest/v1/licenses?select=key,owner_name,owner_phone,note,active,max_devices,max_pc_devices,activation_count,max_activations,last_activated_at,expires_at,created_at,role,is_trial,devices(id,machine_id,phone,ip,hostname,os,app_version,use_count,first_seen,last_seen,kicked_at,kick_attempts,last_kick_attempt_at)&order=created_at.desc&limit=500");
     window._allRows = await res.json();
     // Gom phiên bản đội xe đang chạy thật cho tab Ép cập nhật (bảng danh mục không còn danh sách cứng).
     const fleet = { car: {}, phone: {} };
@@ -2252,6 +2434,16 @@ $("mainTable").addEventListener("click", async (e) => {
 
   if (btn.dataset.act === "edit") { openEdit(key); return; }
   if (btn.dataset.act === "devices") { openDevices(key); return; }
+  if (btn.dataset.act === "extendTrial") {
+    btn.disabled = true;
+    try {
+      const days = parseInt(btn.dataset.days) || 1;
+      await extendTrialKey(key, days);
+    } finally {
+      btn.disabled = false;
+    }
+    return;
+  }
 
   btn.disabled = true;
   try {
@@ -2430,6 +2622,8 @@ const REASONS_VI = {
   wrong_phone: "sai số điện thoại kích hoạt",
   revoked: "mã đã bị thu hồi",
   expired: "mã đã hết hạn dùng",
+  trial_expired: "mã dùng thử đã hết hạn dùng",
+  clock_rollback: "phát hiện đồng hồ lùi — cần kết nối mạng để xác thực lại",
   role_not_allowed: "mã không được phép dùng trên loại thiết bị này",
   too_many_devices: "đã đủ số lượng đầu xe cho phép",
   too_many_activations: "mã đã dùng hết số lần kích hoạt cho phép",
@@ -2500,10 +2694,47 @@ function openEdit(key) {
     (r.last_activated_at ? " · gần nhất " + esc(String(r.last_activated_at).slice(0, 10)) : "");
   $("edExpires").value = toDateInput(r.expires_at);
   $("edExpiresForever").checked = !r.expires_at;
+
+  const trialBox = $("edTrialBox");
+  if (trialBox) {
+    if ($("edConvertToOfficial")) $("edConvertToOfficial").checked = false;
+    if (r.is_trial) {
+      trialBox.style.display = "block";
+      const isExp = r.expires_at && new Date(r.expires_at) < new Date();
+      const daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / (86400 * 1000))) : 0;
+      $("edTrialStatus").textContent = isExp ? "⚠️ Đã hết hạn" : "Còn " + daysLeft + " ngày";
+    } else {
+      trialBox.style.display = "none";
+    }
+  }
+
   syncEditExpiryUI();
   $("editMask").style.display = "flex";
 }
 function closeEdit() { $("editMask").style.display = "none"; window._editKey = null; }
+
+function onToggleConvertToOfficial() {
+  if ($("edConvertToOfficial") && $("edConvertToOfficial").checked) {
+    $("edExpiresForever").checked = true;
+    if ($("edMaxPcDevices").value === "0") {
+      $("edMaxPcDevices").value = "2";
+    }
+    if ($("edMaxActivations").value === "1") {
+      $("edMaxActivations").value = "";
+    }
+    syncEditExpiryUI();
+  }
+}
+
+function quickExtendModal(days) {
+  const curVal = $("edExpires").value;
+  const cur = curVal ? new Date(curVal + "T23:59:59") : new Date();
+  const base = cur > new Date() ? cur : new Date();
+  base.setDate(base.getDate() + days);
+  $("edExpires").value = toDateInput(base);
+  $("edExpiresForever").checked = false;
+  syncEditExpiryUI();
+}
 
 async function saveEdit() {
   const key = window._editKey;
@@ -2513,32 +2744,44 @@ async function saveEdit() {
   const forever = $("edExpiresForever").checked;
   const expDate = $("edExpires").value;
   if (!forever && !expDate) { alert('Chọn hạn dùng hoặc tick "Vĩnh viễn".'); return; }
+  const convertToOfficial = $("edConvertToOfficial") && $("edConvertToOfficial").checked;
   const maxActRaw = $("edMaxActivations").value.trim();
-  const maxAct = maxActRaw === "" ? null : parseInt(maxActRaw);
+  let maxAct = maxActRaw === "" ? null : parseInt(maxActRaw);
   if (maxAct !== null && (!Number.isFinite(maxAct) || maxAct < 1)) {
     alert("Số lần kích hoạt tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
   }
   const maxPcRaw = $("edMaxPcDevices").value.trim();
-  const maxPc = maxPcRaw === "" ? null : parseInt(maxPcRaw);
-  if (maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 1)) {
-    alert("Số máy tính tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
+  let maxPc = maxPcRaw === "" ? null : parseInt(maxPcRaw);
+  if (convertToOfficial && (maxPc === 0 || maxPc === null)) {
+    maxPc = 2;
+    $("edMaxPcDevices").value = "2";
+  }
+  if (maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 0)) {
+    alert("Số máy tính tối đa phải >= 0, hoặc để trống = không giới hạn."); return;
   }
   const btn = $("btnSaveEdit");
   btn.disabled = true;
   const selectedRole = $("edRole").value;
+  const patchBody = {
+    owner_name: name,
+    owner_phone: phone,
+    note: $("edNote").value.trim() || null,
+    max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
+    max_activations: maxAct,
+    max_pc_devices: maxPc,
+    expires_at: forever ? null : expDate + "T23:59:59+07:00",
+    role: selectedRole
+  };
+  if (convertToOfficial) {
+    patchBody.is_trial = false;
+    patchBody.offline_days = 14;
+    if (patchBody.max_pc_devices === 0) patchBody.max_pc_devices = 2;
+    if (patchBody.max_activations === 1) patchBody.max_activations = null;
+  }
   try {
     await api("/rest/v1/licenses?key=eq." + encodeURIComponent(key), {
       method: "PATCH",
-      body: JSON.stringify({
-        owner_name: name,
-        owner_phone: phone,
-        note: $("edNote").value.trim() || null,
-        max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
-        max_activations: maxAct,
-        max_pc_devices: maxPc,
-        expires_at: forever ? null : expDate + "T23:59:59+07:00",
-        role: selectedRole
-      })
+      body: JSON.stringify(patchBody)
     });
     closeEdit();
     loadKeys();
@@ -2597,30 +2840,36 @@ async function delKey(key) {
 // (service_role). Không còn token GitHub trong trang này.
 const DEFAULT_QI_CATALOG = {
   "type": "quick_install",
-  "version": 11,
+  "version": 31,
   "apps": [
-    { "name": "CarConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk", "packageName": "com.techlead.app.geely.car", "targets": ["pc"] },
-    { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "targets": ["pc"] },
-    { "name": "VietMap Live", "url": "https://drive.google.com/file/d/1NKYB46fYqLkBvEWTirtzznZa3m0uNo8O/view?usp=sharing", "packageName": "vn.vietmap.live" },
-    { "name": "Waze Mod", "url": "https://wazemod.chisadin.id.vn/api/download/cmraxy0ub0001h0vbc3ckgov4", "packageName": "com.waze" },
-    { "name": "SmartTube", "url": "https://drive.google.com/file/d/1nUntFyxIaUcfdKX5FHNyNfynzd6qQiQ0/view?usp=sharing", "packageName": "org.smarttube.stable" },
-    { "name": "MicroG", "url": "https://drive.google.com/file/d/1TeBWfrtb88E46HCnaLkHBWq0JdGftf1d/view?usp=sharing", "packageName": "com.google.android.gms" },
-    { "name": "VTV Go", "url": "https://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=sharing", "packageName": "vn.vtv.vtvgo" },
-    { "name": "Speed Display", "url": "https://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=sharing", "packageName": "com.kay.speeddisplay" },
-    { "name": "YouTube Morphe", "url": "https://drive.google.com/file/d/1i6NK1e4SShnheZeko04ESYA8eurVUhey/view?usp=sharing", "packageName": "app.morphe.android.youtube", "requiresFirst": "MicroG" },
-    { "name": "CentralEXAuto (Geely)", "url": "https://github.com/swimapps/CentralEXAuto/blob/main/CentralEXAuto-geely-platform-signed.apk", "packageName": "com.ex.auto" },
-    { "name": "Spotify", "url": "https://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drivesdk", "packageName": "com.spotify.music" },
-    { "name": "TikTok", "url": "https://drive.google.com/file/d/1EeqgFE7QZurn5MDmX2nD8rBPWPEwObzR/view?usp=drivesdk", "packageName": "com.zhiliaoapp.musically", "forceLandscape": true },
-    { "name": "GOFA", "url": "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drivesdk", "packageName": "com.gofa.mobile" },
-    { "name": "VLC", "url": "https://drive.google.com/file/d/1UM2jfXdoZiPO8Iv3zs14h-7LQZk1vFVc/view?usp=sharing", "packageName": "org.videolan.vlc" },
-    { "name": "File Manager (ES Explorer)", "url": "https://drive.google.com/file/d/1T6ygnjdwlJ6gPpCt-6zkzcQ_2jG8T174/view?usp=sharing", "packageName": "com.estrongs.android.pop" },
-    { "name": "Zalo Kiki Car", "url": "https://drive.google.com/file/d/1bjHp8chXkZ9iH-65qdBb206doOpAJyjo/view?usp=drivesdk", "packageName": "ai.zalo.kiki.car" },
-    { "name": "AuresEyes", "url": "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drivesdk", "packageName": "com.bilang042.aureseyes" }
+    { "name": "CarConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk", "packageName": "com.techlead.app.geely.car", "versionName": "1.1.5", "versionCode": 1105, "targets": ["pc"] },
+    { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "versionName": "1.1.5", "versionCode": 1106, "targets": ["pc"] },
+    { "name": "Google Map", "url": "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link", "packageName": "app.morphe.android.apps.maps", "versionName": "26.35.04", "versionCode": 1068751348, "requiresFirst": "MicroG" },
+    { "name": "Waze", "url": "https://drive.google.com/file/d/1izW7flhnnKXbjlKJg0dpZ-u5LZ2mN2cI/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
+    { "name": "Waze Mod", "url": "https://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.100.0.1", "versionCode": 1024320 },
+    { "name": "YouTube Morphe", "url": "https://drive.google.com/file/d/1qFFXyZ_MU8c56HcfLqeladoG-FubSl96/view?usp=drive_link", "packageName": "app.morphe.android.youtube", "versionName": "21.07.243", "versionCode": 1561055560, "requiresFirst": "MicroG" },
+    { "name": "Youtube Music", "url": "https://drive.google.com/file/d/1FHTQP0EGwPR5Zm9zNJGLJdqFTEa6D1LH/view?usp=drive_link", "packageName": "anddea.youtube.music" },
+    { "name": "Spotify", "url": "https://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drivesdk", "packageName": "com.spotify.music", "versionName": "9.1.72.1891", "versionCode": 144716725 },
+    { "name": "Google Chrome", "url": "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link", "packageName": "com.android.chrome" },
+    { "name": "Cốc Cốc", "url": "https://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link", "packageName": "com.coccoc.trinhduyet" },
+    { "name": "VietMap Live", "url": "https://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=sharing", "packageName": "vn.vietmap.live", "versionName": "3.3.3", "versionCode": 178453857 },
+    { "name": "AuresEyes", "url": "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drivesdk", "packageName": "com.bilang042.aureseyes", "versionName": "1.1", "versionCode": 2 },
+    { "name": "SmartTube", "url": "https://drive.google.com/file/d/1V9rHHHhHlRpkVASFlVcDu6XEavIVvzlE/view?usp=drive_link", "packageName": "org.smarttube.stable", "versionName": "32.38", "versionCode": 2428 },
+    { "name": "TikTok", "url": "https://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link", "packageName": "com.zhiliaoapp.musically", "versionName": "46.5.3", "versionCode": 2024605030, "forceLandscape": true },
+    { "name": "VTV Go", "url": "https://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=sharing", "packageName": "vn.vtv.vtvgo", "versionName": "12.6.29-vtvgo", "versionCode": 351 },
+    { "name": "GOFA", "url": "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drivesdk", "packageName": "com.gofa.mobile", "versionName": "4.1.3", "versionCode": 521 },
+    { "name": "VLC", "url": "https://drive.google.com/file/d/1UM2jfXdoZiPO8Iv3zs14h-7LQZk1vFVc/view?usp=sharing", "packageName": "org.videolan.vlc", "versionName": "3.7.1", "versionCode": 13070106 },
+    { "name": "Speed Display", "url": "https://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=sharing", "packageName": "com.kay.speeddisplay", "versionName": "1.1", "versionCode": 2 },
+    { "name": "File Manager (ES Explorer)", "url": "https://drive.google.com/file/d/1T6ygnjdwlJ6gPpCt-6zkzcQ_2jG8T174/view?usp=sharing", "packageName": "com.estrongs.android.pop", "versionName": "4.4.3.5", "versionCode": 10351 },
+    { "name": "CentralEXAuto (Geely)", "url": "https://github.com/swimapps/CentralEXAuto/blob/main/CentralEXAuto-geely-platform-signed.apk", "packageName": "com.ex.auto", "versionName": "1.4.0", "versionCode": 140, "targets": ["car"] },
+    { "name": "Downloader", "url": "https://drive.google.com/file/d/1TtmkTWIwRRsfsN_JqWObEgYKAYeES4WJ/view?usp=share_link", "packageName": "com.downloader" },
+    { "name": "MicroG", "url": "https://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link", "packageName": "app.revanced.android.gms", "versionName": "0.3.13.2.250932-hw", "versionCode": 250932004 }
   ],
   "removed": [
-    "Waze", "App Manager", "ADB AppControl", "Equalizer Geely", "YouTube ReVanced",
+    "App Manager", "ADB AppControl", "Equalizer Geely", "YouTube ReVanced",
     "ChiLy Phone", "ChiLy Car", "Google Maps", "GMS (Google Play Services)", "Sapo app",
-    "Geely EX2 Phone", "Geely EX2 Car", "YouTube (bản 2, chưa rõ)", "Geely Custom Profiles"
+    "Geely EX2 Phone", "Geely EX2 Car", "YouTube (bản 2, chưa rõ)", "Geely Custom Profiles",
+    "Zalo Kiki Car", "Google Map Lite"
   ]
 };
 
@@ -2729,11 +2978,15 @@ function renderQuickInstallTable() {
       ? '<span class="tag prereq">🔗 Cần ' + esc(app.requiresFirst) + ' trước</span>' 
       : '<span style="color:var(--muted)">-</span>';
 
+    const verBadge = app.versionName 
+      ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>'
+      : '';
+
     tr.innerHTML = 
       '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
       '<td><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
         'onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
-      '<td><b>' + esc(app.name) + '</b></td>' +
+      '<td><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
       '<td class="mono">' + esc(app.packageName) + '</td>' +
       '<td class="url-cell" title="' + esc(app.url) + '"><a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
       '<td>' + prereqBadge + '</td>' +
@@ -2853,6 +3106,8 @@ function openAddQuickInstallModal() {
   $("qiName").value = "";
   $("qiUrl").value = "";
   $("qiPackage").value = "";
+  $("qiVersionName").value = "";
+  $("qiVersionCode").value = "";
   $("qiTargetCar").checked = true;
   $("qiTargetPc").checked = true;
   $("qiTargetPhone").checked = true;
@@ -2869,6 +3124,8 @@ function openEditQuickInstallModal(index) {
   $("qiName").value = item.name || "";
   $("qiUrl").value = item.url || "";
   $("qiPackage").value = item.packageName || "";
+  $("qiVersionName").value = item.versionName || "";
+  $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
   $("qiForceLandscape").checked = Boolean(item.forceLandscape);
   $("qiHidden").checked = Boolean(item.hidden);
 
@@ -2896,12 +3153,19 @@ function saveQiItem() {
   const name = $("qiName").value.trim();
   const url = $("qiUrl").value.trim();
   const pkg = $("qiPackage").value.trim();
+  const verName = $("qiVersionName").value.trim();
+  const verCodeRaw = $("qiVersionCode").value.trim();
+  const verCode = verCodeRaw ? parseInt(verCodeRaw, 10) : 0;
   const prereq = $("qiRequiresFirst").value.trim();
   const forceLandscape = $("qiForceLandscape").checked;
   const hidden = $("qiHidden").checked;
 
   if (!name || !url) {
     alert("Vui lòng nhập Tên ứng dụng và Link tải APK.");
+    return;
+  }
+  if (!/^https?:\/\//i.test(url)) {
+    alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://");
     return;
   }
 
@@ -2916,6 +3180,8 @@ function saveQiItem() {
     packageName: pkg
   };
 
+  if (verName) newItem.versionName = verName;
+  if (verCode > 0) newItem.versionCode = verCode;
   if (prereq) newItem.requiresFirst = prereq;
   if (forceLandscape) newItem.forceLandscape = true;
   if (hidden) newItem.hidden = true;
@@ -2971,7 +3237,7 @@ async function saveQuickInstall() {
     // tránh 2 tab admin mở cùng lúc ghi đè nhau về cùng một số.
     const res = await api("/rest/v1/rpc/admin_save_quick_install", {
       method: "POST",
-      body: JSON.stringify({ p_payload: window._qiCatalog, p_admin_by: "admin-keys.html" })
+      body: JSON.stringify({ p_payload: window._qiCatalog, p_admin_by: getAdminIdentity() })
     });
     const out = await res.json();
     if (!out || out.success !== true) throw new Error((out && out.reason) || "máy chủ từ chối");
@@ -3333,7 +3599,7 @@ function renderAnalyticsUI(stats) {
         '<td style="font-size:12px">' + formatIsoTime(item.expires_at) + '</td>' +
         '<td><span class="tag prereq">⏳ Còn ' + item.days_left + ' ngày</span></td>' +
         '<td style="text-align:right"><div class="actions" style="justify-content:flex-end">' +
-          '<button class="ghost small" onclick="copyKey(\'' + esc(item.owner_phone) + '\')">📋 SĐT</button>' +
+          '<button class="ghost small" data-phone="' + esc(item.owner_phone) + '" onclick="copyKey(this.dataset.phone)">📋 SĐT</button>' +
           (phoneDigits ? '<a href="https://zalo.me/' + phoneDigits + '" target="_blank" class="tag on" style="text-decoration:none; padding:4px 8px">💬 Zalo</a>' : '') +
         '</div></td>';
       tbody.appendChild(tr);
@@ -3462,15 +3728,15 @@ function renderSalesOrdersTable() {
       ? '<span class="tag phone">12 Tháng</span>' 
       : '<span class="tag car">Trọn đời</span>';
 
-    // Action buttons
+    // Action buttons (dùng data-* và this để chống XSS và event-handler breakout)
     let actionsHtml = "";
     if (o.status === "pending" || o.status === "payment_mismatch") {
       actionsHtml = 
-        '<button class="small" onclick="confirmOrder(\'' + o.id + '\', \'' + o.order_code + '\')">✅ Xác nhận</button> ' +
-        '<button class="ghost small danger" onclick="cancelOrder(\'' + o.id + '\', \'' + o.order_code + '\')">❌ Huỷ</button>';
+        '<button class="small" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="confirmOrder(this.dataset.orderId, this.dataset.orderCode, this)">✅ Xác nhận</button> ' +
+        '<button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="cancelOrder(this.dataset.orderId, this.dataset.orderCode, this)">❌ Huỷ</button>';
     } else if (o.status === "paid") {
       actionsHtml = 
-        '<button class="ghost small danger" onclick="refundOrder(\'' + o.id + '\', \'' + o.order_code + '\', \'' + (o.license_key || '') + '\')">🔄 Hoàn tiền</button>';
+        '<button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" data-lic-key="' + esc(o.license_key || '') + '" onclick="refundOrder(this.dataset.orderId, this.dataset.orderCode, this.dataset.licKey, this)">🔄 Hoàn tiền</button>';
     } else {
       actionsHtml = '<span style="color:var(--muted)">-</span>';
     }
@@ -3584,7 +3850,7 @@ async function executeSaveSalesPrices() {
 
     const res = await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
-      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: "admin" })
+      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
 
     closeSavePricesConfirmModal();
@@ -3614,7 +3880,7 @@ async function saveSalesBankInfo() {
 
     await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
-      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: "admin" })
+      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
 
     showMsg($("salesBankSaveMsg"), "ok", "✅ Đã lưu thông tin tài khoản nhận tiền thành công!");
@@ -3797,7 +4063,7 @@ async function saveTelegramBotConfig() {
 
     await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
-      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: "admin" })
+      body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
 
     showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã lưu cấu hình Telegram Bot thành công (" + items.length + " Chat ID)!");
@@ -3989,12 +4255,18 @@ async function registerTelegramWebhook() {
 }
 
 // ==================== ACTIONS: DUYỆT / HUỶ / HOÀN TIỀN ĐƠN ====================
-async function confirmOrder(orderId, orderCode) {
+let orderActionBusy = false;
+
+async function confirmOrder(orderId, orderCode, btnEl) {
+  if (orderActionBusy) return;
   if (!confirm('Xác nhận đã nhận tiền cho đơn hàng "' + orderCode + '"?\n\nHệ thống sẽ cấp mã license mới và kích hoạt quyền khoá giá 5 năm cho khách hàng ngay lập tức.')) return;
+  orderActionBusy = true;
+  if (btnEl) btnEl.disabled = true;
+  const adminName = getAdminIdentity();
   try {
     const res = await api("/rest/v1/rpc/admin_confirm_order", {
       method: "POST",
-      body: JSON.stringify({ p_order_id: orderId, p_admin_by: "admin", p_note: "Xác nhận thủ công" })
+      body: JSON.stringify({ p_order_id: orderId, p_admin_by: adminName, p_note: "Xác nhận thủ công" })
     });
     const data = await res.json();
     alert("🎉 Đã duyệt đơn thành công!\nMã license đã cấp: " + data.license_key + "\nXe sẽ tự động kích hoạt và vào app.");
@@ -4002,40 +4274,57 @@ async function confirmOrder(orderId, orderCode) {
     loadKeys();
   } catch (err) {
     alert("❌ Lỗi duyệt đơn: " + err.message);
+  } finally {
+    orderActionBusy = false;
+    if (btnEl) btnEl.disabled = false;
   }
 }
 
-async function cancelOrder(orderId, orderCode) {
+async function cancelOrder(orderId, orderCode, btnEl) {
+  if (orderActionBusy) return;
   const reason = prompt('Nhập lý do huỷ đơn "' + orderCode + '":', "Khách không chuyển khoản");
   if (!reason) return;
+  orderActionBusy = true;
+  if (btnEl) btnEl.disabled = true;
+  const adminName = getAdminIdentity();
   try {
     await api("/rest/v1/rpc/admin_cancel_order", {
       method: "POST",
-      body: JSON.stringify({ p_order_id: orderId, p_admin_by: "admin", p_reason: reason })
+      body: JSON.stringify({ p_order_id: orderId, p_admin_by: adminName, p_reason: reason })
     });
     alert("Đã huỷ đơn hàng thành công.");
     await loadSalesData();
   } catch (err) {
     alert("❌ Lỗi huỷ đơn: " + err.message);
+  } finally {
+    orderActionBusy = false;
+    if (btnEl) btnEl.disabled = false;
   }
 }
 
-async function refundOrder(orderId, orderCode, licKey) {
+async function refundOrder(orderId, orderCode, licKey, btnEl) {
+  if (orderActionBusy) return;
   const warning = '⚠️ CẢNH BÁO HOÀN TIỀN & THU HỒI MÃ:\n\nĐơn hàng: ' + orderCode + '\nMã License: ' + licKey + '\n\nThao tác này sẽ:\n1. Thu hồi mã license (xe sẽ bị khoá lại).\n2. Gỡ cờ khoá giá 5 năm của khách hàng này.\n3. Đổi trạng thái đơn sang "Đã hoàn tiền".\n\nBạn có chắc chắn muốn thực hiện?';
   if (!confirm(warning)) return;
   const reason = prompt("Nhập lý do hoàn tiền / thu hồi:", "Hoàn tiền theo thoả thuận");
   if (!reason) return;
+  orderActionBusy = true;
+  if (btnEl) btnEl.disabled = true;
+  const adminName = getAdminIdentity();
 
   try {
     await api("/rest/v1/rpc/admin_refund_order", {
       method: "POST",
-      body: JSON.stringify({ p_order_id: orderId, p_admin_by: "admin", p_reason: reason })
+      body: JSON.stringify({ p_order_id: orderId, p_admin_by: adminName, p_reason: reason })
     });
     alert("Đã thu hồi mã license và hoàn tất ghi nhận hoàn tiền.");
     await loadSalesData();
     loadKeys();
   } catch (err) {
     alert("❌ Lỗi hoàn tiền: " + err.message);
+  } finally {
+    orderActionBusy = false;
+    if (btnEl) btnEl.disabled = false;
   }
 }
 
@@ -4106,7 +4395,7 @@ async function purgeTestData(mode = "orders_only") {
     try {
       const res = await api("/rest/v1/rpc/admin_purge_test_data", {
         method: "POST",
-        body: JSON.stringify({ p_admin_by: "admin", p_mode: mode })
+        body: JSON.stringify({ p_admin_by: getAdminIdentity(), p_mode: mode })
       });
       const data = await res.json();
       if (data && data.success) {
@@ -4214,8 +4503,7 @@ window._editingRuleApp = "car";
 window._editingRuleIndex = -1;
 
 function fuEscapeHtml(str) {
-  if (!str) return "";
-  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  return esc(str);
 }
 
 function switchFuApp(app) {
@@ -4285,6 +4573,8 @@ function renderAppUpdateConfigUI() {
   if ($("phone_sha256")) $("phone_sha256").value = phone.sha256 || "";
   if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phone.releaseNotes || "";
   if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "0";
+  const phoneIos = cfg[fuIosKey()] || {};
+  if ($("phoneIos_downloadUrl")) $("phoneIos_downloadUrl").value = phoneIos.downloadUrl || "";
   renderRulesTable("phone");
   renderKnownVersions("phone");
 
@@ -4348,7 +4638,7 @@ function renderKnownVersions(app) {
       '<td style="font-size:12px; color:var(--muted)">' + (it.count ? it.count + " thiết bị đang chạy" : "không thấy trên đội xe") + '</td>' +
       '<td id="' + app + '_stat_' + code + '"></td>' +
       '<td style="text-align:right">' + (code < targetCode
-        ? '<button class="small ghost" onclick="quickAddForceRule(\'' + app + '\', ' + code + ', \'' + esc(it.name) + '\')">⚡ Ép ' + code + ' ➔ Lên ' + targetCode + '</button>'
+        ? '<button class="small ghost" data-app="' + esc(app) + '" data-code="' + code + '" data-ver="' + esc(it.name) + '" onclick="quickAddForceRule(this.dataset.app, parseInt(this.dataset.code, 10), this.dataset.ver)">⚡ Ép ' + code + ' ➔ Lên ' + targetCode + '</button>'
         : '<span class="hint">mới hơn bản đích</span>') + '</td></tr>');
   });
   if (rows.length === 1) {
@@ -4512,6 +4802,29 @@ function syncFormToConfig() {
   _phone.sha256 = ($("phone_sha256").value || "").trim();
   _phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
   _phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
+
+  // Nhánh iOS (19/09/2026): cùng số hiệu với PhoneConnect Android, chỉ khác link mở TestFlight và
+  // không có SHA. Giữ nguyên forceRules riêng của nhánh (chỉ script/JSON sửa được).
+  const iosKey = fuIosKey();
+  const iosUrl = ($("phoneIos_downloadUrl") ? $("phoneIos_downloadUrl").value : "").trim();
+  if (iosUrl || window._appUpdateConfig[iosKey]) {
+    const _ios = window._appUpdateConfig[iosKey] || {};
+    _ios.packageName = "com.techlead.app.geely.phone";
+    _ios.name = "PhoneConnect iOS";
+    _ios.latestVersionName = _phone.latestVersionName;
+    _ios.versionCode = _phone.versionCode;
+    _ios.downloadUrl = iosUrl || "itms-beta://";
+    _ios.sha256 = "";
+    _ios.releaseNotes = _phone.releaseNotes;
+    _ios.minVersionCode = _phone.minVersionCode;
+    if (!Array.isArray(_ios.forceRules)) _ios.forceRules = [];
+    window._appUpdateConfig[iosKey] = _ios;
+  }
+}
+
+/** Khoá nhánh iOS theo môi trường đang chỉnh — như fuKey nhưng cho phoneIos/phoneIosDev. */
+function fuIosKey() {
+  return window._fuEnv === "dev" ? "phoneIosDev" : "phoneIos";
 }
 
 
@@ -4522,22 +4835,15 @@ function syncFormToConfig() {
 const OTA_PRIV_KEY_STORAGE = "geely_ota_priv_key_pem";
 
 function getStoredOtaPrivateKey() {
-  try {
-    return localStorage.getItem(OTA_PRIV_KEY_STORAGE) || window._otaPrivKeyPem || "";
-  } catch (e) {
-    return window._otaPrivKeyPem || "";
-  }
+  return window._otaPrivKeyPem || "";
 }
 
 function setStoredOtaPrivateKey(pem) {
   pem = (pem || "").trim();
   window._otaPrivKeyPem = pem;
+  // BẢO MẬT: Xoá triệt để khoá riêng khỏi localStorage để ngăn rò rỉ qua XSS/extensions
   try {
-    if (pem) {
-      localStorage.setItem(OTA_PRIV_KEY_STORAGE, pem);
-    } else {
-      localStorage.removeItem(OTA_PRIV_KEY_STORAGE);
-    }
+    localStorage.removeItem(OTA_PRIV_KEY_STORAGE);
   } catch (e) {}
   updateOtaKeyStatusUI();
 }
@@ -4550,21 +4856,21 @@ function updateOtaKeyStatusUI() {
   if (!badge) return;
   if (pem) {
     badge.className = "tag on";
-    badge.textContent = "🟢 Đã nạp khoá riêng (Tự động ký 1-click)";
-    if (text) text.innerHTML = '<span style="color:var(--ok)">✓ Khoá ECDSA P-256 đã sẵn sàng. Web sẽ tự động ký và lưu ngay khi bạn bấm nút "Lưu lên Supabase".</span>';
+    badge.textContent = "🟢 Đã nạp khoá riêng (Tự động ký trong phiên)";
+    if (text) text.innerHTML = '<span style="color:var(--ok)">✓ Khoá ECDSA P-256 đã nạp an toàn vào bộ nhớ RAM. Web sẽ tự động ký 1-click khi bấm "Lưu lên Supabase".</span>';
     if (btnForget) btnForget.style.display = "inline-flex";
   } else {
     badge.className = "tag off";
     badge.textContent = "⚪ Chưa nạp khoá riêng";
-    if (text) text.innerHTML = 'Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự động ký mỗi khi bạn bấm Lưu.';
+    if (text) text.innerHTML = 'Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> để ký (giữ an toàn trong RAM, không lưu vĩnh viễn trên ổ đĩa).';
     if (btnForget) btnForget.style.display = "none";
   }
 }
 
 function forgetOtaKey() {
-  if (confirm("Xoá khoá riêng OTA đã lưu khỏi trình duyệt này?")) {
+  if (confirm("Xoá khoá riêng OTA khỏi bộ nhớ phiên làm việc?")) {
     setStoredOtaPrivateKey("");
-    alert("Đã xoá khoá riêng khỏi trình duyệt.");
+    alert("Đã xoá khoá riêng khỏi bộ nhớ.");
   }
 }
 
@@ -4579,7 +4885,7 @@ function handleOtaKeyFile(event) {
       return;
     }
     setStoredOtaPrivateKey(content);
-    alert("✅ Đã nạp thành công khoá riêng OTA!\nTừ giờ web sẽ tự động ký 1-click mỗi khi bạn bấm Lưu cấu hình.");
+    alert("✅ Đã nạp thành công khoá riêng OTA vào bộ nhớ RAM!\nWeb sẽ tự động ký 1-click trong phiên làm việc này.");
     doManualAutoSign(true);
   };
   reader.readAsText(file);
@@ -4594,7 +4900,7 @@ function promptPasteOtaKey() {
     return;
   }
   setStoredOtaPrivateKey(val);
-  alert("✅ Đã nạp thành công khoá riêng OTA!");
+  alert("✅ Đã nạp thành công khoá riêng OTA vào bộ nhớ RAM!\nWeb sẽ tự động ký 1-click trong phiên làm việc này.");
   doManualAutoSign(true);
 }
 
@@ -4909,7 +5215,7 @@ async function saveAppUpdateConfig(allowUnsigned) {
       warningMsg +
       (sigBlock ? "Chữ ký OTA: CÓ (payload_raw + payload_sig từ scripts/ota/ota-sign-config.sh).\n\n" : "Chữ ký OTA: KHÔNG — client 1.1.1+ sẽ từ chối cấu hình này.\n\n") +
       "Phiên bản cấu hình sẽ tự tăng từ v" + currentVer + " -> v" + (currentVer + 1) + ".\n" +
-      "Đang lưu nhánh: " + (window._fuEnv === "dev" ? "🧪 DEV (carDev / phoneDev)" : "🟢 PRODUCTION (car / phone)") + ".\n" +
+      "Đang lưu nhánh: " + (window._fuEnv === "dev" ? "🧪 DEV (carDev / phoneDev / phoneIosDev)" : "🟢 PRODUCTION (car / phone / phoneIos)") + ".\n" +
       "Nhánh còn lại (trong savingKeys) KHÔNG bị thay đổi nội dung nếu bạn không sửa form.\n\n" +
       "Các khóa sẽ được ghi: " + savingKeys + "\n\n" +
       "Cả Đầu xe và Điện thoại chạy đúng nhánh đó sẽ nhận chỉ thị nâng cấp mới ngay lập tức.")) {
@@ -4925,15 +5231,15 @@ async function saveAppUpdateConfig(allowUnsigned) {
       body: JSON.stringify({
         p_payload: window._appUpdateConfig,
         p_expected_version: currentVer,
-        p_admin_by: "admin-keys.html",
+        p_admin_by: getAdminIdentity(),
         p_payload_raw: p_payload_raw,
         p_payload_sig: p_payload_sig
       })
     });
     const out = await res.json();
     if (!out || out.success !== true) {
-      if (out && out.reason && out.reason.includes("Phiên bản trên máy chủ đã đổi")) {
-        throw new Error(out.reason + " — Vui lòng tải lại trang (F5) rồi làm lại.");
+      if (out && out.reason && (out.reason === "version_conflict" || out.reason.includes("Phiên bản trên máy chủ đã đổi"))) {
+        throw new Error("Phiên bản trên máy chủ đã đổi (hiện là v" + (out.current_version || "?") + ") — Vui lòng tải lại trang (F5) rồi làm lại.");
       }
       throw new Error((out && out.reason) || "Máy chủ từ chối lưu");
     }
