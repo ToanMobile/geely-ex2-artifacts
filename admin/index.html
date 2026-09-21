@@ -47,13 +47,14 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text);
-    font: 14px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px; }
+    font: 14px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
   .wrap { max-width: none; margin: 0; }
   h1 { font-size: 19px; margin-bottom: 4px; }
   .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
   
   /* Tabs */
-  .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+  .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; flex-wrap: wrap; overflow-x: auto; }
   .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
   .tab-btn:hover { background: var(--panel2); color: var(--text); }
   .tab-btn.active { background: var(--accent); color: #fff; }
@@ -74,6 +75,7 @@
   button.ghost.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   button.danger { background: var(--danger); }
   button.small { padding: 4px 10px; font-size: 12px; }
+  button:disabled { opacity: .55 !important; cursor: not-allowed !important; filter: grayscale(40%); }
   label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none; cursor: pointer; white-space: nowrap; }
   label.chk input { width: auto; }
   input:disabled, select:disabled, textarea:disabled { background: var(--bg) !important; color: var(--muted) !important; border: 1px dashed var(--border) !important; cursor: not-allowed !important; opacity: .75; }
@@ -120,29 +122,28 @@
   .keybox { background: var(--keybox-bg); border: 1px dashed var(--accent); border-radius: 8px;
     padding: 12px; font-family: var(--mono); font-size: 20px; letter-spacing: 2px;
     color: var(--keybox-text); text-align: center; margin: 10px 0; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
   th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   th { color: var(--muted); font-weight: 500; font-size: 12px; }
   td.mono, .mono { font-family: var(--mono); font-size: 12px; }
-  #salesLogsTable { width: 100%; }
-  #salesLogsTable th:nth-child(1), #salesLogsTable td:nth-child(1) { width: 135px; white-space: nowrap; }
-  #salesLogsTable th:nth-child(2), #salesLogsTable td:nth-child(2) { width: 120px; white-space: nowrap; }
-  #salesLogsTable th:nth-child(3), #salesLogsTable td:nth-child(3) { width: 145px; white-space: nowrap; }
-  #salesLogsTable th:nth-child(4), #salesLogsTable td:nth-child(4) { width: auto; word-break: break-word; }
-  .fu-min-box { transition: all .2s; border-radius: 8px; padding: 12px; }
-  .fu-min-box.is-active { border-color: #f59e0b !important; background: rgba(245,158,11,.08) !important; }
+  #salesLogsTable { width: 100%; min-width: 750px; }
+  #salesLogsTable th:nth-child(1), #salesLogsTable td:nth-child(1) { width: 140px; white-space: nowrap; } #salesLogsTable th:nth-child(2), #salesLogsTable td:nth-child(2) { width: 140px; white-space: nowrap; }
+  #salesLogsTable th:nth-child(3), #salesLogsTable td:nth-child(3) { width: 170px; white-space: nowrap; } #salesLogsTable th:nth-child(4), #salesLogsTable td:nth-child(4) { min-width: 300px; word-break: break-word; line-height: 1.4; }
+  .fu-min-box { transition: all .2s; border-radius: 8px; padding: 12px; } .fu-min-box.is-active { border-color: #f59e0b !important; background: rgba(245,158,11,.08) !important; }
   .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; white-space: nowrap; }
   .tag.on { background: var(--tag-on-bg); color: var(--tag-on-text); } .tag.off { background: var(--tag-off-bg); color: var(--tag-off-text); }
   .tag.car, .tag.dev-car { background: var(--tag-car-bg); color: var(--tag-car-text); } .tag.pc, .tag.dev-pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
   .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); } .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
-  .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); } .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); }
-  .tag.hidden { background: var(--tag-hidden-bg); color: var(--tag-hidden-text); }
+  .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); } .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); } .tag.hidden { background: var(--tag-hidden-bg); color: var(--tag-hidden-text); }
   /* Dòng của tài khoản quản trị: nền riêng + vạch vàng bên trái, luôn nằm trên cùng. */
   tr.admin-row > td { background: var(--admin-row-bg); } tr.admin-row:hover > td { background: var(--admin-row-bg2); }
   tr.admin-row > td:first-child { box-shadow: inset 3px 0 0 var(--admin-row-line); }
   .msg { margin-top: 10px; font-size: 13px; }
   .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
-  .actions { display: flex; gap: 5px; flex-wrap: wrap; }
+  .actions { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+  .actions button { white-space: nowrap; }
+  .nowrap { white-space: nowrap; }
+  .note-cell { min-width: 140px; max-width: 220px; word-break: break-word; line-height: 1.35; font-size: 12px; }
   /* Danh mục Cài nhanh: đổi vị trí nhanh (15/09/2026) — ô số vị trí + tay cầm kéo-thả */
   input.qi-pos { width: 52px; padding: 3px 4px; font-family: var(--mono); font-size: 12px; text-align: center; }
   .qi-drag { cursor: grab; color: var(--muted); user-select: none; font-size: 16px; padding: 0 4px; }
@@ -158,7 +159,8 @@
   .modal .grid { margin-top: 14px; }
   .modal .hint { margin-top: 10px; }
   .modal .actions { margin-top: 18px; justify-content: flex-end; }
-  .url-cell { max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+  .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
+  .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* ================= Thống kê & Analytics KPI ================= */
   .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; }
@@ -502,7 +504,7 @@
         <table id="qiTable">
           <thead><tr>
             <th style="width:28px" title="Kéo-thả để đổi vị trí"></th>
-            <th style="width:64px" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th>
+            <th style="width:64px; text-align:center" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th>
             <th>Tên hiển thị</th>
             <th>Package Name (ID)</th>
             <th>Link tải APK</th>
@@ -703,7 +705,7 @@
             <th>Khách hàng</th>
             <th>SĐT (Zalo)</th>
             <th>Gói</th>
-            <th>Số tiền</th>
+            <th style="text-align:right">Số tiền</th>
             <th>Trạng thái</th>
             <th>Mã License đã cấp</th>
             <th style="text-align:right">Thao tác</th>
@@ -714,13 +716,13 @@
     </div>
 
     <!-- Panel 4: Khách hàng đang Khoá giá 5 năm & Nhật ký Audit -->
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px">
+    <div style="display:flex; flex-direction:column; gap:16px">
       <!-- Khách hàng khoá giá -->
       <div class="panel">
         <h2 style="color:var(--text); font-size:15px">4. Khách hàng đang được Khoá giá 5 năm <span id="priceLocksCount" class="mono" style="color:var(--muted)"></span></h2>
         <div class="hint">Khách hàng được hưởng giá ưu đãi khi gia hạn trong vòng 5 năm.</div>
         <div style="overflow-x:auto; margin-top:10px">
-          <table id="priceLocksTable">
+          <table id="priceLocksTable" style="min-width:650px">
             <thead><tr>
               <th>SĐT</th>
               <th>Tên khách</th>
@@ -739,12 +741,12 @@
         <h2 style="color:var(--text); font-size:15px">5. Nhật ký Thay đổi Bảng giá & Đơn hàng</h2>
         <div class="hint">Ghi nhận toàn bộ thao tác thay đổi giá, duyệt đơn, huỷ đơn và hoàn tiền.</div>
         <div style="overflow-x:auto; margin-top:10px">
-          <table id="salesLogsTable">
+          <table id="salesLogsTable" style="min-width:750px">
             <thead><tr>
-              <th style="width:135px">Thời gian</th>
-              <th style="width:120px">Người thực hiện</th>
-              <th style="width:145px">Hành động</th>
-              <th>Ghi chú</th>
+              <th style="width:140px">Thời gian</th>
+              <th style="width:140px">Người thực hiện</th>
+              <th style="width:170px">Hành động</th>
+              <th style="min-width:300px">Ghi chú</th>
             </tr></thead>
             <tbody></tbody>
           </table>
@@ -1039,7 +1041,7 @@
                     <th style="width:90px; text-align:center">Mã build</th>
                     <th style="width:160px">Thiết bị đang chạy</th>
                     <th style="width:180px">Trạng thái hiện tại</th>
-                    <th style="text-align:right; width:180px">Thao tác</th>
+                    <th style="text-align:right; min-width:195px">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="car_knownVersionsBody">
@@ -1127,7 +1129,7 @@
                     <th style="width:90px; text-align:center">Mã build</th>
                     <th style="width:160px">Thiết bị đang chạy</th>
                     <th style="width:180px">Trạng thái hiện tại</th>
-                    <th style="text-align:right; width:180px">Thao tác</th>
+                    <th style="text-align:right; min-width:195px">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody id="phone_knownVersionsBody">
@@ -1428,6 +1430,8 @@
         <button class="ghost" onclick="closeQiModal()">Huỷ</button>
       </div>
     </div>
+  </div>
+
   <!-- Modal Thêm / Sửa Force Update Rule -->
   <div class="modal-mask" id="fuRuleModalMask" style="display:none" onclick="if(event.target===this)closeFuRuleModal()">
     <div class="modal" style="max-width:680px">
@@ -1617,7 +1621,7 @@ function showConfigMissingWarning() {
     warnEl.id = "sessionWarnBanner";
     warnEl.style.cssText = "background:linear-gradient(90deg, #dc2626, #b91c1c); color:#fff; padding:12px 18px; border-radius:10px; margin-bottom:18px; font-size:14px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 4px 14px rgba(220,38,38,0.25); border:1px solid #f87171";
     warnEl.innerHTML = `<span>⚠️ <b>Chưa đăng nhập hoặc phiên đã hết hạn.</b> Vui lòng tải lại trang và đăng nhập bằng số điện thoại Admin.</span>`;
-    const container = document.querySelector(".container");
+    const container = $("dashboardWrap") || document.querySelector(".wrap");
     if (container) container.insertBefore(warnEl, container.firstChild);
   }
   warnEl.style.display = "flex";
@@ -1919,6 +1923,7 @@ function toggleTheme() { applyTheme(document.body.classList.contains("dark") ? "
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(localStorage.getItem("geely_admin_theme") || "light");
   try { localStorage.removeItem("geely_ota_priv_key_pem"); } catch (e) {}
+  document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
   
   // T0024: Touch session on load and every 10 mins
   if (getSession()) {
@@ -2284,16 +2289,16 @@ function rowHtml(r) {
       '<button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>'
     : '';
 
-  return '<td class="mono"><b>' + esc(r.key) + '</b></td>' +
-    '<td>' + esc(r.owner_name) + adminTag + '</td>' +
-    '<td class="mono">' + esc(r.owner_phone) + '</td>' +
-    '<td>' + roleBadge(r.role, r.is_trial) + '</td>' +
-    '<td>' + formatDeviceCount(r) + '</td>' +
+  return '<td class="mono nowrap"><b>' + esc(r.key) + '</b></td>' +
+    '<td><b>' + esc(r.owner_name) + '</b>' + adminTag + '</td>' +
+    '<td class="mono nowrap">' + esc(r.owner_phone) + '</td>' +
+    '<td class="nowrap">' + roleBadge(r.role, r.is_trial) + '</td>' +
+    '<td class="nowrap">' + formatDeviceCount(r) + '</td>' +
     '<td>' + formatActivations(r) + '</td>' +
-    '<td>' + esc(r.note || "") + '</td>' +
-    '<td class="mono">' + expiryHtml + '</td>' +
-    '<td><span class="tag ' + (r.active ? "on" : "off") + '">' + (r.active ? "Đang dùng" : "Đã thu hồi") + '</span></td>' +
-    '<td><div class="actions">' +
+    '<td class="note-cell">' + (r.note ? esc(r.note) : '<span style="color:var(--muted)">—</span>') + '</td>' +
+    '<td class="mono nowrap">' + expiryHtml + '</td>' +
+    '<td class="nowrap"><span class="tag ' + (r.active ? "on" : "off") + '">' + (r.active ? "Đang dùng" : "Đã thu hồi") + '</span></td>' +
+    '<td style="min-width:215px"><div class="actions">' +
       trialExtendBtns +
       '<button class="ghost small" data-act="edit">Sửa</button>' +
       '<button class="ghost small" data-act="devices">Máy (' + (r.devices || []).length + ')</button>' +
@@ -2486,19 +2491,17 @@ function openDevices(key) {
           '</div>'
         : '<span class="tag on">🟢 Đang dùng</span>';
       const actionHtml = kicked
-        ? '<button class="ghost small" data-act="unkickDev">↩️ Cho phép lại</button> ' +
-          '<button class="danger small" data-act="delDev">🗑️ Xoá</button>'
-        : '<button class="danger small" data-act="kickDev">⛔ Đá ra</button> ' +
-          '<button class="ghost small" data-act="delDev">🗑️ Xoá</button>';
-      tr.innerHTML =
-        '<td><span class="tag ' + (isCar ? "dev-car" : "dev-pc") + '">' + (isCar ? "🚗 Đầu xe" : "💻 Máy tính") + '</span></td>' +
-        '<td class="mono" style="word-break:break-all;font-size:11px">' + esc(d.machine_id || "") + '</td>' +
-        '<td><b>' + esc(d.hostname || "") + '</b><div class="hint">' + esc(d.os || "") + ' · v' + esc(d.app_version || "") + '</div></td>' +
-        '<td class="mono" style="font-size:11px">' + esc(d.phone || "—") + '<div class="hint">' + esc(d.ip || "—") + '</div></td>' +
-        '<td class="mono"><b>' + esc(String(d.use_count || 0)) + '</b> lần</td>' +
-        '<td class="mono">' + esc(String(d.first_seen || "").slice(0, 10)) + '<div class="hint">Gần nhất: ' + esc(String(d.last_seen || "").slice(0, 10)) + '</div></td>' +
-        '<td>' + statusHtml + '</td>' +
-        '<td><div class="actions">' + actionHtml + '</div></td>';
+        ? '<button class="ghost small" data-act="unkickDev">↩️ Cho phép lại</button> <button class="danger small" data-act="delDev">🗑️ Xoá</button>'
+        : '<button class="danger small" data-act="kickDev">⛔ Đá ra</button> <button class="ghost small" data-act="delDev">🗑️ Xoá</button>';
+      const mid = d.machine_id || "";
+      const midDisp = mid.length > 16 ? '<span title="' + esc(mid) + '" style="cursor:help; border-bottom:1px dotted var(--muted)">' + esc(mid.slice(0, 8)) + '…' + esc(mid.slice(-6)) + '</span>' : esc(mid);
+      tr.innerHTML = '<td class="nowrap"><span class="tag ' + (isCar ? "dev-car" : "dev-pc") + '">' + (isCar ? "🚗 Đầu xe" : "💻 Máy tính") + '</span></td>' +
+        '<td class="mono nowrap" style="font-size:11px">' + midDisp + '</td>' +
+        '<td class="nowrap"><b>' + esc(d.hostname || "") + '</b><div class="hint">' + esc(d.os || "") + ' · v' + esc(d.app_version || "") + '</div></td>' +
+        '<td class="mono nowrap" style="font-size:11px">' + esc(d.phone || "—") + '<div class="hint">' + esc(d.ip || "—") + '</div></td>' +
+        '<td class="mono nowrap"><b>' + esc(String(d.use_count || 0)) + '</b> lần</td>' +
+        '<td class="mono nowrap">' + esc(String(d.first_seen || "").slice(0, 10)) + '<div class="hint">Gần nhất: ' + esc(String(d.last_seen || "").slice(0, 10)) + '</div></td>' +
+        '<td class="nowrap">' + statusHtml + '</td><td class="nowrap"><div class="actions">' + actionHtml + '</div></td>';
       tb.appendChild(tr);
     }
   }
@@ -2540,14 +2543,15 @@ async function loadActivationLogs(key) {
   for (const g of logs) {
     const isCar = (g.os || "").toLowerCase() === "android";
     const tr = document.createElement("tr");
-    tr.innerHTML =
-      '<td class="mono">' + (g.seq != null ? "#" + esc(String(g.seq)) : "—") + '</td>' +
-      '<td class="mono" style="font-size:11px">' + esc(String(g.created_at || "").slice(0, 16).replace("T", " ")) + '</td>' +
-      '<td>' + (ACT_RESULT_VI[g.result] || esc(g.result || "")) + '</td>' +
-      '<td><span class="tag ' + (isCar ? "dev-car" : "dev-pc") + '">' + (isCar ? "🚗 Đầu xe" : "💻 Máy tính") + '</span></td>' +
-      '<td><b>' + esc(g.hostname || "—") + '</b><div class="hint">' + esc(g.os || "") + ' · v' + esc(g.app_version || "") + '</div></td>' +
-      '<td class="mono" style="word-break:break-all;font-size:11px">' + esc(g.machine_id || "") + '</td>' +
-      '<td class="mono" style="font-size:11px">' + esc(g.phone || "—") + '<div class="hint">' + esc(g.ip || "—") + '</div></td>';
+    const gMid = g.machine_id || "";
+    const gMidDisp = gMid.length > 16 ? '<span title="' + esc(gMid) + '" style="cursor:help; border-bottom:1px dotted var(--muted)">' + esc(gMid.slice(0, 8)) + '…' + esc(gMid.slice(-6)) + '</span>' : esc(gMid);
+    tr.innerHTML = '<td class="mono nowrap">' + (g.seq != null ? "#" + esc(String(g.seq)) : "—") + '</td>' +
+      '<td class="mono nowrap" style="font-size:11px">' + esc(String(g.created_at || "").slice(0, 16).replace("T", " ")) + '</td>' +
+      '<td class="nowrap">' + (ACT_RESULT_VI[g.result] || esc(g.result || "")) + '</td>' +
+      '<td class="nowrap"><span class="tag ' + (isCar ? "dev-car" : "dev-pc") + '">' + (isCar ? "🚗 Đầu xe" : "💻 Máy tính") + '</span></td>' +
+      '<td class="nowrap"><b>' + esc(g.hostname || "—") + '</b><div class="hint">' + esc(g.os || "") + ' · v' + esc(g.app_version || "") + '</div></td>' +
+      '<td class="mono nowrap" style="font-size:11px">' + gMidDisp + '</td>' +
+      '<td class="mono nowrap" style="font-size:11px">' + esc(g.phone || "—") + '<div class="hint">' + esc(g.ip || "—") + '</div></td>';
     tb.appendChild(tr);
   }
 }
@@ -2972,14 +2976,14 @@ function renderQuickInstallTable() {
 
     tr.innerHTML = 
       '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
-      '<td><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
+      '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
         'onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
-      '<td><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
-      '<td class="mono">' + esc(app.packageName) + '</td>' +
+      '<td class="nowrap"><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
+      '<td class="mono nowrap">' + esc(app.packageName) + '</td>' +
       '<td class="url-cell" title="' + esc(app.url) + '"><a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
-      '<td>' + prereqBadge + '</td>' +
+      '<td class="nowrap">' + prereqBadge + '</td>' +
       '<td>' + targetsBadge + '</td>' +
-      '<td style="text-align:right">' +
+      '<td style="text-align:right; min-width:130px">' +
         '<div class="actions" style="justify-content:flex-end">' +
           '<button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button>' +
           '<button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button>' +
@@ -3507,16 +3511,17 @@ function renderAnalyticsUI(stats) {
   if ($("anTotalOrdersCount")) $("anTotalOrdersCount").textContent = (s.total_orders || 0);
 
   // Tỷ trọng doanh thu theo gói
+  const hasRev = Boolean(s.total_revenue && Number(s.total_revenue) > 0);
   const totalRevNum = Number(s.total_revenue) || 1;
-  const pctLife = Math.round(((s.lifetime_revenue || 0) / totalRevNum) * 100);
-  const pctYear = Math.max(0, 100 - pctLife);
+  const pctLife = hasRev ? Math.round(((s.lifetime_revenue || 0) / totalRevNum) * 100) : 0;
+  const pctYear = hasRev ? Math.max(0, 100 - pctLife) : 0;
 
   if ($("anPctLifetime")) $("anPctLifetime").textContent = pctLife + "%";
   if ($("anPctYearly")) $("anPctYearly").textContent = pctYear + "%";
   if ($("anRatioLifetimeText")) $("anRatioLifetimeText").textContent = pctLife + "% (" + formatVndNumber(s.lifetime_revenue || 0) + ")";
   if ($("anRatioYearlyText")) $("anRatioYearlyText").textContent = pctYear + "% (" + formatVndNumber(s.yearly_revenue || 0) + ")";
-  if ($("anBarLifetime")) $("anBarLifetime").style.width = (s.total_revenue ? pctLife : 50) + "%";
-  if ($("anBarYearly")) $("anBarYearly").style.width = (s.total_revenue ? pctYear : 50) + "%";
+  if ($("anBarLifetime")) $("anBarLifetime").style.width = (hasRev ? pctLife : 50) + "%";
+  if ($("anBarYearly")) $("anBarYearly").style.width = (hasRev ? pctYear : 50) + "%";
 
   // Doanh thu theo thời gian
   if ($("anRevTimeToday")) $("anRevTimeToday").textContent = formatVndNumber(s.revenue_today || 0);
@@ -3550,14 +3555,15 @@ function renderAnalyticsUI(stats) {
   if ($("anRoleAdminActive")) $("anRoleAdminActive").textContent = (lic.admin_active || 0);
 
   // Tỷ trọng người dùng Car vs PC
+  const hasUsers = Boolean((lic.car_total || 0) + (lic.pc_total || 0) > 0);
   const totalUsersNum = (lic.car_total || 0) + (lic.pc_total || 0) || 1;
-  const pctCar = Math.round(((lic.car_total || 0) / totalUsersNum) * 100);
-  const pctPc = Math.max(0, 100 - pctCar);
+  const pctCar = hasUsers ? Math.round(((lic.car_total || 0) / totalUsersNum) * 100) : 0;
+  const pctPc = hasUsers ? Math.max(0, 100 - pctCar) : 0;
 
   if ($("anRatioCarText")) $("anRatioCarText").textContent = pctCar + "% (" + (lic.car_total || 0) + " mã)";
   if ($("anRatioPcText")) $("anRatioPcText").textContent = pctPc + "% (" + (lic.pc_total || 0) + " mã)";
-  if ($("anBarCar")) $("anBarCar").style.width = ((lic.car_total || lic.pc_total) ? pctCar : 50) + "%";
-  if ($("anBarPc")) $("anBarPc").style.width = ((lic.car_total || lic.pc_total) ? pctPc : 50) + "%";
+  if ($("anBarCar")) $("anBarCar").style.width = (hasUsers ? pctCar : 50) + "%";
+  if ($("anBarPc")) $("anBarPc").style.width = (hasUsers ? pctPc : 50) + "%";
 
   // Thiết bị
   if ($("anDevCars")) $("anDevCars").textContent = (dev.car_devices || 0);
@@ -3582,9 +3588,9 @@ function renderAnalyticsUI(stats) {
       const phoneDigits = String(item.owner_phone || "").replace(/\D/g, "");
       tr.innerHTML = 
         '<td><b>' + esc(item.owner_name) + '</b>' + adminTag + '<br><span class="mono hint" style="font-size:11px">' + esc(item.key) + '</span></td>' +
-        '<td class="mono"><b>' + esc(item.owner_phone) + '</b></td>' +
+        '<td class="mono nowrap"><b>' + esc(item.owner_phone) + '</b></td>' +
         '<td>' + roleBadge(item.role) + '</td>' +
-        '<td style="font-size:12px">' + formatIsoTime(item.expires_at) + '</td>' +
+        '<td class="mono nowrap" style="font-size:12px">' + formatIsoTime(item.expires_at) + '</td>' +
         '<td><span class="tag prereq">⏳ Còn ' + item.days_left + ' ngày</span></td>' +
         '<td style="text-align:right"><div class="actions" style="justify-content:flex-end">' +
           '<button class="ghost small" data-phone="' + esc(item.owner_phone) + '" onclick="copyKey(this.dataset.phone)">📋 SĐT</button>' +
@@ -3730,15 +3736,15 @@ function renderSalesOrdersTable() {
     }
 
     tr.innerHTML = 
-      '<td class="mono"><b>' + esc(o.order_code) + '</b></td>' +
-      '<td style="font-size:12px; color:var(--muted)">' + formatIsoTime(o.created_at) + '</td>' +
-      '<td><b>' + esc(o.owner_name) + '</b></td>' +
-      '<td class="mono">' + esc(o.owner_phone) + '</td>' +
-      '<td>' + planBadge + '</td>' +
-      '<td class="mono" style="font-weight:600">' + formatVndNumber(o.amount) + '</td>' +
-      '<td>' + statusBadge + '</td>' +
-      '<td class="mono">' + (o.license_key ? '<b>' + esc(o.license_key) + '</b>' : '<span style="color:var(--muted)">-</span>') + '</td>' +
-      '<td style="text-align:right"><div class="actions" style="justify-content:flex-end">' + actionsHtml + '</div></td>';
+      '<td class="mono nowrap"><b>' + esc(o.order_code) + '</b></td>' +
+      '<td class="nowrap" style="font-size:12px; color:var(--muted)">' + formatIsoTime(o.created_at) + '</td>' +
+      '<td class="nowrap"><b>' + esc(o.owner_name) + '</b></td>' +
+      '<td class="mono nowrap">' + esc(o.owner_phone) + '</td>' +
+      '<td class="nowrap">' + planBadge + '</td>' +
+      '<td class="mono nowrap" style="font-weight:600; text-align:right">' + formatVndNumber(o.amount) + '</td>' +
+      '<td class="nowrap">' + statusBadge + '</td>' +
+      '<td class="mono nowrap">' + (o.license_key ? '<b>' + esc(o.license_key) + '</b>' : '<span style="color:var(--muted)">-</span>') + '</td>' +
+      '<td style="text-align:right; min-width:140px"><div class="actions" style="justify-content:flex-end">' + actionsHtml + '</div></td>';
     tbody.appendChild(tr);
   });
 }
@@ -3762,12 +3768,12 @@ function renderPriceLocksTable() {
       : '<span class="tag off">🔴 Hết hiệu lực</span>';
 
     tr.innerHTML = 
-      '<td class="mono"><b>' + esc(p.phone) + '</b></td>' +
-      '<td>' + esc(p.owner_name) + '</td>' +
-      '<td><span class="tag admin">-' + p.locked_discount_percent + '%</span> (' + formatVndNumber(p.locked_amount) + ')</td>' +
-      '<td style="font-size:12px">' + formatIsoTime(p.first_registered_at) + '</td>' +
-      '<td style="font-size:12px; font-weight:600">' + formatIsoTime(p.locked_until) + '</td>' +
-      '<td>' + statusTag + '</td>';
+      '<td class="mono nowrap"><b>' + esc(p.phone) + '</b></td>' +
+      '<td class="nowrap">' + esc(p.owner_name) + '</td>' +
+      '<td class="nowrap"><span class="tag admin">-' + p.locked_discount_percent + '%</span> (' + formatVndNumber(p.locked_amount) + ')</td>' +
+      '<td class="nowrap" style="font-size:12px">' + formatIsoTime(p.first_registered_at) + '</td>' +
+      '<td class="nowrap" style="font-size:12px; font-weight:600">' + formatIsoTime(p.locked_until) + '</td>' +
+      '<td class="nowrap">' + statusTag + '</td>';
     tbody.appendChild(tr);
   });
 }
@@ -3788,7 +3794,7 @@ function renderSalesLogsTable() {
       '<td style="font-size:12px; color:var(--muted); white-space:nowrap">' + formatIsoTime(l.changed_at) + '</td>' +
       '<td style="white-space:nowrap"><span class="tag admin">' + esc(l.changed_by) + '</span></td>' +
       '<td style="white-space:nowrap"><b style="font-size:12px">' + esc(l.action) + '</b></td>' +
-      '<td style="font-size:12px; word-break:break-word">' + esc(l.note) + '</td>';
+      '<td style="font-size:12px; min-width:300px; word-break:break-word; line-height:1.4">' + esc(l.note) + '</td>';
     tbody.appendChild(tr);
   });
 }
@@ -4631,7 +4637,7 @@ function renderKnownVersions(app) {
   const rows = [];
   rows.push('<tr data-code="' + targetCode + '">' +
     '<td><b>v' + esc(targetName) + '</b> <span class="tag car">' + (window._fuEnv === "dev" ? "Dev" : "Production (Bản chuẩn)") + '</span></td>' +
-    '<td class="mono">' + targetCode + '</td>' +
+    '<td class="mono" style="text-align:center">' + targetCode + '</td>' +
     '<td style="font-size:12px; color:var(--muted)">' + (fleet[targetName] ? fleet[targetName] + " thiết bị đang chạy" : "—") + '</td>' +
     '<td><span class="tag on">🟢 Bản đích (máy chủ v' + (window._appUpdateConfig.version || 0) + ')</span></td>' +
     '<td style="text-align:right"><span class="hint">Bản đích</span></td></tr>');
@@ -4639,10 +4645,10 @@ function renderKnownVersions(app) {
     const it = seen[code];
     rows.push('<tr data-code="' + code + '">' +
       '<td><b>' + (it.name ? "v" + esc(it.name) : "(mã " + code + ")") + '</b></td>' +
-      '<td class="mono">' + code + '</td>' +
+      '<td class="mono" style="text-align:center">' + code + '</td>' +
       '<td style="font-size:12px; color:var(--muted)">' + (it.count ? it.count + " thiết bị đang chạy" : "không thấy trên đội xe") + '</td>' +
       '<td id="' + app + '_stat_' + code + '"></td>' +
-      '<td style="text-align:right">' + (code < targetCode
+      '<td style="text-align:right; min-width:195px">' + (code < targetCode
         ? '<button class="small ghost" data-app="' + esc(app) + '" data-code="' + code + '" data-ver="' + esc(it.name) + '" onclick="quickAddForceRule(this.dataset.app, parseInt(this.dataset.code, 10), this.dataset.ver)">⚡ Ép ' + code + ' ➔ Lên ' + targetCode + '</button>'
         : '<span class="hint">mới hơn bản đích</span>') + '</td></tr>');
   });
@@ -4783,12 +4789,12 @@ function renderRulesTable(app) {
     const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
 
     tr.innerHTML = `
-      <td class="mono">${idx + 1}</td>
+      <td class="mono" style="text-align:center">${idx + 1}</td>
       <td>${condHtml}</td>
       <td>${targetHtml}</td>
-      <td style="max-width:240px; font-size:12px">${fuEscapeHtml(rule.message || "(Mặc định)")}</td>
+      <td style="max-width:240px; font-size:12px; word-break:break-word; line-height:1.4">${fuEscapeHtml(rule.message || "(Mặc định)")}</td>
       <td>${urlDisplay}</td>
-      <td style="text-align:right">
+      <td style="text-align:right; min-width:120px">
         <div class="actions" style="justify-content:flex-end">
           <button class="ghost small" onclick="openEditForceRuleModal('${app}', ${idx})">✏️ Sửa</button>
           <button class="ghost small danger" onclick="deleteForceRule('${app}', ${idx})">🗑️ Xoá</button>
