@@ -118,7 +118,7 @@ Hỗ trợ **2 chế độ giao diện Sáng (Light) & Tối (Dark)** tự độ
 
 - **Sơ đồ xe 3D trực quan**: hiển thị cửa mở và trạng thái hạ kính từng góc (FL, FR, RL, RR), phím nâng/hạ kính và đóng tất cả cửa sổ.
 - **Cửa & kính tự động**: hé kính 20% khi mở cửa, đóng kín khi đóng cửa (tự động khóa an toàn khi xe chạy).
-- **Giọng nói tiếng Việt offline**: 121+ lệnh điều khiển + câu hỏi tra cứu, nhận dạng offline (Sherpa-ONNX Zipformer-vi) 95% chính xác, hỗ trợ đủ 3 giọng Bắc – Trung – Nam.
+- **Giọng nói tiếng Việt offline**: 121+ lệnh điều khiển + câu hỏi tra cứu, nhận dạng offline (Model AI được huấn luyện riêng) 95% chính xác, hỗ trợ đủ 3 giọng Bắc – Trung – Nam.
 - **Tùy biến ứng dụng giọng nói**: Gán bản đồ dẫn đường mặc định (VietMap Live / Waze), ứng dụng nghe nhạc mặc định (Spotify / Zing MP3) và đặt địa chỉ nhà để dẫn đường 1-chạm.
 
 ---

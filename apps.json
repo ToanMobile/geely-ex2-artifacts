@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.8",
-    "versionCode": 1108,
+    "latestVersionName": "1.1.9",
+    "versionCode": 1109,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "3575f94392acb46aec4a52930bef58fd47873b43c4cd6c97367f945e82e4afdf",
-    "releaseNotes": "- Nhận diện giọng nói \"Hi Geely\" siêu nhẹ và tức thì: Tích hợp mô hình nhận diện từ khóa chuyên dụng mới siêu nhẹ (chỉ ~140 KB), phản hồi cực nhanh dưới 50ms, bảo vệ tuyệt đối bản quyền.\n- Tiết kiệm pin và giải phóng tải phần cứng xe: Tối ưu gom khung âm thanh 160ms giúp giảm 50% số lần xử lý và khóa luồng nền chạy trên lõi phụ, giữ màn hình xe luôn mượt mà 60 FPS khi đang dẫn đường bản đồ.\n- Không nuốt âm, không rụng chữ: Bộ đệm âm thanh thông minh 2 giây lưu trọn vẹn giọng nói khi ra lệnh liền mạch \"Hi Geely mở điều hòa 24 độ\", xe hiểu ngay không cần ngắt quãng.\n- Bảo mật tệp và chống lỗi nguồn điện: Cơ chế lưu trữ nguyên tử chống hỏng tệp khi tắt mở xe đột ngột, phân quyền bảo mật cấp hệ thống chống sao chép trái phép.",
+    "sha256": "62d85caf890b0b792c111168426ab33801852d28e3b8d0e8fe3a572b8988a72a",
+    "releaseNotes": "- Tự động toàn màn hình khi tắt 1 ứng dụng chia đôi: Khi đang chia đôi 2 ứng dụng, nếu tắt 1 ứng dụng thì ứng dụng còn lại tự động bung ra toàn màn hình ngay lập tức, không còn bị kẹt nửa màn hình.\n- Khắc phục lỗi ứng dụng mở mới bị hiển thị dạng cửa sổ nổi: Tự động dọn dẹp sạch sẽ các vùng cửa sổ chia đôi cũ, giúp ứng dụng mở mới từ màn hình chính luôn hiển thị trọn vẹn toàn màn hình.\n- Kéo vạch chia đôi siêu mượt mà 60 FPS: Tối ưu hóa phản hồi cảm ứng mượt mà khi di chuyển vạch chia đôi, tích hợp cơ chế tự động căn chỉnh thông minh vào các tỷ lệ chuẩn (30:70, 50:50, 70:30), bảo vệ trải nghiệm xem video và bản đồ không bị gián đoạn.\n- Thêm nút \"Reset màn hình\" trên bảng tiện ích nổi: Hỗ trợ xử lý nhanh các tình huống kẹt cửa sổ, khôi phục giao diện xe về trạng thái chuẩn với cơ chế chạm 2 bước xác nhận an toàn chống bấm nhầm khi đang lái xe.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.8",
-    "versionCode": 1108,
+    "latestVersionName": "1.1.9",
+    "versionCode": 1109,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "6e033b30f454510964961ec7427cdb79a3961d93a2fcf58d333b2a1ca610712f",
-    "releaseNotes": "- Đồng bộ toàn diện với hệ thống xe bản 1.1.8: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.\n- Tối ưu trải nghiệm điều khiển tức thì: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe.",
+    "sha256": "d503d9ea260e48da64bb236fe205e92528cc0a6164566aeb6494c963a88433ac",
+    "releaseNotes": "- Đồng bộ phiên bản 1.1.9 với đầu xe: Nâng cao độ ổn định kết nối và đồng bộ trạng thái hiển thị nhiều cửa sổ với hệ thống xe.",
     "minVersionCode": 0,
     "forceRules": []
   },
