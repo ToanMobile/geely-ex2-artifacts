@@ -918,14 +918,18 @@
           </div>
 
           <!-- Form thêm chi phí -->
-          <div style="display:grid; grid-template-columns: 2fr 1fr auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
+          <div style="display:grid; grid-template-columns: 1.2fr 1.8fr 1fr auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
             <div>
-              <label style="font-size:11px">Tên / Ghi chú khoản chi tiêu *</label>
-              <input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI Groq/Gemini, Mua thiết bị test, TK Apple Developer...">
+              <label style="font-size:11px">Khoản chi *</label>
+              <input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI, Thiết bị test, TK Apple..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
+            </div>
+            <div>
+              <label style="font-size:11px">Ghi chú (Note)</label>
+              <input id="psNewExpenseNote" type="text" placeholder="Ví dụ: Groq/Gemini API, Hoá đơn số #12, TK Đạt mua..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
             </div>
             <div>
               <label style="font-size:11px">Số tiền chi (₫) *</label>
-              <input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)">
+              <input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)" onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
             </div>
             <div style="padding-bottom:8px">
               <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; white-space:nowrap" title="Đánh dấu nếu khoản tiền này đã được thanh toán thực tế (sẽ trừ vào doanh thu để tính chia lãi)">
@@ -944,6 +948,7 @@
               <thead>
                 <tr>
                   <th style="text-align:left">Khoản chi</th>
+                  <th style="text-align:left">Ghi chú</th>
                   <th style="text-align:right">Số tiền (₫)</th>
                   <th style="text-align:center; width:140px">Trạng thái</th>
                   <th style="text-align:center; width:120px">Ngày ghi nhận</th>
@@ -951,21 +956,21 @@
                 </tr>
               </thead>
               <tbody id="psExpenseTableBody">
-                <tr><td colspan="5" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
+                <tr><td colspan="6" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
               </tbody>
               <tfoot>
                 <tr style="font-weight:700; border-top:2px solid var(--border)">
-                  <td>ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
+                  <td colspan="2">ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
                   <td class="mono" style="text-align:right; color:var(--danger)" id="psExpenseTablePaidTotal">0 ₫</td>
                   <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Tính vào phân chia 60:40</td>
                 </tr>
                 <tr style="font-size:12px; color:var(--muted)">
-                  <td>Chờ thanh toán (Ghi chú chưa chi)</td>
+                  <td colspan="2">Chờ thanh toán (Ghi chú chưa chi)</td>
                   <td class="mono" style="text-align:right; color:#d97706" id="psExpenseTablePendingTotal">0 ₫</td>
                   <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Chưa trừ vào lợi nhuận chia</td>
                 </tr>
                 <tr style="font-weight:600; border-top:1px dashed var(--border); font-size:12px">
-                  <td>TỔNG CHI PHÍ DỰ KIẾN</td>
+                  <td colspan="2">TỔNG CHI PHÍ DỰ KIẾN</td>
                   <td class="mono" style="text-align:right" id="psExpenseTableTotal">0 ₫</td>
                   <td colspan="3"></td>
                 </tr>
@@ -1371,15 +1376,36 @@
 
     <!-- Danh sách Đại Lý & Thanh Công Cụ -->
     <div class="panel">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px">
         <div>
-          <h2 style="font-size:16px; margin:0; color:var(--text)">Danh sách Đại lý Cấp 1 & Đối tác Phân phối</h2>
-          <div class="hint" style="margin-top:2px">Quản lý tài khoản thợ, hạn mức tín dụng, chiết khấu và nạp tiền ví</div>
+          <h2 style="font-size:16px; margin:0; color:var(--text); display:flex; align-items:center; gap:8px">
+            🏢 Danh sách Đại lý Cấp 1 & Đối tác Phân phối
+            <span class="tag car mono" id="resellerCountBadge">0 đại lý</span>
+          </h2>
+          <div class="hint" style="margin-top:2px">Quản lý tài khoản thợ, mã PIN 6 số, hạn mức tín dụng, chiết khấu và nạp tiền ví</div>
         </div>
-        <div style="display:flex; gap:8px; align-items:center">
-          <input id="resellerSearchInput" placeholder="🔍 Tìm theo mã, tên, SĐT, gara..." style="width:240px" oninput="filterResellersTable()">
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+          <input id="resellerSearchInput" placeholder="🔍 Tìm theo mã, tên, SĐT, gara, PIN..." style="width:250px" oninput="filterResellersTable()">
           <button type="button" class="small" onclick="openCreateResellerModal()">➕ Thêm Đại Lý Mới</button>
+          <button type="button" class="small ghost" onclick="openResellerPortalLink()" title="Mở trang Cổng Đại Lý đăng nhập cho thợ">🌐 Mở Cổng ĐL</button>
+          <button type="button" class="small ghost" onclick="copyResellerPortalUrl()" title="Sao chép link đăng nhập Cổng Đại Lý">📋 Copy Link ĐL</button>
           <button type="button" class="small ghost" onclick="loadResellersData()">🔄 Làm mới</button>
+        </div>
+      </div>
+
+      <!-- Thanh bộ lọc trạng thái nhanh -->
+      <div id="resellerQuickFilter" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; align-items:center">
+        <span style="font-size:12px; font-weight:600; color:var(--muted)">Lọc nhanh:</span>
+        <button type="button" class="small ghost" id="fltResellerAll" style="font-weight:700" onclick="setResellerFilter('all')">Tất cả (<span id="fltResellerAllCount">0</span>)</button>
+        <button type="button" class="small ghost" id="fltResellerActive" onclick="setResellerFilter('active')">🟢 Hoạt động (<span id="fltResellerActiveCount">0</span>)</button>
+        <button type="button" class="small ghost" id="fltResellerSuspended" onclick="setResellerFilter('suspended')">⛔ Đang khoá (<span id="fltResellerSuspendedCount">0</span>)</button>
+        <button type="button" class="small ghost" id="fltResellerLockedPin" onclick="setResellerFilter('locked_pin')">⚠️ Kẹt PIN / Sai PIN (<span id="fltResellerLockedPinCount">0</span>)</button>
+        <button type="button" class="small ghost" id="fltResellerLowBal" onclick="setResellerFilter('low_balance')">💳 Cần nạp ví (<span id="fltResellerLowBalCount">0</span>)</button>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:6px">
+          <label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; cursor:pointer; color:var(--text); user-select:none">
+            <input type="checkbox" id="chkShowAllPins" onchange="toggleShowAllPins(this.checked)" style="width:14px; height:14px; margin:0; cursor:pointer">
+            <span>👁️ Hiện toàn bộ PIN</span>
+          </label>
         </div>
       </div>
 
@@ -1388,17 +1414,18 @@
           <thead>
             <tr>
               <th style="width:110px">Mã ĐL</th>
-              <th style="width:190px">Đại lý / Gara</th>
-              <th style="width:140px">Số điện thoại</th>
-              <th style="width:150px">Chiết khấu (%)</th>
-              <th style="width:170px">Số dư ví / Hạn mức</th>
+              <th style="min-width:200px">Đại lý / Gara</th>
+              <th style="width:130px">Số điện thoại</th>
+              <th style="width:140px; text-align:center">Mã PIN (6 số)</th>
+              <th style="width:140px">Chiết khấu (%)</th>
+              <th style="width:160px">Số dư ví / Hạn mức</th>
               <th style="width:110px; text-align:center">Key đã cấp</th>
               <th style="width:120px; text-align:center">Trạng thái</th>
-              <th style="width:210px; text-align:right">Thao tác</th>
+              <th style="width:240px; text-align:right">Thao tác</th>
             </tr>
           </thead>
           <tbody id="resellersTableBody">
-            <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px">Đang tải dữ liệu đại lý...</td></tr>
+            <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">Đang tải dữ liệu đại lý...</td></tr>
           </tbody>
         </table>
       </div>
@@ -1807,8 +1834,15 @@
           <input id="resellerModalAddress" placeholder="VD: 123 Đường số 7, Bình Tân, TP.HCM">
         </div>
         <div>
-          <label>Mã PIN đăng nhập (6 số)</label>
-          <input id="resellerModalPin" placeholder="Mặc định: 123456" maxlength="6">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+            <label style="margin:0">Mã PIN đăng nhập (6 số) *</label>
+            <div style="display:flex; gap:6px; font-size:11px">
+              <span style="color:#2563eb; cursor:pointer; user-select:none" onclick="toggleModalPinVisibility()" id="btnToggleModalPin">👁️ Xem</span>
+              <span style="color:#10b981; cursor:pointer; user-select:none" onclick="generateRandomModalPin()">🎲 Ngẫu nhiên</span>
+              <span style="color:#64748b; cursor:pointer; user-select:none" onclick="$('resellerModalPin').value='123456'">🔁 123456</span>
+            </div>
+          </div>
+          <input id="resellerModalPin" type="text" placeholder="Nhập mã PIN 6 số (VD: 123456)" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-weight:700; letter-spacing:2px">
         </div>
         <div>
           <label>Hạn mức tín dụng âm (Credit Limit VND)</label>
@@ -1816,15 +1850,32 @@
         </div>
         <div>
           <label>Chiết khấu Gói Trọn Đời (%)</label>
-          <input id="resellerModalDiscLife" type="number" value="35" min="0" max="70">
+          <input id="resellerModalDiscLife" type="number" value="35" min="0" max="70" oninput="updateResellerModalProfitPreview()">
         </div>
         <div>
           <label>Chiết khấu Gói 1 Năm (%)</label>
-          <input id="resellerModalDiscYear" type="number" value="40" min="0" max="70">
+          <input id="resellerModalDiscYear" type="number" value="40" min="0" max="70" oninput="updateResellerModalProfitPreview()">
+        </div>
+        <div style="grid-column: 1 / -1; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px">
+          <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px">📊 Ước tính giá sỉ & lợi nhuận đại lý khi xuất mã:</div>
+          <div id="resellerModalProfitPreview" style="font-size:12px; color:var(--muted); line-height:1.4">--</div>
         </div>
         <div>
-          <label>Mã ngân hàng nhận tiền (Mã BIN)</label>
-          <input id="resellerModalBankBin" value="970436" placeholder="970436 (VCB)">
+          <label>Chọn Ngân hàng đại lý</label>
+          <select id="resellerModalBankSelect" onchange="onResellerBankSelectChange(this)">
+            <option value="970436">Vietcombank (VCB - 970436)</option>
+            <option value="970407">Techcombank (TCB - 970407)</option>
+            <option value="970422">MB Bank (Quân Đội - 970422)</option>
+            <option value="970418">BIDV (Đầu tư & Phát triển - 970418)</option>
+            <option value="970415">VietinBank (Công Thương - 970415)</option>
+            <option value="970416">ACB (Á Châu - 970416)</option>
+            <option value="970432">VPBank (Việt Nam Thịnh Vượng - 970432)</option>
+            <option value="970443">SHB (Sài Gòn - Hà Nội - 970443)</option>
+            <option value="970423">TPBank (Tiên Phong - 970423)</option>
+            <option value="970403">Sacombank (Sài Gòn Thương Tín - 970403)</option>
+            <option value="custom">-- Ngân hàng khác (Tự nhập mã BIN) --</option>
+          </select>
+          <input id="resellerModalBankBin" value="970436" placeholder="Mã BIN" style="margin-top:4px; display:none">
         </div>
         <div>
           <label>Số tài khoản ngân hàng đại lý</label>
@@ -1843,6 +1894,66 @@
       <div class="actions" style="margin-top:16px">
         <button type="button" id="btnSaveReseller" onclick="saveReseller()">Lưu thông tin</button>
         <button type="button" class="ghost" onclick="closeResellerModal()">Huỷ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Đặt Lại / Đổi PIN Đại Lý (Admin) -->
+  <div class="modal-mask" id="resellerResetPinMask" style="display:none" onclick="if(event.target===this)closeResetPinModal()">
+    <div class="modal" style="max-width:440px">
+      <h3 style="color:var(--text); margin-bottom:4px">🔑 Đặt Lại Mã PIN Đại Lý</h3>
+      <div class="hint" id="resetPinResellerDesc">Cấp lại mã PIN mới cho thợ khi quên hoặc cần đổi bảo mật.</div>
+
+      <input type="hidden" id="resetPinResellerId">
+      <div style="margin:16px 0">
+        <label>Mã PIN mới (chính xác 6 chữ số) *</label>
+        <div style="display:flex; gap:6px; align-items:center">
+          <input id="resetPinNewValue" type="text" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-size:20px; font-weight:700; letter-spacing:4px; text-align:center" placeholder="123456" onkeydown="if(event.key==='Enter') submitResetPin()">
+          <button type="button" class="small ghost" onclick="generateRandomResetPin()" title="Sinh mã PIN ngẫu nhiên">🎲 Ngẫu nhiên</button>
+          <button type="button" class="small ghost" onclick="$('resetPinNewValue').value='123456'" title="Đặt về 123456">🔁 123456</button>
+        </div>
+      </div>
+
+      <div class="hint" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:8px 10px; color:#1e40af; font-size:12px; margin-bottom:14px">
+        ℹ️ Đặt lại PIN sẽ đồng thời xóa mọi cảnh báo thử sai (failed attempts) và mở khóa nếu tài khoản đang bị tạm khóa 15 phút.
+      </div>
+
+      <div class="actions">
+        <button type="button" id="btnConfirmResetPin" class="primary" onclick="submitResetPin()">Xác nhận đổi PIN</button>
+        <button type="button" class="ghost" onclick="closeResetPinModal()">Huỷ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Danh Sách Key Đại Lý Đã Cấp -->
+  <div class="modal-mask" id="resellerLicensesMask" style="display:none" onclick="if(event.target===this)closeResellerLicensesModal()">
+    <div class="modal" style="max-width:760px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
+        <h3 id="resellerLicensesTitle" style="margin:0">🔑 Danh Sách Key Đã Cấp</h3>
+        <button type="button" class="small ghost" onclick="closeResellerLicensesModal()">✕ Đóng</button>
+      </div>
+      <div class="hint" id="resellerLicensesSubtitle">Danh sách tất cả bản quyền xe do đại lý xuất</div>
+
+      <div style="overflow-x:auto; margin-top:14px; max-height:420px; overflow-y:auto">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:130px">Thời gian</th>
+              <th>Mã License Key</th>
+              <th>Khách hàng / SĐT</th>
+              <th style="width:110px">Gói</th>
+              <th style="text-align:right; width:120px">Giá sỉ trừ ví</th>
+              <th style="text-align:center; width:90px">Kích hoạt</th>
+            </tr>
+          </thead>
+          <tbody id="resellerLicensesTableBody">
+            <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px">Đang tải danh sách key...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions" style="margin-top:16px; justify-content:flex-end">
+        <button type="button" class="ghost" onclick="closeResellerLicensesModal()">Đóng</button>
       </div>
     </div>
   </div>
@@ -4103,7 +4214,7 @@ function renderProfitSharingUI(totalRevenue) {
   if (tbody) {
     tbody.innerHTML = "";
     if (!expenses.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập tên khoản chi & số tiền phía trên để khai báo.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập khoản chi, ghi chú & số tiền phía trên để khai báo.</td></tr>';
     } else {
       expenses.forEach((exp, idx) => {
         const tr = document.createElement("tr");
@@ -4112,8 +4223,12 @@ function renderProfitSharingUI(totalRevenue) {
         const statusHtml = isPaid
           ? `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#16a34a; font-size:12px" title="Bấm để chuyển sang Chưa thanh toán"><input type="checkbox" checked onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>✅ Đã TT</span></label>`
           : `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#d97706; font-size:12px" title="Bấm để đánh dấu Đã thanh toán"><input type="checkbox" onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>⏳ Chưa TT</span></label>`;
+        const noteHtml = exp.note
+          ? esc(exp.note)
+          : '<span style="color:var(--muted)">—</span>';
         tr.innerHTML =
           `<td><b>${esc(exp.title || "Chi phí")}</b></td>` +
+          `<td class="note-cell" style="cursor:pointer" onclick="editProfitSharingExpenseNote('${expId}')" title="Bấm để sửa ghi chú (note)">${noteHtml} <span style="font-size:11px; opacity:0.4; margin-left:3px">✏️</span></td>` +
           `<td class="mono" style="text-align:right; font-weight:600; color:${isPaid ? 'var(--danger)' : '#d97706'}">${formatVndNumber(exp.amount || 0)}</td>` +
           `<td style="text-align:center">${statusHtml}</td>` +
           `<td class="mono" style="text-align:center; font-size:12px; color:var(--muted)">${formatIsoTime(exp.created_at)}</td>` +
@@ -4152,14 +4267,16 @@ function formatNumberInput(el) {
 
 function addProfitSharingExpense() {
   const titleEl = $("psNewExpenseTitle");
+  const noteEl = $("psNewExpenseNote");
   const amtEl = $("psNewExpenseAmount");
   const isPaidEl = $("psNewExpenseIsPaid");
   const title = (titleEl.value || "").trim();
+  const note = noteEl ? (noteEl.value || "").trim() : "";
   const amt = parseInt((amtEl.value || "").replace(/\D/g, ""), 10) || 0;
   const isPaid = isPaidEl ? isPaidEl.checked : false;
 
   if (!title) {
-    alert("Vui lòng nhập tên / ghi chú khoản chi tiêu (ví dụ: Model AI Groq/Gemini, mua thiết bị...)");
+    alert("Vui lòng nhập tên khoản chi tiêu (ví dụ: Model AI, mua thiết bị...)");
     titleEl.focus();
     return;
   }
@@ -4173,14 +4290,28 @@ function addProfitSharingExpense() {
   data.expenses.push({
     id: "exp_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
     title: title,
+    note: note,
     amount: amt,
     is_paid: isPaid,
     created_at: new Date().toISOString()
   });
 
   titleEl.value = "";
+  if (noteEl) noteEl.value = "";
   amtEl.value = "";
   if (isPaidEl) isPaidEl.checked = false;
+  renderProfitSharingUI();
+  saveProfitSharingConfig(true);
+}
+
+function editProfitSharingExpenseNote(id) {
+  const data = ensureProfitSharingData();
+  const exp = (data.expenses || []).find(e => e.id === id);
+  if (!exp) return;
+  const currentNote = exp.note || "";
+  const newNote = prompt(`Sửa ghi chú (note) cho khoản chi "${exp.title || 'Chi phí'}":`, currentNote);
+  if (newNote === null) return;
+  exp.note = newNote.trim();
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
@@ -6145,11 +6276,35 @@ try {
 // ==================== QUẢN LÝ ĐẠI LÝ CẤP 1 (RESELLERS) ====================
 window._resellersList = [];
 window._resellerTransactions = [];
+window._resellerActiveFilter = 'all';
+window._showAllPins = false;
+window._revealedPinIds = new Set();
+
+async function copyToClipboard(text, successMessage = "Đã sao chép vào bộ nhớ tạm!") {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      alert("📋 " + successMessage);
+      return;
+    }
+  } catch (e) {}
+  prompt("Sao chép văn bản dưới đây:", text);
+}
+
+function openResellerPortalLink() {
+  const url = window.location.origin + "/reseller";
+  window.open(url, "_blank");
+}
+
+function copyResellerPortalUrl() {
+  const url = "https://ex2.toanmobile.com/reseller";
+  copyToClipboard(url, "Đã sao chép đường link Cổng Đại Lý: " + url);
+}
 
 async function loadResellersData() {
   const tbody = $("resellersTableBody");
   if (tbody) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
   }
 
   try {
@@ -6166,42 +6321,117 @@ async function loadResellersData() {
     let totalRev = 0;
     let totalBal = 0;
     let totalKeys = 0;
+    let activeCount = 0;
+    let suspendedCount = 0;
+    let lockedPinCount = 0;
+    let lowBalCount = 0;
 
+    const now = new Date();
     window._resellersList.forEach(r => {
       totalRev += (Number(r.total_revenue_contributed) || 0);
       totalBal += (Number(r.wallet_balance) || 0);
       totalKeys += (Number(r.total_sales_count) || 0);
+
+      if (r.status === "active") activeCount++;
+      if (r.status === "suspended") suspendedCount++;
+      const isLockedPin = (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
+      if (isLockedPin) lockedPinCount++;
+      if (Number(r.wallet_balance) <= 0) lowBalCount++;
     });
 
     if ($("resellerKpiCount")) $("resellerKpiCount").textContent = window._resellersList.length;
     if ($("resellerKpiTotalRevenue")) $("resellerKpiTotalRevenue").textContent = totalRev.toLocaleString("vi-VN") + " ₫";
     if ($("resellerKpiKeysCount")) $("resellerKpiKeysCount").textContent = totalKeys;
     if ($("resellerKpiTotalBalance")) $("resellerKpiTotalBalance").textContent = totalBal.toLocaleString("vi-VN") + " ₫";
+    if ($("resellerCountBadge")) $("resellerCountBadge").textContent = window._resellersList.length + " đại lý";
 
-    renderResellersTable(window._resellersList);
+    // Cập nhật số lượng trên các nút filter
+    if ($("fltResellerAllCount")) $("fltResellerAllCount").textContent = window._resellersList.length;
+    if ($("fltResellerActiveCount")) $("fltResellerActiveCount").textContent = activeCount;
+    if ($("fltResellerSuspendedCount")) $("fltResellerSuspendedCount").textContent = suspendedCount;
+    if ($("fltResellerLockedPinCount")) $("fltResellerLockedPinCount").textContent = lockedPinCount;
+    if ($("fltResellerLowBalCount")) $("fltResellerLowBalCount").textContent = lowBalCount;
+
+    applyResellerFilter();
     renderResellerTransactionsTable(window._resellerTransactions);
   } catch (err) {
     console.error("Lỗi tải dữ liệu đại lý:", err);
     if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
     }
   }
 }
 
-function filterResellersTable() {
-  const q = ($("resellerSearchInput") ? $("resellerSearchInput").value : "").trim().toLowerCase();
-  if (!q) {
-    renderResellersTable(window._resellersList);
-    return;
-  }
-  const filtered = (window._resellersList || []).filter(r => {
-    return (r.reseller_code || "").toLowerCase().includes(q) ||
-           (r.owner_name || "").toLowerCase().includes(q) ||
-           (r.phone || "").toLowerCase().includes(q) ||
-           (r.garage_name || "").toLowerCase().includes(q) ||
-           (r.address || "").toLowerCase().includes(q);
+function setResellerFilter(filterType) {
+  window._resellerActiveFilter = filterType;
+  const buttons = [
+    { id: "fltResellerAll", type: "all" },
+    { id: "fltResellerActive", type: "active" },
+    { id: "fltResellerSuspended", type: "suspended" },
+    { id: "fltResellerLockedPin", type: "locked_pin" },
+    { id: "fltResellerLowBal", type: "low_balance" }
+  ];
+  buttons.forEach(b => {
+    const el = $(b.id);
+    if (!el) return;
+    if (b.type === filterType) {
+      el.classList.remove("ghost");
+      el.style.fontWeight = "700";
+    } else {
+      el.classList.add("ghost");
+      el.style.fontWeight = "normal";
+    }
   });
+  applyResellerFilter();
+}
+
+function filterResellersTable() {
+  applyResellerFilter();
+}
+
+function applyResellerFilter() {
+  const q = ($("resellerSearchInput") ? $("resellerSearchInput").value : "").trim().toLowerCase();
+  const filterType = window._resellerActiveFilter || "all";
+  const now = new Date();
+
+  const filtered = (window._resellersList || []).filter(r => {
+    // 1. Text Search match
+    const textMatch = !q || (
+      (r.reseller_code || "").toLowerCase().includes(q) ||
+      (r.owner_name || "").toLowerCase().includes(q) ||
+      (r.phone || "").toLowerCase().includes(q) ||
+      (r.garage_name || "").toLowerCase().includes(q) ||
+      (r.address || "").toLowerCase().includes(q) ||
+      (r.pin_plain || "").toLowerCase().includes(q) ||
+      (r.bank_account || "").toLowerCase().includes(q)
+    );
+    if (!textMatch) return false;
+
+    // 2. Filter Tab match
+    if (filterType === "active") return r.status === "active";
+    if (filterType === "suspended") return r.status === "suspended";
+    if (filterType === "locked_pin") {
+      return (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
+    }
+    if (filterType === "low_balance") return Number(r.wallet_balance) <= 0;
+    return true;
+  });
+
   renderResellersTable(filtered);
+}
+
+function toggleShowAllPins(checked) {
+  window._showAllPins = Boolean(checked);
+  applyResellerFilter();
+}
+
+function togglePinRow(resellerId) {
+  if (window._revealedPinIds.has(resellerId)) {
+    window._revealedPinIds.delete(resellerId);
+  } else {
+    window._revealedPinIds.add(resellerId);
+  }
+  applyResellerFilter();
 }
 
 function renderResellersTable(list) {
@@ -6209,53 +6439,95 @@ function renderResellersTable(list) {
   if (!tbody) return;
 
   if (!list || !list.length) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--muted); padding:24px">Không tìm thấy đại lý nào phù hợp.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:24px">Không tìm thấy đại lý nào phù hợp.</td></tr>';
     return;
   }
 
+  const now = new Date();
   let html = "";
   list.forEach(r => {
     const isSuspended = r.status === "suspended";
     const statusBadge = isSuspended
       ? '<span class="tag off">⛔ Đang khoá</span>'
-      : '<span class="tag on">🟢 Đang hoạt động</span>';
+      : '<span class="tag on">🟢 Hoạt động</span>';
 
     const balanceFormatted = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
     const creditFormatted = r.credit_limit > 0
-      ? '<div class="hint" style="color:var(--warn)">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>'
+      ? '<div class="hint" style="color:var(--warn); font-size:11px">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>'
       : '';
 
     const discLifetime = (r.discount_rate_lifetime || 35) + "%";
     const discYearly = (r.discount_rate_yearly || 40) + "%";
     const commRenewal = (r.renewal_commission_percent || 25) + "%";
 
+    // PIN Display
+    const pin = r.pin_plain || "123456";
+    const isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
+    const pinDisplay = isRevealed
+      ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>`
+      : `<span class="mono" style="font-size:13px; color:var(--muted); letter-spacing:2px">••••••</span>`;
+
+    // Khóa do gõ sai PIN (Brute-force)
+    let pinLockHtml = "";
+    if (r.locked_until && new Date(r.locked_until) > now) {
+      const lockDate = new Date(r.locked_until);
+      const timeStr = lockDate.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+      pinLockHtml = `<div style="margin-top:4px"><span class="tag off" style="font-size:10px; color:#dc2626; background:#fee2e2; padding:1px 5px">🔒 Khóa tới ${timeStr}</span> <button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:var(--accent); font-weight:700; margin-top:2px" onclick="adminUnlockReseller('${esc(r.id)}')">🔓 Mở khóa</button></div>`;
+    } else if (r.failed_attempts > 0) {
+      pinLockHtml = `<div style="margin-top:3px; font-size:11px; color:#d97706">⚠️ Sai ${r.failed_attempts}/5 lần <button type="button" class="small ghost" style="padding:0 4px; font-size:10px" onclick="adminUnlockReseller('${esc(r.id)}')">Xoá</button></div>`;
+    }
+
+    // Bank Account Info
+    let bankInfoHtml = "";
+    if (r.bank_account) {
+      bankInfoHtml = `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" onclick="copyToClipboard('${esc(r.bank_account)}', 'Đã chép số tài khoản ${esc(r.bank_account)}')" title="Sao chép STK">📋</span></div>`;
+    }
+
     html += '<tr>' +
-      '<td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(r.reseller_code) + '</span></td>' +
       '<td>' +
-        '<div style="font-weight:600; color:var(--text)">' + esc(r.garage_name) + '</div>' +
-        '<div class="hint">' + esc(r.owner_name) + (r.address ? ' • ' + esc(r.address) : '') + '</div>' +
+        '<div class="mono" style="font-weight:800; font-size:13px; color:var(--accent)">' + esc(r.reseller_code) + '</div>' +
+        '<div class="hint" style="font-size:11px">' + (r.created_at ? new Date(r.created_at).toLocaleDateString("vi-VN") : '') + '</div>' +
       '</td>' +
       '<td>' +
-        '<div class="mono">' + esc(r.phone) + '</div>' +
-        '<div class="hint"><a href="https://zalo.me/' + esc(r.phone) + '" target="_blank" style="color:#0068ff; text-decoration:none">💬 Zalo</a></div>' +
+        '<div style="font-weight:700; color:var(--text); font-size:14px">' + esc(r.garage_name) + '</div>' +
+        '<div class="hint">' + esc(r.owner_name) + (r.address ? ' • ' + esc(r.address) : '') + '</div>' +
+        bankInfoHtml +
+      '</td>' +
+      '<td>' +
+        '<div class="mono" style="font-weight:600">' + esc(r.phone) + '</div>' +
+        '<div class="hint"><a href="https://zalo.me/' + esc(r.phone) + '" target="_blank" style="color:#0068ff; text-decoration:none; font-weight:600">💬 Zalo</a></div>' +
+      '</td>' +
+      '<td style="text-align:center; background:rgba(37,99,235,0.02)">' +
+        '<div style="display:inline-flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:3px 8px; border-radius:6px">' +
+          pinDisplay +
+          '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="togglePinRow(\'' + esc(r.id) + '\')" title="Hiện / Ẩn PIN">' + (isRevealed ? '🙈' : '👁️') + '</button>' +
+          '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="copyToClipboard(\'' + esc(pin) + '\', \'Đã chép mã PIN ' + esc(pin) + '\')" title="Sao chép PIN">📋</button>' +
+        '</div>' +
+        '<div style="margin-top:4px">' +
+          '<button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:#2563eb" onclick="openResetPinModal(\'' + esc(r.id) + '\')" title="Đặt lại mã PIN mới cho thợ">🔄 Đổi PIN</button>' +
+        '</div>' +
+        pinLockHtml +
       '</td>' +
       '<td>' +
         '<div>Trọn đời: <b>' + discLifetime + '</b></div>' +
-        '<div>1 Năm: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div>' +
+        '<div class="hint">1 Năm: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div>' +
       '</td>' +
       '<td>' +
-        '<div style="font-weight:700; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">' + balanceFormatted + '</div>' +
+        '<div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">' + balanceFormatted + '</div>' +
         creditFormatted +
       '</td>' +
       '<td style="text-align:center">' +
-        '<div style="font-weight:700; font-size:15px">' + (r.total_sales_count || 0) + '</div>' +
-        '<div class="hint">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly || 15) + '</div>' +
+        '<button type="button" class="small ghost" style="font-weight:800; font-size:13px; color:#9333ea; padding:3px 8px; border-color:#d8b4fe" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Bấm xem danh sách key đã cấp">' +
+          '🔑 ' + (r.total_sales_count || 0) +
+        '</button>' +
+        '<div class="hint" style="font-size:11px; margin-top:2px">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly || 15) + '</div>' +
       '</td>' +
       '<td style="text-align:center">' + statusBadge + '</td>' +
       '<td style="text-align:right">' +
         '<div style="display:inline-flex; gap:4px; flex-wrap:wrap; justify-content:flex-end">' +
           '<button type="button" class="small" onclick="openTopupModal(\'' + esc(r.id) + '\')">💰 Nạp ví</button>' +
           '<button type="button" class="small ghost" onclick="openEditResellerModal(\'' + esc(r.id) + '\')">✏️ Sửa</button>' +
+          '<button type="button" class="small ghost" style="color:#0284c7" onclick="copyResellerHandoverMessage(\'' + esc(r.id) + '\')" title="Sao chép toàn bộ thông tin đăng nhập, link Cổng ĐL và mã PIN gửi Zalo cho thợ">📤 Gửi Zalo</button>' +
           (isSuspended
             ? '<button type="button" class="small ghost" style="color:var(--accent)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'active\')">🔓 Mở</button>'
             : '<button type="button" class="small ghost" style="color:var(--err)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'suspended\')">🔒 Khoá</button>'
@@ -6314,6 +6586,250 @@ function renderResellerTransactionsTable(transList) {
   tbody.innerHTML = html;
 }
 
+// Modal Reset PIN
+function openResetPinModal(resellerId) {
+  const r = (window._resellersList || []).find(item => item.id === resellerId);
+  if (!r) return;
+
+  $("resetPinResellerId").value = r.id;
+  $("resetPinResellerDesc").textContent = `Đại lý: ${r.reseller_code} — ${r.garage_name} (${r.owner_name} • ${r.phone})`;
+  $("resetPinNewValue").value = r.pin_plain || "123456";
+  $("resellerResetPinMask").style.display = "flex";
+}
+
+function closeResetPinModal() {
+  $("resellerResetPinMask").style.display = "none";
+}
+
+function generateRandomResetPin() {
+  const pin = Math.floor(100000 + Math.random() * 900000).toString();
+  $("resetPinNewValue").value = pin;
+}
+
+async function submitResetPin() {
+  const resellerId = $("resetPinResellerId").value;
+  const newPin = ($("resetPinNewValue").value || "").trim();
+
+  if (!/^\d{6}$/.test(newPin)) {
+    alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9).");
+    return;
+  }
+
+  const btn = $("btnConfirmResetPin");
+  btn.disabled = true;
+  btn.textContent = "Đang lưu...";
+
+  try {
+    const res = await api("/rest/v1/rpc/admin_reset_reseller_pin", {
+      method: "POST",
+      body: JSON.stringify({
+        p_id: resellerId,
+        p_new_pin: newPin
+      })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || "Không thể đặt lại mã PIN");
+
+    closeResetPinModal();
+    await loadResellersData();
+
+    if (confirm(`🎉 Đã đặt lại mã PIN thành công thành: ${newPin}\n\nBạn có muốn sao chép tin nhắn bàn giao tài khoản kèm mã PIN mới này để gửi Zalo cho đại lý không?`)) {
+      copyResellerHandoverMessage(resellerId);
+    }
+  } catch (err) {
+    alert("❌ Lỗi: " + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Xác nhận đổi PIN";
+  }
+}
+
+async function adminUnlockReseller(resellerId) {
+  const r = (window._resellersList || []).find(item => item.id === resellerId);
+  if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) {
+    return;
+  }
+
+  try {
+    const res = await api("/rest/v1/rpc/admin_unlock_reseller", {
+      method: "POST",
+      body: JSON.stringify({ p_id: resellerId })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || "Lỗi mở khóa");
+
+    alert("✅ Đã mở khóa tài khoản đại lý thành công!");
+    loadResellersData();
+  } catch (err) {
+    alert("❌ Lỗi: " + err.message);
+  }
+}
+
+// Modal Xem Key Đã Cấp Của Đại Lý
+async function openResellerLicensesModal(resellerId) {
+  const r = (window._resellersList || []).find(item => item.id === resellerId);
+  if (!r) return;
+
+  $("resellerLicensesTitle").textContent = `🔑 Key Đã Cấp: ${r.reseller_code} — ${r.garage_name}`;
+  $("resellerLicensesSubtitle").textContent = `Chủ gara: ${r.owner_name} • SĐT: ${r.phone} • Tổng đã xuất: ${r.total_sales_count || 0} key`;
+  const tbody = $("resellerLicensesTableBody");
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải danh sách key từ Supabase...</td></tr>';
+  $("resellerLicensesMask").style.display = "flex";
+
+  try {
+    const res = await api("/rest/v1/rpc/admin_get_reseller_licenses", {
+      method: "POST",
+      body: JSON.stringify({ p_reseller_id: resellerId })
+    });
+    const list = await res.json();
+
+    if (!list || !list.length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Đại lý này chưa cấp bản quyền nào.</td></tr>';
+      return;
+    }
+
+    let html = "";
+    list.forEach(lic => {
+      const timeStr = lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "—";
+      const isTrial = lic.is_trial || lic.role === "trial";
+      const roleBadge = isTrial
+        ? '<span class="tag off">Dùng thử</span>'
+        : (lic.role === "yearly" ? '<span class="tag on" style="background:#0284c7; color:#fff">1 Năm</span>' : '<span class="tag car">Trọn đời</span>');
+
+      const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined
+        ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫"
+        : "—";
+
+      const activeBadge = lic.active
+        ? (lic.activation_count > 0 ? '<span class="tag on">Đã kích hoạt</span>' : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>')
+        : '<span class="tag off">Đã thu hồi</span>';
+
+      html += '<tr>' +
+        '<td class="hint">' + esc(timeStr) + '</td>' +
+        '<td>' +
+          '<span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> ' +
+          '<button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button>' +
+        '</td>' +
+        '<td>' +
+          '<b>' + esc(lic.owner_name || "—") + '</b>' +
+          (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') +
+        '</td>' +
+        '<td>' + roleBadge + '</td>' +
+        '<td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td>' +
+        '<td style="text-align:center">' + activeBadge + '</td>' +
+      '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
+  }
+}
+
+function closeResellerLicensesModal() {
+  $("resellerLicensesMask").style.display = "none";
+}
+
+// Bàn giao tài khoản gửi Zalo
+function copyResellerHandoverMessage(resellerId) {
+  const r = (window._resellersList || []).find(item => item.id === resellerId);
+  if (!r) return;
+
+  const pin = r.pin_plain || "123456";
+  const portalUrl = "https://ex2.toanmobile.com/reseller";
+  const balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
+
+  const msg =
+`🚗 THÔNG TIN TÀI KHOẢN CỔNG ĐẠI LÝ CẤP 1 — GEELY EX2
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🏢 Đại lý: ${r.garage_name} (${r.owner_name})
+🌐 Cổng đăng nhập: ${portalUrl}
+📱 Số điện thoại đăng nhập: ${r.phone}
+(Hoặc dùng Mã đại lý: ${r.reseller_code})
+🔑 MÃ PIN ĐĂNG NHẬP (6 SỐ): ${pin}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎁 CHÍNH SÁCH CHIẾT KHẤU ĐẠI LÝ:
+• Gói Trọn Đời (Lifetime): Chiết khấu ${r.discount_rate_lifetime || 35}%
+• Gói 1 Năm (Yearly): Chiết khấu ${r.discount_rate_yearly || 40}% (Hoa hồng gia hạn: ${r.renewal_commission_percent || 25}%)
+• Hạn ngạch Key Dùng Thử: ${r.trial_quota_monthly || 15} xe/tháng (Miễn phí 100%)
+💳 Số dư ví khả dụng hiện tại: ${balStr}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+📌 HƯỚNG DẪN CẤP MÃ CHO KHÁCH:
+1. Đăng nhập vào link trên bằng SĐT và mã PIN ${pin}.
+2. Chọn gói bản quyền, nhập Tên & SĐT khách hàng rồi bấm "XUẤT MÃ BẢN QUYỀN".
+3. Nhập mã key 16 số vừa tạo lên màn hình xe Geely EX2 (hoặc gửi Zalo cho khách).
+⚠️ Quý đại lý vui lòng bảo mật mã PIN. Chúc đại lý kinh doanh thuận lợi!`;
+
+  copyToClipboard(msg, `Đã sao chép nội dung bàn giao tài khoản của ${r.reseller_code}! Bạn có thể dán ngay vào Zalo gửi cho thợ.`);
+}
+
+function copyResellerPin(pin) {
+  copyToClipboard(pin, "Đã chép mã PIN: " + pin);
+}
+
+function unlockResellerAccount(resellerId) {
+  return adminUnlockReseller(resellerId);
+}
+
+function viewResellerLicenses(resellerId) {
+  return openResellerLicensesModal(resellerId);
+}
+
+// Modal Thêm / Sửa Đại lý
+function updateResellerModalProfitPreview() {
+  const lifeDisc = parseInt($("resellerModalDiscLife").value, 10) || 35;
+  const yearDisc = parseInt($("resellerModalDiscYear").value, 10) || 40;
+
+  const lifeRetail = 2950000;
+  const yearRetail = 1950000;
+
+  const lifeWholesale = Math.round(lifeRetail * (100 - lifeDisc) / 100);
+  const lifeProfit = lifeRetail - lifeWholesale;
+
+  const yearWholesale = Math.round(yearRetail * (100 - yearDisc) / 100);
+  const yearProfit = yearRetail - yearWholesale;
+
+  const previewEl = $("resellerModalProfitPreview");
+  if (previewEl) {
+    previewEl.innerHTML =
+      `• <b>Gói Trọn Đời (${lifeRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${lifeWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${lifeProfit.toLocaleString("vi-VN")}₫/xe</b><br>` +
+      `• <b>Gói 1 Năm (${yearRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${yearWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${yearProfit.toLocaleString("vi-VN")}₫/xe</b>`;
+  }
+}
+
+function onResellerBankSelectChange(selectEl) {
+  const val = selectEl.value;
+  const binInput = $("resellerModalBankBin");
+  if (val === "custom") {
+    binInput.style.display = "block";
+    binInput.value = "";
+    binInput.focus();
+  } else {
+    binInput.style.display = "none";
+    binInput.value = val;
+  }
+}
+
+function toggleModalPinVisibility() {
+  const pinInput = $("resellerModalPin");
+  const btn = $("btnToggleModalPin");
+  if (!pinInput) return;
+  if (pinInput.type === "password") {
+    pinInput.type = "text";
+    if (btn) btn.textContent = "🙈 Ẩn";
+  } else {
+    pinInput.type = "password";
+    if (btn) btn.textContent = "👁️ Xem";
+  }
+}
+
+function generateRandomModalPin() {
+  const pin = Math.floor(100000 + Math.random() * 900000).toString();
+  $("resellerModalPin").value = pin;
+  $("resellerModalPin").type = "text";
+  if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
+}
+
 function openCreateResellerModal() {
   $("resellerModalTitle").textContent = "➕ Thêm Đại Lý Cấp 1 Mới";
   $("resellerEditId").value = "";
@@ -6325,13 +6841,20 @@ function openCreateResellerModal() {
   $("resellerModalGarage").value = "";
   $("resellerModalAddress").value = "";
   $("resellerModalPin").value = "123456";
+  $("resellerModalPin").type = "text";
+  if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
   $("resellerModalCredit").value = "0";
   $("resellerModalDiscLife").value = "35";
   $("resellerModalDiscYear").value = "40";
+
+  $("resellerModalBankSelect").value = "970436";
   $("resellerModalBankBin").value = "970436";
+  $("resellerModalBankBin").style.display = "none";
   $("resellerModalBankAcc").value = "";
   $("resellerModalBankName").value = "";
   $("resellerModalNote").value = "";
+
+  updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
 
@@ -6348,15 +6871,37 @@ function openEditResellerModal(id) {
   $("resellerModalName").value = r.owner_name || "";
   $("resellerModalGarage").value = r.garage_name || "";
   $("resellerModalAddress").value = r.address || "";
-  $("resellerModalPin").value = ""; // Để trống nếu không đổi
-  $("resellerModalPin").placeholder = "(Để trống nếu không đổi PIN)";
+  $("resellerModalPin").value = r.pin_plain || "123456";
+  $("resellerModalPin").type = "text";
+  if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
   $("resellerModalCredit").value = r.credit_limit || 0;
   $("resellerModalDiscLife").value = r.discount_rate_lifetime || 35;
   $("resellerModalDiscYear").value = r.discount_rate_yearly || 40;
-  $("resellerModalBankBin").value = r.bank_bin || "970436";
+
+  const bin = r.bank_bin || "970436";
+  const select = $("resellerModalBankSelect");
+  let foundOption = false;
+  for (let i = 0; i < select.options.length; i++) {
+    if (select.options[i].value === bin) {
+      select.selectedIndex = i;
+      foundOption = true;
+      break;
+    }
+  }
+  if (!foundOption) {
+    select.value = "custom";
+    $("resellerModalBankBin").style.display = "block";
+    $("resellerModalBankBin").value = bin;
+  } else {
+    $("resellerModalBankBin").style.display = "none";
+    $("resellerModalBankBin").value = bin;
+  }
+
   $("resellerModalBankAcc").value = r.bank_account || "";
   $("resellerModalBankName").value = r.bank_account_name || "";
   $("resellerModalNote").value = r.note || "";
+
+  updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
 
@@ -6371,13 +6916,21 @@ async function saveReseller() {
   btn.textContent = "Đang lưu...";
 
   try {
+    const pinVal = $("resellerModalPin").value.trim();
+    if (pinVal && !/^\d{6}$/.test(pinVal)) {
+      alert("❌ Mã PIN phải gồm đúng 6 chữ số (0-9).");
+      btn.disabled = false;
+      btn.textContent = "Lưu thông tin";
+      return;
+    }
+
     if (isEdit) {
       const payload = {
         p_id: $("resellerEditId").value,
         p_name: $("resellerModalName").value.trim(),
         p_garage_name: $("resellerModalGarage").value.trim(),
         p_address: $("resellerModalAddress").value.trim(),
-        p_pin: $("resellerModalPin").value.trim(),
+        p_pin: pinVal,
         p_discount_lifetime: parseInt($("resellerModalDiscLife").value, 10) || 35,
         p_discount_yearly: parseInt($("resellerModalDiscYear").value, 10) || 40,
         p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
@@ -6395,7 +6948,7 @@ async function saveReseller() {
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể cập nhật đại lý");
 
-      alert("✅ Đã cập nhật đại lý thành công!");
+      alert("✅ Đã cập nhật thông tin đại lý thành công!");
     } else {
       const payload = {
         p_code: $("resellerModalCode").value.trim().toUpperCase(),
@@ -6403,7 +6956,7 @@ async function saveReseller() {
         p_phone: $("resellerModalPhone").value.trim(),
         p_garage_name: $("resellerModalGarage").value.trim(),
         p_address: $("resellerModalAddress").value.trim(),
-        p_pin: $("resellerModalPin").value.trim() || "123456",
+        p_pin: pinVal || "123456",
         p_discount_lifetime: parseInt($("resellerModalDiscLife").value, 10) || 35,
         p_discount_yearly: parseInt($("resellerModalDiscYear").value, 10) || 40,
         p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
@@ -6427,7 +6980,7 @@ async function saveReseller() {
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể tạo đại lý");
 
-      alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công!");
+      alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + (payload.p_pin || '123456') + ")!");
     }
 
     closeResellerModal();

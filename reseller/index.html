@@ -168,7 +168,7 @@
 
     <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center;" class="hint">
       Chưa có tài khoản đại lý hoặc quên PIN?<br>
-      Liên hệ Quản trị viên: <a href="https://zalo.me/0762629292" target="_blank" style="color:#2563eb; text-decoration:none; font-weight:600">Zalo 0762.629.292 (Đạt)</a>
+      Liên hệ Quản trị viên để xem lại hoặc đặt lại mã PIN ngay lập tức: <a href="https://zalo.me/0762629292" target="_blank" style="color:#2563eb; text-decoration:none; font-weight:600">Zalo 0762.629.292 (Đạt)</a>
     </div>
   </div>
 
@@ -185,6 +185,7 @@
         <div class="sub">Thợ phụ trách: <b id="resellerOwnerName">—</b> • SĐT: <span id="resellerPhone" class="mono">—</span> • <span id="sessionTimerText" style="color:var(--muted); font-size:12px">🔒 Tự khóa sau 20p</span></div>
       </div>
       <div style="display:flex; gap:8px; align-items:center">
+        <button type="button" class="ghost small" onclick="openChangePinModal()">🔑 Đổi mã PIN</button>
         <button type="button" class="ghost small" onclick="loadDashboard()">🔄 Tải lại</button>
         <button type="button" class="danger small" onclick="doLogout()">Đăng xuất</button>
       </div>
@@ -460,6 +461,39 @@
     </div>
 
     <button type="button" class="ghost" style="width:100%" onclick="closeSuccessModal()">Hoàn tất & Về trang chủ</button>
+  </div>
+</div>
+
+<!-- ================= MODAL: ĐỔI MÃ PIN ĐẠI LÝ ================= -->
+<div class="modal-mask" id="changePinModal" style="display:none" onclick="if(event.target===this)closeChangePinModal()">
+  <div class="modal" style="max-width:420px">
+    <h3 style="font-size:18px; font-weight:800; color:var(--text); margin-bottom:4px">🔑 Đổi Mã PIN Đăng Nhập</h3>
+    <div class="hint" style="margin-bottom:14px">Thay đổi mã PIN 6 số bảo vệ tài khoản Cổng Đại Lý của bạn.</div>
+
+    <div class="grid">
+      <div>
+        <label>Mã PIN hiện tại (6 số) *</label>
+        <input id="cpOldPin" type="password" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="••••••" class="mono" style="font-size:18px; letter-spacing:4px; text-align:center" onkeydown="if(event.key==='Enter') $('cpNewPin').focus()">
+      </div>
+      <div>
+        <label>Mã PIN mới (6 số) *</label>
+        <input id="cpNewPin" type="password" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="••••••" class="mono" style="font-size:18px; letter-spacing:4px; text-align:center" onkeydown="if(event.key==='Enter') $('cpConfirmPin').focus()">
+      </div>
+      <div>
+        <label>Nhập lại mã PIN mới *</label>
+        <input id="cpConfirmPin" type="password" maxlength="6" inputmode="numeric" pattern="[0-9]*" placeholder="••••••" class="mono" style="font-size:18px; letter-spacing:4px; text-align:center" onkeydown="if(event.key==='Enter') submitChangePin()">
+      </div>
+    </div>
+
+    <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center">
+      <button type="button" class="small ghost" id="btnToggleCpVisibility" onclick="toggleChangePinVisibility()" style="font-size:12px; padding:3px 8px">👁️ Hiện mã PIN</button>
+      <span class="hint" style="font-size:11px">Gõ Enter để chuyển ô / Lưu</span>
+    </div>
+
+    <div class="actions" style="margin-top:16px; display:flex; gap:8px; justify-content:flex-end">
+      <button type="button" class="primary" id="btnConfirmChangePin" onclick="submitChangePin()">Lưu Mã PIN Mới</button>
+      <button type="button" class="ghost" onclick="closeChangePinModal()">Huỷ</button>
+    </div>
   </div>
 </div>
 
@@ -1176,6 +1210,92 @@ function showMechanicPaymentQr() {
 }
 function closeMechanicQrModal() {
   $("mechanicQrModal").style.display = "none";
+}
+
+// ==================== MODAL ĐỔI MÃ PIN ĐẠI LÝ ====================
+function openChangePinModal() {
+  ["cpOldPin", "cpNewPin", "cpConfirmPin"].forEach(id => {
+    const el = $(id);
+    if (el) {
+      el.value = "";
+      el.type = "password";
+    }
+  });
+  if ($("btnToggleCpVisibility")) $("btnToggleCpVisibility").textContent = "👁️ Hiện mã PIN";
+  $("changePinModal").style.display = "flex";
+  setTimeout(() => {
+    if ($("cpOldPin")) $("cpOldPin").focus();
+  }, 100);
+}
+
+function toggleChangePinVisibility() {
+  const isPwd = $("cpOldPin") && $("cpOldPin").type === "password";
+  ["cpOldPin", "cpNewPin", "cpConfirmPin"].forEach(id => {
+    const el = $(id);
+    if (el) el.type = isPwd ? "text" : "password";
+  });
+  if ($("btnToggleCpVisibility")) {
+    $("btnToggleCpVisibility").textContent = isPwd ? "🙈 Ẩn mã PIN" : "👁️ Hiện mã PIN";
+  }
+}
+
+function closeChangePinModal() {
+  $("changePinModal").style.display = "none";
+}
+
+async function submitChangePin() {
+  const oldPin = String($("cpOldPin").value || "").trim();
+  const newPin = String($("cpNewPin").value || "").trim();
+  const confirmPin = String($("cpConfirmPin").value || "").trim();
+
+  if (!/^\d{6}$/.test(oldPin)) {
+    showToast("⚠️ Vui lòng nhập đúng mã PIN hiện tại gồm 6 chữ số.", "warning");
+    $("cpOldPin").focus();
+    return;
+  }
+  if (!/^\d{6}$/.test(newPin)) {
+    showToast("⚠️ Mã PIN mới phải gồm đúng 6 chữ số (0-9).", "warning");
+    $("cpNewPin").focus();
+    return;
+  }
+  if (newPin === oldPin) {
+    showToast("⚠️ Mã PIN mới không được trùng với mã PIN hiện tại.", "warning");
+    $("cpNewPin").focus();
+    return;
+  }
+  if (newPin !== confirmPin) {
+    showToast("⚠️ Xác nhận mã PIN mới không trùng khớp.", "warning");
+    $("cpConfirmPin").focus();
+    return;
+  }
+
+  const btn = $("btnConfirmChangePin");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Đang lưu...";
+  }
+
+  try {
+    const data = await api("/rest/v1/rpc/reseller_change_pin", {
+      p_old_pin: oldPin,
+      p_new_pin: newPin
+    });
+
+    if (data && data.success) {
+      showToast("✅ " + (data.message || "Đổi mã PIN thành công! Hãy ghi nhớ mã PIN mới."), "success");
+      closeChangePinModal();
+    } else {
+      const msg = (data && data.message) ? data.message : "Đổi mã PIN thất bại. Vui lòng kiểm tra lại mã PIN cũ.";
+      showToast("❌ " + msg, "error");
+    }
+  } catch (err) {
+    showToast("❌ Lỗi đổi mã PIN: " + (err.message || err), "error");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Lưu Mã PIN Mới";
+    }
+  }
 }
 
 // Khởi chạy khi load trang
