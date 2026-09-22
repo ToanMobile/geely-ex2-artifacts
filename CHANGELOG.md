@@ -26,7 +26,7 @@ Quy ước:
 
 ## CarConnect 1.2.0
 
-- **Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại**: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật "Đang nghe..." khi người ngồi trong xe nói chuyện đời thường.
+- **Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện "Hi Geely"**: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật "Đang nghe..." khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.
 - **Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt**: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng ("đổi sang eco", "thay đổi sang chế độ eco", "chuyển sang lái tiết kiệm", "đổi chế độ tiết kiệm"...), phản hồi tức thì và chính xác.
 - **Nâng cấp kho ứng dụng Cài nhanh**: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.
 - **Tối ưu hóa độ ổn định toàn hệ thống**: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.
