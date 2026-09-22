@@ -24,6 +24,16 @@ Quy ước:
 
 ---
 
+## CarConnect 1.2.1
+
+- **Bảo toàn chế độ chia đôi màn hình khi ra lệnh dẫn đường Google Maps**: Khắc phục triệt để lỗi Google Maps tự động bung ra toàn màn hình và phá vỡ phiên chia đôi khi người lái ra lệnh chỉ đường bằng giọng nói. Google Maps giờ đây cập nhật lộ trình mới mượt mà và luôn giữ đúng vị trí nửa màn hình bên cạnh các ứng dụng khác (YouTube, Spotify...).
+- **Kích hoạt phím Next / Prev trên vô lăng khi phát YouTube**: Khắc phục lỗi nút chuyển bài (Next) và lùi bài (Previous) trên vô lăng không phản hồi khi đang xem YouTube hoặc YouTube ReVanced / Morphe. Xe tự động điều hướng tín hiệu phím nhạc tới đúng trình phát YouTube trên màn hình xe.
+- **Tối ưu hóa và chống nhảy bài kép (double-skip)**: Hoàn thiện cơ chế điều khiển phím phương tiện, bảo vệ các ứng dụng nghe nhạc trực tuyến (Spotify, Zing MP3, SmartTube, YouTube Music) luôn chuyển bài mượt mà chuẩn xác.
+
+## PhoneConnect 1.2.1
+
+- **Đồng bộ phiên bản 1.2.1 với màn hình xe**: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định.
+
 ## CarConnect 1.2.0
 
 - **Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện "Hi Geely"**: Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật "Đang nghe..." khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.
