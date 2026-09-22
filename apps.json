@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.0",
-    "versionCode": 1200,
+    "latestVersionName": "1.2.1",
+    "versionCode": 1201,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "21a0d0dd68e1244ccb6d6ec36b8f0d21cf8414171a063a77088b42c55af82cbf",
-    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
+    "sha256": "08cf06bec1283f049eed5a0664a9530ea03dc6d3656e209d6cfd05afc3d3adeb",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.1 với màn hình xe: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,11 +78,11 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.2.0",
-    "versionCode": 1200,
+    "latestVersionName": "1.2.1",
+    "versionCode": 1201,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.1 với màn hình xe: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định."
   },
   "phoneIos": {
     "packageName": "com.techlead.app.geely.phone",
