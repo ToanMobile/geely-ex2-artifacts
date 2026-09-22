@@ -683,6 +683,32 @@
       </table></div>
     </div>
 
+    <!-- Bảng Sự cố Ngoại vi & Cổng chặn Giọng nói -->
+    <div class="card">
+      <h2>⚠ Sự cố Nuốt lệnh, Dẫn đường, Phát nhạc &amp; Micro (Voice External Issues)</h2>
+      <p class="hint">Theo dõi các lỗi ngoại vi khiến xe không thực hiện đúng: nuốt lệnh khi nói trọn câu, dẫn đường VietMap/Google Maps thất bại, tìm bài hát thất bại, xác minh mở nhạc nhưng không phát, voice xong không khôi phục nhạc (audio focus resume), micro treo.</p>
+      <div class="filters">
+        <label>Loại sự cố
+          <select id="fVoiceIssueType">
+            <option value="">tất cả sự cố</option>
+            <option value="swallowed">⚠ Lệnh bị nuốt (cổng chặn sai)</option>
+            <option value="nav">🗺 Dẫn đường thất bại</option>
+            <option value="media">🎵 Tìm / Phát nhạc thất bại</option>
+            <option value="resume">🔊 Hụt khôi phục nhạc (Audio Focus Resume)</option>
+            <option value="mic">🎤 Micro treo / Mic xe khoá</option>
+            <option value="decode">⚡ Lỗi giải mã STT / KWS</option>
+            <option value="upload">☁ Lỗi Upload Audio WAV</option>
+          </select>
+        </label>
+        <button id="btnVoiceIssueFilter" class="primary">Lọc</button>
+        <span class="muted" style="font-size:12px">(100 gần nhất trong cửa sổ)</span>
+      </div>
+      <div class="tblwrap"><table id="voiceIssueTable">
+        <thead><tr><th>Thời gian</th><th>Thiết bị</th><th>Sự kiện</th><th>Chi tiết / Câu nói</th><th>Trạng thái</th><th>Lý do / Lỗi</th><th>Chi tiết</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
     <div class="card">
       <h2>🎙 Lịch sử câu nói (transcript — chỉ câu sau wake word / PTT)</h2>
       <div class="filters">
@@ -768,6 +794,7 @@
             <option value="ok">chỉ thành công (✓)</option>
             <option value="fail">chỉ sự cố / lỗi (✕)</option>
             <option value="divider_bug">chỉ dính bug divider ROM</option>
+            <option value="drag_issue">chỉ sự cố kéo chia đôi (chọn stack / commit)</option>
             <option value="pip">chỉ cứu kẹt PIP</option>
           </select>
         </label>
@@ -834,9 +861,12 @@
             <option value="disconnected">ngắt kết nối (bình thường)</option>
             <option value="connect_failed">✕ lỗi kết nối mạng</option>
             <option value="auth_failed">🔒 sai/từ chối token</option>
+            <option value="auth_lockout">🔒 khoá bảo vệ (brute force)</option>
+            <option value="rejected_load">⚠ từ chối do quá tải</option>
             <option value="command_sent">⚡ lệnh từ phone</option>
             <option value="discovery_found">🔍 dò tìm IP xe</option>
             <option value="relay_state">☁ trạng thái relay 4G</option>
+            <option value="relay_reject">☁ xe từ chối relay 4G</option>
           </select>
         </label>
         <label>Tìm IP / Peer <input type="text" id="fConnText" placeholder="vd 192.168.1..." style="width:140px"></label>
@@ -891,10 +921,14 @@
         <label>Tính năng
           <select id="fHwFeature">
             <option value="">tất cả tính năng</option>
+            <option value="vhal_issues">⚠ sự cố VHAL (mất kết nối / timeout / khởi tạo)</option>
+            <option value="cmd_blocked">🛡 lệnh bị chặn an toàn</option>
+            <option value="drive_restore">🚗 khôi phục chế độ lái</option>
             <option value="auto_window">tự hạ kính</option>
             <option value="remote_start">đề nổ từ xa</option>
             <option value="scene_changed">scene không gian</option>
             <option value="installs">cài đặt ứng dụng</option>
+            <option value="ac_programs">❄ lịch điều hòa</option>
             <option value="feature_toggle">nút bấm màn hình xe</option>
           </select>
         </label>
@@ -945,6 +979,45 @@
           <tbody></tbody>
         </table></div>
       </div>
+    </div>
+
+    <!-- Bảng Sự cố Phần cứng, VHAL, Giọng nói & Nghiệp vụ Toàn diện -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <div>
+          <h2 style="margin:0">⚠ Sự cố Phần cứng, VHAL, Giọng nói &amp; Nghiệp vụ (Domain &amp; System Issues)</h2>
+          <div class="hint" style="font-size:11px;color:var(--text-muted);margin-top:2px">
+            Gom mọi sự cố không phải exception thường: đứt kết nối VHAL, timeout binder, nuốt lệnh voice, lỗi điều hướng/nhạc, lỗi xác thực token, từ chối relay, v.v.
+          </div>
+        </div>
+        <div id="domainErrStats" style="display:flex;gap:14px;font-size:12px;color:var(--text-muted);flex-wrap:wrap"></div>
+      </div>
+      <div class="filters">
+        <label>Nhóm sự cố
+          <select id="fDomainErrType">
+            <option value="">tất cả sự cố</option>
+            <option value="vhal">🚗 VHAL &amp; Phần cứng xe</option>
+            <option value="voice">🎙 Giọng nói &amp; Cổng chặn</option>
+            <option value="nav_media">🗺 Dẫn đường &amp; Phát nhạc</option>
+            <option value="conn">📶 Kết nối &amp; Relay</option>
+            <option value="system">🛡 Hệ thống &amp; Watchdog</option>
+          </select>
+        </label>
+        <label>Mức
+          <select id="fDomainErrLevel">
+            <option value="">tất cả mức</option>
+            <option value="error">error (lỗi)</option>
+            <option value="warning">warning (cảnh báo)</option>
+          </select>
+        </label>
+        <label>Tìm kiếm <input type="text" id="fDomainErrText" placeholder="vd vhal, vietmap, timeout..." style="width:180px"></label>
+        <button id="btnDomainErrFilter" class="primary">Lọc</button>
+        <span class="muted" style="font-size:12px">(100 gần nhất trong cửa sổ)</span>
+      </div>
+      <div class="tblwrap"><table id="domainErrTable">
+        <thead><tr><th>Thời gian</th><th>App</th><th>Thiết bị</th><th>Mức</th><th>Sự kiện</th><th>Tóm tắt sự cố</th><th>Phiên bản</th><th>Chi tiết</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
     </div>
   </section>
 
@@ -1236,7 +1309,9 @@ const shortId = (id) => (id || "").slice(0, 8) + "…";
 const EVENT_META = {
   // internal — tự giám sát của chính hệ telemetry (KHÔNG phải lỗi)
   heartbeat:                { label: "Nhịp tim 30 phút", cat: "internal" },
-  crash_upload:             { label: "⚠ Upload crash thất bại", cat: "error" },
+  main_looper_recovered:    { label: "🛡 Khôi phục MainLooper", cat: "internal" },
+  watchdog_core_idle:       { label: "Tiến trình Core nghỉ", cat: "internal" },
+
   // app — hoạt động thường của app
   app_start:                { label: "Mở app", cat: "app" },
   screen_view:              { label: "Lượt xem màn", cat: "app" },
@@ -1246,6 +1321,8 @@ const EVENT_META = {
   app_update:               { label: "Cập nhật app", cat: "app" },
   store_install:            { label: "Cài nhanh app", cat: "app" },
   apk_install:              { label: "Cài APK từ phone", cat: "app" },
+  apk_upload_result:        { label: "Phone đẩy APK", cat: "app" },
+  ac_program_result:        { label: "Lịch điều hòa", cat: "app" },
   feature_toggle:           { label: "Bật/tắt tính năng", cat: "app" },
   settings_applied:         { label: "Áp cài đặt", cat: "app" },
   license_activate:         { label: "Kích hoạt mã", cat: "app" },
@@ -1254,12 +1331,19 @@ const EVENT_META = {
   auto_window_result:       { label: "Kết quả tự hạ kính", cat: "app" },
   scene_changed:            { label: "Đổi scene (Nghỉ/Cắm trại)", cat: "app" },
   remote_start:             { label: "Đề nổ từ xa", cat: "app" },
+  car_wake:                 { label: "Đánh thức hệ thống xe", cat: "app" },
   split_screen:             { label: "Chia đôi màn hình", cat: "app" },
   split_drag_chon_stack:    { label: "Kéo chia đôi: chọn Stack", cat: "app" },
   split_drag_commit:        { label: "Kéo chia đôi: áp tỷ lệ", cat: "app" },
   drive_restore_nhip:       { label: "Nhịp khôi phục chế độ lái", cat: "app" },
+  drive_restore_skipped:    { label: "Bỏ qua khôi phục chế độ lái", cat: "app" },
+  admin_reset_layout:       { label: "Đặt lại bố cục giao diện", cat: "app" },
+  gesture_input_filter:     { label: "Lọc cử chỉ chạm", cat: "app" },
+  media_key_rejected:       { label: "Phím media bị từ chối", cat: "app" },
+
   // control — lệnh điều khiển từ phone
   command_sent:             { label: "Lệnh từ phone", cat: "control" },
+
   // voice — giọng nói
   voice_command:            { label: "Lệnh giọng nói", cat: "voice" },
   voice_result:             { label: "Kết quả lệnh nói", cat: "voice" },
@@ -1270,11 +1354,17 @@ const EVENT_META = {
   stt_engine_switch:        { label: "Đổi engine STT", cat: "voice" },
   model_download:           { label: "Tải bộ nhận dạng", cat: "voice" },
   kws_accept:               { label: "KWS chấp nhận", cat: "voice" },
-  voice_cau_mo_do:          { label: "Chờ nửa sau câu", cat: "voice" },
   kws_reject:               { label: "KWS bác", cat: "voice" },
+  kws_state:                { label: "Trạng thái KWS", cat: "voice" },
+  voice_kws_state:          { label: "Trạng thái KWS", cat: "voice" },
+  voice_cau_mo_do:          { label: "Chờ nửa sau câu", cat: "voice" },
   voice_ambient_stats:      { label: "Mic nghe được (không gọi wake word)", cat: "voice" },
-  voice_speak_failed:       { label: "🔇 Hụt giọng đọc", cat: "voice" },
-  voice_upload_failed:      { label: "⚠ Upload audio thất bại", cat: "voice" },
+  voice_model_tam_30m:      { label: "Dùng mô hình tạm 30M", cat: "voice" },
+  voice_warmup:             { label: "Khởi động mô hình giọng nói", cat: "voice" },
+  voice_prompt:             { label: "Phát âm thanh hướng dẫn", cat: "voice" },
+  voice_speak:              { label: "Đọc phản hồi (TTS)", cat: "voice" },
+  voice_speak_done:         { label: "Đọc phản hồi xong", cat: "voice" },
+
   // conn — kết nối
   phone_connected:          { label: "Phone kết nối", cat: "conn" },
   phone_disconnected:       { label: "Phone ngắt kết nối", cat: "conn" },
@@ -1282,13 +1372,26 @@ const EVENT_META = {
   discovery_found:          { label: "Tìm thấy xe", cat: "conn" },
   discovery_timeout:        { label: "Dò xe timeout", cat: "conn" },
   relay_state:              { label: "Relay đám mây", cat: "conn" },
-  car_connect_failed:       { label: "⚠ Nối xe thất bại (mạng)", cat: "conn" },
-  apk_upload_result:        { label: "Phone đẩy APK", cat: "app" },
-  ac_program_result:        { label: "Lịch điều hòa", cat: "app" },
-  // error — thật sự là lỗi / cảnh báo
+  qr_paired:                { label: "Ghép đôi qua mã QR", cat: "conn" },
+
+  // error — thật sự là lỗi / cảnh báo / sự cố ngoại lệ
+  crash_upload:             { label: "⚠ Upload crash thất bại", cat: "error" },
+  car_connect_failed:       { label: "⚠ Nối xe thất bại (mạng)", cat: "error" },
+  connect_failed:           { label: "⚠ Nối xe thất bại", cat: "error" },
+  auth_failed:              { label: "⚠ Sai token kết nối", cat: "error" },
+  auth_rejected:            { label: "⚠ Xe từ chối token", cat: "error" },
+  auth_lockout:             { label: "⚠ Khóa IP do brute-force", cat: "error" },
+  relay_reject:             { label: "⚠ Relay từ chối kết nối", cat: "error" },
+  phone_rejected_too_many:  { label: "⚠ Quá tải kết nối điện thoại", cat: "error" },
   voice_lenh_bi_nuot:       { label: "⚠ Lệnh nói bị nuốt bởi cổng", cat: "error" },
   nav_route_failed:         { label: "⚠ Dẫn đường thất bại", cat: "error" },
   media_search_failed:      { label: "⚠ Tìm/phát nhạc thất bại", cat: "error" },
+  voice_speak_failed:       { label: "🔇 Hụt giọng đọc", cat: "error" },
+  voice_upload_failed:      { label: "⚠ Upload audio thất bại", cat: "error" },
+  voice_mic_rebuild:        { label: "⚠ Mic lỗi — đang khởi tạo lại", cat: "error" },
+  voice_mic_xe_khoa:        { label: "⚠ Mic bị khóa phần cứng xe", cat: "error" },
+  kws_decode_error:         { label: "⚠ Lỗi decode KWS (Wake Word)", cat: "error" },
+  stt_decode_native:        { label: "⚠ Lỗi giải mã Sherpa-ONNX", cat: "error" },
   vhal_ensure_connected_failed: { label: "⚠ Mất kết nối VHAL", cat: "error" },
   vhal_binder_timeout:      { label: "⚠ Timeout Binder VHAL", cat: "error" },
   vhal_create_car_failed:   { label: "⚠ Khởi tạo VHAL thất bại", cat: "error" },
@@ -1298,15 +1401,17 @@ const EVENT_META = {
   app_trim:                 { label: "⚠ Cảnh báo thiếu RAM", cat: "error" },
   app_low_memory:           { label: "⚠ Hết RAM", cat: "error" },
   system_crash:             { label: "☠ Crash app khác trên xe", cat: "error" },
-  auth_failed:              { label: "⚠ Sai token kết nối", cat: "error" },
-  auth_rejected:            { label: "⚠ Xe từ chối token", cat: "error" },
-  connect_failed:           { label: "⚠ Nối xe thất bại", cat: "error" },
   watchdog_restart:         { label: "⚠ Watchdog restart", cat: "error" },
   watchdog_safe_mode:       { label: "☠ Watchdog safe mode", cat: "error" },
   watchdog_safe_mode_exit:  { label: "Thoát safe mode", cat: "error" },
   license_refresh_denied:   { label: "⚠ Mã bị từ chối", cat: "error" },
   license_grace_warning:    { label: "⚠ Sắp hết hạn offline", cat: "error" },
-  main_looper_recovered:    { label: "🛡 Khôi phục MainLooper", cat: "internal" },
+  finalizer_watchdog_off_failed: { label: "⚠ Tắt FinalizerWatchdog thất bại", cat: "error" },
+  admin_parked_gate_override: { label: "⚠ Vượt rào an toàn đỗ xe (Admin)", cat: "error" },
+  admin_reboot:             { label: "⚠ Lệnh khởi động lại từ xa (Admin)", cat: "error" },
+  exec_on_main_thread:      { label: "⚠ Chạy tác vụ nặng trên Main Thread", cat: "error" },
+  update_sig_invalid:       { label: "⚠ Chữ ký bản cập nhật không hợp lệ", cat: "error" },
+  steering_key_flood:       { label: "⚠ Spam phím vô lăng liên tục", cat: "error" },
 };
 const CAT_META = {
   internal: { label: "Tự giám sát", color: "var(--text-muted)" },
@@ -1366,6 +1471,19 @@ const TAG_META = {
   Watchdog: "Giám sát tiến trình", VoiceService: "Giọng nói", VoiceCommandExecutor: "Giọng nói",
   VoiceEngine: "Nhận dạng giọng nói", CarTcpServer: "Kênh phone↔xe", CarRepository: "Kênh phone↔xe",
   CarConnectionManager: "Kết nối xe", CarConnection: "Kết nối xe", MainThreadHang: "Treo giao diện (ANR)",
+  kws_decode_error: "Giải mã Wake Word (KWS)",
+  stt_decode_native: "Giải mã giọng nói Sherpa-ONNX",
+  MicSource: "Micro thu âm",
+  "MicSource.dispatchPcm": "Phân luồng âm thanh micro",
+  PipRescueService: "Giải cứu kẹt PIP",
+  "CarConnection/connect": "Kết nối xe",
+};
+const tagLabel = (t) => {
+  if (!t) return "";
+  if (TAG_META[t]) return TAG_META[t];
+  if (t.startsWith("VoiceEngine/")) return "Nhận dạng giọng nói (" + t.slice(12) + ")";
+  if (t.startsWith("CarConnection/")) return "Kết nối xe (" + t.slice(14) + ")";
+  return t;
 };
 const SDK_NAME = { 26: "Android 8", 27: "Android 8.1", 28: "Android 9", 29: "Android 10",
   30: "Android 11", 31: "Android 12", 32: "Android 12L", 33: "Android 13", 34: "Android 14", 35: "Android 15" };
@@ -1426,7 +1544,9 @@ function eventSummary(e) {
   switch (e.event) {
     case "app_error": {
       const er = p.error || {};
-      return s(`${TAG_META[p.tag] || p.tag}: ${er.message || ""}`);
+      const tagTxt = tagLabel(p.tag) || "Lỗi ứng dụng";
+      const msgTxt = er.message || p.message || p.reason || p.error || (typeof er === "string" ? er : "");
+      return s(`${tagTxt}: ${msgTxt}`);
     }
     case "main_thread_hang": return "giao diện treo (nghi ANR)";
     case "pip_rescue": return p.state === "hidden" ? "cứu kẹt SmartTube PIP: ✓ thành công" : "phát hiện SmartTube bị kẹt PIP";
@@ -1474,20 +1594,37 @@ function eventSummary(e) {
     case "screen_open": case "screen_close": return s(routeLabel(p.route));
     case "app_update": {
       const pkg = p.package ? (PACKAGE_META[p.package] || p.package) : "";
-      return s(`cập nhật ${pkg ? pkg + " " : ""}(${p.phase || ""})${p.auto ? " [tự động]" : ""}`);
+      const err = (p.phase === "install_failed" || p.error) ? ` ✕ ${p.reason || p.error || "thất bại"}` : "";
+      return s(`cập nhật ${pkg ? pkg + " " : ""}(${p.phase || ""})${err}${p.auto ? " [tự động]" : ""}`);
     }
     case "stt_engine_switch": return s(`engine nhận dạng → ${p.engine || ""}`);
     case "voice_cau_mo_do": return s(`"${p.nua_dau || ""}" → "${p.ghep || ""}" · ${p.ket_qua || ""} · ${p.cho_ms != null ? p.cho_ms + " ms" : ""}`);
-    case "kws_accept": case "kws_reject": return s(`${p.keyword || ""} ${p.reason || ""} · 65M nghe "${p.text || ""}" · ${p.confirm_ms != null ? p.confirm_ms + " ms" : ""}`);
+    case "kws_state": case "voice_kws_state": return s(`KWS: ${p.state || ""}${p.reason ? ` (${p.reason})` : ""}`);
+    case "kws_accept": return s(`KWS nhận: “${p.keyword || ""}” (65M: “${p.text || ""}”, ${p.confirm_ms ?? "?"}ms)`);
+    case "kws_reject": return s(`KWS bác: “${p.keyword || ""}” (65M: “${p.text || ""}”, ${p.confirm_ms ?? "?"}ms${p.reason ? `, ${p.reason}` : ""})`);
+    case "app_start": return s(`khởi động app (RAM trống ${p.mem_avail_mb ?? "?"} MB${p.simulator ? ", giả lập" : ""})`);
+    case "kws_decode_error": return s(`lỗi giải mã KWS: ${p.error || p.message || ""}`);
+    case "stt_decode_native": return s(`lỗi giải mã Sherpa native: ${p.error || p.message || ""}`);
+    case "voice_model_tam_30m": return s(`dùng tạm model 30M (${p.reason || ""})`);
+    case "voice_warmup": return s(`warmup STT: ${p.engine || ""} (${p.duration_ms || "?"}ms)`);
+    case "voice_prompt": return s(`phát prompt: ${p.type || p.prompt || ""}`);
+    case "voice_speak": return s(`đang đọc: “${p.text || ""}”`);
+    case "voice_speak_done": return s(`đọc xong: ${p.duration_ms ? Math.round(p.duration_ms) + "ms" : "✓"}`);
+    case "voice_mic_rebuild": return s(`khởi tạo lại mic (lần ${p.attempt || p.count || 1}): ${p.reason || ""}`);
+    case "voice_mic_xe_khoa": return s(`mic bị xe chiếm dụng / khóa phần cứng`);
     case "model_download": return s(`${p.stage || ""} ${p.phase || ""}${p.progress != null ? " " + p.progress + "%" : ""}${p.error_class ? " · " + p.error_class : ""}${p.next_retry_s != null ? " · thử lại sau " + p.next_retry_s + "s" : ""}${p.duration_ms != null ? " · " + Math.round(p.duration_ms / 1000) + "s" : ""}`);
     case "system_crash": return s(`${PACKAGE_META[p.package] || p.package}: ${p.exception_class || ""}`);
     case "store_install": return s(`${p.name || ""} ${p.ok ? "✓" : "✕ " + (p.error || "")}`);
     case "apk_install": return s(`${p.file || ""} ${p.ok ? "✓" : "✕ " + (p.error || "")}`);
     case "relay_state": return s(`relay đám mây: ${p.state || ""}`);
+    case "relay_reject": return s(`relay từ chối: ${p.reason || p.error || ""}`);
+    case "auth_lockout": return s(`khóa IP ${p.ip || p.peer || ""} do brute-force (${p.attempts || "?"} lần)`);
+    case "phone_rejected_too_many": return s(`từ chối phone ${p.peer || ""}: vượt giới hạn kết nối`);
     case "crash_upload": return s(`upload crash: HTTP ${p.http_code}`);
     case "watchdog_restart": return s(`restart app: ${p.reason || ""}`);
     case "watchdog_safe_mode": return "nhiều crash liên tục — tạm ngừng restart";
     case "watchdog_safe_mode_exit": return s(`thoát safe mode — ổn định ${Math.round((p.stable_ms || 0) / 60000)} phút`);
+    case "watchdog_core_idle": return s(`core idle ${p.idle_ms ? Math.round(p.idle_ms / 1000) + "s" : ""}`);
     case "license_activate": return p.ok ? s(`kích hoạt mã ✓ (${p.owner || ""})`) : s(`kích hoạt mã ✕ (${p.reason || ""})`);
     case "license_refresh_denied": return s(`mã bị từ chối: ${p.reason || ""}`);
     case "app_trim": return s(`thiếu RAM: ${p.level_name || ""}`);
@@ -1496,6 +1633,18 @@ function eventSummary(e) {
     case "auto_window_triggered": case "auto_window_result": return s(`${CORNER_META[p.corner] || p.corner || "cửa"} ${p.door_open ? "mở" : "đóng"}${p.skipped ? ` (bỏ qua: ${p.reason || ""})` : (p.ok !== undefined ? (p.ok ? " ✓" : " ✕ " + (p.error || "")) : "")}`);
     case "scene_changed": return s(`scene ${p.action || ""}: ${p.ok ? "✓" : "✕"}`);
     case "remote_start": return s(`${p.action === "start" ? "đề nổ từ xa" : "ngắt đề từ xa"}: ${p.ok ? "✓" : "✕"} ${p.message || ""}`);
+    case "car_wake": return s(`đánh thức xe: ${p.source || ""}`);
+    case "finalizer_watchdog_off_failed": return s(`tắt FinalizerWatchdog ✕: ${p.error || p.message || ""}`);
+    case "admin_parked_gate_override": return s(`bỏ rào an toàn đỗ xe: ${cmdLabel(p.command)} (${p.caller || ""})`);
+    case "admin_reboot": return s(`reboot xe do ${p.caller || "admin"}: ${p.reason || ""}`);
+    case "admin_reset_layout": return s(`reset bố cục: ${p.mode || ""}`);
+    case "exec_on_main_thread": return s(`tác vụ nặng trên UI: ${p.task || p.caller || ""} (${p.duration_ms || "?"}ms)`);
+    case "update_sig_invalid": return s(`chữ ký file ${p.file || ""} không khớp!`);
+    case "steering_key_flood": return s(`phím vô lăng spam ${p.count || "?"} lần/s (code=${p.key_code || ""})`);
+    case "drive_restore_skipped": return s(`bỏ qua khôi phục lái: ${p.reason || ""} (v=${p.speed_kmh ?? "?"}km/h)`);
+    case "qr_paired": return s(`ghép đôi QR thành công: ${p.peer || ""}`);
+    case "gesture_input_filter": return s(`chặn cử chỉ: ${p.reason || ""}`);
+    case "media_key_rejected": return s(`từ chối phím media: key=${p.key || ""} (${p.reason || ""})`);
     case "pip_rescue": return s(`cứu kẹt PIP: ${p.state || ""}`);
     case "split_screen": {
       const pkgs = `${PACKAGE_META[p.pkg1] || p.pkg1 || ""} + ${PACKAGE_META[p.pkg2] || p.pkg2 || ""}`;
@@ -1503,7 +1652,7 @@ function eventSummary(e) {
       const bug = p.rom_divider_bug ? " ⚠ dính bug divider ROM" : "";
       return s(`${pkgs} (${via}) ${p.ok ? "✓" : "✕ " + (p.message || "")}${bug}`);
     }
-    default: return "";
+    default: return s(p.message || p.error || p.reason || p.text || p.detail || (p.ok === false ? "✕ thất bại" : ""));
   }
 }
 
@@ -1546,6 +1695,14 @@ const CMD_META = {
   set_voice_commands:    { label: "Sửa câu lệnh nói" },
   reset_voice_commands:  { label: "Khôi phục câu lệnh nói" },
   auth:                  { label: "Xác thực token" },
+  set_hvac_rear_defrost:             { label: "Sấy kính sau", vals: { true: "Bật", false: "Tắt" } },
+  set_hvac_fan_direction:            { label: "Hướng gió điều hòa", vals: { 1: "Mặt", 2: "Chân", 3: "Mặt & Chân", 4: "Kính", 6: "Kính & Chân" } },
+  set_hvac_fan_direction_auto_cycle: { label: "Tự đảo hướng gió", vals: { true: "Bật", false: "Tắt" } },
+  kill_all_apps:                     { label: "Đóng tất cả ứng dụng" },
+  power_off:                         { label: "Tắt nguồn xe" },
+  start_vehicle:                     { label: "Khởi động xe (Remote Start)" },
+  stop_vehicle:                      { label: "Tắt máy xe (Remote Stop)" },
+  ping:                              { label: "Ping kiểm tra" },
 };
 const cmdLabel = (cmd) => CMD_META[cmd]?.label || cmd;
 /** Tham số lệnh → chữ tiếng Việt tự nhiên, trực quan cho người đọc */
@@ -2323,8 +2480,10 @@ async function loadSplitHistory() {
     q.set("props->>rom_divider_bug", "eq.true");
   } else if (outcome === "pip") {
     q.set("event", "in.(pip_rescue,feature_toggle)");
+  } else if (outcome === "drag_issue") {
+    q.set("event", "in.(split_drag_chon_stack,split_drag_commit)");
   } else {
-    q.set("event", "in.(split_screen,pip_rescue,feature_toggle)");
+    q.set("event", "in.(split_screen,pip_rescue,feature_toggle,split_drag_chon_stack,split_drag_commit)");
   }
   q.set("order", "ts.desc"); q.set("limit", "100");
   q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
@@ -2334,10 +2493,11 @@ async function loadSplitHistory() {
   const filtered = rows.filter((e) => {
     const p = e.props || {};
     if (e.event === "feature_toggle" && !["set_split_screen", "pip_escape", "set_freeform"].includes(p.command)) return false;
-    if (outcome === "ok" && p.ok !== true && p.state !== "hidden") return false;
-    if (outcome === "fail" && p.ok !== false && p.state !== "detected") return false;
+    if (outcome === "ok" && p.ok !== true && p.state !== "hidden" && p.bounds_da_doi !== true) return false;
+    if (outcome === "fail" && p.ok !== false && p.state !== "detected" && p.bounds_da_doi !== false) return false;
     if (outcome === "divider_bug" && !p.rom_divider_bug) return false;
     if (outcome === "pip" && e.event !== "pip_rescue" && p.command !== "pip_escape") return false;
+    if (outcome === "drag_issue" && !["split_drag_chon_stack", "split_drag_commit"].includes(e.event)) return false;
     if (searchText) {
       const txt = (JSON.stringify(p) + " " + (e.event || "")).toLowerCase();
       if (!txt.includes(searchText)) return false;
@@ -2351,24 +2511,35 @@ async function loadSplitHistory() {
     let evName = e.event;
     if (e.event === "split_screen") evName = "📱 Chia màn hình";
     else if (e.event === "pip_rescue") evName = "📺 Cứu kẹt PIP";
+    else if (e.event === "split_drag_chon_stack") evName = "🖐 Kéo chia: Chọn Stack";
+    else if (e.event === "split_drag_commit") evName = "🖐 Kéo chia: Áp tỷ lệ";
     else if (p.command === "set_split_screen") evName = "📱 Lệnh chia màn";
     else if (p.command === "pip_escape") evName = "📺 Thoát kẹt PIP";
     else if (p.command === "set_freeform") evName = "🪟 Cửa sổ tự do";
 
     const p1 = p.pkg1 ? (PACKAGE_META[p.pkg1] || p.pkg1) : "";
     const p2 = p.pkg2 ? (PACKAGE_META[p.pkg2] || p.pkg2) : "";
-    const apps = (p1 || p2) ? `<b>${esc(p1)}</b> + <b>${esc(p2)}</b>` : (p.package ? esc(PACKAGE_META[p.package] || p.package) : (p.params?.string_value ? esc(p.params.string_value) : `<span class="muted">—</span>`));
+    let apps = (p1 || p2) ? `<b>${esc(p1)}</b> + <b>${esc(p2)}</b>` : (p.package ? esc(PACKAGE_META[p.package] || p.package) : (p.params?.string_value ? esc(p.params.string_value) : `<span class="muted">—</span>`));
+    if (e.event === "split_drag_chon_stack") {
+      apps = `Stack1: <b>${p.stack1 ?? "?"}</b> · Stack2: <b>${p.stack2 ?? "?"}</b>`;
+    } else if (e.event === "split_drag_commit") {
+      apps = `Tỷ lệ: thực <b>${p.thuc ?? "?"}</b> / mong <b>${p.mong ?? "?"}</b>`;
+    }
 
     const path = p.path ? `<span class="badge info">${esc(p.path)}</span>` : `<span class="muted">—</span>`;
-    const resBadge = (p.ok === true || p.state === "hidden") ? `<span class="badge ok">✓ Thành công</span>`
-      : p.ok === false ? `<span class="badge error">✕ Thất bại</span>`
-      : (p.state === "detected" ? `<span class="badge warning">⚠ Phát hiện kẹt</span>` : `<span class="muted">—</span>`);
+    const resBadge = (p.ok === true || p.state === "hidden" || p.bounds_da_doi === true) ? `<span class="badge ok">✓ Thành công</span>`
+      : (p.ok === false || p.bounds_da_doi === false) ? `<span class="badge error">✕ Thất bại</span>`
+      : (p.state === "detected" ? `<span class="badge warning">⚠ Phát hiện kẹt</span>` : `<span class="badge info">${esc(p.ket_qua || "—")}</span>`);
 
     let note = "";
     if (p.rom_divider_bug) {
       note = `<span class="badge warning">⚠ Bug Divider ROM</span> ` + esc(p.message || "");
     } else if (e.event === "pip_rescue") {
       note = p.state === "hidden" ? "Đã giải phóng màn hình" : "Đang xử lý giải cứu";
+    } else if (e.event === "split_drag_commit") {
+      note = p.lech_px != null ? `Lệch: ${p.lech_px}px` : "";
+    } else if (e.event === "split_drag_chon_stack") {
+      note = p.docked ? "Docked: true" : "Docked: false";
     } else {
       note = esc(p.message || p.error || "");
     }
@@ -2448,6 +2619,12 @@ async function loadConnHistory() {
     q.set("event", "in.(connect_failed,car_connect_failed)");
   } else if (evType === "auth_failed") {
     q.set("event", "in.(auth_failed,auth_rejected)");
+  } else if (evType === "relay_reject") {
+    q.set("event", "eq.relay_reject");
+  } else if (evType === "auth_lockout") {
+    q.set("event", "eq.auth_lockout");
+  } else if (evType === "rejected_load") {
+    q.set("event", "eq.phone_rejected_too_many");
   } else if (evType === "command_sent") {
     q.set("event", "eq.command_sent");
   } else if (evType === "discovery_found") {
@@ -2455,7 +2632,7 @@ async function loadConnHistory() {
   } else if (evType === "relay_state") {
     q.set("event", "eq.relay_state");
   } else {
-    q.set("event", "in.(phone_connected,phone_disconnected,car_connected,connect_failed,car_connect_failed,auth_failed,auth_rejected,discovery_found,relay_state,command_sent)");
+    q.set("event", "in.(phone_connected,phone_disconnected,car_connected,connect_failed,car_connect_failed,auth_failed,auth_rejected,discovery_found,relay_state,command_sent,relay_reject,auth_lockout,phone_rejected_too_many)");
   }
   if (transp) {
     q.set("props->>transport", "eq." + transp);
@@ -2483,6 +2660,9 @@ async function loadConnHistory() {
     car_connect_failed: `<span class="badge error">✕ Nối thất bại</span>`,
     auth_failed: `<span class="badge error">🔒 Sai token</span>`,
     auth_rejected: `<span class="badge error">🔒 Bị từ chối token</span>`,
+    auth_lockout: `<span class="badge error" style="background:#fee2e2;color:#b91c1c;border-color:#fca5a5">🚫 Khóa brute-force</span>`,
+    relay_reject: `<span class="badge error">⚠ Relay từ chối</span>`,
+    phone_rejected_too_many: `<span class="badge warning">⚠ Quá tải kết nối</span>`,
     command_sent: `<span class="badge ok">⚡ Lệnh Phone</span>`,
     discovery_found: `<span class="badge info">🔍 Dò IP xe</span>`,
     relay_state: `<span class="badge info">☁ Relay 4G</span>`,
@@ -2490,7 +2670,7 @@ async function loadConnHistory() {
 
   $("connHistTable").querySelector("tbody").innerHTML = filtered.map((e, idx) => {
     const p = e.props || {};
-    const peer = esc(p.peer || p.car_ip || p.host || p.hosts?.join(", ") || "—");
+    const peer = esc(p.peer || p.car_ip || p.host || p.hosts?.join(", ") || p.ip || "—");
     let stateSummary = "";
     if (e.event === "command_sent") {
       const isSafetyGate = !p.ok && (p.error || "").includes("xe đang chạy");
@@ -2500,6 +2680,12 @@ async function loadConnHistory() {
       stateSummary = `<b>${esc(cmdLabel(p.command))}</b> ${esc(cmdParams(p.command, p))} → ${statusBadge}`;
     } else if (e.event === "relay_state") {
       stateSummary = `trạng thái: <b>${esc(p.state || "")}</b> ${p.reason ? `(${esc(p.reason)})` : ""}`;
+    } else if (e.event === "relay_reject") {
+      stateSummary = `từ chối: <b>${esc(p.reason || p.error || "")}</b>`;
+    } else if (e.event === "auth_lockout") {
+      stateSummary = `khóa IP do thử sai <b>${esc(p.attempts || "?")}</b> lần`;
+    } else if (e.event === "phone_rejected_too_many") {
+      stateSummary = `từ chối phone: <b>${esc(p.reason || "quá tải")}</b>`;
     } else if (e.event === "discovery_found") {
       stateSummary = `${p.source === "user_scan" ? "Quét thủ công" : "Tự động dò"}: tìm thấy ${esc(p.count ?? 1)} xe`;
     } else if (p.reason) {
@@ -2580,11 +2766,19 @@ async function loadHardwareHistory() {
   } else if (feat === "scene_changed") {
     q.set("event", "eq.scene_changed");
   } else if (feat === "installs") {
-    q.set("event", "in.(store_install,apk_install)");
+    q.set("event", "in.(store_install,apk_install,apk_upload_result)");
+  } else if (feat === "ac_programs") {
+    q.set("event", "eq.ac_program_result");
   } else if (feat === "feature_toggle") {
     q.set("event", "eq.feature_toggle");
+  } else if (feat === "vhal_issues") {
+    q.set("event", "in.(vhal_ensure_connected_failed,vhal_binder_timeout,vhal_create_car_failed)");
+  } else if (feat === "cmd_blocked") {
+    q.set("event", "eq.hardware_cmd_blocked");
+  } else if (feat === "drive_restore") {
+    q.set("event", "in.(drive_restore_nhip,drive_restore_skipped)");
   } else {
-    q.set("event", "in.(auto_window_triggered,auto_window_result,remote_start,scene_changed,store_install,apk_install,feature_toggle)");
+    q.set("event", "in.(auto_window_triggered,auto_window_result,remote_start,scene_changed,store_install,apk_install,apk_upload_result,ac_program_result,feature_toggle,vhal_ensure_connected_failed,vhal_binder_timeout,vhal_create_car_failed,hardware_cmd_blocked,drive_restore_nhip,drive_restore_skipped)");
   }
   q.set("order", "ts.desc"); q.set("limit", "100");
   q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
@@ -2600,7 +2794,15 @@ async function loadHardwareHistory() {
     scene_changed: "🏕 Scene không gian",
     store_install: "📦 Cài Store",
     apk_install: "📦 Cài APK HTTP",
+    apk_upload_result: "📱 Phone đẩy APK",
+    ac_program_result: "❄ Lịch điều hòa",
     feature_toggle: "🔘 Nút bấm xe",
+    vhal_ensure_connected_failed: "⚠ Mất kết nối VHAL",
+    vhal_binder_timeout: "⚠ Timeout Binder VHAL",
+    vhal_create_car_failed: "⚠ Khởi tạo VHAL lỗi",
+    hardware_cmd_blocked: "🛡 Chặn phần cứng",
+    drive_restore_nhip: "🔄 Khôi phục lái (nhịp)",
+    drive_restore_skipped: "🔄 Bỏ qua khôi phục lái",
   };
 
   $("hwHistTable").querySelector("tbody").innerHTML = filtered.map((e, idx) => {
@@ -2622,9 +2824,33 @@ async function loadHardwareHistory() {
     } else if (e.event === "store_install" || e.event === "apk_install") {
       summary = `App: <b>${esc(PACKAGE_META[p.name || p.package] || p.name || p.file || p.package || "")}</b>`;
       resBadge = p.ok ? `<span class="badge ok">✓ Cài thành công</span>` : `<span class="badge error">✕ Lỗi: ${esc(p.error || "")}</span>`;
+    } else if (e.event === "apk_upload_result") {
+      summary = `App: <b>${esc(p.name || "")}</b> (${p.duration_ms ? Math.round(p.duration_ms / 1000) + "s" : ""})`;
+      resBadge = p.ok ? `<span class="badge ok">✓ Đẩy thành công</span>` : `<span class="badge error">✕ Lỗi: ${esc(p.error || p.write_error || "")}</span>`;
+    } else if (e.event === "ac_program_result") {
+      summary = `Lịch: <b>${esc(p.program_name || p.program_id || "")}</b>`;
+      resBadge = p.ok ? `<span class="badge ok">✓ Hoàn tất</span>` : `<span class="badge error">✕ Lỗi: ${esc(p.error || "")}</span>`;
     } else if (e.event === "feature_toggle") {
       summary = `Lệnh: <b>${esc(cmdLabel(p.command))}</b> ${esc(cmdParams(p.command, p.params || p))}`;
       resBadge = p.ok ? `<span class="badge ok">✓ OK</span>` : `<span class="badge error">✕ Lỗi</span>`;
+    } else if (e.event === "vhal_ensure_connected_failed") {
+      summary = `Lý do: <b>${esc(p.ly_do || "")}</b> (class=${p.car_class_ok ? "✓" : "✕"}, obj=${p.car_obj_ok ? "✓" : "✕"})`;
+      resBadge = `<span class="badge error">✕ Mất VHAL</span>`;
+    } else if (e.event === "vhal_binder_timeout") {
+      summary = `Thao tác: <b>${esc(p.op || "")}</b> · Prop: <code>${esc(p.prop || "")}</code>`;
+      resBadge = `<span class="badge error">✕ Timeout ${p.timeout_ms ?? 800}ms</span>`;
+    } else if (e.event === "vhal_create_car_failed") {
+      summary = `Lỗi: <b>${esc(p.loi || "")}</b>`;
+      resBadge = `<span class="badge error">✕ Tạo Car lỗi</span>`;
+    } else if (e.event === "hardware_cmd_blocked") {
+      summary = `Lệnh: <b>${esc(cmdLabel(p.command))}</b> do ${esc(p.reason || "")} (v=${p.speed_kmh ?? "?"}km/h, gear=${esc(p.gear || "")})`;
+      resBadge = `<span class="badge warning">⚠ Bị chặn an toàn</span>`;
+    } else if (e.event === "drive_restore_nhip") {
+      summary = `Chế độ: <b>${esc(p.mode_desire || "")}</b> · v=${p.toc_do_kmh ?? "?"}km/h · gave_up=${p.gave_up_mode ? "true" : "false"}`;
+      resBadge = p.vua_go_co ? `<span class="badge ok">✓ Đã gỡ cờ</span>` : `<span class="badge info">Đang theo dõi</span>`;
+    } else if (e.event === "drive_restore_skipped") {
+      summary = `Lý do: <b>${esc(p.reason || "")}</b> · v=${p.speed_kmh ?? "?"}km/h`;
+      resBadge = `<span class="badge warning">Bỏ qua</span>`;
     }
 
     return `<tr>
@@ -2688,7 +2914,7 @@ function renderAggregates(o) {
   // Cột "Phiên bản" là bắt buộc: câu hỏi ĐẦU TIÊN khi nhìn một lỗi là "bản nào?".
   // Không có nó thì rất dễ lao vào sửa mù trên code mới một bug chỉ có ở bản cũ.
   $("errTable").querySelector("tbody").innerHTML = (o.top_errors || []).map((e) => `
-    <tr><td>${esc(TAG_META[e.tag] || e.tag)}</td>
+    <tr><td>${esc(tagLabel(e.tag))}</td>
         <td class="muted">${esc((e.message || "").slice(0, 140))}</td>
         <td class="mono">${verBadge(e.app, e.app_version, e.version_code)}</td>
         <td class="mono muted" style="font-size:11px">${e.last_ts ? fmtT(e.last_ts) : "—"}</td>
@@ -2725,6 +2951,104 @@ function renderAggregates(o) {
   bindLocAddresses(devTbody);
   filterDeviceTable();
 }
+
+/* ================= Sự cố Phần cứng, VHAL, Giọng nói & Nghiệp vụ (Domain Errors) ================= */
+let domainErrRows = [];
+async function loadDomainErrors() {
+  const type = $("fDomainErrType")?.value || "";
+  const level = $("fDomainErrLevel")?.value || "";
+  const searchText = ($("fDomainErrText")?.value || "").trim().toLowerCase();
+
+  const DOMAIN_GROUPS = {
+    vhal: ["vhal_ensure_connected_failed", "vhal_binder_timeout", "vhal_create_car_failed", "hardware_cmd_blocked"],
+    voice: ["voice_lenh_bi_nuot", "voice_speak_failed", "voice_upload_failed", "voice_mic_rebuild", "voice_mic_xe_khoa", "kws_decode_error", "stt_decode_native", "voice_kws_state", "model_download"],
+    nav_media: ["nav_route_failed", "media_search_failed"],
+    conn: ["connect_failed", "car_connect_failed", "auth_failed", "auth_rejected", "relay_reject", "auth_lockout", "phone_rejected_too_many", "relay_state"],
+    system: ["watchdog_restart", "watchdog_safe_mode", "main_thread_hang", "app_trim", "app_low_memory", "crash_upload", "license_refresh_denied", "license_grace_warning", "finalizer_watchdog_off_failed", "admin_parked_gate_override", "admin_reboot", "exec_on_main_thread", "update_sig_invalid", "steering_key_flood", "main_looper_recovered", "ac_program_result", "apk_upload_result", "app_update"]
+  };
+
+  const q = new URLSearchParams();
+  q.set("select", "ts,event,level,app,device_id,props,app_version,version_code,process_name");
+  q.set("order", "ts.desc");
+  q.set("limit", "100");
+  q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
+  if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
+
+  if (type && DOMAIN_GROUPS[type]) {
+    q.set("event", "in.(" + DOMAIN_GROUPS[type].join(",") + ")");
+  } else {
+    const allDomainEvents = Object.values(DOMAIN_GROUPS).reduce((a, b) => a.concat(b), []);
+    q.set("or", `(level.in.(error,warning),event.in.(${allDomainEvents.join(",")}))`);
+    q.set("event", "not.in.(app_error,system_crash)");
+  }
+
+  if (level) {
+    q.set("level", "eq." + level);
+  }
+
+  const rows = await api("/rest/v1/telemetry_events?" + q.toString());
+
+  const filtered = rows.filter((e) => {
+    if (e.event === "app_error" || e.event === "system_crash") return false;
+    const p = e.props || {};
+    if (e.event === "ac_program_result" && p.ok !== false) return false;
+    if (e.event === "apk_upload_result" && p.ok !== false) return false;
+    if (e.event === "voice_kws_state" && !["download_failed", "init_failed", "model_missing"].includes(p.state)) return false;
+    if (e.event === "model_download" && !["fail", "stopped"].includes(p.phase) && e.level !== "warning" && e.level !== "error") return false;
+    if (e.event === "app_update" && !["download_failed", "install_failed", "sha_mismatch", "signature_mismatch", "flow_error", "sha_missing", "install_backoff"].includes(p.phase) && e.level !== "error" && e.level !== "warning") return false;
+    if (e.event === "relay_state" && !["all_endpoints_failed", "join_failed"].includes(p.state) && e.level !== "warning" && e.level !== "error") return false;
+    if (searchText) {
+      const txt = (JSON.stringify(p) + " " + (e.event || "") + " " + (e.app || "") + " " + (eventSummary(e) || "")).toLowerCase();
+      if (!txt.includes(searchText)) return false;
+    }
+    return true;
+  });
+  domainErrRows = filtered;
+
+  // Stats calculation
+  const vhalCount = filtered.filter(e => DOMAIN_GROUPS.vhal.includes(e.event)).length;
+  const voiceCount = filtered.filter(e => DOMAIN_GROUPS.voice.includes(e.event)).length;
+  const navMediaCount = filtered.filter(e => DOMAIN_GROUPS.nav_media.includes(e.event)).length;
+  const connCount = filtered.filter(e => DOMAIN_GROUPS.conn.includes(e.event)).length;
+  const sysCount = filtered.filter(e => DOMAIN_GROUPS.system.includes(e.event)).length;
+
+  const statsEl = $("domainErrStats");
+  if (statsEl) {
+    statsEl.innerHTML = `
+      <span>🚗 VHAL: <b>${vhalCount}</b></span>
+      <span>🎙 Voice: <b>${voiceCount}</b></span>
+      <span>🗺 Nav/Media: <b>${navMediaCount}</b></span>
+      <span>📶 Conn: <b>${connCount}</b></span>
+      <span>🛡 System: <b>${sysCount}</b></span>
+    `;
+  }
+
+  const tbody = $("domainErrTable")?.querySelector("tbody");
+  if (!tbody) return;
+  tbody.innerHTML = filtered.map((e, idx) => {
+    return `<tr>
+      <td class="mono">${fmtT(e.ts)}</td>
+      <td><b>${esc(appLabel(e.app))}</b></td>
+      <td class="mono muted" title="${esc(e.device_id)}">${shortId(e.device_id)}</td>
+      <td>${LEVEL_BADGE[e.level] || `<span class="badge ${e.level === 'warning' ? 'warning' : 'error'}">${esc(e.level || 'error')}</span>`}</td>
+      <td title="${esc(e.event)}">${esc(evLabel(e.event))} <span class="dot" style="background:${catColor(evCat(e.event))}"></span></td>
+      <td title="${esc(eventSummary(e))}">${esc(eventSummary(e)) || `<span class="muted">—</span>`}</td>
+      <td class="mono">${verBadge(e.app, e.app_version, e.version_code)}</td>
+      <td><button class="jsonbtn" onclick="openDomainErrJson(${idx})">JSON</button></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="8" class="empty">không có sự cố nghiệp vụ nào khớp bộ lọc 🎉</td></tr>`;
+}
+
+window.openDomainErrJson = function(idx) {
+  const e = domainErrRows[idx]; if (!e) return;
+  $("eventModalTitle").textContent = `${fmtT(e.ts)} — ${evLabel(e.event)}`;
+  $("eventKv").innerHTML = `<b>Sự kiện</b><span>${esc(e.event)}</span><b>Thiết bị / App</b><span>${esc(appLabel(e.app))}</span><b>ID máy</b><span class="mono">${esc(e.device_id)}</span>`;
+  $("eventJson").textContent = JSON.stringify(e.props || {}, null, 2);
+  $("eventModal").classList.add("open");
+};
+if ($("btnDomainErrFilter")) $("btnDomainErrFilter").onclick = () => loadDomainErrors();
+if ($("fDomainErrType")) $("fDomainErrType").onchange = () => loadDomainErrors();
+if ($("fDomainErrLevel")) $("fDomainErrLevel").onchange = () => loadDomainErrors();
 
 /* ================= Render: voice history & audio playback ================= */
 let currentVoiceAudio = null;
@@ -3337,6 +3661,139 @@ async function loadVoiceHistory() {
 $("btnVoiceFilter").onclick = () => loadVoiceHistory();
 initLocalCorpusPicker();
 
+/* ================= Sự cố Giọng nói ngoại vi & Micro ================= */
+let voiceIssueRows = [];
+async function loadVoiceIssues() {
+  const issueType = $("fVoiceIssueType")?.value || "";
+  const VOICE_ISSUE_GROUPS = {
+    swallowed: ["voice_lenh_bi_nuot"],
+    nav: ["nav_route_failed"],
+    media: ["media_search_failed", "media_play_xac_minh"],
+    resume: ["audio_focus_resume", "audio_focus_resume_exec"],
+    mic: ["voice_mic_rebuild", "voice_mic_xe_khoa"],
+    decode: ["kws_decode_error", "stt_decode_native", "voice_kws_state"],
+    upload: ["voice_upload_failed"],
+  };
+
+  const q = new URLSearchParams();
+  q.set("select", "ts,device_id,props,event,level");
+  if (issueType && VOICE_ISSUE_GROUPS[issueType]) {
+    q.set("event", "in.(" + VOICE_ISSUE_GROUPS[issueType].join(",") + ")");
+  } else if (issueType) {
+    q.set("event", "eq." + issueType);
+  } else {
+    const allVoiceIssues = Array.from(new Set(Object.values(VOICE_ISSUE_GROUPS).reduce((a, b) => a.concat(b), [])));
+    q.set("event", "in.(" + allVoiceIssues.join(",") + ")");
+  }
+  q.set("order", "ts.desc"); q.set("limit", "100");
+  q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
+  if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
+
+  const rows = await api("/rest/v1/telemetry_events?" + q.toString());
+  const filtered = rows.filter((e) => {
+    if (e.event === "voice_kws_state") {
+      const state = e.props?.state;
+      return ["download_failed", "init_failed", "model_missing"].includes(state);
+    }
+    return true;
+  });
+  voiceIssueRows = filtered;
+
+  const ISSUE_BADGE = {
+    voice_lenh_bi_nuot: `<span class="badge warning">⚠ Lệnh bị nuốt</span>`,
+    nav_route_failed: `<span class="badge error">🗺 Dẫn đường ✕</span>`,
+    media_search_failed: `<span class="badge error">🎵 Tìm nhạc ✕</span>`,
+    media_play_xac_minh: `<span class="badge info">🔍 Xác minh nhạc</span>`,
+    audio_focus_resume: `<span class="badge info">📻 Phục hồi nhạc</span>`,
+    audio_focus_resume_exec: `<span class="badge info">▶ Thực thi resume</span>`,
+    voice_mic_rebuild: `<span class="badge warning">🎤 Rebuild Mic</span>`,
+    voice_mic_xe_khoa: `<span class="badge error">🎤 Mic xe khóa</span>`,
+    kws_decode_error: `<span class="badge error">⚡ KWS Decode ✕</span>`,
+    stt_decode_native: `<span class="badge error">⚡ STT Native ✕</span>`,
+    voice_kws_state: `<span class="badge warning">⚡ KWS Lỗi</span>`,
+    voice_upload_failed: `<span class="badge error">☁ Lỗi Upload WAV</span>`,
+  };
+
+  const tbody = $("voiceIssueTable")?.querySelector("tbody");
+  if (!tbody) return;
+  tbody.innerHTML = filtered.map((e, idx) => {
+    const p = e.props || {};
+    let detail = "";
+    let resBadge = `<span class="muted">—</span>`;
+    let reason = "";
+
+    if (e.event === "voice_lenh_bi_nuot") {
+      detail = `Nửa đầu: “${esc(p.nua_dau || "")}” → Ghép: “${esc(p.ghep || "")}”`;
+      resBadge = `<span class="badge warning">Cổng: ${esc(p.cong_chan || "")}</span>`;
+      reason = `Chờ ${p.cho_ms ?? "?"}ms`;
+    } else if (e.event === "nav_route_failed") {
+      detail = `App: <b>${esc(p.app || "")}</b> · Điểm đến: “${esc(p.dia_diem || p.destination || "")}”`;
+      resBadge = `<span class="badge error">✕ Thất bại</span>`;
+      reason = esc(p.ly_do || p.loi || p.error || "");
+    } else if (e.event === "media_search_failed") {
+      detail = `App: <b>${esc(p.app || "")}</b> · Từ khoá: “${esc(p.tu_khoa || p.query || "")}”`;
+      resBadge = `<span class="badge error">✕ Thất bại</span>`;
+      reason = esc(p.ly_do || p.loi || p.error || "");
+    } else if (e.event === "media_play_xac_minh") {
+      detail = `Gói: <b>${esc(p.goi || "")}</b> (đã thử ${p.so_cach_da_thu ?? "?"}/${p.tong_cach ?? "?"} cách)`;
+      resBadge = p.da_phat ? `<span class="badge ok">✓ Đang phát thật</span>` : `<span class="badge warning">⚠ Nhận mà chưa phát</span>`;
+      reason = p.playback_state ? `State: ${esc(p.playback_state)}` : "";
+    } else if (e.event === "audio_focus_resume") {
+      detail = `Gói: <b>${esc(p.goi || "")}</b> · Trước đó đang phát: ${p.nhac_dang_phat ? "✓" : "✕"}`;
+      resBadge = p.should_resume ? `<span class="badge ok">✓ Cần phát lại</span>` : `<span class="badge info">Bỏ qua</span>`;
+      reason = p.resume_bi_huy ? `Bị hủy: ${esc(p.ly_do_huy || "hết hạn / có media mới")}` : "";
+    } else if (e.event === "audio_focus_resume_exec") {
+      detail = `Session: ${p.session_found ? `✓ ${esc(p.session_pkg || "")}` : "✕ không tìm thấy"}`;
+      resBadge = p.da_resume ? `<span class="badge ok">✓ Đã gửi Play</span>` : `<span class="badge warning">Bỏ qua</span>`;
+      reason = esc(p.ly_do_bo_qua || "");
+    } else if (e.event === "voice_mic_rebuild") {
+      detail = `Lần thử: <b>${p.attempt || p.count || 1}</b>`;
+      resBadge = `<span class="badge warning">Đang dựng lại</span>`;
+      reason = esc(p.reason || "");
+    } else if (e.event === "voice_mic_xe_khoa") {
+      detail = `Micro bị hệ thống xe chiếm dụng / khóa phần cứng`;
+      resBadge = `<span class="badge error">✕ Mic bị khóa</span>`;
+      reason = esc(p.reason || p.error || "");
+    } else if (e.event === "kws_decode_error") {
+      detail = `Lỗi giải mã từ khoá KWS (Sherpa-ONNX)`;
+      resBadge = `<span class="badge error">✕ Lỗi decode</span>`;
+      reason = esc(p.error || p.msg || p.reason || "");
+    } else if (e.event === "stt_decode_native") {
+      detail = `Lỗi giải mã STT native Sherpa-ONNX C++`;
+      resBadge = `<span class="badge error">✕ Lỗi STT</span>`;
+      reason = esc(p.error || p.msg || p.reason || "");
+    } else if (e.event === "voice_kws_state") {
+      detail = `Trạng thái: <b>${esc(p.state || "")}</b> · Model: ${esc(p.model || "")}`;
+      resBadge = `<span class="badge error">✕ ${esc(p.state || "")}</span>`;
+      reason = esc(p.error || p.reason || "");
+    } else if (e.event === "voice_upload_failed") {
+      detail = `Tệp: <b>${esc(p.file || "")}</b>`;
+      resBadge = `<span class="badge error">✕ Upload lỗi</span>`;
+      reason = esc(p.error || ("HTTP " + p.http_code));
+    }
+
+    return `<tr>
+      <td class="mono">${fmtT(e.ts)}</td>
+      <td class="mono muted" title="${esc(e.device_id)}">${shortId(e.device_id)}</td>
+      <td>${ISSUE_BADGE[e.event] || esc(evLabel(e.event))}</td>
+      <td>${detail}</td>
+      <td>${resBadge}</td>
+      <td>${reason || `<span class="muted">—</span>`}</td>
+      <td><button class="jsonbtn" onclick="openVoiceIssueJson(${idx})">JSON</button></td>
+    </tr>`;
+  }).join("") || `<tr><td colspan="7" class="empty">chưa có sự cố giọng nói nào khớp bộ lọc</td></tr>`;
+}
+
+window.openVoiceIssueJson = function(idx) {
+  const e = voiceIssueRows[idx]; if (!e) return;
+  $("eventModalTitle").textContent = `${fmtT(e.ts)} — ${evLabel(e.event)}`;
+  $("eventKv").innerHTML = `<b>Sự kiện</b><span>${esc(e.event)}</span><b>Thiết bị</b><span class="mono">${esc(e.device_id)}</span>`;
+  $("eventJson").textContent = JSON.stringify(e.props || {}, null, 2);
+  $("eventModal").classList.add("open");
+};
+if ($("btnVoiceIssueFilter")) $("btnVoiceIssueFilter").onclick = () => loadVoiceIssues();
+if ($("fVoiceIssueType")) $("fVoiceIssueType").onchange = () => loadVoiceIssues();
+
 /* ================= Render: events ================= */
 const LEVEL_BADGE = {
   info: `<span class="badge info">ℹ info</span>`,
@@ -3412,8 +3869,13 @@ async function loadEvents() {
   if (ev) {
     q.set("event", "eq." + ev);
   } else if (cat) {
-    const catEvents = Object.keys(EVENT_META).filter((k) => EVENT_META[k].cat === cat);
-    if (catEvents.length) q.set("event", "in.(" + catEvents.join(",") + ")");
+    if (cat === "error") {
+      const catEvents = Object.keys(EVENT_META).filter((k) => EVENT_META[k].cat === "error");
+      q.set("or", `(level.in.(error,warning),event.in.(${catEvents.join(",")}))`);
+    } else {
+      const catEvents = Object.keys(EVENT_META).filter((k) => EVENT_META[k].cat === cat);
+      if (catEvents.length) q.set("event", "in.(" + catEvents.join(",") + ")");
+    }
   } else if ($("fHideNoise").checked) {
     q.set("event", "not.in.(" + NOISE_EVENTS.join(",") + ")");
   }
@@ -3641,19 +4103,20 @@ async function refreshAll() {
   try {
     const o = await rpcOverview();
     lastOverview = o;
-    renderOverview(o);
-    renderVoice(o);
-    renderSplitScreen(o);
-    renderConnection(o);
-    renderHardware(o);
-    renderStability(o);
-    renderAggregates(o);
+    try { renderOverview(o); } catch (e) { console.error("renderOverview error:", e); }
+    try { renderVoice(o); } catch (e) { console.error("renderVoice error:", e); }
+    try { renderSplitScreen(o); } catch (e) { console.error("renderSplitScreen error:", e); }
+    try { renderConnection(o); } catch (e) { console.error("renderConnection error:", e); }
+    try { renderHardware(o); } catch (e) { console.error("renderHardware error:", e); }
+    try { renderStability(o); } catch (e) { console.error("renderStability error:", e); }
+    try { renderAggregates(o); } catch (e) { console.error("renderAggregates error:", e); }
     if ($("tab-events").style.display !== "none") await loadEvents();
     if ($("tab-crash").style.display !== "none") await loadCrashes();
-    if ($("tab-voice").style.display !== "none") await loadVoiceHistory();
+    if ($("tab-voice").style.display !== "none") { await loadVoiceHistory(); await loadVoiceIssues(); }
     if ($("tab-splitscreen").style.display !== "none") await loadSplitHistory();
     if ($("tab-connection").style.display !== "none") await loadConnHistory();
     if ($("tab-hardware").style.display !== "none") await loadHardwareHistory();
+    if ($("tab-errors").style.display !== "none") await loadDomainErrors();
     setConn(true, "cập nhật " + new Date().toLocaleTimeString("vi-VN"));
   } catch (err) {
     setConn(false, err.message);
@@ -3673,10 +4136,11 @@ $("tabs").addEventListener("click", async (e) => {
   });
   if (btn.dataset.tab === "events") await loadEvents();
   if (btn.dataset.tab === "crash") await loadCrashes();
-  if (btn.dataset.tab === "voice") { try { await loadVoiceHistory(); } catch (err) { setConn(false, err.message); } }
+  if (btn.dataset.tab === "voice") { try { await loadVoiceHistory(); await loadVoiceIssues(); } catch (err) { setConn(false, err.message); } }
   if (btn.dataset.tab === "splitscreen") { try { await loadSplitHistory(); } catch (err) { setConn(false, err.message); } }
   if (btn.dataset.tab === "connection") { try { await loadConnHistory(); } catch (err) { setConn(false, err.message); } }
   if (btn.dataset.tab === "hardware") { try { await loadHardwareHistory(); } catch (err) { setConn(false, err.message); } }
+  if (btn.dataset.tab === "errors") { try { await loadDomainErrors(); } catch (err) { setConn(false, err.message); } }
 });
 
 async function loadCrashes() {
