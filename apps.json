@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.1.9",
-    "versionCode": 1109,
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "d503d9ea260e48da64bb236fe205e92528cc0a6164566aeb6494c963a88433ac",
-    "releaseNotes": "- Đồng bộ phiên bản 1.1.9 với đầu xe: Nâng cao độ ổn định kết nối và đồng bộ trạng thái hiển thị nhiều cửa sổ với hệ thống xe.",
+    "sha256": "21a0d0dd68e1244ccb6d6ec36b8f0d21cf8414171a063a77088b42c55af82cbf",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,11 +78,11 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.1.8",
-    "versionCode": 1108,
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- Đồng bộ toàn diện với hệ thống xe bản 1.1.8: Tối ưu kết nối điều khiển xe từ xa qua mạng nội bộ Hotspot và Bluetooth SPP ổn định cao.\n- Tối ưu trải nghiệm điều khiển tức thì: Cải tiến hàng đợi lệnh điều hòa, kính cửa và chế độ lái, tự động gửi lại khi vừa nối lại xe."
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
   },
   "phoneIos": {
     "packageName": "com.techlead.app.geely.phone",
