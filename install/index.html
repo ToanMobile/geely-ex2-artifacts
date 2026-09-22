@@ -1,0 +1,2445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Cài Đặt Ứng Dụng — Geely EX2</title>
+<style>
+  :root {
+    --bg: #eef2f7;
+    --panel: #ffffff;
+    --panel2: #f4f7fb;
+    --border: #d3dce6;
+    --border-light: #e6edf5;
+    --text: #1d2633;
+    --muted: #5f6f82;
+    --accent: #1f8a4d;
+    --accent-hover: #166c3d;
+    --accent-light: #e8f7ee;
+    --ios-blue: #007aff;
+    --ios-blue-hover: #0062cc;
+    --ios-blue-light: #eaf3ff;
+    --android-green: #3ddc84;
+    --car-amber: #e67e22;
+    --car-amber-light: #fef5ec;
+    --danger: #c0392b;
+    --danger-light: #fbeae8;
+    --warn: #d97706;
+    --warn-bg: #fdf3dc;
+    --terminal-bg: #141b24;
+    --terminal-text: #a5f3fc;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --shadow: 0 4px 20px -2px rgba(29, 38, 51, 0.08);
+    --shadow-lg: 0 12px 30px -4px rgba(29, 38, 51, 0.14);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  body.dark {
+    --bg: #0d1218;
+    --panel: #161d26;
+    --panel2: #1e2733;
+    --border: #283545;
+    --border-light: #1f2b38;
+    --text: #e2e8f0;
+    --muted: #8a9bb0;
+    --accent: #2ecc71;
+    --accent-hover: #27ae60;
+    --accent-light: #132e20;
+    --ios-blue: #0a84ff;
+    --ios-blue-hover: #0070e0;
+    --ios-blue-light: #122842;
+    --car-amber: #f39c12;
+    --car-amber-light: #38240f;
+    --danger: #e74c3c;
+    --danger-light: #381a17;
+    --warn: #f59e0b;
+    --warn-bg: #2b2210;
+    --terminal-bg: #0a0e14;
+    --terminal-text: #67e8f9;
+    --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 30px -4px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Top Bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 4px 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), #115e59);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(31, 138, 77, 0.3);
+  }
+
+  .brand-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .btn-theme {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .2s;
+  }
+  .btn-theme:active { transform: scale(0.96); }
+
+  /* Device Detected Banner */
+  .device-banner {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+  }
+
+  .device-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .device-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    background: var(--panel2);
+    border: 1px solid var(--border-light);
+  }
+
+  .device-text {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .device-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .badge-env {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background: var(--accent-light);
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
+
+  /* Main Action Cards */
+  .action-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .card-btn {
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .card-btn:active {
+    transform: scale(0.985);
+    box-shadow: var(--shadow);
+  }
+
+  .card-btn.recommended {
+    border-color: var(--accent);
+    background: linear-gradient(to right, var(--panel), var(--accent-light));
+  }
+
+  .card-btn.car-card {
+    border-color: var(--car-amber);
+    background: linear-gradient(to right, var(--panel), var(--car-amber-light));
+  }
+
+  .card-btn.ios-card.recommended {
+    border-color: var(--ios-blue);
+    background: linear-gradient(to right, var(--panel), var(--ios-blue-light));
+  }
+
+  .card-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .card-icon.car {
+    background: #ffedd5;
+    color: #c2410c;
+  }
+  body.dark .card-icon.car {
+    background: #431407;
+    color: #fdba74;
+  }
+
+  .card-icon.android {
+    background: #dcfce7;
+    color: #15803d;
+  }
+  body.dark .card-icon.android {
+    background: #14351f;
+    color: #86efac;
+  }
+
+  .card-icon.ios {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+  body.dark .card-icon.ios {
+    background: #172554;
+    color: #93c5fd;
+  }
+
+  .card-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 3px;
+    flex-wrap: wrap;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .tag-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+
+  .tag-badge.car { background: #fed7aa; color: #9a3412; }
+  body.dark .tag-badge.car { background: #7c2d12; color: #fed7aa; }
+
+  .tag-badge.android { background: #bbf7d0; color: #166534; }
+  body.dark .tag-badge.android { background: #14532d; color: #bbf7d0; }
+
+  .tag-badge.ios { background: #bfdbfe; color: #1e40af; }
+  body.dark .tag-badge.ios { background: #1e3a8a; color: #bfdbfe; }
+
+  .tag-badge.rec { background: var(--accent); color: #fff; }
+
+  .card-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  .card-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
+
+  /* Quick Install Bar (Unified Button) */
+  .quick-install-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .btn-primary {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all .2s;
+    box-shadow: 0 4px 12px rgba(31, 138, 77, 0.25);
+  }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
+
+  .btn-ios {
+    background: var(--ios-blue);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+  }
+
+  .btn-car {
+    background: var(--car-amber);
+    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.25);
+  }
+
+  .btn-secondary {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s;
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  /* Modal Screen for Car Installation */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+    animation: fadeIn .2s ease-out;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+  .modal-sheet {
+    background: var(--panel);
+    border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 580px;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    box-shadow: var(--shadow-lg);
+    animation: slideUp .25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Nút Zalo Hỗ Trợ Nổi (Sticky) */
+  .floating-zalo {
+    position: fixed;
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    background: #0068ff;
+    color: #ffffff;
+    border-radius: 30px;
+    padding: 9px 15px;
+    font-size: 13px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    box-shadow: 0 4px 16px rgba(0, 104, 255, 0.35);
+    text-decoration: none;
+    z-index: 9999;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .floating-zalo:hover {
+    background: #0056d6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 104, 255, 0.45);
+  }
+  .floating-zalo:active {
+    transform: scale(0.96);
+  }
+
+  @media (min-width: 600px) {
+    .modal-overlay {
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-sheet {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      max-height: 88vh;
+    }
+  }
+
+  .sheet-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .sheet-drag {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: -8px auto 8px;
+  }
+
+  .sheet-title {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .sheet-close {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .sheet-body {
+    padding: 18px 20px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* Network Scan & Inputs */
+  .control-group {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  .control-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  input.ip-input {
+    flex: 1;
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 15px;
+    font-family: var(--mono);
+    outline: none;
+    transition: border-color .2s;
+  }
+  input.ip-input:focus { border-color: var(--accent); }
+
+  .preset-pills {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .pill:active, .pill.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  /* Scan Progress Bar */
+  .scan-progress-wrap {
+    margin: 12px 0 6px;
+    display: none;
+  }
+
+  .scan-progress-bar {
+    height: 8px;
+    background: var(--panel);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-light);
+  }
+
+  .scan-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), #38bdf8);
+    transition: width .08s linear;
+    will-change: width;
+  }
+
+  .scan-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Found Devices List */
+  .devices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    max-height: 180px;
+    overflow-y: auto;
+  }
+
+  .device-item {
+    background: var(--panel);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .device-item:hover, .device-item.selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .device-item-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .device-item-ip {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .device-item-tags {
+    display: flex;
+    gap: 4px;
+  }
+
+  .tag-mini {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .tag-mini.adb { background: #dcfce7; color: #15803d; }
+  .tag-mini.http { background: #e0f2fe; color: #0369a1; }
+  .tag-mini.car { background: #ffedd5; color: #c2410c; }
+
+  /* Terminal Log Box */
+  .terminal-box {
+    background: var(--terminal-bg);
+    color: var(--terminal-text);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+    height: 160px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .terminal-line { margin-bottom: 2px; word-break: break-all; }
+  .terminal-line.ok { color: #4ade80; }
+  .terminal-line.warn { color: #fbbf24; }
+  .terminal-line.err { color: #f87171; }
+  .terminal-line.info { color: #38bdf8; }
+
+  /* Install Progress in Sheet */
+  .install-bar-wrap {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .install-bar-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .install-bar {
+    height: 10px;
+    background: var(--panel);
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+  }
+
+  .install-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #10b981, #06b6d4);
+    transition: width .2s;
+  }
+
+  /* Info / Help Accordion */
+  .help-box {
+    background: var(--panel2);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .help-box summary {
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 6px;
+  }
+
+  .help-code {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .btn-copy {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .btn-copy:hover { color: var(--text); }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 24px;
+    padding-bottom: 16px;
+  }
+
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-title">Cài Đặt Ứng Dụng</div>
+        <div class="brand-sub">Hệ sinh thái Geely EX2 (IHU629G)</div>
+      </div>
+    </div>
+    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">
+      <span id="themeIcon">🌙</span> <span id="themeText">Tối</span>
+    </button>
+  </header>
+
+  <!-- Device Detected Banner -->
+  <div class="device-banner">
+    <div class="device-info">
+      <div class="device-badge" id="detectedIcon">📱</div>
+      <div>
+        <div class="device-text" id="detectedName">Đang nhận diện thiết bị…</div>
+        <div class="device-sub" id="detectedHint">Trình duyệt điện thoại</div>
+      </div>
+    </div>
+    <span class="badge-env" id="detectedBadge">ONLINE</span>
+  </div>
+
+  <!-- Section 1: Main 3 Installation Buttons -->
+  <div class="section-title">CHỌN ỨNG DỤNG CẦN CÀI ĐẶT</div>
+  <div class="action-cards">
+
+    <!-- 1. Car Connect (Head Unit) -->
+    <div class="card-btn car-card" id="btnOpenCarModal" onclick="openCarModal()">
+      <div class="card-left">
+        <div class="card-icon car">🚗</div>
+        <div class="card-body">
+          <div class="card-head">
+            <span class="card-title">Car Connect (Cho Màn Hình Xe)</span>
+            <span class="tag-badge car">Đầu xe</span>
+            <span class="tag-badge" id="carVersionBadge">v1.2.0</span>
+          </div>
+          <div class="card-desc">Cài đặt ứng dụng lên màn hình xe Geely EX2 qua Wi-Fi hoặc mạng nội bộ chỉ trong 1 chạm.</div>
+        </div>
+      </div>
+      <div class="card-arrow">➔</div>
+    </div>
+
+    <!-- 2. Phone Connect (Android) -->
+    <div class="card-btn" id="btnAndroidCard" onclick="installPhoneConnectAndroid()">
+      <div class="card-left">
+        <div class="card-icon android">🤖</div>
+        <div class="card-body">
+          <div class="card-head">
+            <span class="card-title">Phone Connect (Android)</span>
+            <span class="tag-badge android">Tải APK</span>
+            <span class="tag-badge" id="phoneVersionBadge">v1.2.0</span>
+          </div>
+          <div class="card-desc">Tải file APK trực tiếp về máy Android. Điều khiển điều hoà, cửa kính, xem pin từ xa.</div>
+        </div>
+      </div>
+      <div class="card-arrow">⬇️</div>
+    </div>
+
+    <!-- 3. Phone Connect (iOS) -->
+    <div class="card-btn" id="btnIosCard" onclick="installPhoneConnectIos()">
+      <div class="card-left">
+        <div class="card-icon ios">🍏</div>
+        <div class="card-body">
+          <div class="card-head">
+            <span class="card-title">Phone Connect (iPhone / iOS)</span>
+            <span class="tag-badge ios">App Store / TestFlight</span>
+          </div>
+          <div class="card-desc">Mở link cài đặt qua Apple TestFlight hoặc App Store trên điện thoại iPhone.</div>
+        </div>
+      </div>
+      <div class="card-arrow">↗️</div>
+    </div>
+
+  </div>
+
+  <!-- Section 2: Smart Unified Phone Action -->
+  <div class="quick-install-box">
+    <div class="control-label" style="margin-bottom:10px">
+      <span>CÀI NHANH PHONE CONNECT CHO MÁY NÀY</span>
+      <span style="font-size:11px; font-weight:normal; color:var(--muted)">Tự động nhận diện hệ điều hành</span>
+    </div>
+    <button class="btn-primary" id="btnSmartPhone" onclick="installSmartPhone()">
+      <span id="smartPhoneIcon">📲</span>
+      <span id="smartPhoneText">Cài Phone Connect Cho Thiết Bị Này</span>
+    </button>
+  </div>
+
+  <!-- Hướng dẫn 3 bước cho chủ xe -->
+  <div class="control-group" style="margin-bottom:20px; background:var(--panel)">
+    <div class="control-label" style="margin-bottom:10px">
+      <span>📖 HƯỚNG DẪN DÀNH CHO CHỦ XE (3 BƯỚC ĐƠN GIẢN)</span>
+    </div>
+    <div style="font-size:13px; color:var(--text); line-height:1.6; display:flex; flex-direction:column; gap:8px">
+      <div style="display:flex; align-items:flex-start; gap:8px">
+        <span style="background:var(--accent-light); color:var(--accent); font-weight:700; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0">1</span>
+        <div><b>Bật Wi-Fi:</b> Kết nối điện thoại và màn hình xe vào cùng một mạng Wi-Fi (hoặc điện thoại bắt Wi-Fi do xe phát ra).</div>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:8px">
+        <span style="background:var(--accent-light); color:var(--accent); font-weight:700; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0">2</span>
+        <div><b>Bấm "Car Connect" ➔ "Quét tìm xe":</b> Hệ thống sẽ tự động tìm thấy địa chỉ màn hình xe trong 3 giây.</div>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:8px">
+        <span style="background:var(--accent-light); color:var(--accent); font-weight:700; border-radius:50%; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0">3</span>
+        <div><b>Bấm "Bắt Đầu Cài Đặt Lên Xe":</b> Ứng dụng sẽ tự động tải và cài đặt lên màn hình xe hoàn toàn tự động.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Info -->
+  <footer class="footer">
+    <div style="font-weight:600; color:var(--text)">Bộ ứng dụng điều khiển xe điện thông minh Geely EX2</div>
+    <div style="margin-top:6px; line-height:1.6">
+      📦 Nguồn phát hành chính thức: <a href="https://github.com/ToanMobile/geely-ex2-artifacts" target="_blank" rel="noopener">GitHub: ToanMobile/geely-ex2-artifacts</a>
+    </div>
+    <div style="margin-top:4px; line-height:1.6">
+      💬 Cần trợ giúp hoặc cấp mã kích hoạt? Tham gia <a href="https://zalo.me/g/knl7dndglibpuzclc4vg" target="_blank" rel="noopener">Nhóm Zalo hỗ trợ kỹ thuật</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= MODAL CÀI ĐẶT LÊN ĐẦU XE (CAR CONNECT) ================= -->
+<div class="modal-overlay" id="carModal" onclick="handleBackdropClick(event)">
+  <div class="modal-sheet">
+    <div class="sheet-header">
+      <div>
+        <div class="sheet-drag"></div>
+        <div class="sheet-title">🚗 Cài Đặt Lên Màn Hình Xe</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:2px">Kết nối Wi-Fi cùng xe để quét tự động và cài đặt</div>
+      </div>
+      <button class="sheet-close" id="btnSheetClose" onclick="closeCarModal()">✕</button>
+    </div>
+
+    <div class="sheet-body">
+      <!-- Cảnh báo Mixed Content khi mở qua HTTPS -->
+      <div class="alert-box alert-warn" id="httpsWarningBanner" style="display:none; margin-bottom:14px; background:var(--warn-bg); border:1px solid var(--warn); border-radius:10px; padding:12px 14px;">
+        <div style="font-weight:700; color:var(--warn); margin-bottom:4px">⚠️ Bạn đang mở trang bằng HTTPS bảo mật</div>
+        <div style="font-size:12px; line-height:1.5; color:var(--text)">Trình duyệt bảo mật sẽ chặn kết nối trực tiếp đến IP xe nội bộ (<code>http://...</code>). Để cài tự động không dây:
+          <ul style="margin:4px 0 0 16px">
+            <li>Dùng app <b>Phone Connect</b> trên điện thoại để điều khiển và cài đặt.</li>
+            <li>Hoặc mở trang này bằng địa chỉ IP nội bộ HTTP (ví dụ: <code>http://192.168.x.x:8899</code>).</li>
+            <li>Hoặc dùng lệnh ADB ở mục <b>Lệnh cài đặt thủ công (ADB)</b> bên dưới.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 1. Quét tìm xe / Nhập IP -->
+      <div class="control-group">
+        <div class="control-label">
+          <span>ĐỊA CHỈ IP ĐẦU XE (PORT 5555 / 8876)</span>
+          <span id="scanStatusText" style="font-weight:normal; color:var(--accent)">Sẵn sàng</span>
+        </div>
+        
+        <div class="input-row">
+          <input type="text" id="carIpInput" class="ip-input" placeholder="VD: 192.168.1.100 hoặc 192.168.43.1" value="192.168.1.100">
+          <button class="btn-secondary" id="btnScanCar" onclick="scanLocalNetwork()">
+            <span id="scanBtnIcon">🔍</span> <span id="scanBtnText">Quét tìm xe</span>
+          </button>
+        </div>
+
+        <!-- Dải mạng gợi ý -->
+        <div class="preset-pills" id="presetPillsContainer">
+          <span style="font-size:11px; color:var(--muted); align-self:center">Dải mạng:</span>
+          <button class="pill active" onclick="setSubnet('192.168.1.')">192.168.1.x</button>
+          <button class="pill" onclick="setSubnet('192.168.43.')">192.168.43.x (Hotspot xe)</button>
+          <button class="pill" onclick="setSubnet('172.20.10.')">172.20.10.x (Hotspot iPhone)</button>
+          <button class="pill" onclick="setSubnet('192.168.0.')">192.168.0.x</button>
+          <button class="pill" onclick="setSubnet('10.0.0.')">10.0.0.x</button>
+        </div>
+
+        <!-- Thanh % Tiến độ Quét mạng -->
+        <div class="scan-progress-wrap" id="scanProgressWrap">
+          <div class="scan-progress-bar">
+            <div class="scan-progress-fill" id="scanProgressFill"></div>
+          </div>
+          <div class="scan-stats">
+            <span id="scanProgressText">Đang quét 0/254 IP...</span>
+            <span id="scanFoundCount">Tìm thấy: 0 thiết bị</span>
+          </div>
+        </div>
+
+        <!-- Danh sách thiết bị tìm thấy -->
+        <div class="devices-list" id="devicesList" style="display:none"></div>
+      </div>
+
+      <!-- 2. Nút Cài đặt APK & Hủy & Thử kết nối -->
+      <div style="display:flex; gap:10px; margin-bottom:8px">
+        <button class="btn-primary btn-car" id="btnInstallToCar" style="flex:2" onclick="startInstallToCar()">
+          <span id="installBtnIcon">⚡</span>
+          <span id="installBtnText">Bắt Đầu Cài Đặt Lên Xe</span>
+        </button>
+        <button class="btn-secondary" id="btnCancelInstall" style="display:none; flex:1; background:var(--danger-light); color:var(--danger); border-color:var(--danger);" onclick="cancelInstallToCar('Người dùng chủ động hủy.')">
+          <span>⏹</span>
+          <span>Hủy</span>
+        </button>
+        <button class="btn-secondary" id="btnTestConnect" style="flex:1" onclick="testConnection()">
+          <span id="testBtnIcon">🔌</span>
+          <span id="testBtnText">Thử kết nối</span>
+        </button>
+      </div>
+
+      <!-- Tùy chọn cài đặt ngoại tuyến (Offline APK file) -->
+      <div style="margin-bottom:14px; display:flex; justify-content:flex-end">
+        <input type="file" id="localApkFileInput" accept=".apk" style="display:none" onchange="handleLocalApkSelected(event)">
+        <button type="button" class="btn-secondary" id="btnPickLocalApk" style="font-size:11.5px; padding:5px 10px; color:var(--muted)" onclick="document.getElementById('localApkFileInput').click()">
+          📁 Cài từ file APK trong máy (Không cần mạng / Xe ở hầm)
+        </button>
+      </div>
+
+      <!-- Tiến độ truyền file / Cài đặt -->
+      <div class="install-bar-wrap" id="installBarWrap">
+        <div class="install-bar-head">
+          <span id="installPhaseText">Đang chuẩn bị gói APK…</span>
+          <span id="installPctText">0%</span>
+        </div>
+        <div class="install-bar">
+          <div class="install-fill" id="installFill"></div>
+        </div>
+      </div>
+
+      <!-- 3. Terminal Log View -->
+      <div class="control-label">NHẬT KÝ TIẾN TRÌNH (LOGCAT / TERMINAL)</div>
+      <div class="terminal-box" id="terminalBox">
+        <div class="terminal-line info">[SẴN SÀNG] Chọn IP xe hoặc bấm "Quét tìm xe" để bắt đầu.</div>
+      </div>
+
+      <!-- 4. Hướng dẫn & Cách gỡ rối -->
+      <details class="help-box">
+        <summary>💡 Hướng dẫn kết nối & Lệnh cài đặt thủ công</summary>
+        <p style="margin-bottom:6px">1. <b>Bật Wi-Fi xe:</b> Đảm bảo điện thoại và màn hình xe đang bắt chung một mạng Wi-Fi (hoặc điện thoại bắt Wi-Fi do xe phát ra <code>192.168.43.1</code>).</p>
+        <p style="margin-bottom:6px">2. <b>Bật ADB trên xe:</b> Mở Cài đặt xe ➔ Giới thiệu ➔ Bấm 7 lần vào Số phiên bản (Build Number) để bật chế độ Nhà phát triển.</p>
+        <p style="margin-bottom:6px">3. <b>Lệnh chạy nhanh qua ADB (nếu dùng máy tính/Termux):</b></p>
+        <div class="help-code">
+          <span id="adbCommandText">adb connect 192.168.1.100:5555 && adb install -r CarConnect.apk</span>
+          <button class="btn-copy" onclick="copyAdbCommand()">📋 Chép</button>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:8px">
+          <button class="btn-secondary" style="font-size:11px; padding:6px 10px" onclick="downloadCarApkDirect()">
+            ⬇️ Tải CarConnect.apk về máy
+          </button>
+          <button class="btn-secondary" style="font-size:11px; padding:6px 10px" onclick="openTermuxApp()">
+            🚀 Mở trong Termux
+          </button>
+        </div>
+      </details>
+    </div>
+  </div>
+
+<!-- ================= MODAL CÀI ĐẶT PHONE CONNECT (ANDROID) ================= -->
+<div class="modal-overlay" id="androidModal" onclick="handleAndroidBackdropClick(event)">
+  <div class="modal-sheet">
+    <div class="sheet-header">
+      <div>
+        <div class="sheet-drag"></div>
+        <div class="sheet-title">🤖 Cài Đặt Phone Connect (Android)</div>
+        <div style="font-size:12px; color:var(--muted); margin-top:2px">Bản cài đặt APK chính thức cho điện thoại Android</div>
+      </div>
+      <button class="sheet-close" onclick="closeAndroidModal()">✕</button>
+    </div>
+
+    <div class="sheet-body">
+      <!-- Cảnh báo In-App Browser (Zalo, Facebook) -->
+      <div id="inAppBrowserWarning" style="display:none; background:var(--warn-bg); border:1px solid var(--warn); border-radius:10px; padding:12px; margin-bottom:14px; font-size:12.5px; color:var(--warn); line-height:1.5">
+        <b>⚠️ Bạn đang mở trong Zalo / Facebook:</b><br>
+        Trình duyệt trong app không cho phép tải file APK. Vui lòng bấm vào dấu ba chấm <b>⋮</b> ở góc trên cùng bên phải màn hình ➔ chọn <b>"Mở bằng trình duyệt" (Chrome / Samsung Internet)</b> để tải file.
+      </div>
+
+      <!-- Khu vực tải file chính -->
+      <div class="control-group" style="text-align:center; padding:16px">
+        <div style="font-size:14px; font-weight:700; margin-bottom:4px">Gói cài đặt PhoneConnect.apk</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:12px">
+          Dung lượng: ~3.8 MB · Phiên bản: <span id="androidModalVer">v1.2.0</span> · Android 8.0 trở lên
+        </div>
+
+        <button class="btn-primary" id="btnDownloadApkPrimary" onclick="startDownloadApk()" style="margin-bottom:10px">
+          <span id="apkDownloadIcon">⬇️</span>
+          <span id="apkDownloadText">Bắt Đầu Tải PhoneConnect.apk</span>
+        </button>
+
+        <!-- Tiến độ tải Blob (nếu có) -->
+        <div id="apkDownloadProgressWrap" style="display:none; margin:10px 0">
+          <div class="scan-progress-bar" style="height:6px">
+            <div class="scan-progress-fill" id="apkDownloadProgressFill" style="width:0%"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px">
+            <span id="apkDownloadStatus">Đang chuẩn bị tải...</span>
+            <span id="apkDownloadPct">0%</span>
+          </div>
+        </div>
+
+        <!-- Các nguồn tải dự phòng -->
+        <div style="font-size:11px; color:var(--muted); margin-top:8px; display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap">
+          <span>Nguồn tải:</span>
+          <button class="pill active" id="btnMirrorCdn" onclick="setApkSource('cdn')">⚡ CDN Siêu Tốc (Khuyên dùng)</button>
+          <button class="pill" id="btnMirrorRaw" onclick="setApkSource('raw')">🌐 GitHub Gốc</button>
+          <button class="pill" id="btnMirrorStatic" onclick="setApkSource('static')">🛡️ CDN Dự Phòng</button>
+        </div>
+      </div>
+
+      <!-- Hướng dẫn cài đặt 4 bước trực quan -->
+      <div class="control-label" style="margin-top:14px">HƯỚNG DẪN CÀI ĐẶT 4 BƯỚC (DỄ LÀM)</div>
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px">
+        <!-- Bước 1 -->
+        <div style="background:var(--panel2); border:1px solid var(--border-light); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start">
+          <div style="width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0">1</div>
+          <div style="font-size:12.5px; line-height:1.5">
+            <div style="font-weight:700; color:var(--text); margin-bottom:2px">Bấm tải về & Chọn "Vẫn tải xuống"</div>
+            <div style="color:var(--muted)">Nếu trình duyệt cảnh báo <i>"Tệp này có thể gây hại..."</i>, hãy an tâm chọn <b>"Vẫn tải xuống" (Download anyway)</b>. Đây là cảnh báo tiêu chuẩn của Android cho mọi file APK ngoài Google Play.</div>
+          </div>
+        </div>
+
+        <!-- Bước 2 -->
+        <div style="background:var(--panel2); border:1px solid var(--border-light); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start">
+          <div style="width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0">2</div>
+          <div style="font-size:12.5px; line-height:1.5">
+            <div style="font-weight:700; color:var(--text); margin-bottom:2px">Mở file sau khi tải xong</div>
+            <div style="color:var(--muted)">Vuốt thanh thông báo trên đỉnh màn hình xuống và bấm vào thông báo <b>PhoneConnect.apk - Tải xuống hoàn tất</b> để mở.</div>
+          </div>
+        </div>
+
+        <!-- Bước 3 -->
+        <div style="background:var(--panel2); border:1px solid var(--border-light); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start">
+          <div style="width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0">3</div>
+          <div style="font-size:12.5px; line-height:1.5">
+            <div style="font-weight:700; color:var(--text); margin-bottom:2px">Cho phép cài đặt từ nguồn này</div>
+            <div style="color:var(--muted)">Nếu máy báo <i>"Không được phép cài đặt ứng dụng không rõ nguồn gốc"</i> ➔ Bấm <b>Cài đặt (Settings)</b> ➔ Gạt bật công tắc <b>"Cho phép từ nguồn này"</b> ➔ Bấm nút <b>Quay lại</b> rồi chọn <b>Cài đặt</b>.</div>
+          </div>
+        </div>
+
+        <!-- Bước 4 -->
+        <div style="background:var(--panel2); border:1px solid var(--border-light); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start">
+          <div style="width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0">4</div>
+          <div style="font-size:12.5px; line-height:1.5">
+            <div style="font-weight:700; color:var(--text); margin-bottom:2px">Vượt cảnh báo Play Protect (Nếu có)</div>
+            <div style="color:var(--muted)">Nếu Google Play Protect hiện màn hình cảnh báo <i>"Bị chặn bởi Play Protect"</i> ➔ Bấm vào dòng <b>"Chi tiết khác" (More details)</b> ➔ Chọn <b>"Vẫn cài đặt" (Install anyway)</b>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hướng dẫn xử lý sự cố thường gặp (Troubleshooting) -->
+      <details class="help-box" style="margin-bottom:14px">
+        <summary>🛠️ Sự cố thường gặp: Không mở được file / File bị đổi đuôi .zip, .bin</summary>
+        <div style="margin-top:8px; display:flex; flex-direction:column; gap:8px">
+          <div>
+            <b>1. File tải về bị đổi tên thành .zip hoặc .bin (Máy Xiaomi, Samsung, UC Browser):</b><br>
+            Mở ứng dụng <b>File của bạn (Quản lý tệp)</b> trên điện thoại ➔ Vào thư mục <b>Tải về (Download)</b> ➔ Nhấn giữ vào file ➔ Chọn <b>Đổi tên (Rename)</b> ➔ Xoá đuôi <code>.zip</code> hoặc <code>.bin</code> sửa thành <code>.apk</code> (VD: <code>PhoneConnect.apk</code>) ➔ Bấm vào file để cài đặt.
+          </div>
+          <div>
+            <b>2. Máy Samsung One UI 6+ báo "Bị chặn bởi Bộ lọc bảo mật tự động":</b><br>
+            Vào <b>Cài đặt điện thoại</b> ➔ <b>Bảo mật và quyền riêng tư</b> ➔ <b>Bộ lọc bảo mật tự động (Auto Blocker)</b> ➔ Gạt sang <b>TẮT</b>, sau đó quay lại bấm cài file.
+          </div>
+          <div>
+            <b>3. Máy Xiaomi / Redmi / POCO đếm ngược 10 giây:</b><br>
+            Đánh dấu tích vào ô <i>"Tôi nhận thức được các rủi ro có thể xảy ra..."</i> ➔ Chờ hết 10 giây và bấm nút <b>OK</b>.
+          </div>
+        </div>
+      </details>
+
+      <!-- Các nút thao tác nhanh dự phòng -->
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn-secondary" style="flex:1; font-size:12px" onclick="openDownloadsFolder()">
+          📁 Mở thư mục Tải về
+        </button>
+        <button class="btn-secondary" style="flex:1; font-size:12px" onclick="copyApkLink()">
+          📋 Chép link APK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nút Zalo Hỗ Trợ Nổi (Sticky) -->
+<a href="https://zalo.me/g/knl7dndglibpuzclc4vg" target="_blank" rel="noopener" class="floating-zalo" id="floatingZaloBtn" title="Nhóm Zalo hỗ trợ kỹ thuật & cấp mã">
+  <span>💬</span>
+  <span>Hỗ trợ Zalo</span>
+</a>
+
+<!-- Toast notification -->
+<div class="toast" id="toastBox">
+  <span id="toastIcon">✅</span>
+  <span id="toastMsg">Thành công!</span>
+</div>
+
+<script>
+// ================= HẰNG SỐ & ĐƯỜNG DẪN CÀI ĐẶT =================
+const URLS = {
+  carApk: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
+  carApkCdn: "https://cdn.jsdelivr.net/gh/ToanMobile/geely-ex2-artifacts@main/CarConnect.apk",
+  carApkStatic: "https://cdn.statically.io/gh/ToanMobile/geely-ex2-artifacts@main/CarConnect.apk",
+  phoneApk: "https://cdn.jsdelivr.net/gh/ToanMobile/geely-ex2-artifacts@main/PhoneConnect.apk",
+  phoneApkRaw: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
+  phoneApkStatic: "https://cdn.statically.io/gh/ToanMobile/geely-ex2-artifacts@main/PhoneConnect.apk",
+  iosStore: "https://apps.apple.com/app/id6813109149",
+  iosTestFlight: "https://appstoreconnect.apple.com/apps/6813109149",
+  appsJson: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/artifacts/apps.json",
+  updateJson: "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/artifacts/update.json",
+  repoUrl: "https://github.com/ToanMobile/geely-ex2-artifacts",
+  zaloSupport: "https://zalo.me/g/knl7dndglibpuzclc4vg"
+};
+
+// ================= TIỆN ÍCH CHỐNG SPAM & TIMEOUT AN TOÀN (FINOS RULE #2) =================
+const ActionGuard = {
+  locks: new Map(),
+  run(key, cooldownMs, fn) {
+    const now = Date.now();
+    const lastRun = this.locks.get(key) || 0;
+    if (now - lastRun < cooldownMs) {
+      return false; // Spam click intercepted!
+    }
+    this.locks.set(key, now);
+    try {
+      const res = fn();
+      if (res instanceof Promise) {
+        res.catch(() => {});
+      }
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
+};
+
+// Helper tạo Signal timeout an toàn & tương thích ngược Android 9 / WebView (< Chrome 103)
+// Giải phóng timer ngay lập tức khi request hoàn tất và liên kết huỷ với outerSignal
+function createScopedTimeout(ms, outerSignal) {
+  const ctrl = new AbortController();
+  let timer = setTimeout(() => {
+    try { ctrl.abort(); } catch (e) {}
+  }, ms);
+
+  let onOuterAbort = null;
+  if (outerSignal) {
+    if (outerSignal.aborted) {
+      clearTimeout(timer);
+      try { ctrl.abort(); } catch (e) {}
+    } else {
+      onOuterAbort = () => {
+        clearTimeout(timer);
+        try { ctrl.abort(); } catch (e) {}
+      };
+      outerSignal.addEventListener("abort", onOuterAbort, { once: true });
+    }
+  }
+
+  return {
+    signal: ctrl.signal,
+    cleanup: () => {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      if (outerSignal && onOuterAbort) {
+        try { outerSignal.removeEventListener("abort", onOuterAbort); } catch (e) {}
+      }
+    }
+  };
+}
+
+function safeTimeoutSignal(ms, outerSignal) {
+  const scoped = createScopedTimeout(ms, outerSignal);
+  return scoped.signal;
+}
+
+let currentSubnet = "192.168.1.";
+let isScanning = false;
+let isInstalling = false;
+let isTestingConnection = false;
+let scanAbortController = null;
+let lastScanStartTime = 0;
+let activeInstallXhr = null;
+let detectedPlatform = "unknown"; // "ios" | "android" | "desktop"
+
+// ================= GIAO DIỆN & CHỦ ĐỀ SÁNG/TỐI =================
+function initTheme() {
+  const saved = localStorage.getItem("geely_theme") || "dark";
+  if (saved === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeIcon").textContent = "☀️";
+    document.getElementById("themeText").textContent = "Sáng";
+  } else {
+    document.body.classList.remove("dark");
+    document.getElementById("themeIcon").textContent = "🌙";
+    document.getElementById("themeText").textContent = "Tối";
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.body.classList.toggle("dark");
+  localStorage.setItem("geely_theme", isDark ? "dark" : "light");
+  document.getElementById("themeIcon").textContent = isDark ? "☀️" : "🌙";
+  document.getElementById("themeText").textContent = isDark ? "Sáng" : "Tối";
+}
+
+// ================= NHẬN DIỆN THIẾT BỊ NGƯỜI DÙNG =================
+function detectClientPlatform() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+  const isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/i.test(ua);
+
+  const dIcon = document.getElementById("detectedIcon");
+  const dName = document.getElementById("detectedName");
+  const dHint = document.getElementById("detectedHint");
+  const dBadge = document.getElementById("detectedBadge");
+  const smartIcon = document.getElementById("smartPhoneIcon");
+  const smartText = document.getElementById("smartPhoneText");
+  const smartBtn = document.getElementById("btnSmartPhone");
+  const androidCard = document.getElementById("btnAndroidCard");
+  const iosCard = document.getElementById("btnIosCard");
+
+  if (isIos) {
+    detectedPlatform = "ios";
+    dIcon.textContent = "🍏";
+    dName.textContent = "Thiết bị Apple (iOS / iPhone)";
+    dHint.textContent = "Được điều hướng sang App Store / TestFlight";
+    dBadge.textContent = "iOS";
+    
+    iosCard.classList.add("recommended");
+    smartIcon.textContent = "🍏";
+    smartText.textContent = "Cài Phone Connect Cho iPhone (TestFlight)";
+    smartBtn.classList.add("btn-ios");
+  } else if (isAndroid) {
+    detectedPlatform = "android";
+    dIcon.textContent = "🤖";
+    dName.textContent = "Thiết bị Android";
+    dHint.textContent = "Hỗ trợ tải và cài đặt trực tiếp file APK";
+    dBadge.textContent = "ANDROID";
+
+    androidCard.classList.add("recommended");
+    smartIcon.textContent = "🤖";
+    smartText.textContent = "Tải & Cài Phone Connect (APK)";
+  } else {
+    detectedPlatform = "desktop";
+    dIcon.textContent = "💻";
+    dName.textContent = "Máy tính (PC / Mac)";
+    dHint.textContent = "Mở bằng điện thoại hoặc cài đặt lên xe qua mạng LAN";
+    dBadge.textContent = "DESKTOP";
+    smartIcon.textContent = "📲";
+    smartText.textContent = "Cài Phone Connect (Chọn Android hoặc iOS)";
+  }
+}
+
+// ================= THAO TÁC CÀI ĐẶT PHONE CONNECT (ANDROID) =================
+let currentApkSource = "cdn"; // "cdn" | "raw" | "static"
+let isApkDownloading = false;
+
+function handleAndroidBackdropClick(event) {
+  if (event.target !== event.currentTarget) return;
+  closeAndroidModal();
+}
+
+function openAndroidModal() {
+  const modal = document.getElementById("androidModal");
+  if (modal) {
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    checkInAppBrowser();
+  }
+}
+
+function closeAndroidModal() {
+  const modal = document.getElementById("androidModal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+function checkInAppBrowser() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera || "";
+  const isInApp = /Zalo|FBAN|FBAV|Instagram|TikTok|Line|MicroMessenger/i.test(ua);
+  const warnEl = document.getElementById("inAppBrowserWarning");
+  if (warnEl) {
+    warnEl.style.display = isInApp ? "block" : "none";
+  }
+}
+
+function setApkSource(src) {
+  currentApkSource = src;
+  const pills = {
+    cdn: document.getElementById("btnMirrorCdn"),
+    raw: document.getElementById("btnMirrorRaw"),
+    static: document.getElementById("btnMirrorStatic")
+  };
+  Object.keys(pills).forEach(k => {
+    if (pills[k]) pills[k].classList.toggle("active", k === src);
+  });
+  const names = { cdn: "CDN Siêu Tốc", raw: "GitHub Gốc", static: "CDN Dự Phòng" };
+  showToast(`Đã chuyển nguồn tải sang: ${names[src]}`, "info");
+  appendLog(`[PHONE] Đổi nguồn tải APK: ${getSelectedApkUrl()}`, "info");
+}
+
+function getSelectedApkUrl() {
+  if (currentApkSource === "raw") return URLS.phoneApkRaw;
+  if (currentApkSource === "static") return URLS.phoneApkStatic;
+  return URLS.phoneApk;
+}
+
+function installPhoneConnectAndroid() {
+  ActionGuard.run("openPhoneModal", 600, () => {
+    openAndroidModal();
+    startDownloadApk();
+  });
+}
+
+async function startDownloadApk() {
+  const executed = ActionGuard.run("downloadPhoneApk", 2000, async () => {
+    if (isApkDownloading) return;
+    const targetUrl = getSelectedApkUrl();
+    const btn = document.getElementById("btnDownloadApkPrimary");
+    const icon = document.getElementById("apkDownloadIcon");
+    const text = document.getElementById("apkDownloadText");
+    const pWrap = document.getElementById("apkDownloadProgressWrap");
+    const pFill = document.getElementById("apkDownloadProgressFill");
+    const pStatus = document.getElementById("apkDownloadStatus");
+    const pPct = document.getElementById("apkDownloadPct");
+
+    isApkDownloading = true;
+    if (btn) btn.disabled = true;
+    if (icon) icon.textContent = "⏳";
+    if (text) text.textContent = "Đang kết nối máy chủ tải...";
+    if (pWrap) pWrap.style.display = "block";
+    if (pFill) pFill.style.width = "0%";
+    if (pStatus) pStatus.textContent = "Đang tải gói cài đặt...";
+    if (pPct) pPct.textContent = "0%";
+
+    showToast("⬇️ Bắt đầu tải PhoneConnect.apk...", "info");
+    appendLog(`[PHONE] Bắt đầu tải APK từ: ${targetUrl}`, "info");
+
+    try {
+      const res = await fetch(targetUrl, { signal: safeTimeoutSignal(12000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const contentLength = res.headers.get("content-length");
+      const total = contentLength ? parseInt(contentLength, 10) : 3807936;
+      let loaded = 0;
+
+      const reader = res.body ? res.body.getReader() : null;
+      let chunks = [];
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          loaded += value.length;
+          if (total > 0 && pFill && pPct) {
+            const pct = Math.min(99, Math.round((loaded / total) * 100));
+            pFill.style.width = pct + "%";
+            pPct.textContent = pct + "%";
+            if (pStatus) pStatus.textContent = `Đã tải ${(loaded / 1024 / 1024).toFixed(1)} / ${(total / 1024 / 1024).toFixed(1)} MB`;
+          }
+        }
+        // new Blob nhận mảng chunks trực tiếp, giải phóng heap V8 không cần allChunks
+        const apkBlob = new Blob(chunks, { type: "application/vnd.android.package-archive" });
+        chunks = []; // Thu hồi bộ nhớ mảng chunks ngay lập tức
+        const blobUrl = URL.createObjectURL(apkBlob);
+        
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "PhoneConnect.apk";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 15000);
+        
+        if (pFill) pFill.style.width = "100%";
+        if (pPct) pPct.textContent = "100%";
+        if (pStatus) pStatus.textContent = "Tải hoàn tất! Hãy mở file.";
+        appendLog(`[PHONE] Tải Blob hoàn tất (${(loaded/1024/1024).toFixed(2)} MB), đã kích hoạt lưu PhoneConnect.apk`, "ok");
+      } else {
+        const blob = await res.blob();
+        const apkBlob = new Blob([blob], { type: "application/vnd.android.package-archive" });
+        const blobUrl = URL.createObjectURL(apkBlob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = "PhoneConnect.apk";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+        appendLog(`[PHONE] Tải Blob thành công!`, "ok");
+      }
+
+      showToast("✅ Đã tải xong PhoneConnect.apk! Hãy mở file để cài.", "ok");
+
+    } catch (err) {
+      appendLog(`[PHONE] Luồng Blob gặp sự cố (${err.message}). Chuyển sang tải trực tiếp qua trình duyệt...`, "warn");
+      const a = document.createElement("a");
+      a.href = targetUrl;
+      a.download = "PhoneConnect.apk";
+      a.target = "_blank";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast("⬇️ Đang mở luồng tải trực tiếp...", "info");
+      if (pStatus) pStatus.textContent = "Đang tải trực tiếp qua trình duyệt...";
+    } finally {
+      isApkDownloading = false;
+      if (btn) btn.disabled = false;
+      if (icon) icon.textContent = "⬇️";
+      if (text) text.textContent = "Tải Lại PhoneConnect.apk";
+    }
+  });
+
+  if (!executed) {
+    showToast("Đang xử lý tải file, vui lòng chờ...", "warn");
+  }
+}
+
+function openDownloadsFolder() {
+  try {
+    window.location.href = "content://com.android.providers.downloads.documents/root";
+  } catch (e) {}
+  showToast("Hãy mở ứng dụng 'Tệp của bạn' / 'Quản lý tệp' ➔ Thư mục Download", "info");
+  appendLog("[HƯỚNG DẪN] Mở ứng dụng Tệp của bạn / File Manager trên máy để tìm PhoneConnect.apk", "info");
+}
+
+function copyApkLink() {
+  const url = getSelectedApkUrl();
+  copyTextToClipboard(url);
+  showToast("Đã chép link tải APK vào clipboard!", "ok");
+  appendLog(`[LINK] Đã chép link APK: ${url}`, "ok");
+}
+
+function installPhoneConnectIos() {
+  ActionGuard.run("installIos", 1500, () => {
+    showToast("🍏 Đang mở liên kết App Store...", "info");
+    appendLog(`[PHONE] Mở App Store: ${URLS.iosStore}`, "ok");
+    try {
+      window.location.href = URLS.iosStore;
+    } catch (e) {
+      window.open(URLS.iosStore, "_blank");
+    }
+  });
+}
+
+function installSmartPhone() {
+  ActionGuard.run("smartPhoneBtn", 1000, () => {
+    if (detectedPlatform === "ios") {
+      installPhoneConnectIos();
+    } else if (detectedPlatform === "android") {
+      installPhoneConnectAndroid();
+    } else {
+      const choose = confirm("Bạn đang dùng máy tính. Bấm OK để tải bản Android (.apk), hoặc Cancel để mở link App Store (iOS).");
+      if (choose) {
+        installPhoneConnectAndroid();
+      } else {
+        installPhoneConnectIos();
+      }
+    }
+  });
+}
+
+// ================= MODAL CÀI ĐẶT ĐẦU XE (CAR CONNECT) =================
+function handleBackdropClick(event) {
+  if (event.target !== event.currentTarget) return;
+  closeCarModal();
+}
+
+function openCarModal() {
+  const modal = document.getElementById("carModal");
+  if (modal) {
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  // Kiểm tra cảnh báo nếu đang mở qua HTTPS (trình duyệt chặn Mixed Content tới IP nội bộ)
+  const httpsWarn = document.getElementById("httpsWarningBanner");
+  if (httpsWarn) {
+    httpsWarn.style.display = (window.location.protocol === "https:") ? "block" : "none";
+  }
+
+  updateAdbCommandPreview();
+  appendLog("[CAR] Mở bảng điều khiển cài đặt đầu xe.", "info");
+  tryDetectLocalIP();
+}
+
+function closeCarModal(force = false) {
+  if (isInstalling && !force) {
+    const confirmAbort = confirm("⚠️ Quá trình cài đặt lên xe đang diễn ra!\n\nBạn có chắc chắn muốn hủy và đóng cửa sổ này không?");
+    if (!confirmAbort) return;
+    cancelInstallToCar("Người dùng hủy cài đặt khi đóng cửa sổ.");
+  }
+
+  if (isScanning) {
+    stopScanning("Đã dừng quét khi đóng cửa sổ.");
+  }
+
+  const modal = document.getElementById("carModal");
+  if (modal) {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+}
+
+function setSubnet(sub) {
+  if (isInstalling) {
+    showToast("Đang cài đặt, không thể đổi dải mạng!", "warn");
+    return;
+  }
+  currentSubnet = sub;
+  const input = document.getElementById("carIpInput");
+  const parts = input.value.split(".");
+  let lastOctet = parts.length === 4 && parts[3] ? parts[3] : "100";
+  if (sub === "192.168.43.") {
+    lastOctet = "1"; // Hotspot xe luôn cố định là 192.168.43.1
+  } else if (sub === "172.20.10.") {
+    lastOctet = "2"; // Hotspot iPhone thường cấp IP xe từ .2 trở đi
+  }
+  input.value = sub + lastOctet;
+  
+  document.querySelectorAll(".preset-pills .pill").forEach(p => {
+    p.classList.toggle("active", p.textContent.startsWith(sub));
+  });
+
+  updateAdbCommandPreview();
+  appendLog(`[MẠNG] Đã chuyển dải mạng kiểm tra sang ${sub}x`, "info");
+}
+
+function updateAdbCommandPreview() {
+  const ip = document.getElementById("carIpInput").value.trim() || "192.168.1.100";
+  const cmd = `adb connect ${ip}:5555 && adb install -r CarConnect.apk`;
+  document.getElementById("adbCommandText").textContent = cmd;
+}
+
+document.getElementById("carIpInput").addEventListener("input", updateAdbCommandPreview);
+
+async function tryDetectLocalIP() {
+  let pc = null;
+  let timer = null;
+  const cleanup = () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    if (pc) {
+      try {
+        pc.onicecandidate = null;
+        pc.close();
+      } catch (e) {}
+      pc = null;
+    }
+  };
+
+  try {
+    const RTCPC = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+    if (!RTCPC) return;
+    pc = new RTCPC({ iceServers: [] });
+    pc.createDataChannel("");
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    pc.onicecandidate = (ice) => {
+      if (!ice || !ice.candidate || !ice.candidate.candidate) return;
+      const match = /([0-9]{1,3}(\.[0-9]{1,3}){3})/.exec(ice.candidate.candidate);
+      if (match && !match[1].startsWith("127.")) {
+        const myIp = match[1];
+        const sub = myIp.substring(0, myIp.lastIndexOf(".") + 1);
+        appendLog(`[MẠNG] Nhận diện IP thiết bị: ${myIp} (Subnet: ${sub}x)`, "ok");
+        setSubnet(sub);
+        cleanup();
+      }
+    };
+    timer = setTimeout(cleanup, 1200);
+  } catch (e) {
+    cleanup();
+  }
+}
+
+function stopScanning(reason = "Đã dừng quét mạng.") {
+  if (!isScanning) return;
+  if (scanAbortController) {
+    try { scanAbortController.abort(); } catch (e) {}
+  }
+  isScanning = false;
+  const btnScan = document.getElementById("btnScanCar");
+  if (btnScan) {
+    document.getElementById("scanBtnIcon").textContent = "🔍";
+    document.getElementById("scanBtnText").textContent = "Quét tìm xe";
+    btnScan.disabled = false;
+  }
+  const statusTxt = document.getElementById("scanStatusText");
+  if (statusTxt) statusTxt.textContent = "Đã dừng";
+  appendLog(`[QUÉT] ${reason}`, "warn");
+}
+
+async function scanLocalNetwork() {
+  if (isInstalling) {
+    showToast("Đang cài đặt lên xe, không thể quét mạng lúc này!", "warn");
+    return;
+  }
+
+  // Chống Spam / Toggle Thrashing: Nếu vừa ấn quét chưa đầy 600ms, bỏ qua cú click thứ 2 (double click vô tình)
+  const now = Date.now();
+  if (isScanning && (now - lastScanStartTime < 700)) {
+    return;
+  }
+
+  if (isScanning) {
+    stopScanning("Người dùng bấm dừng quét.");
+    return;
+  }
+
+  isScanning = true;
+  lastScanStartTime = now;
+  scanAbortController = new AbortController();
+  const signal = scanAbortController.signal;
+
+  const btnScan = document.getElementById("btnScanCar");
+  document.getElementById("scanBtnIcon").textContent = "⏹";
+  document.getElementById("scanBtnText").textContent = "Dừng quét";
+  const statusTxt = document.getElementById("scanStatusText");
+  statusTxt.textContent = "Đang quét dải /24...";
+
+  const pWrap = document.getElementById("scanProgressWrap");
+  const pFill = document.getElementById("scanProgressFill");
+  const pText = document.getElementById("scanProgressText");
+  const foundText = document.getElementById("scanFoundCount");
+  const listEl = document.getElementById("devicesList");
+
+  pWrap.style.display = "block";
+  pFill.style.width = "0%";
+  listEl.innerHTML = "";
+  listEl.style.display = "none";
+
+  appendLog(`🔍 Bắt đầu quét dải ${currentSubnet}1 - ${currentSubnet}254...`, "info");
+
+  const total = 254;
+  let scannedCount = 0;
+  const foundDevices = [];
+  const concurrency = 20;
+
+  const ips = [];
+  for (let i = 1; i <= total; i++) {
+    ips.push(currentSubnet + i);
+  }
+
+  let index = 0;
+
+  let scanRafId = null;
+  let lastScannedCount = 0;
+  let lastPct = 0;
+
+  function scheduleScanProgress(count, pct) {
+    lastScannedCount = count;
+    lastPct = pct;
+    if (!scanRafId) {
+      scanRafId = requestAnimationFrame(() => {
+        scanRafId = null;
+        if (!isScanning) return;
+        pFill.style.width = lastPct + "%";
+        pText.textContent = `Đang quét: ${lastScannedCount}/${total} IP (${lastPct}%)`;
+      });
+    }
+  }
+
+  async function probeWorker() {
+    while (index < ips.length) {
+      if (signal.aborted || isInstalling) break;
+      const targetIp = ips[index++];
+      
+      const result = await probeHost(targetIp, signal);
+      scannedCount++;
+
+      const pct = Math.round((scannedCount / total) * 100);
+      scheduleScanProgress(scannedCount, pct);
+
+      if (result.alive && !isInstalling) {
+        foundDevices.push(result);
+        foundText.textContent = `Tìm thấy: ${foundDevices.length} thiết bị`;
+        appendLog(`🎯 Phát hiện thiết bị: ${result.ip} [${result.services.join(", ")}]`, "ok");
+        renderDeviceItem(result, listEl);
+      }
+    }
+  }
+
+  const workers = [];
+  for (let w = 0; w < concurrency; w++) {
+    workers.push(probeWorker());
+  }
+
+  try {
+    await Promise.all(workers);
+  } catch (err) {}
+
+  if (scanRafId) {
+    cancelAnimationFrame(scanRafId);
+    scanRafId = null;
+  }
+
+  if (signal.aborted || isInstalling) {
+    return;
+  }
+
+  pFill.style.width = "100%";
+  pText.textContent = `Đang quét: ${total}/${total} IP (100%)`;
+
+  isScanning = false;
+  document.getElementById("scanBtnIcon").textContent = "🔍";
+  document.getElementById("scanBtnText").textContent = "Quét tìm xe";
+  statusTxt.textContent = `Hoàn tất (${foundDevices.length} thiết bị)`;
+
+  if (foundDevices.length === 0) {
+    appendLog("⚠️ Không tìm thấy thiết bị nào. Kiểm tra: Xe đã nổ máy/bật ACC, cùng kết nối Wi-Fi với điện thoại.", "warn");
+    pText.textContent = "Quét xong: Không thấy thiết bị tự động. Hãy nhập IP tay.";
+  } else {
+    appendLog(`✅ Hoàn thành quét: Đã tìm thấy ${foundDevices.length} thiết bị trên mạng!`, "ok");
+    // Chỉ tự động chọn nếu không bị cài đặt đè
+    if (!isInstalling) {
+      selectDevice(foundDevices[0].ip);
+    }
+  }
+}
+
+// Kiểm tra 1 IP xem có mở cổng ADB (5555), PhoneFileServer (8876) hoặc CarTcpServer (44700)
+// Sử dụng createScopedTimeout để dọn sạch timer ngay lập tức trong finally, chống timer leak
+async function probeHost(ip, outerSignal) {
+  const res = { ip, alive: false, services: [] };
+  if (outerSignal && outerSignal.aborted) return res;
+
+  // Nếu trang đang chạy qua HTTPS, trình duyệt sẽ chặn toàn bộ kết nối HTTP cục bộ do Mixed Content
+  if (window.location.protocol === "https:") {
+    return res;
+  }
+
+  // 1. Thử HTTP PhoneFileServer :8876 (GET /health)
+  const probe8876 = createScopedTimeout(400, outerSignal);
+  try {
+    const h = await fetch(`http://${ip}:8876/health`, {
+      method: "GET",
+      signal: probe8876.signal,
+      mode: "cors"
+    });
+    if (h.ok) {
+      const data = await h.json().catch(() => ({}));
+      res.alive = true;
+      res.services.push("PhoneFileServer:8876");
+      if (data.app === "CarConnect") res.services.push("CarConnect");
+    }
+  } catch (e) {} finally {
+    probe8876.cleanup();
+  }
+
+  if (res.alive || (outerSignal && outerSignal.aborted)) return res;
+
+  // 2. Thử cổng ADB :5555 qua timing probe
+  const probe5555 = createScopedTimeout(350, outerSignal);
+  try {
+    const t0 = performance.now();
+    await fetch(`http://${ip}:5555`, { mode: "no-cors", signal: probe5555.signal }).catch(() => {});
+    const elapsed = performance.now() - t0;
+    // Chặn false-positive: Nếu reject quá nhanh (<25ms) là RST / chặn mạng; bắt các cổng nhận handshake (25ms - 120ms)
+    if (elapsed >= 25 && elapsed < 120) {
+      res.alive = true;
+      res.services.push("ADB:5555");
+    }
+  } catch (e) {} finally {
+    probe5555.cleanup();
+  }
+
+  if (res.alive || (outerSignal && outerSignal.aborted)) return res;
+
+  // 3. Thử cổng CarTcpServer :44700
+  const probe44700 = createScopedTimeout(350, outerSignal);
+  try {
+    const t0 = performance.now();
+    await fetch(`http://${ip}:44700`, { mode: "no-cors", signal: probe44700.signal }).catch(() => {});
+    const elapsed = performance.now() - t0;
+    if (elapsed >= 25 && elapsed < 120) {
+      res.alive = true;
+      res.services.push("CarServer:44700");
+    }
+  } catch (e) {} finally {
+    probe44700.cleanup();
+  }
+
+  return res;
+}
+
+function renderDeviceItem(dev, container) {
+  container.style.display = "flex";
+  const item = document.createElement("div");
+  item.className = "device-item";
+  item.onclick = () => selectDevice(dev.ip);
+
+  const tagsHtml = dev.services.map(s => {
+    let cls = "adb";
+    if (s.includes("8876")) cls = "http";
+    if (s.includes("Car")) cls = "car";
+    return `<span class="tag-mini ${cls}">${s}</span>`;
+  }).join("");
+
+  item.innerHTML = `
+    <div class="device-item-left">
+      <span style="font-size:18px">🚗</span>
+      <div>
+        <div class="device-item-ip">${dev.ip}</div>
+        <div class="device-item-tags">${tagsHtml}</div>
+      </div>
+    </div>
+    <button class="btn-secondary" style="font-size:11px; padding:4px 8px">Chọn</button>
+  `;
+  container.appendChild(item);
+}
+
+function selectDevice(ip) {
+  if (isInstalling) return; // Chống race condition ghi đè IP khi đang cài đặt
+  document.getElementById("carIpInput").value = ip;
+  updateAdbCommandPreview();
+  showToast(`Đã chọn IP: ${ip}`, "ok");
+  appendLog(`🎯 Đã chọn xe tại địa chỉ IP: ${ip}`, "ok");
+
+  document.querySelectorAll(".device-item").forEach(el => {
+    const ipEl = el.querySelector(".device-item-ip");
+    el.classList.toggle("selected", ipEl ? ipEl.textContent === ip : false);
+  });
+}
+
+// ================= TIẾN TRÌNH CÀI ĐẶT LÊN ĐẦU XE =================
+async function testConnection() {
+  const executed = ActionGuard.run("testConnection", 1200, async () => {
+    if (isTestingConnection || isInstalling) return;
+    const ip = document.getElementById("carIpInput").value.trim();
+    if (!ip) {
+      showToast("Vui lòng nhập IP xe trước!", "warn");
+      return;
+    }
+
+    isTestingConnection = true;
+    const btnTest = document.getElementById("btnTestConnect");
+    document.getElementById("testBtnIcon").textContent = "⏳";
+    document.getElementById("testBtnText").textContent = "Đang thử...";
+    btnTest.disabled = true;
+
+    appendLog(`🔌 Đang kiểm tra kết nối tới ${ip}...`, "info");
+    showToast("Đang kiểm tra kết nối xe...", "info");
+
+    try {
+      // 1. Thử PhoneFileServer :8876
+      const res = await fetch(`http://${ip}:8876/health`, { signal: safeTimeoutSignal(1500) })
+        .then(r => r.json())
+        .catch(() => null);
+
+      if (res && res.ok) {
+        appendLog(`✅ Kết nối thành công tới ${ip}!`, "ok");
+        appendLog(`   ℹ️ Ứng dụng: ${res.app} · FilePort: ${res.filePort} · PhonePort: ${res.phonePort}`, "ok");
+        showToast("Kết nối thành công tới đầu xe!", "ok");
+        return;
+      }
+
+      // 2. Thử ADB port 5555
+      const t0 = performance.now();
+      await fetch(`http://${ip}:5555`, { mode: "no-cors", signal: safeTimeoutSignal(1000) }).catch(() => {});
+      const elapsed = performance.now() - t0;
+      if (elapsed < 120) {
+        appendLog(`✅ Cổng ADB 5555 tại ${ip} đang mở và phản hồi (${Math.round(elapsed)}ms)!`, "ok");
+        showToast("Cổng ADB 5555 đang mở!", "ok");
+        return;
+      }
+
+      appendLog(`⚠️ Chưa nhận phản hồi HTTP trực tiếp từ ${ip}. Có thể xe chỉ mở ADB Daemon. Bạn vẫn có thể bấm "Bắt Đầu Cài Đặt".`, "warn");
+      showToast("Xe phản hồi chậm hoặc chưa bật HTTP", "warn");
+    } finally {
+      isTestingConnection = false;
+      document.getElementById("testBtnIcon").textContent = "🔌";
+      document.getElementById("testBtnText").textContent = "Thử kết nối";
+      btnTest.disabled = false;
+    }
+  });
+
+  if (!executed) {
+    showToast("Đang kiểm tra, xin đừng bấm liên tục...", "warn");
+  }
+}
+
+function setInstallControlsDisabled(disabled) {
+  const btnInstall = document.getElementById("btnInstallToCar");
+  const btnCancel = document.getElementById("btnCancelInstall");
+  const btnTest = document.getElementById("btnTestConnect");
+  const btnScan = document.getElementById("btnScanCar");
+  const ipInput = document.getElementById("carIpInput");
+  const pills = document.getElementById("presetPillsContainer");
+  const localApkBtn = document.getElementById("btnPickLocalApk");
+
+  if (btnInstall) btnInstall.disabled = disabled;
+  if (btnCancel) btnCancel.style.display = disabled ? "inline-flex" : "none";
+  if (btnTest) btnTest.disabled = disabled;
+  if (btnScan) btnScan.disabled = disabled;
+  if (ipInput) ipInput.disabled = disabled;
+  if (localApkBtn) localApkBtn.disabled = disabled;
+  if (pills) {
+    pills.style.opacity = disabled ? "0.6" : "1";
+    pills.style.pointerEvents = disabled ? "none" : "auto";
+  }
+}
+
+function cancelInstallToCar(reason = "Đã hủy tiến trình cài đặt.") {
+  if (!isInstalling) return;
+  if (activeInstallXhr) {
+    try { activeInstallXhr.abort(); } catch (e) {}
+    activeInstallXhr = null;
+  }
+  isInstalling = false;
+  setInstallControlsDisabled(false);
+
+  document.getElementById("installBtnIcon").textContent = "⚡";
+  document.getElementById("installBtnText").textContent = "Bắt Đầu Cài Đặt Lên Xe";
+  
+  const phase = document.getElementById("installPhaseText");
+  if (phase) phase.textContent = "Đã hủy: " + reason;
+  
+  appendLog(`🛑 ${reason}`, "warn");
+  showToast(reason, "warn");
+}
+
+// Cài đặt từ file APK cục bộ (Không cần internet, hoạt động 100% trong hầm xe)
+async function handleLocalApkSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  const ip = document.getElementById("carIpInput").value.trim();
+  if (!ip) {
+    showToast("Vui lòng nhập hoặc chọn IP xe trước!", "warn");
+    e.target.value = "";
+    return;
+  }
+
+  appendLog(`📁 Đã chọn file APK từ máy: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`, "ok");
+  showToast(`Đã chọn: ${file.name}`, "ok");
+
+  const runConfirm = confirm(`Bạn có muốn cài đặt file "${file.name}" trực tiếp lên xe (${ip}) không?`);
+  if (!runConfirm) {
+    e.target.value = "";
+    return;
+  }
+
+  // Khởi động luồng cài đặt với file đã chọn
+  startInstallToCarWithBlob(file, file.name);
+  e.target.value = "";
+}
+
+async function startInstallToCar() {
+  startInstallToCarWithBlob(null, "CarConnect.apk");
+}
+
+async function startInstallToCarWithBlob(providedBlob, fileName) {
+  if (isInstalling) return;
+
+  const ip = document.getElementById("carIpInput").value.trim();
+  if (!ip) {
+    showToast("⚠️ Vui lòng nhập hoặc quét tìm IP xe trước!", "warn");
+    document.getElementById("carIpInput").focus();
+    return;
+  }
+
+  // Chống Race Condition: Tự động dừng quét mạng nếu đang quét dở để ưu tiên cài đặt
+  if (isScanning) {
+    stopScanning("Tự động dừng quét để ưu tiên cài đặt.");
+  }
+
+  isInstalling = true;
+  setInstallControlsDisabled(true);
+
+  const icon = document.getElementById("installBtnIcon");
+  const text = document.getElementById("installBtnText");
+  if (icon) icon.textContent = "⏳";
+  if (text) text.textContent = "Đang cài đặt...";
+
+  const barWrap = document.getElementById("installBarWrap");
+  const fill = document.getElementById("installFill");
+  const phase = document.getElementById("installPhaseText");
+  const pct = document.getElementById("installPctText");
+
+  barWrap.style.display = "block";
+  fill.style.width = "0%";
+
+  appendLog(`📦 Bắt đầu quy trình cài đặt Car Connect lên ${ip}...`, "info");
+
+  try {
+    let apkBlob = providedBlob;
+
+    if (!apkBlob) {
+      // BƯỚC 1: Tải gói CarConnect.apk (Có Timeout 25s & Fallback CDN nếu không có mạng quốc tế)
+      phase.textContent = "Bước 1/3: Đang tải CarConnect.apk từ máy chủ...";
+      appendLog(`[1/3] Đang tải gói APK từ ${URLS.carApk}...`, "info");
+
+      try {
+        apkBlob = await downloadWithProgress(URLS.carApk, (p, loaded, total) => {
+          fill.style.width = (p * 0.4) + "%";
+          pct.textContent = Math.round(p * 0.4) + "%";
+          phase.textContent = `Bước 1/3: Đang tải APK (${(loaded/1024/1024).toFixed(1)}/${(total/1024/1024).toFixed(1)} MB)`;
+        });
+      } catch (primaryErr) {
+        appendLog(`⚠️ Tải từ GitHub gốc thất bại (${primaryErr.message}). Chuyển sang máy chủ dự phòng CDN...`, "warn");
+        phase.textContent = "Bước 1/3: Đang thử nguồn CDN dự phòng...";
+        apkBlob = await downloadWithProgress(URLS.carApkCdn, (p, loaded, total) => {
+          fill.style.width = (p * 0.4) + "%";
+          pct.textContent = Math.round(p * 0.4) + "%";
+          phase.textContent = `Bước 1/3: CDN (${(loaded/1024/1024).toFixed(1)}/${(total/1024/1024).toFixed(1)} MB)`;
+        });
+      }
+
+      appendLog(`   ✅ Tải hoàn tất: ${(apkBlob.size / 1024 / 1024).toFixed(2)} MB`, "ok");
+    } else {
+      fill.style.width = "40%";
+      pct.textContent = "40%";
+      appendLog(`   ✅ Sử dụng file APK ngoại tuyến từ máy (${(apkBlob.size / 1024 / 1024).toFixed(2)} MB)`, "ok");
+    }
+
+    // BƯỚC 2: Kiểm tra xem xe có PhoneFileServer (:8876) không
+    phase.textContent = "Bước 2/3: Đang kiểm tra cổng truyền file lên xe...";
+    appendLog(`[2/3] Kiểm tra giao thức truyền tải trên đầu xe...`, "info");
+
+    let serverHealth = null;
+    try {
+      serverHealth = await fetch(`http://${ip}:8876/health`, { signal: safeTimeoutSignal(1500) }).then(r => r.json());
+    } catch (e) {}
+
+    if (serverHealth && serverHealth.ok) {
+      // TRƯỜNG HỢP A: Có PhoneFileServer -> Upload trực tiếp qua HTTP
+      appendLog(`   🚀 Phát hiện PhoneFileServer trên xe! Đang tải thẳng file lên cổng 8876...`, "ok");
+      phase.textContent = "Bước 2/3: Đang đẩy APK lên đầu xe qua Wi-Fi...";
+
+      let isUploadDone = false;
+      let progressTimer = null;
+
+      const uploadPromise = uploadApkToCarServer(ip, apkBlob, (p) => {
+        const fullPct = 40 + Math.round(p * 0.4);
+        fill.style.width = fullPct + "%";
+        pct.textContent = fullPct + "%";
+        if (p >= 99) {
+          phase.textContent = "Bước 3/3: Xe đang giải nén và tiến hành cài đặt APK...";
+          fill.style.width = "85%";
+          pct.textContent = "85%";
+        }
+      });
+
+      // Polling /upload-progress định kỳ 1.2s để cập nhật trạng thái khi xe đang cài đặt
+      progressTimer = setInterval(async () => {
+        if (!isInstalling || isUploadDone) {
+          clearInterval(progressTimer);
+          return;
+        }
+        try {
+          const pr = await fetch(`http://${ip}:8876/upload-progress`, { signal: safeTimeoutSignal(1000) }).then(r => r.json());
+          if (pr && pr.phase === "install") {
+            phase.textContent = "Bước 3/3: Xe đang cài đặt APK vào hệ thống...";
+            fill.style.width = "90%";
+            pct.textContent = "90%";
+          }
+        } catch (e) {}
+      }, 1200);
+
+      let uploadRes;
+      try {
+        uploadRes = await uploadPromise;
+      } finally {
+        isUploadDone = true;
+        if (progressTimer) clearInterval(progressTimer);
+      }
+
+      if (uploadRes.ok) {
+        fill.style.width = "100%";
+        pct.textContent = "100%";
+        phase.textContent = "Bước 3/3: Xe đã cài đặt thành công!";
+        appendLog(`🎉 CÀI ĐẶT THÀNH CÔNG LÊN XE!`, "ok");
+        appendLog(`   Package: ${uploadRes.packageName || "com.techlead.app.geely.car"}`, "ok");
+        if (uploadRes.hint) appendLog(`   💡 ${uploadRes.hint}`, "info");
+        showToast("🎉 Cài đặt Car Connect lên xe thành công!", "ok");
+        alert("🎉 Cài đặt Car Connect lên màn hình xe thành công!\n\nỨng dụng đã sẵn sàng trên màn hình chính của xe.");
+      } else {
+        const hintText = uploadRes.hint ? ` (${uploadRes.hint})` : "";
+        throw new Error((uploadRes.error || "Xe từ chối cài đặt") + hintText);
+      }
+
+    } else {
+      // TRƯỜNG HỢP B: Xe chỉ mở ADB Daemon
+      appendLog(`   ℹ️ Xe chưa có PhoneFileServer sẵn. Chuyển sang chế độ hỗ trợ ADB Wireless...`, "warn");
+      fill.style.width = "75%";
+      pct.textContent = "75%";
+      phase.textContent = "Bước 2/3: Chế độ đẩy qua ADB Wireless";
+
+      appendLog(`   📋 Lệnh ADB kết nối và cài đặt:`, "info");
+      appendLog(`   adb connect ${ip}:5555 && adb install -r CarConnect.apk`, "ok");
+
+      copyTextToClipboard(`adb connect ${ip}:5555 && adb install -r CarConnect.apk`);
+      showToast("Đã chép lệnh ADB vào clipboard!", "ok");
+
+      fill.style.width = "100%";
+      pct.textContent = "100%";
+      phase.textContent = "Hoàn tất hướng dẫn cài đặt ADB";
+
+      appendLog(`💡 Bạn có thể mở ứng dụng Termux/LADB trên điện thoại hoặc máy tính chạy lệnh trên để hoàn tất trong 10 giây!`, "ok");
+      alert(`✅ Đã có sẵn file APK và copy lệnh ADB!\n\nLệnh:\nadb connect ${ip}:5555 && adb install -r CarConnect.apk\n\n(Nếu dùng máy tính hoặc Termux trên điện thoại, bạn chỉ cần dán lệnh này vào để cài đặt).`);
+    }
+
+  } catch (err) {
+    if (err.name === "AbortError" || err.message === "Aborted") {
+      appendLog("🛑 Quá trình cài đặt đã được hủy.", "warn");
+      phase.textContent = "Đã hủy cài đặt.";
+    } else {
+      appendLog(`❌ Lỗi cài đặt: ${err.message}`, "err");
+      showToast("Cài đặt thất bại: " + err.message, "err");
+      phase.textContent = "Thất bại: " + err.message;
+      if (err.message.includes("Lỗi mạng") || err.message.includes("Timeout")) {
+        appendLog("💡 Gợi ý: Nếu xe ở dưới hầm không có 4G, hãy bấm '📁 Cài từ file APK trong máy' để cài trực tiếp không cần mạng.", "info");
+      }
+    }
+  } finally {
+    isInstalling = false;
+    activeInstallXhr = null;
+    setInstallControlsDisabled(false);
+    if (icon) icon.textContent = "⚡";
+    if (text) text.textContent = "Bắt Đầu Cài Đặt Lên Xe";
+  }
+}
+
+// Tải file có báo tiến độ và Timeout 25s
+function downloadWithProgress(url, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    activeInstallXhr = xhr;
+    xhr.open("GET", url, true);
+    xhr.responseType = "blob";
+    xhr.timeout = 25000; // Timeout 25 giây tránh treo đơ khi mất mạng/hầm xe
+
+    xhr.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const p = Math.round((e.loaded / e.total) * 100);
+        onProgress(p, e.loaded, e.total);
+      } else {
+        onProgress(50, e.loaded, 25000000);
+      }
+    };
+
+    xhr.onload = () => {
+      activeInstallXhr = null;
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response);
+      } else {
+        reject(new Error(`HTTP ${xhr.status} khi tải APK`));
+      }
+    };
+
+    xhr.ontimeout = () => {
+      activeInstallXhr = null;
+      reject(new Error("Timeout (Mất kết nối Internet hoặc GitHub bị chặn)"));
+    };
+
+    xhr.onabort = () => {
+      activeInstallXhr = null;
+      reject(new Error("Aborted"));
+    };
+
+    xhr.onerror = () => {
+      activeInstallXhr = null;
+      reject(new Error("Lỗi mạng khi tải APK (Không có internet / xe ở hầm)"));
+    };
+
+    xhr.send();
+  });
+}
+
+// Upload file lên PhoneFileServer của xe (:8876)
+function uploadApkToCarServer(ip, blob, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    activeInstallXhr = xhr;
+    xhr.open("POST", `http://${ip}:8876/upload?name=CarConnect.apk`, true);
+    xhr.setRequestHeader("Content-Type", "application/vnd.android.package-archive");
+    xhr.timeout = 45000; // 45 giây cho truyền file Wi-Fi cục bộ
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const p = Math.round((e.loaded / e.total) * 100);
+        onProgress(p);
+      }
+    };
+
+    xhr.onload = () => {
+      activeInstallXhr = null;
+      try {
+        const json = JSON.parse(xhr.responseText);
+        resolve(json);
+      } catch (e) {
+        if (xhr.status === 200) resolve({ ok: true });
+        else reject(new Error(`HTTP ${xhr.status}: ${xhr.responseText}`));
+      }
+    };
+
+    xhr.ontimeout = () => {
+      activeInstallXhr = null;
+      reject(new Error("Timeout khi đẩy APK lên cổng 8876 của xe"));
+    };
+
+    xhr.onabort = () => {
+      activeInstallXhr = null;
+      reject(new Error("Aborted"));
+    };
+
+    xhr.onerror = () => {
+      activeInstallXhr = null;
+      reject(new Error("Không thể kết nối tới PhoneFileServer cổng 8876"));
+    };
+
+    xhr.send(blob);
+  });
+}
+
+function appendLog(msg, type = "info") {
+  const box = document.getElementById("terminalBox");
+  if (!box) return;
+  const line = document.createElement("div");
+  line.className = `terminal-line ${type}`;
+  const time = new Date().toLocaleTimeString("vi-VN", { hour12: false });
+  line.textContent = `[${time}] ${msg}`;
+  box.appendChild(line);
+
+  // Giới hạn tối đa 120 dòng log để tránh phình to DOM tree gây rò rỉ bộ nhớ
+  while (box.children.length > 120) {
+    box.removeChild(box.firstChild);
+  }
+
+  // Khử Forced Synchronous Layout / Layout Thrashing khi log dồn dập
+  requestAnimationFrame(() => {
+    box.scrollTop = box.scrollHeight;
+  });
+}
+
+let toastTimer = null;
+function showToast(msg, type = "info") {
+  const toast = document.getElementById("toastBox");
+  const icon = document.getElementById("toastIcon");
+  const txt = document.getElementById("toastMsg");
+  if (!toast || !icon || !txt) return;
+
+  if (type === "ok") icon.textContent = "✅";
+  else if (type === "err") icon.textContent = "❌";
+  else if (type === "warn") icon.textContent = "⚠️";
+  else icon.textContent = "ℹ️";
+
+  txt.textContent = msg;
+  toast.classList.add("show");
+  
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+function copyAdbCommand() {
+  const cmd = document.getElementById("adbCommandText").textContent;
+  copyTextToClipboard(cmd);
+  showToast("Đã chép lệnh ADB vào clipboard!", "ok");
+}
+
+function copyTextToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text);
+  } else {
+    const input = document.createElement("textarea");
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+  }
+}
+
+function downloadCarApkDirect() {
+  ActionGuard.run("downloadCarApkDirect", 2000, () => {
+    const a = document.createElement("a");
+    a.href = URLS.carApk;
+    a.download = "CarConnect.apk";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast("Đang tải CarConnect.apk...", "info");
+  });
+}
+
+function openTermuxApp() {
+  window.location.href = "termux://";
+  setTimeout(() => {
+    alert("Nếu chưa cài Termux, bạn có thể tải Termux trên F-Droid hoặc Play Store để chạy lệnh ADB.");
+  }, 1200);
+}
+
+// Tự động kiểm tra phiên bản mới nhất từ kho GitHub geely-ex2-artifacts
+async function fetchLatestReleaseMetadata() {
+  try {
+    const res = await fetch(URLS.updateJson + "?t=" + Date.now(), { signal: safeTimeoutSignal(3500) });
+    if (res.ok) {
+      const data = await res.json();
+      const carVer = (data.car && data.car.latestVersionName) || data.latestVersionName;
+      const phoneVer = data.phone && data.phone.latestVersionName;
+      if (carVer && document.getElementById("carVersionBadge")) {
+        document.getElementById("carVersionBadge").textContent = "v" + carVer;
+      }
+      if (phoneVer && document.getElementById("phoneVersionBadge")) {
+        document.getElementById("phoneVersionBadge").textContent = "v" + phoneVer;
+      }
+      if (phoneVer && document.getElementById("androidModalVer")) {
+        document.getElementById("androidModalVer").textContent = "v" + phoneVer;
+      }
+    }
+  } catch (e) {
+    // Không có mạng -> Giữ nguyên phiên bản mặc định
+  }
+}
+
+// ================= KHỞI TẠO =================
+window.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  detectClientPlatform();
+  updateAdbCommandPreview();
+  fetchLatestReleaseMetadata();
+});
+</script>
+</body>
+</html>
