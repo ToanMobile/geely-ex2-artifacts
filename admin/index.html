@@ -851,14 +851,14 @@
             <div class="hint" style="margin-top:4px">Đã khớp tự động từ đơn VietQR</div>
           </div>
           <div class="kpi-box" style="border-left:3px solid var(--danger); background:var(--panel2)">
-            <div class="lbl">🧾 Tổng Chi Phí Hoạt Động</div>
+            <div class="lbl">🧾 Tổng Chi Phí (Đã TT)</div>
             <div class="val" id="psTotalExpenses" style="font-size:18px; color:var(--danger)">0 ₫</div>
-            <div class="hint" style="margin-top:4px">Model AI, Thiết bị, Apple, Server...</div>
+            <div class="hint" id="psTotalExpensesHint" style="margin-top:4px">Model AI, Thiết bị, Apple, Server...</div>
           </div>
           <div class="kpi-box" style="border-left:3px solid #0284c7; background:var(--panel2)">
             <div class="lbl">💎 Lợi Nhuận Ròng Phân Chia</div>
             <div class="val" id="psNetProfit" style="font-size:18px; color:#0284c7">0 ₫</div>
-            <div class="hint" style="margin-top:4px">= Doanh thu trừ Tổng chi phí</div>
+            <div class="hint" id="psNetProfitHint" style="margin-top:4px">= Doanh thu trừ Tổng chi phí đã thanh toán</div>
           </div>
         </div>
 
@@ -914,11 +914,11 @@
             <span class="hint" id="psExpenseCount">0 khoản chi</span>
           </div>
           <div class="hint" style="margin-bottom:10px">
-            Các khoản chi tiêu này được trừ trực tiếp khỏi tổng doanh thu trước khi chia 6:4.
+            Các khoản chi tiêu đã đánh dấu <b>Đã thanh toán</b> sẽ được trừ trực tiếp khỏi tổng doanh thu trước khi chia 6:4. Các khoản chưa thanh toán sẽ lưu dưới dạng ghi chú kế hoạch chi.
           </div>
 
           <!-- Form thêm chi phí -->
-          <div style="display:grid; grid-template-columns: 2fr 1fr auto; gap:8px; align-items:flex-end; margin-bottom:12px">
+          <div style="display:grid; grid-template-columns: 2fr 1fr auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
             <div>
               <label style="font-size:11px">Tên / Ghi chú khoản chi tiêu *</label>
               <input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI Groq/Gemini, Mua thiết bị test, TK Apple Developer...">
@@ -926,6 +926,12 @@
             <div>
               <label style="font-size:11px">Số tiền chi (₫) *</label>
               <input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)">
+            </div>
+            <div style="padding-bottom:8px">
+              <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; white-space:nowrap" title="Đánh dấu nếu khoản tiền này đã được thanh toán thực tế (sẽ trừ vào doanh thu để tính chia lãi)">
+                <input id="psNewExpenseIsPaid" type="checkbox" style="width:16px; height:16px; margin:0; cursor:pointer">
+                <span>Đã thanh toán</span>
+              </label>
             </div>
             <div>
               <button class="small" onclick="addProfitSharingExpense()">➕ Thêm Chi Phí</button>
@@ -939,18 +945,29 @@
                 <tr>
                   <th style="text-align:left">Khoản chi</th>
                   <th style="text-align:right">Số tiền (₫)</th>
+                  <th style="text-align:center; width:140px">Trạng thái</th>
                   <th style="text-align:center; width:120px">Ngày ghi nhận</th>
-                  <th style="text-align:right; width:60px">Xoá</th>
+                  <th style="text-align:right; width:50px">Xoá</th>
                 </tr>
               </thead>
               <tbody id="psExpenseTableBody">
-                <tr><td colspan="4" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
+                <tr><td colspan="5" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
               </tbody>
               <tfoot>
                 <tr style="font-weight:700; border-top:2px solid var(--border)">
-                  <td>TỔNG CỘNG CHI PHÍ</td>
-                  <td class="mono" style="text-align:right; color:var(--danger)" id="psExpenseTableTotal">0 ₫</td>
-                  <td colspan="2"></td>
+                  <td>ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
+                  <td class="mono" style="text-align:right; color:var(--danger)" id="psExpenseTablePaidTotal">0 ₫</td>
+                  <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Tính vào phân chia 60:40</td>
+                </tr>
+                <tr style="font-size:12px; color:var(--muted)">
+                  <td>Chờ thanh toán (Ghi chú chưa chi)</td>
+                  <td class="mono" style="text-align:right; color:#d97706" id="psExpenseTablePendingTotal">0 ₫</td>
+                  <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Chưa trừ vào lợi nhuận chia</td>
+                </tr>
+                <tr style="font-weight:600; border-top:1px dashed var(--border); font-size:12px">
+                  <td>TỔNG CHI PHÍ DỰ KIẾN</td>
+                  <td class="mono" style="text-align:right" id="psExpenseTableTotal">0 ₫</td>
+                  <td colspan="3"></td>
                 </tr>
               </tfoot>
             </table>
@@ -3991,15 +4008,24 @@ function renderProfitSharingUI(totalRevenue) {
   }
   const grossRev = window._currentTotalRevenue || 0;
 
-  // 1. Tính tổng chi phí hoạt động (Model AI, thiết bị, Apple...)
+  // 1. Phân loại & tính tổng chi phí (Đã thanh toán vs Chờ thanh toán)
   const expenses = data.expenses || [];
   let totalExpenses = 0;
+  let paidExpenses = 0;
+  let pendingExpenses = 0;
   for (const exp of expenses) {
-    totalExpenses += (Number(exp.amount) || 0);
+    const amt = Number(exp.amount) || 0;
+    totalExpenses += amt;
+    if (exp.is_paid) {
+      paidExpenses += amt;
+    } else {
+      pendingExpenses += amt;
+    }
   }
 
-  // 2. Lợi nhuận ròng = Doanh thu - Chi phí
-  const netProfit = grossRev - totalExpenses;
+  // 2. Lợi nhuận ròng = Doanh thu - Chi phí ĐÃ THANH TOÁN
+  // (Khoản chưa thanh toán lưu dưới dạng ghi chú kế hoạch, chưa trừ vào dòng tiền chia thực tế)
+  const netProfit = grossRev - paidExpenses;
 
   // 3. Tỷ lệ 60% Toàn - 40% Đạt
   const toanShare = Math.round(netProfit * 0.6);
@@ -4010,8 +4036,18 @@ function renderProfitSharingUI(totalRevenue) {
 
   // 5. Cập nhật thẻ KPI
   if ($("psGrossRevenue")) $("psGrossRevenue").textContent = formatVndNumber(grossRev);
-  if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(totalExpenses);
+  if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(paidExpenses);
+  if ($("psTotalExpensesHint")) {
+    $("psTotalExpensesHint").innerHTML = pendingExpenses > 0
+      ? `Đã thanh toán: <b>${formatVndNumber(paidExpenses)}</b> &bull; Chờ chi: <b>${formatVndNumber(pendingExpenses)}</b>`
+      : (paidExpenses > 0 ? `100% đã thanh toán (${formatVndNumber(paidExpenses)})` : `Chưa phát sinh chi phí`);
+  }
   if ($("psNetProfit")) $("psNetProfit").textContent = formatVndNumber(netProfit);
+  if ($("psNetProfitHint")) {
+    $("psNetProfitHint").innerHTML = pendingExpenses > 0
+      ? `= Doanh thu trừ Chi phí đã TT (Dự kiến sau chi: ${formatVndNumber(grossRev - totalExpenses)})`
+      : `= Doanh thu trừ Chi phí đã thanh toán`;
+  }
   if ($("psToanShare")) $("psToanShare").textContent = formatVndNumber(toanShare);
   if ($("psDatShare")) $("psDatShare").textContent = formatVndNumber(datShare);
 
@@ -4054,21 +4090,32 @@ function renderProfitSharingUI(totalRevenue) {
   }
 
   // 8. Render bảng danh sách chi phí
-  if ($("psExpenseCount")) $("psExpenseCount").textContent = `${expenses.length} khoản chi`;
+  const paidCount = expenses.filter(e => e.is_paid).length;
+  const pendingCount = expenses.length - paidCount;
+  if ($("psExpenseCount")) {
+    $("psExpenseCount").textContent = `${expenses.length} khoản chi (${paidCount} đã TT, ${pendingCount} chờ chi)`;
+  }
+  if ($("psExpenseTablePaidTotal")) $("psExpenseTablePaidTotal").textContent = formatVndNumber(paidExpenses);
+  if ($("psExpenseTablePendingTotal")) $("psExpenseTablePendingTotal").textContent = formatVndNumber(pendingExpenses);
   if ($("psExpenseTableTotal")) $("psExpenseTableTotal").textContent = formatVndNumber(totalExpenses);
 
   const tbody = $("psExpenseTableBody");
   if (tbody) {
     tbody.innerHTML = "";
     if (!expenses.length) {
-      tbody.innerHTML = '<tr><td colspan="4" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập tên khoản chi & số tiền phía trên để khai báo.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập tên khoản chi & số tiền phía trên để khai báo.</td></tr>';
     } else {
       expenses.forEach((exp, idx) => {
         const tr = document.createElement("tr");
         const expId = esc(exp.id || ("exp_" + idx));
+        const isPaid = Boolean(exp.is_paid);
+        const statusHtml = isPaid
+          ? `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#16a34a; font-size:12px" title="Bấm để chuyển sang Chưa thanh toán"><input type="checkbox" checked onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>✅ Đã TT</span></label>`
+          : `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#d97706; font-size:12px" title="Bấm để đánh dấu Đã thanh toán"><input type="checkbox" onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>⏳ Chưa TT</span></label>`;
         tr.innerHTML =
           `<td><b>${esc(exp.title || "Chi phí")}</b></td>` +
-          `<td class="mono" style="text-align:right; font-weight:600; color:var(--danger)">${formatVndNumber(exp.amount || 0)}</td>` +
+          `<td class="mono" style="text-align:right; font-weight:600; color:${isPaid ? 'var(--danger)' : '#d97706'}">${formatVndNumber(exp.amount || 0)}</td>` +
+          `<td style="text-align:center">${statusHtml}</td>` +
           `<td class="mono" style="text-align:center; font-size:12px; color:var(--muted)">${formatIsoTime(exp.created_at)}</td>` +
           `<td style="text-align:right"><button class="danger small" style="padding:2px 8px" onclick="deleteProfitSharingExpense('${expId}')" title="Xoá khoản chi này">🗑️</button></td>`;
         tbody.appendChild(tr);
@@ -4106,8 +4153,10 @@ function formatNumberInput(el) {
 function addProfitSharingExpense() {
   const titleEl = $("psNewExpenseTitle");
   const amtEl = $("psNewExpenseAmount");
+  const isPaidEl = $("psNewExpenseIsPaid");
   const title = (titleEl.value || "").trim();
   const amt = parseInt((amtEl.value || "").replace(/\D/g, ""), 10) || 0;
+  const isPaid = isPaidEl ? isPaidEl.checked : false;
 
   if (!title) {
     alert("Vui lòng nhập tên / ghi chú khoản chi tiêu (ví dụ: Model AI Groq/Gemini, mua thiết bị...)");
@@ -4125,13 +4174,25 @@ function addProfitSharingExpense() {
     id: "exp_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
     title: title,
     amount: amt,
+    is_paid: isPaid,
     created_at: new Date().toISOString()
   });
 
   titleEl.value = "";
   amtEl.value = "";
+  if (isPaidEl) isPaidEl.checked = false;
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
+}
+
+function toggleProfitSharingExpensePaid(id, isPaid) {
+  const data = ensureProfitSharingData();
+  const exp = (data.expenses || []).find(e => e.id === id);
+  if (exp) {
+    exp.is_paid = Boolean(isPaid);
+    renderProfitSharingUI();
+    saveProfitSharingConfig(true);
+  }
 }
 
 function deleteProfitSharingExpense(id) {

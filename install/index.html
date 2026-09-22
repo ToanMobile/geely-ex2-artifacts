@@ -1949,7 +1949,14 @@ async function testConnection() {
     if (isTestingConnection || isInstalling) return;
     const ip = document.getElementById("carIpInput").value.trim();
     if (!ip) {
-      showToast("Vui lòng nhập IP xe trước!", "warn");
+      showToast("Vui lòng nhập hoặc chọn địa chỉ IP xe trước!", "warn");
+      return;
+    }
+
+    if (window.location.protocol === "https:") {
+      appendLog("⚠️ Bạn đang mở trang qua HTTPS: Trình duyệt bảo mật chặn kiểm tra kết nối trực tiếp đến IP xe (Mixed Content).", "warn");
+      appendLog("👉 Vui lòng mở trang này bằng địa chỉ HTTP nội bộ hoặc sử dụng app Phone Connect trên điện thoại.", "info");
+      showToast("HTTPS chặn kết nối tới xe. Vui lòng xem hướng dẫn!", "warn");
       return;
     }
 
@@ -1959,8 +1966,8 @@ async function testConnection() {
     document.getElementById("testBtnText").textContent = "Đang thử...";
     btnTest.disabled = true;
 
-    appendLog(`🔌 Đang kiểm tra kết nối tới ${ip}...`, "info");
-    showToast("Đang kiểm tra kết nối xe...", "info");
+    appendLog(`🔌 Đang kiểm tra kết nối tới xe tại địa chỉ ${ip}...`, "info");
+    showToast("Đang kiểm tra kết nối tới màn hình xe...", "info");
 
     try {
       // 1. Thử PhoneFileServer :8876
@@ -1969,9 +1976,9 @@ async function testConnection() {
         .catch(() => null);
 
       if (res && res.ok) {
-        appendLog(`✅ Kết nối thành công tới ${ip}!`, "ok");
-        appendLog(`   ℹ️ Ứng dụng: ${res.app} · FilePort: ${res.filePort} · PhonePort: ${res.phonePort}`, "ok");
-        showToast("Kết nối thành công tới đầu xe!", "ok");
+        appendLog(`✅ Kết nối thành công tới đầu xe (${ip})!`, "ok");
+        appendLog(`   🚗 Ứng dụng: ${res.app} · Cổng truyền file: :${res.filePort} · Cổng điều khiển: :${res.phonePort}`, "ok");
+        showToast("Đã kết nối thành công tới màn hình xe!", "ok");
         return;
       }
 
@@ -1979,14 +1986,22 @@ async function testConnection() {
       const t0 = performance.now();
       await fetch(`http://${ip}:5555`, { mode: "no-cors", signal: safeTimeoutSignal(1000) }).catch(() => {});
       const elapsed = performance.now() - t0;
-      if (elapsed < 120) {
-        appendLog(`✅ Cổng ADB 5555 tại ${ip} đang mở và phản hồi (${Math.round(elapsed)}ms)!`, "ok");
-        showToast("Cổng ADB 5555 đang mở!", "ok");
+      if (elapsed >= 25 && elapsed < 120) {
+        appendLog(`✅ Đã tìm thấy cổng ADB Wireless (5555) trên xe tại ${ip}!`, "ok");
+        appendLog(`   📲 Xe đã bật chế độ gỡ lỗi không dây. Sẵn sàng cài đặt.`, "ok");
+        showToast("Đã tìm thấy cổng gỡ lỗi ADB trên xe!", "ok");
         return;
       }
 
-      appendLog(`⚠️ Chưa nhận phản hồi HTTP trực tiếp từ ${ip}. Có thể xe chỉ mở ADB Daemon. Bạn vẫn có thể bấm "Bắt Đầu Cài Đặt".`, "warn");
-      showToast("Xe phản hồi chậm hoặc chưa bật HTTP", "warn");
+      // 3. Báo lỗi tự nhiên, trực quan kèm hướng dẫn xử lý cụ thể cho chủ xe
+      appendLog(`❌ Không nhận được tín hiệu từ xe tại địa chỉ IP: ${ip}`, "err");
+      appendLog(`👉 Các bước kiểm tra nhanh cho bạn:`, "info");
+      appendLog(`   1. Màn hình xe đã bật sáng chưa? (Cần bấm nút đề nổ hoặc bật nguồn ACC/ON)`, "info");
+      appendLog(`   2. Điện thoại và xe đã kết nối CÙNG một mạng Wi-Fi chưa?`, "info");
+      appendLog(`   3. Nếu kết nối vào Wi-Fi do xe phát: Hãy chọn dải "192.168.43.x" và nhập IP là 192.168.43.1`, "info");
+      appendLog(`   4. Nếu xe chưa bật gỡ lỗi: Vào Cài đặt xe ➔ Giới thiệu ➔ Bấm 7 lần "Số phiên bản" ➔ Bật "Gỡ lỗi USB/Wi-Fi"`, "info");
+      appendLog(`   5. Hoặc bấm nút "🔍 Quét tìm xe" để tự động dò tìm IP chính xác trong mạng`, "info");
+      showToast("Không tìm thấy xe. Vui lòng kiểm tra lại kết nối Wi-Fi!", "err");
     } finally {
       isTestingConnection = false;
       document.getElementById("testBtnIcon").textContent = "🔌";
@@ -1996,7 +2011,7 @@ async function testConnection() {
   });
 
   if (!executed) {
-    showToast("Đang kiểm tra, xin đừng bấm liên tục...", "warn");
+    showToast("Đang kiểm tra kết nối, xin đừng bấm liên tục...", "warn");
   }
 }
 

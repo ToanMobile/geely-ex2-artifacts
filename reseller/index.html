@@ -127,12 +127,15 @@
 
     <div class="grid">
       <div>
-        <label>Số điện thoại đại lý (Zalo)</label>
-        <input id="loginPhone" type="tel" placeholder="VD: 0912345678" autocomplete="tel">
+        <label>Số điện thoại hoặc Mã đại lý</label>
+        <input id="loginPhone" type="text" placeholder="VD: 0912345678 hoặc DEMO" autocomplete="username">
       </div>
       <div>
-        <label>Mã PIN đăng nhập (6 số)</label>
-        <input id="loginPin" type="password" placeholder="Mã PIN 6 số" maxlength="6" autocomplete="current-password">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
+          <label style="margin:0">Mã PIN đăng nhập (6 số)</label>
+          <span style="font-size:12px; color:#38bdf8; cursor:pointer; user-select:none" onclick="togglePinVisibility()">👁️ Hiện/Ẩn PIN</span>
+        </div>
+        <input id="loginPin" type="password" placeholder="Nhập mã PIN 6 số" maxlength="6" autocomplete="current-password">
       </div>
       <button type="button" id="btnLogin" class="primary" style="margin-top: 8px; width: 100%;" onclick="doLogin()">
         🔑 Đăng Nhập Cổng Đại Lý
@@ -454,10 +457,17 @@ function getSessionToken() {
   return localStorage.getItem("geely_reseller_session") || "";
 }
 
+function togglePinVisibility() {
+  const pinInput = $("loginPin");
+  if (!pinInput) return;
+  pinInput.type = pinInput.type === "password" ? "text" : "password";
+}
+
 async function api(path, body = {}) {
   const headers = {
     "Content-Type": "application/json",
-    "apikey": CONFIG.supabaseAnonKey
+    "apikey": CONFIG.supabaseAnonKey,
+    "Authorization": "Bearer " + CONFIG.supabaseAnonKey
   };
   const token = getSessionToken();
   if (token) {
@@ -469,6 +479,11 @@ async function api(path, body = {}) {
     headers,
     body: JSON.stringify(body)
   });
+  if (!res.ok) {
+    let msg = "HTTP " + res.status;
+    try { const d = await res.json(); msg = d.message || msg; } catch (_) {}
+    throw new Error(msg);
+  }
   return res.json();
 }
 
