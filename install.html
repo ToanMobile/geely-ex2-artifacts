@@ -1828,8 +1828,14 @@ async function scanLocalNetwork() {
   statusTxt.textContent = `Hoàn tất (${foundDevices.length} thiết bị)`;
 
   if (foundDevices.length === 0) {
-    appendLog("⚠️ Không tìm thấy thiết bị nào. Kiểm tra: Xe đã nổ máy/bật ACC, cùng kết nối Wi-Fi với điện thoại.", "warn");
-    pText.textContent = "Quét xong: Không thấy thiết bị tự động. Hãy nhập IP tay.";
+    appendLog("⚠️ Không tìm thấy xe trong dải mạng này.", "warn");
+    appendLog("👉 Gợi ý kiểm tra nhanh cho bạn:", "info");
+    appendLog("   1. Màn hình xe đã bật sáng (bật điện ACC/ON) và đang kết nối Wi-Fi?", "info");
+    appendLog("   2. Điện thoại và xe đã kết nối CÙNG một mạng Wi-Fi chưa?", "info");
+    appendLog("   3. Nếu kết nối vào Wi-Fi do xe phát: Bấm chọn nút dải mạng '192.168.43.x (Hotspot xe)' phía trên.", "info");
+    appendLog("   4. Hoặc bạn có thể xem IP trên màn hình xe và nhập trực tiếp vào ô bên trên.", "info");
+    pText.textContent = "Không thấy xe tự động. Hãy kiểm tra Wi-Fi hoặc nhập IP xe.";
+    showToast("Không tìm thấy xe. Hãy kiểm tra lại kết nối Wi-Fi!", "warn");
   } else {
     appendLog(`✅ Hoàn thành quét: Đã tìm thấy ${foundDevices.length} thiết bị trên mạng!`, "ok");
     // Chỉ tự động chọn nếu không bị cài đặt đè
@@ -2215,24 +2221,55 @@ async function startInstallToCarWithBlob(providedBlob, fileName) {
       }
 
     } else {
-      // TRƯỜNG HỢP B: Xe chỉ mở ADB Daemon
-      appendLog(`   ℹ️ Xe chưa có PhoneFileServer sẵn. Chuyển sang chế độ hỗ trợ ADB Wireless...`, "warn");
-      fill.style.width = "75%";
-      pct.textContent = "75%";
-      phase.textContent = "Bước 2/3: Chế độ đẩy qua ADB Wireless";
+      // Kiểm tra xem đầu xe có đang mở cổng ADB 5555 không
+      let isAdbOpen = false;
+      try {
+        const t0 = performance.now();
+        await fetch(`http://${ip}:5555`, { mode: "no-cors", signal: safeTimeoutSignal(1000) }).catch(() => {});
+        const elapsed = performance.now() - t0;
+        if (elapsed >= 25 && elapsed < 120) {
+          isAdbOpen = true;
+        }
+      } catch (e) {}
 
-      appendLog(`   📋 Lệnh ADB kết nối và cài đặt:`, "info");
-      appendLog(`   adb connect ${ip}:5555 && adb install -r CarConnect.apk`, "ok");
+      if (isAdbOpen) {
+        // TRƯỜNG HỢP B: Xe đang mở cổng ADB không dây (:5555)
+        appendLog(`   ℹ️ Đầu xe đang mở cổng gỡ lỗi ADB Wireless (:5555).`, "ok");
+        fill.style.width = "75%";
+        pct.textContent = "75%";
+        phase.textContent = "Bước 2/3: Sẵn sàng lệnh cài đặt ADB";
 
-      copyTextToClipboard(`adb connect ${ip}:5555 && adb install -r CarConnect.apk`);
-      showToast("Đã chép lệnh ADB vào clipboard!", "ok");
+        const adbCmd = `adb connect ${ip}:5555 && adb install -r CarConnect.apk`;
+        copyTextToClipboard(adbCmd);
+        showToast("Đã chép lệnh ADB vào bộ nhớ tạm!", "ok");
 
-      fill.style.width = "100%";
-      pct.textContent = "100%";
-      phase.textContent = "Hoàn tất hướng dẫn cài đặt ADB";
+        appendLog(`   📋 Lệnh cài đặt nhanh:`, "ok");
+        appendLog(`   ${adbCmd}`, "ok");
+        appendLog(`💡 Trình duyệt web không thể tự chạy lệnh ADB do rào cản bảo mật sandbox. Bạn hãy:`, "info");
+        appendLog(`   • Mở ứng dụng Termux hoặc LADB trên điện thoại (hoặc mở Terminal trên máy tính).`, "info");
+        appendLog(`   • Dán lệnh vừa sao chép để hoàn tất cài đặt trong 10 giây.`, "info");
 
-      appendLog(`💡 Bạn có thể mở ứng dụng Termux/LADB trên điện thoại hoặc máy tính chạy lệnh trên để hoàn tất trong 10 giây!`, "ok");
-      alert(`✅ Đã có sẵn file APK và copy lệnh ADB!\n\nLệnh:\nadb connect ${ip}:5555 && adb install -r CarConnect.apk\n\n(Nếu dùng máy tính hoặc Termux trên điện thoại, bạn chỉ cần dán lệnh này vào để cài đặt).`);
+        fill.style.width = "100%";
+        pct.textContent = "100%";
+        phase.textContent = "Hoàn tất: Đã sẵn sàng lệnh ADB cài đặt";
+
+        alert(`✅ Đã tìm thấy đầu xe tại ${ip}!\n\nLệnh ADB đã được tự động chép vào máy:\n${adbCmd}\n\n👉 Bạn chỉ cần mở Termux trên điện thoại hoặc máy tính và Dán lệnh này để cài đặt lên xe.`);
+      } else {
+        // TRƯỜNG HỢP C: Không tìm thấy xe (Cả HTTP 8876 lẫn ADB 5555 đều không phản hồi)
+        appendLog(`❌ Không thể kết nối tới xe tại địa chỉ IP: ${ip}`, "err");
+        appendLog(`👉 Các nguyên nhân thường gặp và cách khắc phục:`, "warn");
+        appendLog(`   1. Màn hình xe chưa bật: Bấm nút đề khởi động hoặc bật khóa điện ACC/ON.`, "warn");
+        appendLog(`   2. Chưa chung Wi-Fi: Điện thoại và xe phải bắt CÙNG một mạng Wi-Fi (hoặc bắt Wi-Fi xe phát).`, "warn");
+        appendLog(`   3. Sai địa chỉ IP: Hãy bấm nút "🔍 Quét tìm xe" để tự động dò tìm IP chính xác.`, "warn");
+        appendLog(`   4. Nếu dùng Wi-Fi do xe phát: Hãy chọn dải "192.168.43.x" và kiểm tra IP 192.168.43.1.`, "warn");
+        appendLog(`   5. Nếu xe chưa bật gỡ lỗi: Vào Cài đặt ➔ Giới thiệu ➔ Bấm 7 lần "Số phiên bản" ➔ Bật "Gỡ lỗi USB/Wi-Fi".`, "warn");
+
+        fill.style.width = "0%";
+        pct.textContent = "0%";
+        phase.textContent = "Lỗi kết nối: Không tìm thấy xe trong mạng Wi-Fi";
+        showToast("Không tìm thấy xe. Vui lòng kiểm tra lại kết nối Wi-Fi!", "err");
+        alert(`❌ Không tìm thấy xe tại địa chỉ ${ip}!\n\nHãy kiểm tra:\n1. Màn hình xe đã bật sáng chưa?\n2. Điện thoại và xe đã kết nối CÙNG một mạng Wi-Fi chưa?\n3. Hãy bấm nút "🔍 Quét tìm xe" để tự động dò tìm IP của xe.`);
+      }
     }
 
   } catch (err) {
@@ -2285,17 +2322,17 @@ function downloadWithProgress(url, onProgress) {
 
     xhr.ontimeout = () => {
       activeInstallXhr = null;
-      reject(new Error("Timeout (Mất kết nối Internet hoặc GitHub bị chặn)"));
+      reject(new Error("Mất kết nối Internet khi tải file cài đặt (Hết thời gian chờ)."));
     };
 
     xhr.onabort = () => {
       activeInstallXhr = null;
-      reject(new Error("Aborted"));
+      reject(new Error("Đã hủy tải gói cài đặt"));
     };
 
     xhr.onerror = () => {
       activeInstallXhr = null;
-      reject(new Error("Lỗi mạng khi tải APK (Không có internet / xe ở hầm)"));
+      reject(new Error("Không thể kết nối máy chủ tải file (Xe dưới hầm hoặc mất mạng 4G/Wi-Fi)."));
     };
 
     xhr.send();
@@ -2325,23 +2362,23 @@ function uploadApkToCarServer(ip, blob, onProgress) {
         resolve(json);
       } catch (e) {
         if (xhr.status === 200) resolve({ ok: true });
-        else reject(new Error(`HTTP ${xhr.status}: ${xhr.responseText}`));
+        else reject(new Error(`Đầu xe phản hồi mã lỗi HTTP ${xhr.status}: ${xhr.responseText}`));
       }
     };
 
     xhr.ontimeout = () => {
       activeInstallXhr = null;
-      reject(new Error("Timeout khi đẩy APK lên cổng 8876 của xe"));
+      reject(new Error("Đường truyền tới xe quá chậm hoặc bị ngắt quãng giữa chừng. Hãy thử lại khi ở gần xe hơn."));
     };
 
     xhr.onabort = () => {
       activeInstallXhr = null;
-      reject(new Error("Aborted"));
+      reject(new Error("Đã hủy tiến trình truyền file"));
     };
 
     xhr.onerror = () => {
       activeInstallXhr = null;
-      reject(new Error("Không thể kết nối tới PhoneFileServer cổng 8876"));
+      reject(new Error("Mất kết nối Wi-Fi với đầu xe trong lúc truyền file. Vui lòng kiểm tra lại kết nối Wi-Fi của xe."));
     };
 
     xhr.send(blob);

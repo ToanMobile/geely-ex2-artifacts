@@ -11,12 +11,12 @@
 <script src="https://unpkg.com/@zxing/library@latest/umd/index.min.js"></script>
 <style>
   :root {
-    --bg: #0f172a; --panel: #1e293b; --panel2: #334155;
-    --border: #475569; --text: #f8fafc; --muted: #94a3b8;
+    --bg: #f8fafc; --panel: #ffffff; --panel2: #f1f5f9;
+    --border: #e2e8f0; --text: #0f172a; --muted: #64748b;
     --accent: #10b981; --accent2: #059669; --danger: #ef4444;
-    --warn: #f59e0b; --primary: #3b82f6; --primary2: #2563eb;
+    --warn: #d97706; --primary: #2563eb; --primary2: #1d4ed8;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.3);
+    --card-shadow: 0 4px 6px -1px rgba(0,0,0,0.06), 0 2px 4px -2px rgba(0,0,0,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -30,7 +30,7 @@
     display: flex; justify-content: space-between; align-items: center;
     margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
   }
-  .header-title h1 { font-size: 18px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .header-title h1 { font-size: 18px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
   .header-title .sub { font-size: 13px; color: var(--muted); }
   .panel {
     background: var(--panel); border: 1px solid var(--border);
@@ -39,10 +39,10 @@
   .grid { display: grid; gap: 12px; }
   label { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
   input, select, textarea {
-    width: 100%; background: var(--panel2); color: #fff; border: 1px solid var(--border);
+    width: 100%; background: #ffffff; color: var(--text); border: 1px solid #cbd5e1;
     border-radius: 8px; padding: 10px 12px; font-size: 16px; outline: none; transition: border-color .2s;
   }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
   button {
     background: var(--accent); color: #fff; border: 0; border-radius: 8px;
     padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer;
@@ -53,62 +53,62 @@
   button:active { transform: scale(0.98); }
   button.primary { background: var(--primary); }
   button.primary:hover { background: var(--primary2); }
-  button.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-  button.ghost:hover { background: var(--panel2); }
+  button.ghost { background: #ffffff; border: 1px solid var(--border); color: var(--text); }
+  button.ghost:hover { background: #f8fafc; }
   button.danger { background: var(--danger); }
   button.small { padding: 6px 12px; font-size: 13px; border-radius: 6px; }
   button:disabled { opacity: .5; cursor: not-allowed !important; transform: none !important; }
   .mono { font-family: var(--mono); }
   .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-  .badge.success { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
-  .badge.warning { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
-  .badge.info { background: rgba(59,130,246,0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+  .badge.success { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .badge.warning { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .badge.info { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
 
   /* Wallet Card */
   .wallet-card {
-    background: linear-gradient(135deg, #1e3a5f, #0f2744);
-    border: 1px solid #2563eb; border-radius: 14px; padding: 18px; margin-bottom: 16px;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #1e3a8a, #0f172a); color: #fff;
+    border: 1px solid #3b82f6; border-radius: 14px; padding: 18px; margin-bottom: 16px;
+    box-shadow: 0 10px 15px -3px rgba(15,23,42,0.25); position: relative; overflow: hidden;
   }
   .wallet-card::after {
     content: "🚗 GEELY EX2"; position: absolute; right: -15px; bottom: -10px;
-    font-size: 40px; font-weight: 900; color: rgba(255,255,255,0.04); pointer-events: none;
+    font-size: 40px; font-weight: 900; color: rgba(255,255,255,0.06); pointer-events: none;
   }
 
   /* Plan Option Cards */
   .plan-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 12px; }
   .plan-card {
-    background: var(--panel2); border: 2px solid var(--border); border-radius: 10px;
+    background: #ffffff; border: 2px solid var(--border); border-radius: 10px;
     padding: 12px; cursor: pointer; transition: all .2s; user-select: none;
   }
   .plan-card:hover { border-color: var(--accent); }
-  .plan-card.active { border-color: var(--accent); background: rgba(16,185,129,0.12); box-shadow: 0 0 0 1px var(--accent); }
-  .plan-card-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .plan-card.active { border-color: var(--accent); background: #ecfdf5; box-shadow: 0 0 0 1px var(--accent); }
+  .plan-card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; justify-content: space-between; }
   .plan-card-price { font-size: 13px; color: var(--muted); }
-  .plan-card-profit { font-size: 13px; color: #34d399; font-weight: 700; margin-top: 4px; }
+  .plan-card-profit { font-size: 13px; color: #059669; font-weight: 700; margin-top: 4px; }
 
   /* Tables */
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; padding: 10px 12px; background: rgba(0,0,0,0.2); color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
-  td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  tr:hover td { background: rgba(255,255,255,0.02); }
+  th { text-align: left; padding: 10px 12px; background: #f8fafc; color: var(--muted); font-weight: 600; border-bottom: 1px solid var(--border); }
+  td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+  tr:hover td { background: #f8fafc; }
 
   /* Modal */
   .modal-mask {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(2px);
     display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px;
   }
   .modal {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-    width: 100%; max-width: 520px; padding: 20px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);
+    background: #ffffff; border: 1px solid var(--border); border-radius: 14px; color: var(--text);
+    width: 100%; max-width: 520px; padding: 20px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
   }
-  .modal h3 { font-size: 17px; margin-bottom: 8px; color: #fff; }
+  .modal h3 { font-size: 17px; margin-bottom: 8px; color: var(--text); }
   .hint { font-size: 13px; color: var(--muted); line-height: 1.4; }
 
   /* Tabs */
   .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  .tab-btn { background: transparent; border: 0; color: var(--muted); font-size: 14px; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
-  .tab-btn:hover { color: #fff; background: var(--panel2); }
+  .tab-btn { background: transparent; border: 0; color: var(--muted); font-size: 14px; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  .tab-btn:hover { color: var(--text); background: #f1f5f9; }
   .tab-btn.active { color: #fff; background: var(--accent); font-weight: 700; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
@@ -121,7 +121,7 @@
   <div id="authScreen" class="panel" style="max-width:420px; margin: 60px auto; padding: 24px;">
     <div style="text-align:center; margin-bottom: 20px;">
       <div style="font-size: 36px; margin-bottom: 6px;">🚗</div>
-      <h1 style="font-size: 20px; font-weight: 800; color: #fff;">CỔNG ĐẠI LÝ CẤP 1</h1>
+      <h1 style="font-size: 20px; font-weight: 800; color: var(--text);">CỔNG ĐẠI LÝ CẤP 1</h1>
       <div class="hint">Hệ thống Cấp mã & Bán sỉ Bản quyền Geely EX2</div>
     </div>
 
@@ -133,7 +133,7 @@
       <div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px">
           <label style="margin:0">Mã PIN đăng nhập (6 số)</label>
-          <span style="font-size:12px; color:#38bdf8; cursor:pointer; user-select:none" onclick="togglePinVisibility()">👁️ Hiện/Ẩn PIN</span>
+          <span style="font-size:12px; color:#2563eb; cursor:pointer; user-select:none" onclick="togglePinVisibility()">👁️ Hiện/Ẩn PIN</span>
         </div>
         <input id="loginPin" type="password" placeholder="Nhập mã PIN 6 số" maxlength="6" autocomplete="current-password">
       </div>
@@ -144,7 +144,7 @@
 
     <div style="margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center;" class="hint">
       Chưa có tài khoản đại lý hoặc quên PIN?<br>
-      Liên hệ Quản trị viên: <a href="https://zalo.me/0762629292" target="_blank" style="color:#38bdf8; text-decoration:none; font-weight:600">Zalo 0762.629.292 (Đạt)</a>
+      Liên hệ Quản trị viên: <a href="https://zalo.me/0762629292" target="_blank" style="color:#2563eb; text-decoration:none; font-weight:600">Zalo 0762.629.292 (Đạt)</a>
     </div>
   </div>
 
@@ -196,7 +196,7 @@
     <!-- ================= TAB 1: CẤP MÃ BẢN QUYỀN ================= -->
     <div id="tabContentIssue" class="tab-content active">
       <div class="panel">
-        <h2 style="font-size:16px; margin-bottom:12px; color:#fff; display:flex; align-items:center; gap:8px">
+        <h2 style="font-size:16px; margin-bottom:12px; color:var(--text); display:flex; align-items:center; gap:8px">
           <span>⚡</span> <span>Xuất Mã Cấp Tốc Cho Khách Tại Gara</span>
         </h2>
 
@@ -230,13 +230,13 @@
             </div>
             <div class="plan-card-price">Trải nghiệm miễn phí</div>
             <div class="plan-card-price">Không trừ tiền ví đại lý</div>
-            <div class="plan-card-profit" style="color:#fbbf24">🎯 Dùng thử chốt sale</div>
+            <div class="plan-card-profit" style="color:#d97706">🎯 Dùng thử chốt sale</div>
           </div>
         </div>
 
         <!-- Tuỳ Chọn Hoa Hồng / Chiết Khấu (User Feature: Hoa hồng cho chọn được) -->
-        <div id="discountSelectorBox" style="background:rgba(0,0,0,0.2); border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:14px">
-          <label style="color:#38bdf8; margin-bottom:8px">2. Tuỳ Chọn Mức Hoa Hồng / Giảm Giá Cho Đơn Này (Theo ý Thợ)</label>
+        <div id="discountSelectorBox" style="background:#f8fafc; border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:14px">
+          <label style="color:#2563eb; margin-bottom:8px">2. Tuỳ Chọn Mức Hoa Hồng / Giảm Giá Cho Đơn Này (Theo ý Thợ)</label>
           <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))">
             <div>
               <select id="discountChoiceSelect" onchange="onDiscountChoiceChange()">
@@ -255,7 +255,7 @@
           <div style="background:var(--panel2); border-radius:8px; padding:12px; margin-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
             <div>
               <div style="font-size:12px; color:var(--muted)">Số tiền thợ thu của khách:</div>
-              <div id="summaryCustomerPay" style="font-size:18px; font-weight:800; color:#fff">2.950.000 ₫</div>
+              <div id="summaryCustomerPay" style="font-size:18px; font-weight:800; color:var(--text)">2.950.000 ₫</div>
             </div>
             <div>
               <div style="font-size:12px; color:var(--muted)">Giá sỉ trừ ví đại lý:</div>
@@ -263,10 +263,10 @@
             </div>
             <div>
               <div style="font-size:12px; color:var(--muted)">Thợ đút túi lãi ngay:</div>
-              <div id="summaryDealerProfit" style="font-size:20px; font-weight:900; color:#34d399">+1.032.500 ₫</div>
+              <div id="summaryDealerProfit" style="font-size:20px; font-weight:900; color:#059669">+1.032.500 ₫</div>
             </div>
             <div>
-              <button type="button" class="small ghost" onclick="showMechanicPaymentQr()" style="border-color:#38bdf8; color:#38bdf8">
+              <button type="button" class="small ghost" onclick="showMechanicPaymentQr()" style="border-color:#2563eb; color:#2563eb">
                 📲 Hiện QR Thu Tiền Khách
               </button>
             </div>
@@ -302,7 +302,7 @@
       <div class="panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px">
           <div>
-            <h2 style="font-size:16px; margin:0; color:#fff">Danh sách xe & bản quyền do đại lý quản lý</h2>
+            <h2 style="font-size:16px; margin:0; color:var(--text)">Danh sách xe & bản quyền do đại lý quản lý</h2>
             <div class="hint">Theo dõi bảo hành và hỗ trợ khách đổi máy/reset kích hoạt</div>
           </div>
           <input id="customerSearchInput" placeholder="🔍 Tìm theo tên, SĐT, biển số..." style="width:240px" oninput="filterCustomersTable()">
@@ -332,7 +332,7 @@
     <!-- ================= TAB 3: BIẾN ĐỘNG SỐ DƯ ================= -->
     <div id="tabContentTransactions" class="tab-content">
       <div class="panel">
-        <h2 style="font-size:16px; margin-bottom:12px; color:#fff">Lịch sử biến động ví đại lý</h2>
+        <h2 style="font-size:16px; margin-bottom:12px; color:var(--text)">Lịch sử biến động ví đại lý</h2>
         <div style="overflow-x:auto">
           <table>
             <thead>
@@ -373,7 +373,7 @@
     <div style="background:var(--panel2); border-radius:8px; padding:12px; margin-bottom:14px">
       <div style="font-size:12px; color:var(--muted)">Cú pháp chuyển khoản bắt buộc:</div>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px">
-        <span id="topupSyntax" class="mono" style="font-size:17px; font-weight:800; color:#38bdf8">NAP DL DL01</span>
+        <span id="topupSyntax" class="mono" style="font-size:17px; font-weight:800; color:#2563eb">NAP DL DL01</span>
         <button type="button" class="small ghost" onclick="copyTopupSyntax()">📋 Copy</button>
       </div>
     </div>
@@ -412,19 +412,19 @@
 <div class="modal-mask" id="successModal" style="display:none">
   <div class="modal" style="max-width:540px; text-align:center">
     <div style="font-size:48px; margin-bottom:6px">🎉</div>
-    <h3 style="color:#34d399; font-size:20px; font-weight:800">CẤP MÃ BẢN QUYỀN THÀNH CÔNG!</h3>
+    <h3 style="color:#059669; font-size:20px; font-weight:800">CẤP MÃ BẢN QUYỀN THÀNH CÔNG!</h3>
     <div class="hint">Bản quyền đã được đăng ký vào hệ thống Geely EX2.</div>
 
     <div style="background:rgba(16,185,129,0.1); border:2px dashed #10b981; border-radius:12px; padding:16px; margin:16px 0">
       <div style="font-size:12px; color:var(--muted); font-weight:700">MÃ KÍCH HOẠT CHO XE:</div>
-      <div id="resResultKey" class="mono" style="font-size:26px; font-weight:900; color:#34d399; letter-spacing:1px; margin:6px 0">EX2-XXXX-XXXX</div>
+      <div id="resResultKey" class="mono" style="font-size:26px; font-weight:900; color:#059669; letter-spacing:1px; margin:6px 0">EX2-XXXX-XXXX</div>
       <div style="font-size:13px; color:var(--text)">Chủ xe: <b id="resResultOwner">—</b> • SĐT: <b id="resResultPhone">—</b></div>
-      <div style="font-size:13px; color:#38bdf8; margin-top:4px" id="resResultProfitBadge">Lợi nhuận thợ: +1.032.500 ₫</div>
+      <div style="font-size:13px; color:#059669; font-weight:700; margin-top:4px" id="resResultProfitBadge">Lợi nhuận thợ: +1.032.500 ₫</div>
     </div>
 
     <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:16px">
       <button type="button" class="primary" onclick="copyResultKey()">📋 Copy Mã</button>
-      <button type="button" class="ghost" style="border-color:#0068ff; color:#38bdf8" onclick="sendResultToZalo()">💬 Gửi Zalo Cho Khách</button>
+      <button type="button" class="ghost" style="border-color:#0068ff; color:#0068ff" onclick="sendResultToZalo()">💬 Gửi Zalo Cho Khách</button>
       <button type="button" class="ghost" onclick="toggleActivationQr()">📷 Hiện QR Kích Hoạt Trên Xe</button>
     </div>
 
@@ -653,7 +653,7 @@ function recalculatePricing() {
   $("summaryWholesaleDeduct").textContent = wholesaleCost.toLocaleString("vi-VN") + " ₫";
   
   if (dealerProfit >= 0) {
-    $("summaryDealerProfit").style.color = "#34d399";
+    $("summaryDealerProfit").style.color = "#059669";
     $("summaryDealerProfit").textContent = "+" + dealerProfit.toLocaleString("vi-VN") + " ₫";
   } else {
     $("summaryDealerProfit").style.color = "var(--danger)";
@@ -790,7 +790,7 @@ function renderCustomersTable(list) {
     const createdStr = l.created_at ? new Date(l.created_at).toLocaleDateString("vi-VN") : "—";
 
     html += '<tr>' +
-      '<td><span class="mono" style="font-weight:700; color:#34d399">' + esc(l.key) + '</span></td>' +
+      '<td><span class="mono" style="font-weight:700; color:#059669">' + esc(l.key) + '</span></td>' +
       '<td><b>' + esc(l.owner_name) + '</b><div class="hint">' + esc(l.note || '') + '</div></td>' +
       '<td><span class="mono">' + esc(l.owner_phone) + '</span></td>' +
       '<td>' + planBadge + '</td>' +
@@ -847,7 +847,7 @@ function renderTransactionsTable(list) {
   let html = "";
   list.forEach(t => {
     const isPositive = t.amount > 0;
-    const amtColor = isPositive ? "#34d399" : "#ef4444";
+    const amtColor = isPositive ? "#059669" : "#ef4444";
     const amtStr = (isPositive ? "+" : "") + Number(t.amount).toLocaleString("vi-VN") + " ₫";
     const timeStr = t.created_at ? new Date(t.created_at).toLocaleString("vi-VN") : "—";
 
