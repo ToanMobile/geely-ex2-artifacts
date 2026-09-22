@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.1.9",
-    "versionCode": 1109,
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "62d85caf890b0b792c111168426ab33801852d28e3b8d0e8fe3a572b8988a72a",
-    "releaseNotes": "- Tự động toàn màn hình khi tắt 1 ứng dụng chia đôi: Khi đang chia đôi 2 ứng dụng, nếu tắt 1 ứng dụng thì ứng dụng còn lại tự động bung ra toàn màn hình ngay lập tức, không còn bị kẹt nửa màn hình.\n- Khắc phục lỗi ứng dụng mở mới bị hiển thị dạng cửa sổ nổi: Tự động dọn dẹp sạch sẽ các vùng cửa sổ chia đôi cũ, giúp ứng dụng mở mới từ màn hình chính luôn hiển thị trọn vẹn toàn màn hình.\n- Kéo vạch chia đôi siêu mượt mà 60 FPS: Tối ưu hóa phản hồi cảm ứng mượt mà khi di chuyển vạch chia đôi, tích hợp cơ chế tự động căn chỉnh thông minh vào các tỷ lệ chuẩn (30:70, 50:50, 70:30), bảo vệ trải nghiệm xem video và bản đồ không bị gián đoạn.\n- Thêm nút \"Reset màn hình\" trên bảng tiện ích nổi: Hỗ trợ xử lý nhanh các tình huống kẹt cửa sổ, khôi phục giao diện xe về trạng thái chuẩn với cơ chế chạm 2 bước xác nhận an toàn chống bấm nhầm khi đang lái xe.",
+    "sha256": "de9d5bb23278eaf3521a1960f04c449205bc61fcf2ec750c195c02da181b8711",
+    "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện \"Hi Geely\": Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
