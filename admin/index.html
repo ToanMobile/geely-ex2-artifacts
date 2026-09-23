@@ -5252,6 +5252,28 @@ function versionCodeFromName(name) {
   if (x === 1 && y === 0) return 100 + z;
   return x * 1000 + y * 100 + z;
 }
+
+/**
+ * Kiểm tra xem phiên bản có thuộc danh sách phát hành Production chính thức không.
+ * Các bản dev thử nghiệm nội bộ (1.2.1, 1.1.9, 1.1.8, 1.1.6, 1.1.4, v.v.) sẽ bị loại bỏ
+ * khi xem ở môi trường Production để danh mục ép cập nhật luôn tinh gọn và đúng nghiệp vụ.
+ */
+function isProductionVersionCode(app, code, name) {
+  if (code == null || isNaN(code) || code <= 0) return false;
+  if (name && /(dev|alpha|beta|test)/i.test(name)) return false;
+  const devCodes = new Set([1201, 1109, 1108, 1107, 1104, 1103, 1102, 1101, 1100]);
+  if (devCodes.has(code)) return false;
+  if (app === "car" && code === 1106) return false;
+
+  if (code >= 1100 && code < 1200) {
+    return app === "phone" ? (code === 1105 || code === 1106) : (code === 1105);
+  }
+  if (code >= 1200 && code < 1300) {
+    return code === 1200;
+  }
+  if (code < 1000) return true;
+  return true;
+}
 // Môi trường đang chỉnh: "prod" -> nhánh car/phone, "dev" -> nhánh carDev/phoneDev.
 // Vì sao phải tách: app chọn nhánh theo BuildConfig.APP_ENV (AppUpdateConfig.carFor/phoneFor).
 // Gộp chung một nhánh thì xe cài bản Dev bị chào bản stable ngay khi stable vượt versionCode —
@@ -5412,11 +5434,28 @@ function renderKnownVersions(app) {
   Object.keys(fleet).forEach(name => {
     const code = versionCodeFromName(name);
     if (code == null || code === targetCode) return;
+    if (window._fuEnv === "prod") {
+      if (code > targetCode) return; // Ẩn các bản build cao hơn bản đích Production
+      if (!isProductionVersionCode(app, code, name)) return; // Ẩn các bản dev thử nghiệm
+    }
     seen[code] = { name: name, count: fleet[name] };
   });
+  if (window._fuEnv === "prod") {
+    // Đảm bảo ở tab Production luôn có sẵn bản production chính thức đã phát hành (< targetCode) để ép nhanh
+    const baselineVer = 1105;
+    if (baselineVer < targetCode && !seen[baselineVer]) {
+      seen[baselineVer] = { name: "1.1.5", count: fleet["1.1.5"] || 0 };
+    }
+  }
   (cfg.forceRules || []).forEach(r => {
     (Array.isArray(r.matchVersionCodes) ? r.matchVersionCodes : []).forEach(code => {
-      if (code !== targetCode && !seen[code]) seen[code] = { name: "", count: 0 };
+      if (code !== targetCode && !seen[code]) {
+        if (window._fuEnv === "prod") {
+          if (code > targetCode) return;
+          if (!isProductionVersionCode(app, code, "")) return;
+        }
+        seen[code] = { name: "", count: 0 };
+      }
     });
   });
   const rows = [];
