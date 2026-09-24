@@ -918,7 +918,7 @@
           </div>
 
           <!-- Form thêm chi phí -->
-          <div style="display:grid; grid-template-columns: 1.2fr 1.8fr 1fr auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
+          <div style="display:grid; grid-template-columns: 1.1fr 1.3fr 0.9fr auto auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
             <div>
               <label style="font-size:11px">Khoản chi *</label>
               <input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI, Thiết bị test, TK Apple..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
@@ -931,6 +931,20 @@
               <label style="font-size:11px">Số tiền chi (₫) *</label>
               <input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)" onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
             </div>
+            <div>
+              <label style="font-size:11px">Chứng từ / Nghiệm thu</label>
+              <div style="display:flex; align-items:center; gap:6px; min-height:34px">
+                <input type="file" id="psNewExpenseReceiptFile" accept="image/*" style="display:none" onchange="handleExpenseReceiptFile(event)">
+                <button type="button" class="small ghost" id="btnUploadReceipt" onclick="$('psNewExpenseReceiptFile').click()" ondragover="event.preventDefault(); this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleReceiptDrop(event)" style="display:inline-flex; align-items:center; gap:4px; height:34px; padding:0 8px; white-space:nowrap; border:1px dashed var(--border); font-size:11px" title="Tải ảnh biên bản nghiệm thu, hoá đơn API hoặc bill chuyển khoản (Kéo thả, chọn ảnh hoặc dán Ctrl+V)">
+                  📷 Kèm ảnh bill/NT
+                </button>
+                <div id="psNewExpenseReceiptPreview" style="display:none; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:2px 8px 2px 4px; border-radius:6px; height:34px">
+                  <img id="psNewExpenseReceiptThumb" src="" style="width:26px; height:26px; object-fit:cover; border-radius:4px; border:1px solid var(--border); cursor:pointer" onclick="previewImageDirect(window._newExpenseReceipt?.dataUrl, window._newExpenseReceipt?.name || 'Ảnh nghiệm thu')" title="Bấm xem phóng to">
+                  <span id="psNewExpenseReceiptLabel" class="hint" style="font-size:11px; max-width:85px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap"></span>
+                  <span style="cursor:pointer; color:var(--danger); font-size:13px; font-weight:bold; margin-left:2px" onclick="clearNewExpenseReceipt()" title="Gỡ ảnh">✕</span>
+                </div>
+              </div>
+            </div>
             <div style="padding-bottom:8px">
               <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; white-space:nowrap" title="Đánh dấu nếu khoản tiền này đã được thanh toán thực tế (sẽ trừ vào doanh thu để tính chia lãi)">
                 <input id="psNewExpenseIsPaid" type="checkbox" style="width:16px; height:16px; margin:0; cursor:pointer">
@@ -938,9 +952,11 @@
               </label>
             </div>
             <div>
-              <button class="small" onclick="addProfitSharingExpense()">➕ Thêm Chi Phí</button>
+              <button class="small" onclick="addProfitSharingExpense()" style="height:34px">➕ Thêm Chi Phí</button>
             </div>
           </div>
+          <!-- Input ẩn để upload ảnh cho từng dòng chi phí đã có -->
+          <input type="file" id="psRowReceiptFileInput" accept="image/*" style="display:none" onchange="handleRowReceiptFile(event)">
 
           <!-- Bảng danh sách chi phí -->
           <div style="overflow-x:auto">
@@ -949,28 +965,29 @@
                 <tr>
                   <th style="text-align:left">Khoản chi</th>
                   <th style="text-align:left">Ghi chú</th>
+                  <th style="text-align:center; width:110px">Nghiệm thu / Bill</th>
                   <th style="text-align:right">Số tiền (₫)</th>
-                  <th style="text-align:center; width:140px">Trạng thái</th>
+                  <th style="text-align:center; width:130px">Trạng thái</th>
                   <th style="text-align:center; width:120px">Ngày ghi nhận</th>
                   <th style="text-align:right; width:50px">Xoá</th>
                 </tr>
               </thead>
               <tbody id="psExpenseTableBody">
-                <tr><td colspan="6" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
+                <tr><td colspan="7" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
               </tbody>
               <tfoot>
                 <tr style="font-weight:700; border-top:2px solid var(--border)">
-                  <td colspan="2">ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
+                  <td colspan="3">ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
                   <td class="mono" style="text-align:right; color:var(--danger)" id="psExpenseTablePaidTotal">0 ₫</td>
                   <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Tính vào phân chia 60:40</td>
                 </tr>
                 <tr style="font-size:12px; color:var(--muted)">
-                  <td colspan="2">Chờ thanh toán (Ghi chú chưa chi)</td>
+                  <td colspan="3">Chờ thanh toán (Ghi chú chưa chi)</td>
                   <td class="mono" style="text-align:right; color:#d97706" id="psExpenseTablePendingTotal">0 ₫</td>
                   <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Chưa trừ vào lợi nhuận chia</td>
                 </tr>
                 <tr style="font-weight:600; border-top:1px dashed var(--border); font-size:12px">
-                  <td colspan="2">TỔNG CHI PHÍ DỰ KIẾN</td>
+                  <td colspan="3">TỔNG CHI PHÍ DỰ KIẾN</td>
                   <td class="mono" style="text-align:right" id="psExpenseTableTotal">0 ₫</td>
                   <td colspan="3"></td>
                 </tr>
@@ -1994,6 +2011,32 @@
     </div>
   </div>
 
+  <!-- Modal Xem Chứng Từ Nghiệm Thu Chi Phí -->
+  <div class="modal-mask" id="expenseReceiptModalMask" style="display:none" onclick="if(event.target===this)closeExpenseReceiptModal()">
+    <div class="modal" style="max-width:680px">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px">
+        <div>
+          <h3 id="expenseReceiptModalTitle" style="margin:0; font-size:15px; color:var(--text)">🧾 Chứng từ nghiệm thu / Hoá đơn</h3>
+          <div id="expenseReceiptModalSubtitle" class="hint" style="margin-top:4px">--</div>
+        </div>
+        <button type="button" class="ghost small" onclick="closeExpenseReceiptModal()" style="font-size:16px; padding:2px 8px; line-height:1">✕</button>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.06); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; max-height:65vh; overflow:auto">
+        <img id="expenseReceiptModalImg" src="" alt="Chứng từ nghiệm thu" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.15)">
+      </div>
+
+      <div class="actions" style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
+        <div style="display:flex; gap:6px">
+          <button type="button" class="small ghost" id="btnExpenseReceiptOpenTab" onclick="openExpenseReceiptInNewTab()">↗️ Mở tab mới</button>
+          <button type="button" class="small ghost" id="btnExpenseReceiptChange" onclick="changeCurrentExpenseReceipt()">🔄 Đổi ảnh</button>
+          <button type="button" class="small danger" id="btnExpenseReceiptRemove" onclick="removeCurrentExpenseReceipt()">🗑️ Gỡ ảnh</button>
+        </div>
+        <button type="button" class="ghost small" onclick="closeExpenseReceiptModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -2401,7 +2444,7 @@ function toggleTheme() { applyTheme(document.body.classList.contains("dark") ? "
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(localStorage.getItem("geely_admin_theme") || "light");
   try { localStorage.removeItem("geely_ota_priv_key_pem"); } catch (e) {}
-  document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices, closeExpenseReceiptModal].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
   
   // T0024: Touch session on load and every 10 mins (Rolling session 3 ngày)
   if (getSession()) {
@@ -4214,7 +4257,7 @@ function renderProfitSharingUI(totalRevenue) {
   if (tbody) {
     tbody.innerHTML = "";
     if (!expenses.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập khoản chi, ghi chú & số tiền phía trên để khai báo.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập khoản chi, ghi chú & số tiền phía trên để khai báo.</td></tr>';
     } else {
       expenses.forEach((exp, idx) => {
         const tr = document.createElement("tr");
@@ -4226,9 +4269,16 @@ function renderProfitSharingUI(totalRevenue) {
         const noteHtml = exp.note
           ? esc(exp.note)
           : '<span style="color:var(--muted)">—</span>';
+        const receiptHtml = exp.receipt_img
+          ? `<div style="display:inline-flex; align-items:center; gap:4px">` +
+            `<img src="${esc(exp.receipt_img)}" style="width:30px; height:30px; object-fit:cover; border-radius:4px; border:1px solid var(--border); cursor:pointer; vertical-align:middle; transition:transform 0.15s" onclick="previewExpenseReceipt('${expId}')" title="Bấm để xem ảnh nghiệm thu / bill xác thực" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">` +
+            `<button type="button" class="small ghost" style="padding:1px 5px; font-size:10px; height:24px" onclick="triggerRowReceiptUpload('${expId}')" title="Đổi ảnh nghiệm thu khác">🔄</button>` +
+            `</div>`
+          : `<button type="button" class="small ghost" style="padding:2px 6px; font-size:11px; border:1px dashed var(--border); white-space:nowrap" onclick="triggerRowReceiptUpload('${expId}')" title="Tải ảnh bill chuyển khoản, hoá đơn hoặc biên bản nghiệm thu">📷 + Ảnh</button>`;
         tr.innerHTML =
           `<td><b>${esc(exp.title || "Chi phí")}</b></td>` +
           `<td class="note-cell" style="cursor:pointer" onclick="editProfitSharingExpenseNote('${expId}')" title="Bấm để sửa ghi chú (note)">${noteHtml} <span style="font-size:11px; opacity:0.4; margin-left:3px">✏️</span></td>` +
+          `<td style="text-align:center">${receiptHtml}</td>` +
           `<td class="mono" style="text-align:right; font-weight:600; color:${isPaid ? 'var(--danger)' : '#d97706'}">${formatVndNumber(exp.amount || 0)}</td>` +
           `<td style="text-align:center">${statusHtml}</td>` +
           `<td class="mono" style="text-align:center; font-size:12px; color:var(--muted)">${formatIsoTime(exp.created_at)}</td>` +
@@ -4265,6 +4315,238 @@ function formatNumberInput(el) {
   el.value = num > 0 ? num.toLocaleString("vi-VN") : "";
 }
 
+window._newExpenseReceipt = null;
+window._targetRowExpId = null;
+window._currentPreviewExpId = null;
+
+function compressImageFile(file, maxWidth = 1200, maxHeight = 1200, quality = 0.75) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type || !file.type.startsWith("image/")) {
+      return reject(new Error("Vui lòng chọn file hình ảnh (JPG, PNG, WebP)"));
+    }
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Không thể đọc file ảnh"));
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = () => reject(new Error("File ảnh không hợp lệ hoặc bị hỏng"));
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        if (!w || !h) {
+          return reject(new Error("Kích thước ảnh không hợp lệ"));
+        }
+        if (w > maxWidth || h > maxHeight) {
+          if (w / h > maxWidth / maxHeight) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          } else {
+            w = Math.round((w * maxHeight) / h);
+            h = maxHeight;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL("image/jpeg", quality);
+        resolve({
+          dataUrl,
+          name: file.name || "receipt.jpg",
+          width: w,
+          height: h,
+          size: Math.round(dataUrl.length * 3 / 4)
+        });
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleExpenseReceiptFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  compressImageFile(file).then(res => {
+    window._newExpenseReceipt = res;
+    const thumb = $("psNewExpenseReceiptThumb");
+    const label = $("psNewExpenseReceiptLabel");
+    const preview = $("psNewExpenseReceiptPreview");
+    const btn = $("btnUploadReceipt");
+    if (thumb) thumb.src = res.dataUrl;
+    if (label) label.textContent = res.name || "Ảnh bill";
+    if (preview) preview.style.display = "inline-flex";
+    if (btn) btn.style.display = "none";
+  }).catch(err => {
+    alert("Lỗi tải ảnh: " + (err.message || err));
+  }).finally(() => {
+    event.target.value = "";
+  });
+}
+
+function handleReceiptDrop(event) {
+  event.preventDefault();
+  if (event.currentTarget) event.currentTarget.style.borderColor = "var(--border)";
+  const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+  if (!file) return;
+  compressImageFile(file).then(res => {
+    window._newExpenseReceipt = res;
+    const thumb = $("psNewExpenseReceiptThumb");
+    const label = $("psNewExpenseReceiptLabel");
+    const preview = $("psNewExpenseReceiptPreview");
+    const btn = $("btnUploadReceipt");
+    if (thumb) thumb.src = res.dataUrl;
+    if (label) label.textContent = res.name || "Ảnh bill";
+    if (preview) preview.style.display = "inline-flex";
+    if (btn) btn.style.display = "none";
+  }).catch(err => {
+    alert("Lỗi tải ảnh: " + (err.message || err));
+  });
+}
+
+function clearNewExpenseReceipt() {
+  window._newExpenseReceipt = null;
+  const fileInput = $("psNewExpenseReceiptFile");
+  if (fileInput) fileInput.value = "";
+  const thumb = $("psNewExpenseReceiptThumb");
+  if (thumb) thumb.src = "";
+  const preview = $("psNewExpenseReceiptPreview");
+  if (preview) preview.style.display = "none";
+  const btn = $("btnUploadReceipt");
+  if (btn) btn.style.display = "inline-flex";
+}
+
+function triggerRowReceiptUpload(expId) {
+  window._targetRowExpId = expId;
+  const input = $("psRowReceiptFileInput");
+  if (input) input.click();
+}
+
+function handleRowReceiptFile(event) {
+  const file = event.target.files && event.target.files[0];
+  const expId = window._targetRowExpId;
+  if (!file || !expId) return;
+
+  compressImageFile(file).then(res => {
+    const data = ensureProfitSharingData();
+    const exp = (data.expenses || []).find(e => e.id === expId);
+    if (exp) {
+      exp.receipt_img = res.dataUrl;
+      exp.receipt_name = res.name;
+      renderProfitSharingUI();
+      saveProfitSharingConfig(true);
+    }
+  }).catch(err => {
+    alert("Lỗi tải ảnh chứng từ: " + (err.message || err));
+  }).finally(() => {
+    window._targetRowExpId = null;
+    event.target.value = "";
+  });
+}
+
+function previewExpenseReceipt(id) {
+  const data = ensureProfitSharingData();
+  const exp = (data.expenses || []).find(e => e.id === id);
+  if (!exp || !exp.receipt_img) return;
+
+  window._currentPreviewExpId = id;
+  const modal = $("expenseReceiptModalMask");
+  const titleEl = $("expenseReceiptModalTitle");
+  const subtitleEl = $("expenseReceiptModalSubtitle");
+  const imgEl = $("expenseReceiptModalImg");
+
+  if (titleEl) titleEl.textContent = `🧾 Chứng từ: ${exp.title || 'Chi phí'}`;
+  if (subtitleEl) {
+    const statusText = exp.is_paid ? "✅ Đã thanh toán" : "⏳ Chờ thanh toán";
+    const noteText = exp.note ? ` • Ghi chú: ${exp.note}` : "";
+    subtitleEl.textContent = `Số tiền: ${formatVndNumber(exp.amount || 0)} • ${statusText}${noteText}`;
+  }
+  if (imgEl) {
+    imgEl.src = exp.receipt_img;
+    imgEl.alt = exp.receipt_name || exp.title || "Chứng từ nghiệm thu";
+  }
+  const btnChange = $("btnExpenseReceiptChange");
+  const btnRemove = $("btnExpenseReceiptRemove");
+  if (btnChange) btnChange.style.display = "inline-block";
+  if (btnRemove) btnRemove.style.display = "inline-block";
+
+  if (modal) modal.style.display = "flex";
+}
+
+function previewImageDirect(src, title = "Xem trước ảnh") {
+  if (!src) return;
+  window._currentPreviewExpId = null;
+  const modal = $("expenseReceiptModalMask");
+  const titleEl = $("expenseReceiptModalTitle");
+  const subtitleEl = $("expenseReceiptModalSubtitle");
+  const imgEl = $("expenseReceiptModalImg");
+
+  if (titleEl) titleEl.textContent = title;
+  if (subtitleEl) subtitleEl.textContent = "Xem trước ảnh hoá đơn / biên bản nghiệm thu trước khi thêm";
+  if (imgEl) {
+    imgEl.src = src;
+    imgEl.alt = title;
+  }
+  const btnChange = $("btnExpenseReceiptChange");
+  const btnRemove = $("btnExpenseReceiptRemove");
+  if (btnChange) btnChange.style.display = "none";
+  if (btnRemove) btnRemove.style.display = "none";
+
+  if (modal) modal.style.display = "flex";
+}
+
+function closeExpenseReceiptModal() {
+  const modal = $("expenseReceiptModalMask");
+  if (modal) modal.style.display = "none";
+  window._currentPreviewExpId = null;
+}
+
+function openExpenseReceiptInNewTab() {
+  const imgEl = $("expenseReceiptModalImg");
+  if (!imgEl || !imgEl.src) return;
+  if (imgEl.src.startsWith("http://") || imgEl.src.startsWith("https://")) {
+    window.open(imgEl.src, "_blank", "noopener,noreferrer");
+    return;
+  }
+  const w = window.open("");
+  if (w) {
+    w.document.open();
+    w.document.write(`<!DOCTYPE html><html><head><title>Chứng từ nghiệm thu</title><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#18181b;display:flex;align-items:center;justify-content:center;min-height:100vh}img{max-width:100%;max-height:100vh;object-fit:contain;box-shadow:0 0 24px rgba(0,0,0,0.6)}</style></head><body><img src="${imgEl.src}"></body></html>`);
+    w.document.close();
+  } else {
+    const a = document.createElement("a");
+    a.href = imgEl.src;
+    a.download = (window._currentPreviewExpId ? "chung_tu_" + window._currentPreviewExpId : "chung_tu") + ".jpg";
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.click();
+  }
+}
+
+function changeCurrentExpenseReceipt() {
+  const id = window._currentPreviewExpId;
+  if (!id) return;
+  closeExpenseReceiptModal();
+  triggerRowReceiptUpload(id);
+}
+
+function removeCurrentExpenseReceipt() {
+  const id = window._currentPreviewExpId;
+  if (!id) return;
+  if (!confirm("Bạn có chắc chắn muốn gỡ ảnh chứng từ nghiệm thu của khoản chi này?")) return;
+  const data = ensureProfitSharingData();
+  const exp = (data.expenses || []).find(e => e.id === id);
+  if (exp) {
+    delete exp.receipt_img;
+    delete exp.receipt_name;
+    renderProfitSharingUI();
+    saveProfitSharingConfig(true);
+  }
+  closeExpenseReceiptModal();
+}
+
 function addProfitSharingExpense() {
   const titleEl = $("psNewExpenseTitle");
   const noteEl = $("psNewExpenseNote");
@@ -4286,23 +4568,65 @@ function addProfitSharingExpense() {
     return;
   }
 
+  const receiptImg = window._newExpenseReceipt ? window._newExpenseReceipt.dataUrl : null;
+  const receiptName = window._newExpenseReceipt ? (window._newExpenseReceipt.name || "") : null;
+
   const data = ensureProfitSharingData();
-  data.expenses.push({
+  const newExp = {
     id: "exp_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
     title: title,
     note: note,
     amount: amt,
     is_paid: isPaid,
     created_at: new Date().toISOString()
-  });
+  };
+  if (receiptImg) {
+    newExp.receipt_img = receiptImg;
+    newExp.receipt_name = receiptName;
+  }
+  data.expenses.push(newExp);
 
   titleEl.value = "";
   if (noteEl) noteEl.value = "";
   amtEl.value = "";
   if (isPaidEl) isPaidEl.checked = false;
+  clearNewExpenseReceipt();
+
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
+
+// Hỗ trợ paste ảnh chụp màn hình bill / hoá đơn nghiệm thu (Ctrl+V / Cmd+V)
+document.addEventListener("paste", function(e) {
+  const items = e.clipboardData && e.clipboardData.items;
+  if (!items) return;
+  if (!$("tabBtnSales")?.classList.contains("active")) return;
+  const active = document.activeElement;
+  const container = $("psNewExpenseTitle")?.closest("div[style*='panel2']");
+  if (!container || !container.contains(active)) return;
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type && items[i].type.indexOf("image") !== -1) {
+      const blob = items[i].getAsFile();
+      if (blob) {
+        compressImageFile(blob).then(res => {
+          window._newExpenseReceipt = res;
+          const thumb = $("psNewExpenseReceiptThumb");
+          const label = $("psNewExpenseReceiptLabel");
+          const preview = $("psNewExpenseReceiptPreview");
+          const btn = $("btnUploadReceipt");
+          if (thumb) thumb.src = res.dataUrl;
+          if (label) label.textContent = "Ảnh dán (Paste)";
+          if (preview) preview.style.display = "inline-flex";
+          if (btn) btn.style.display = "none";
+        }).catch(err => {
+          console.warn("Lỗi paste ảnh nghiệm thu:", err);
+        });
+        break;
+      }
+    }
+  }
+});
 
 function editProfitSharingExpenseNote(id) {
   const data = ensureProfitSharingData();
@@ -4330,6 +4654,9 @@ function deleteProfitSharingExpense(id) {
   if (!confirm("Bạn có chắc chắn muốn xoá khoản chi tiêu này?")) return;
   const data = ensureProfitSharingData();
   data.expenses = data.expenses.filter(e => e.id !== id);
+  if (window._currentPreviewExpId === id) {
+    closeExpenseReceiptModal();
+  }
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
