@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.2.1",
-    "versionCode": 1201,
+    "latestVersionName": "1.2.2",
+    "versionCode": 1202,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "5e98f471420d44d5a0148c267e9f3c81061ca7e4bac301cfa06e1ef6b6ace0da",
-    "releaseNotes": "- Bảo toàn chế độ chia đôi màn hình khi ra lệnh dẫn đường Google Maps: Khắc phục triệt để lỗi Google Maps tự động bung ra toàn màn hình và phá vỡ phiên chia đôi khi người lái ra lệnh chỉ đường bằng giọng nói. Google Maps giờ đây cập nhật lộ trình mới mượt mà và luôn giữ đúng vị trí nửa màn hình bên cạnh các ứng dụng khác (YouTube, Spotify...).\n- Kích hoạt phím Next / Prev trên vô lăng khi phát YouTube: Khắc phục lỗi nút chuyển bài (Next) và lùi bài (Previous) trên vô lăng không phản hồi khi đang xem YouTube hoặc YouTube ReVanced / Morphe. Xe tự động điều hướng tín hiệu phím nhạc tới đúng trình phát YouTube trên màn hình xe.\n- Tối ưu hóa và chống nhảy bài kép (double-skip): Hoàn thiện cơ chế điều khiển phím phương tiện, bảo vệ các ứng dụng nghe nhạc trực tuyến (Spotify, Zing MP3, SmartTube, YouTube Music) luôn chuyển bài mượt mà chuẩn xác.",
+    "sha256": "50969bd82ce03319cae5d6b4c706dccc8a10a1b88d72be41dc608bb9500c18c1",
+    "releaseNotes": "- Cơ chế cập nhật OTA an toàn (Two-Stage Pipeline): Bảo vệ hệ thống xe bằng điều kiện an toàn nghiêm ngặt — bản cập nhật tải ngầm tự động nhưng chỉ được phép cài đặt khi xe đang đỗ (về số P hoặc vận tốc 0 km/h), ngăn chặn hoàn toàn nguy cơ gián đoạn khi đang lái xe.\n- Tối ưu hóa trợ lý giọng nói (Voice Assistant): Nâng cấp bộ lọc tiếng ồn cabin, chống nuốt từ khẩu lệnh, đồng thời hoàn thiện phản hồi lệnh điều khiển điều hòa, giải trí và dẫn đường chính xác, tự nhiên.\n- Tự động bảo toàn phiên chia đôi màn hình (Split-Screen & PIP): Giữ vững bố cục chia đôi màn hình khi ứng dụng mở chế độ Picture-in-Picture hoặc khi khởi chạy ứng dụng thứ ba.\n- Ổn định kết nối và điều phối phím vô lăng: Khắc phục hiện tượng nhảy bài hoặc mất bắt phím trên vô lăng cho YouTube, Spotify và Zing MP3.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
@@ -91,7 +91,7 @@
     "forceRules": [],
     "latestVersionName": "1.2.0",
     "versionCode": 1200,
-    "downloadUrl": "itms-beta://",
+    "downloadUrl": "https://apps.apple.com/app/id6813109149",
     "sha256": "",
     "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
   }

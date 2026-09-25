@@ -24,15 +24,39 @@ Quy ước:
 
 ---
 
+## CarConnect 1.2.2
+
+- **Cơ chế cập nhật OTA an toàn (Two-Stage Pipeline)**: Bảo vệ hệ thống xe bằng điều kiện an toàn nghiêm ngặt — bản cập nhật tải ngầm tự động nhưng chỉ được phép cài đặt khi xe đang đỗ (về số P hoặc vận tốc 0 km/h), ngăn chặn hoàn toàn nguy cơ gián đoạn khi đang lái xe.
+- **Tối ưu hóa trợ lý giọng nói (Voice Assistant)**: Nâng cấp bộ lọc tiếng ồn cabin, chống nuốt từ khẩu lệnh, đồng thời hoàn thiện phản hồi lệnh điều khiển điều hòa, giải trí và dẫn đường chính xác, tự nhiên.
+- **Tự động bảo toàn phiên chia đôi màn hình (Split-Screen & PIP)**: Giữ vững bố cục chia đôi màn hình khi ứng dụng mở chế độ Picture-in-Picture hoặc khi khởi chạy ứng dụng thứ ba.
+- **Ổn định kết nối và điều phối phím vô lăng**: Khắc phục hiện tượng nhảy bài hoặc mất bắt phím trên vô lăng cho YouTube, Spotify và Zing MP3.
+
+## PhoneConnect 1.2.2
+
+- **Tách biệt và tối ưu kênh cập nhật iOS**: Hỗ trợ phiên bản riêng cho iPhone qua App Store & TestFlight, đảm bảo đồng bộ hoàn hảo với hệ sinh thái xe mà không bị lệch nhịp phê duyệt kho ứng dụng.
+- **Tăng tốc phản hồi lệnh điều khiển từ xa**: Giảm thiểu độ trễ kết nối TCP :44700 và Bluetooth SPP khi gửi lệnh điều hòa, mở cốp và kiểm tra thông tin xe.
+- **Bảo toàn trạng thái đa nhiệm & giao diện**: Đồng bộ 100% logic hiển thị và giao diện người dùng theo chuẩn CarConnect v1.2.2 trên xe.
+- **Two-Stage Safe OTA Integration (EN)**: Coordinated safe update checks ensuring in-car installation only triggers when parked.
+- **iOS Independent Channel & Stability (EN)**: Dedicated release track for iOS TestFlight / App Store with optimized remote command responsiveness.
+
 ## CarConnect 1.2.1
 
+- **Nút bài tiếp / bài trước trên vô-lăng**: YouTube chuyển bài trở lại. Spotify, YouTube Music và SmartTube vẫn chỉ nhảy một bài.
+- **Không còn bảng nổi khi điện thoại nối hoặc ngắt.** Trạng thái điện thoại nằm ở thanh trên.
 - **Bảo toàn chế độ chia đôi màn hình khi ra lệnh dẫn đường Google Maps**: Khắc phục triệt để lỗi Google Maps tự động bung ra toàn màn hình và phá vỡ phiên chia đôi khi người lái ra lệnh chỉ đường bằng giọng nói. Google Maps giờ đây cập nhật lộ trình mới mượt mà và luôn giữ đúng vị trí nửa màn hình bên cạnh các ứng dụng khác (YouTube, Spotify...).
 - **Kích hoạt phím Next / Prev trên vô lăng khi phát YouTube**: Khắc phục lỗi nút chuyển bài (Next) và lùi bài (Previous) trên vô lăng không phản hồi khi đang xem YouTube hoặc YouTube ReVanced / Morphe. Xe tự động điều hướng tín hiệu phím nhạc tới đúng trình phát YouTube trên màn hình xe.
 - **Tối ưu hóa và chống nhảy bài kép (double-skip)**: Hoàn thiện cơ chế điều khiển phím phương tiện, bảo vệ các ứng dụng nghe nhạc trực tuyến (Spotify, Zing MP3, SmartTube, YouTube Music) luôn chuyển bài mượt mà chuẩn xác.
 
 ## PhoneConnect 1.2.1
 
-- **Đồng bộ phiên bản 1.2.1 với màn hình xe**: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định.
+- **Đồng bộ điều khiển phương tiện với đầu xe**: Nâng cấp khả năng đồng bộ trạng thái phát nhạc và video từ màn hình xe (YouTube, Spotify, Zing MP3...), phản hồi điều khiển chuyển bài (Next / Previous) và tạm dừng mượt mà, tức thì.
+- **Tối ưu hóa kết nối & phản hồi lệnh từ xa**: Cải thiện độ ổn định kết nối Wi-Fi/Hotspot và Bluetooth SPP, giảm thiểu độ trễ khi gửi lệnh bật/tắt điều hòa, khóa cửa và điều chỉnh chế độ lái.
+- **Bảo toàn trạng thái đa nhiệm**: Đồng bộ hóa hiển thị và các thao tác điều khiển tương thích hoàn toàn với bản cập nhật CarConnect 1.2.1 trên xe.
+- **Nâng cao hiệu năng & tiết kiệm pin**: Tinh chỉnh các tiến trình lắng nghe socket ngầm, giúp ứng dụng duy trì kết nối bền bỉ với xe mà không làm nóng máy hay hao pin điện thoại.
+- **Vehicle Media Control Sync (EN)**: Seamlessly sync media playback state (YouTube, Spotify, Zing MP3...) from the car screen with responsive Next/Previous and Play/Pause controls.
+- **Remote Commands & Connectivity Optimization (EN)**: Enhanced Wi-Fi Hotspot & Bluetooth SPP connection stability, minimizing latency for remote HVAC, door lock, and driving mode controls.
+- **Multitasking State Parity (EN)**: Full compatibility and UI state parity with the CarConnect 1.2.1 update on your car.
+- **Battery & Performance Boost (EN)**: Optimized background socket listeners for reliable connectivity without overheating or excess phone battery consumption.
 
 ## CarConnect 1.2.0
 
