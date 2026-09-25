@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.1",
-    "versionCode": 1201,
+    "latestVersionName": "1.2.2",
+    "versionCode": 1202,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "08cf06bec1283f049eed5a0664a9530ea03dc6d3656e209d6cfd05afc3d3adeb",
-    "releaseNotes": "- Đồng bộ phiên bản 1.2.1 với màn hình xe: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định.",
+    "sha256": "dbe14d6d99e2d066da3c3ee49bd9fd27df5c38f70072c84c893ca0045e94a210",
+    "releaseNotes": "- Tách biệt và tối ưu kênh cập nhật iOS: Hỗ trợ phiên bản riêng cho iPhone qua App Store & TestFlight, đảm bảo đồng bộ hoàn hảo với hệ sinh thái xe mà không bị lệch nhịp phê duyệt kho ứng dụng.\n- Tăng tốc phản hồi lệnh điều khiển từ xa: Giảm thiểu độ trễ kết nối TCP :44700 và Bluetooth SPP khi gửi lệnh điều hòa, mở cốp và kiểm tra thông tin xe.\n- Bảo toàn trạng thái đa nhiệm & giao diện: Đồng bộ 100% logic hiển thị và giao diện người dùng theo chuẩn CarConnect v1.2.2 trên xe.\n- Two-Stage Safe OTA Integration (EN): Coordinated safe update checks ensuring in-car installation only triggers when parked.\n- iOS Independent Channel & Stability (EN): Dedicated release track for iOS TestFlight / App Store with optimized remote command responsiveness.",
     "minVersionCode": 0,
     "forceRules": []
   },
