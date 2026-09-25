@@ -485,12 +485,22 @@
   <button data-tab="errors">⚠ Lỗi</button>
   <button data-tab="crash">💥 Crash</button>
   <button data-tab="events">📋 Nhật ký Sự kiện</button>
-  <button data-tab="devices">📱 Thiết bị</button>
+  <button data-tab="devices-car">🚗 Đầu xe <span id="badgeCarCount" class="badge" style="font-size:11px;padding:1px 5px;margin-left:4px;display:none">0</span></button>
+  <button data-tab="devices-phone">📱 Điện thoại <span id="badgePhoneCount" class="badge" style="font-size:11px;padding:1px 5px;margin-left:4px;display:none">0</span></button>
 </nav>
 
 <div id="deviceBanner" style="display:none;background:var(--surface-1);border:1px solid var(--accent);border-radius:10px;padding:10px 16px;max-width:1560px;margin:12px auto 0;align-items:center;gap:12px;font-size:13px;box-shadow:var(--card-shadow);box-sizing:border-box">
   <span id="deviceBannerText" style="flex:1;font-weight:600"></span>
   <button id="btnClearDevice" class="ghost small">✕ Xem tất cả thiết bị</button>
+</div>
+
+<div id="fleetHealthBanner" style="display:none;max-width:1560px;margin:12px auto 0;border-radius:12px;padding:12px 18px;align-items:center;gap:14px;box-shadow:var(--card-shadow);box-sizing:border-box;font-size:13px;transition:all 0.3s ease">
+  <div id="fleetHealthIcon" style="font-size:22px;line-height:1"></div>
+  <div style="flex:1">
+    <div id="fleetHealthTitle" style="font-weight:700;font-size:13.5px;margin-bottom:2px"></div>
+    <div id="fleetHealthDesc" style="color:var(--text-secondary);font-size:12px;line-height:1.4"></div>
+  </div>
+  <div id="fleetHealthBadges" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 
 <main>
@@ -1086,21 +1096,44 @@
     </div>
   </section>
 
-  <!-- ============ 9. THIẾT BỊ ============ -->
-  <section id="tab-devices" style="display:none">
+  <!-- ============ 9. ĐẦU XE (CAR DEVICES) ============ -->
+  <section id="tab-devices-car" style="display:none">
     <div class="filters" style="margin-bottom:10px">
-      <label>Tìm kiếm thiết bị:
-        <input type="text" id="fDeviceSearch" placeholder="Lọc theo phiên bản (vd: 1.1.5), chủ xe, model, ID..." style="width:300px">
+      <label>Tìm kiếm đầu xe:
+        <input type="text" id="fCarDeviceSearch" placeholder="Lọc theo phiên bản (vd: 1.2.1), chủ xe, model, ID..." style="width:320px">
       </label>
-      <button id="btnDeviceClear" class="ghost" style="display:none">✕ Xoá lọc</button>
-      <span class="muted" id="deviceCountHint" style="font-size:12px"></span>
+      <button id="btnCarDeviceClear" class="ghost" style="display:none">✕ Xoá lọc</button>
+      <span class="muted" id="carDeviceCountHint" style="font-size:12px"></span>
     </div>
-    <p class="hint">device_id = SHA-256(ANDROID_ID) — khớp machine_id bảng license. "Owner" hiện khi xe đã kích hoạt mã hoặc điện thoại ghép đôi với xe.<br>
-    <b>Hoạt động cuối</b> hiện dạng "X trước" — di chuột vào để xem giờ chính xác.<br>
-    <b>Đã dùng</b> = số ngày từ sự kiện đầu tới sự kiện cuối của thiết bị trong cửa sổ đang chọn.</p>
+    <p class="hint"><b>Đầu xe Geely EX2 (IHU629G Flyme Auto — Android 9 / SDK 28)</b>. <code>device_id</code> = SHA-256(ANDROID_ID) khớp <code>machine_id</code> bảng license.<br>
+    <b>Chủ xe (Owner)</b>: hiện khi xe đã kích hoạt mã bản quyền. Bấm vào tên để mở chi tiết mã hoặc bấm <b>👤 Xem riêng</b> để lọc dashboard theo xe.<br>
+    <b>Vị trí xe</b>: toạ độ GPS thu từ VHAL xe — bấm để mở Google Maps.<br>
+    <b>Hoạt động cuối</b>: hiển thị dạng "X trước" — di chuột vào để xem giờ chính xác.<br>
+    <b>Đã dùng</b>: số ngày từ sự kiện đầu tới sự kiện cuối của xe trong cửa sổ đang chọn.</p>
     <div class="card">
-      <div class="tblwrap"><table id="deviceTable">
-        <thead><tr><th>Owner</th><th>Thiết bị</th><th>App</th><th>Version</th><th>Android</th><th>Hoạt động</th><th>Vị trí</th><th>Hoạt động cuối</th><th>Đã dùng</th></tr></thead>
+      <div class="tblwrap"><table id="carDeviceTable" class="device-tbl">
+        <thead><tr><th>Chủ xe (Owner)</th><th>Đầu xe / Model</th><th>Phiên bản CarConnect</th><th>Android / ROM</th><th>Sự kiện</th><th>Vị trí xe</th><th>Hoạt động cuối</th><th>Đã dùng</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ============ 10. ĐIỆN THOẠI (PHONE DEVICES) ============ -->
+  <section id="tab-devices-phone" style="display:none">
+    <div class="filters" style="margin-bottom:10px">
+      <label>Tìm kiếm điện thoại:
+        <input type="text" id="fPhoneDeviceSearch" placeholder="Lọc theo phiên bản (vd: 1.2.1), dòng máy (Samsung, Pixel...), xe ghép đôi..." style="width:340px">
+      </label>
+      <button id="btnPhoneDeviceClear" class="ghost" style="display:none">✕ Xoá lọc</button>
+      <span class="muted" id="phoneDeviceCountHint" style="font-size:12px"></span>
+    </div>
+    <p class="hint"><b>Điện thoại Companion kết nối &amp; điều khiển xe</b> (qua TCP :44700 / Bluetooth SPP / Cloud Relay).<br>
+    <b>Xe ghép đôi</b>: hiện tên chủ xe / mã xe mà điện thoại này đã ghép đôi. Bấm vào tên để xem chi tiết mã hoặc bấm <b>👤 Xem riêng</b> để lọc telemetry theo máy này.<br>
+    <b>Hoạt động cuối</b>: hiển thị dạng "X trước" — di chuột vào để xem giờ chính xác.<br>
+    <b>Đã dùng</b>: số ngày từ sự kiện đầu tới sự kiện cuối của máy trong cửa sổ đang chọn.</p>
+    <div class="card">
+      <div class="tblwrap"><table id="phoneDeviceTable" class="device-tbl">
+        <thead><tr><th>Xe ghép đôi</th><th>Điện thoại</th><th>Phiên bản PhoneConnect</th><th>Hệ điều hành</th><th>Sự kiện</th><th>Vị trí</th><th>Hoạt động cuối</th><th>Đã dùng</th></tr></thead>
         <tbody></tbody>
       </table></div>
     </div>
@@ -1203,10 +1236,10 @@ function clearDeviceFilter() {
   $("fDevice").value = "";
   refreshAll();
 }
-// Uỷ quyền sự kiện trên bảng thiết bị — KHÔNG nhét dữ liệu vào onclick (dữ liệu
-// device_brand/device_model/app do app tự gửi lên, không đáng tin): chỉ gắn
-// data-device-id/data-device-label, handler tra lại ở đây. Xem cùng kỹ thuật ở admin-keys.html.
-$("deviceTable").addEventListener("click", (e) => {
+// Uỷ quyền sự kiện trên các bảng thiết bị — KHÔNG nhét dữ liệu vào onclick
+document.addEventListener("click", (e) => {
+  const tbl = e.target.closest("table.device-tbl, #carDeviceTable, #phoneDeviceTable");
+  if (!tbl) return;
   const ownerLink = e.target.closest("a.dev-owner-link");
   if (ownerLink) {
     e.preventDefault();
@@ -1220,19 +1253,17 @@ $("deviceTable").addEventListener("click", (e) => {
 });
 $("btnClearDevice").onclick = clearDeviceFilter;
 
-// Lọc tìm kiếm trên bảng Thiết bị
-function filterDeviceTable() {
-  const q = ($("fDeviceSearch")?.value || "").trim().toLowerCase();
-  const btnClear = $("btnDeviceClear");
+// Lọc tìm kiếm trên bảng Đầu xe
+function filterCarDeviceTable() {
+  const q = ($("fCarDeviceSearch")?.value || "").trim().toLowerCase();
+  const btnClear = $("btnCarDeviceClear");
   if (btnClear) btnClear.style.display = q ? "inline-block" : "none";
-  const tbody = $("deviceTable")?.querySelector("tbody");
+  const tbody = $("carDeviceTable")?.querySelector("tbody");
   if (!tbody) return;
   const rows = tbody.querySelectorAll("tr");
-  let visible = 0;
-  let total = 0;
+  let visible = 0, total = 0;
   rows.forEach((tr) => {
-    if (tr.classList.contains("no-match-row")) return;
-    if (tr.querySelector("td.empty")) return;
+    if (tr.classList.contains("no-match-row") || tr.querySelector("td.empty")) return;
     total++;
     const text = tr.textContent.toLowerCase();
     const match = !q || text.includes(q);
@@ -1244,38 +1275,82 @@ function filterDeviceTable() {
     if (!noMatchTr) {
       noMatchTr = document.createElement("tr");
       noMatchTr.className = "no-match-row";
-      noMatchTr.innerHTML = `<td colspan="9" class="empty">Không tìm thấy thiết bị nào khớp "${esc(q)}"</td>`;
+      noMatchTr.innerHTML = `<td colspan="8" class="empty">Không tìm thấy đầu xe nào khớp "${esc(q)}"</td>`;
       tbody.appendChild(noMatchTr);
     } else {
       noMatchTr.style.display = "";
-      noMatchTr.querySelector("td").textContent = `Không tìm thấy thiết bị nào khớp "${q}"`;
+      noMatchTr.querySelector("td").textContent = `Không tìm thấy đầu xe nào khớp "${q}"`;
     }
   } else if (noMatchTr) {
     noMatchTr.style.display = "none";
   }
-  const hint = $("deviceCountHint");
+  const hint = $("carDeviceCountHint");
   if (hint && total > 0) {
-    hint.textContent = q ? `(Khớp ${visible}/${total} thiết bị)` : "";
+    hint.textContent = q ? `(Khớp ${visible}/${total} xe)` : "";
   }
 }
-$("fDeviceSearch")?.addEventListener("input", filterDeviceTable);
-$("btnDeviceClear")?.addEventListener("click", () => {
-  if ($("fDeviceSearch")) $("fDeviceSearch").value = "";
-  filterDeviceTable();
+$("fCarDeviceSearch")?.addEventListener("input", filterCarDeviceTable);
+$("btnCarDeviceClear")?.addEventListener("click", () => {
+  if ($("fCarDeviceSearch")) $("fCarDeviceSearch").value = "";
+  filterCarDeviceTable();
 });
 
-// Bấm vào số lượng xe / thiết bị ở bảng verTable -> chuyển sang tab Thiết bị và lọc theo phiên bản
+// Lọc tìm kiếm trên bảng Điện thoại
+function filterPhoneDeviceTable() {
+  const q = ($("fPhoneDeviceSearch")?.value || "").trim().toLowerCase();
+  const btnClear = $("btnPhoneDeviceClear");
+  if (btnClear) btnClear.style.display = q ? "inline-block" : "none";
+  const tbody = $("phoneDeviceTable")?.querySelector("tbody");
+  if (!tbody) return;
+  const rows = tbody.querySelectorAll("tr");
+  let visible = 0, total = 0;
+  rows.forEach((tr) => {
+    if (tr.classList.contains("no-match-row") || tr.querySelector("td.empty")) return;
+    total++;
+    const text = tr.textContent.toLowerCase();
+    const match = !q || text.includes(q);
+    tr.style.display = match ? "" : "none";
+    if (match) visible++;
+  });
+  let noMatchTr = tbody.querySelector("tr.no-match-row");
+  if (visible === 0 && total > 0) {
+    if (!noMatchTr) {
+      noMatchTr = document.createElement("tr");
+      noMatchTr.className = "no-match-row";
+      noMatchTr.innerHTML = `<td colspan="8" class="empty">Không tìm thấy điện thoại nào khớp "${esc(q)}"</td>`;
+      tbody.appendChild(noMatchTr);
+    } else {
+      noMatchTr.style.display = "";
+      noMatchTr.querySelector("td").textContent = `Không tìm thấy điện thoại nào khớp "${q}"`;
+    }
+  } else if (noMatchTr) {
+    noMatchTr.style.display = "none";
+  }
+  const hint = $("phoneDeviceCountHint");
+  if (hint && total > 0) {
+    hint.textContent = q ? `(Khớp ${visible}/${total} máy)` : "";
+  }
+}
+$("fPhoneDeviceSearch")?.addEventListener("input", filterPhoneDeviceTable);
+$("btnPhoneDeviceClear")?.addEventListener("click", () => {
+  if ($("fPhoneDeviceSearch")) $("fPhoneDeviceSearch").value = "";
+  filterPhoneDeviceTable();
+});
+
+// Bấm vào số lượng xe / thiết bị ở bảng verTable -> chuyển sang đúng tab Xe hoặc Điện thoại và lọc theo phiên bản
 $("verTable").addEventListener("click", (e) => {
   const verLink = e.target.closest("a.ver-filter-link");
   if (verLink) {
     e.preventDefault();
-    const ver = verLink.dataset.version;
-    const devTabBtn = document.querySelector('#tabs button[data-tab="devices"]');
+    const ver = verLink.dataset.version || "";
+    const isPhone = verLink.dataset.app === "phone";
+    const tabName = isPhone ? "devices-phone" : "devices-car";
+    const devTabBtn = document.querySelector(`#tabs button[data-tab="${tabName}"]`);
     if (devTabBtn) devTabBtn.click();
-    const searchInput = $("fDeviceSearch");
+    const searchInput = $(isPhone ? "fPhoneDeviceSearch" : "fCarDeviceSearch");
     if (searchInput) {
       searchInput.value = ver;
-      filterDeviceTable();
+      if (isPhone) filterPhoneDeviceTable(); else filterCarDeviceTable();
       searchInput.focus();
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1412,6 +1487,11 @@ const EVENT_META = {
   exec_on_main_thread:      { label: "⚠ Chạy tác vụ nặng trên Main Thread", cat: "error" },
   update_sig_invalid:       { label: "⚠ Chữ ký bản cập nhật không hợp lệ", cat: "error" },
   steering_key_flood:       { label: "⚠ Spam phím vô lăng liên tục", cat: "error" },
+  vhal_command_failed:      { label: "⚠ Lệnh VHAL ghi ECU thất bại", cat: "error" },
+  bt_permission_denied:     { label: "⚠ Thiếu quyền Bluetooth", cat: "error" },
+  bt_adapter_disabled:      { label: "⚠ Bluetooth đang tắt", cat: "error" },
+  bt_socket_failed:         { label: "⚠ Lỗi kết nối Bluetooth SPP", cat: "error" },
+  conn_high_latency:        { label: "⚠ Trễ kết nối cao (>1.5s)", cat: "error" },
 };
 const CAT_META = {
   internal: { label: "Tự giám sát", color: "var(--text-muted)" },
@@ -1646,6 +1726,11 @@ function eventSummary(e) {
     case "gesture_input_filter": return s(`chặn cử chỉ: ${p.reason || ""}`);
     case "media_key_rejected": return s(`từ chối phím media: key=${p.key || ""} (${p.reason || ""})`);
     case "pip_rescue": return s(`cứu kẹt PIP: ${p.state || ""}`);
+    case "vhal_command_failed": return s(`ghi VHAL ✕: prop ${p.property_id || ""} ${p.method || ""} (${p.error || ""})`);
+    case "bt_permission_denied": return s(`thiếu quyền Bluetooth: ${p.permission || "BLUETOOTH_CONNECT"}`);
+    case "bt_adapter_disabled": return s(`Bluetooth đang tắt: ${p.reason || ""}`);
+    case "bt_socket_failed": return s(`kết nối BT SPP ✕: ${p.host || ""} (${p.error || ""})`);
+    case "conn_high_latency": return s("độ trễ cao: " + (+p.latency_ms || 0) + "ms qua " + (p.transport || ""));
     case "split_screen": {
       const pkgs = `${PACKAGE_META[p.pkg1] || p.pkg1 || ""} + ${PACKAGE_META[p.pkg2] || p.pkg2 || ""}`;
       const via = p.path === "docked" ? "docked" : "freeform";
@@ -2097,7 +2182,69 @@ function renderTimelineChart(containerId, rawBuckets, windowHours, eventUnit = "
 }
 
 /* ================= 1. Render: Tổng quan ================= */
+function updateFleetHealthBanner(o) {
+  const banner = $("fleetHealthBanner");
+  if (!banner) return;
+  const crashes = (o.crashes_window ?? 0);
+  const topErrors = o.top_events?.filter((e) => evCat(e.event) === "error") || [];
+  const vhalErrors = topErrors.filter((e) => e.event.startsWith("vhal_") || e.event === "hardware_cmd_blocked").reduce((a, b) => a + (+b.n || 0), 0);
+  const connErrors = topErrors.filter((e) => e.event.startsWith("bt_") || e.event.startsWith("auth_") || e.event.includes("connect_failed") || e.event.startsWith("conn_")).reduce((a, b) => a + (+b.n || 0), 0);
+  const v = o.voice || {};
+  const vUser = userVoiceTotal(v);
+  const matchPct = vUser ? Math.min(100, Math.round((v.matched || 0) / vUser * 100)) : null;
+
+  let level = "good";
+  let icon = "🟢";
+  let title = "Tình trạng đội xe hoàn hảo";
+  let desc = `Hệ thống ổn định: 0 crash, VHAL phản hồi 100%, kết nối thông suốt trên ${o.online_cars || 0} xe & ${o.online_phones || 0} phone online.`;
+  let badges = `<span class="badge ok">100% Khỏe mạnh</span>`;
+
+  if (crashes > 0 || vhalErrors > 2) {
+    level = "critical";
+    icon = "🔴";
+    title = "Cảnh báo sự cố đội xe cần kiểm tra";
+    const issues = [];
+    if (crashes > 0) issues.push(`${crashes} sự cố crash`);
+    if (vhalErrors > 0) issues.push(`${vhalErrors} lỗi phần cứng VHAL/ECU`);
+    desc = `Phát hiện: ${issues.join(" · ")}. Đề xuất kiểm tra tab Crash và tab Phần cứng & VHAL.`;
+    badges = `<span class="badge bad" style="background:var(--critical);color:#fff">${crashes} Crash</span>` +
+      (vhalErrors > 0 ? `<span class="badge bad" style="background:var(--critical);color:#fff;margin-left:4px">${vhalErrors} Lỗi VHAL</span>` : "");
+  } else if (connErrors > 0 || (matchPct !== null && matchPct < 70)) {
+    level = "warn";
+    icon = "🟡";
+    title = "Cảnh báo chất lượng vận hành cần lưu ý";
+    const notes = [];
+    if (connErrors > 0) notes.push(`${connErrors} lỗi kết nối Phone-Car`);
+    if (matchPct !== null && matchPct < 70) notes.push(`tỉ lệ hiểu giọng nói ${matchPct}%`);
+    desc = `Lưu ý: ${notes.join(" · ")}. Kiểm tra tab Kết nối và Giọng nói để tinh chỉnh.`;
+    badges = `<span class="badge warn" style="background:var(--warning);color:#fff">Cần chú ý</span>`;
+  }
+
+  banner.style.display = "flex";
+  if (level === "critical") {
+    banner.style.background = "var(--surface-1)";
+    banner.style.border = "1.5px solid var(--critical)";
+    banner.style.borderLeft = "5px solid var(--critical)";
+  } else if (level === "warn") {
+    banner.style.background = "var(--surface-1)";
+    banner.style.border = "1.5px solid var(--warning)";
+    banner.style.borderLeft = "5px solid var(--warning)";
+  } else {
+    banner.style.background = "var(--surface-1)";
+    banner.style.border = "1px solid var(--good)";
+    banner.style.borderLeft = "5px solid var(--good)";
+  }
+
+  $("fleetHealthIcon").textContent = icon;
+  $("fleetHealthTitle").textContent = title;
+  $("fleetHealthDesc").innerHTML = desc;
+  $("fleetHealthBadges").innerHTML = badges;
+}
+
 function renderOverview(o) {
+  // Cập nhật Banner sức khỏe thông minh đội xe
+  updateFleetHealthBanner(o);
+
   // Timeline hoạt động theo thời gian
   renderTimelineChart("timeline", o.timeline || [], o.window_hours || hours, "sự kiện", "linear-gradient(180deg, var(--accent) 0%, var(--bar-ramp) 100%)", "timelineStats", "timelineSub");
 
@@ -2927,29 +3074,72 @@ function renderAggregates(o) {
         <td class="num">${(+s.n).toLocaleString("vi-VN")}</td></tr>`).join("")
     || `<tr><td colspan="4" class="empty">không có crash hệ thống</td></tr>`;
 
-  const devTbody = $("deviceTable").querySelector("tbody");
-  devTbody.innerHTML = (o.devices || []).map((d) => `
-    <tr>
-      <td>${d.owner
-        ? `<a href="#" class="mono dev-owner-link" style="text-decoration:underline" data-device-id="${esc(d.linked_car_device_id || d.device_id)}" data-phone-id="${d.app === 'phone' ? esc(d.device_id) : ''}">${esc(d.owner)}</a>${d.app === 'phone' ? ' <span class="badge" title="Điện thoại ghép đôi với xe" style="font-size:10px;padding:1px 4px">📱 xe</span>' : ''}`
-        : (d.app === 'phone' ? `<i class="muted">📱 chưa ghép đôi</i>` : `<i class="muted">chưa kích hoạt</i>`)}
-          <div style="margin-top:4px"><button class="jsonbtn dev-filter-btn" data-device-id="${esc(d.device_id)}" data-device-label="${esc((d.owner ? d.owner + " · " : "") + (d.device_brand || "") + " " + (d.device_model || "") + " (" + (d.app || "") + ")")}">👤 Xem riêng</button></div></td>
-      <td>${esc(d.device_brand || "")} <b>${esc(d.device_model || "")}</b><br>
-          <span class="mono muted" title="${esc(d.device_id)}">${shortId(d.device_id)}</span></td>
-      <td><b>${esc(appLabel(d.app))}</b></td><td>${esc(d.app_version || "")}</td>
-      <td>${SDK_NAME[d.android_sdk] || (d.android_sdk ? "SDK " + esc(d.android_sdk) : "—")}</td>
-      <td class="num">${(+d.events).toLocaleString("vi-VN")}</td>
-      <td>${d.last_lat != null && d.last_lon != null
-        ? `📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${d.last_lat},${d.last_lon}" title="Mở Google Maps (±${Math.round(d.last_loc_accuracy || 0)} m)">mở bản đồ</a>
-           <div class="muted locaddr" data-lat="${d.last_lat}" data-lon="${d.last_lon}">đang tra địa chỉ…</div>`
-        : `<span class="muted">—</span>`}</td>
-      <td class="mono" title="${esc(fmtT(d.last_seen))}">${esc(fmtAgo(d.last_seen))}</td>
-      <td class="num" title="${esc(fmtT(d.first_seen))} → ${esc(fmtT(d.last_seen))}">${d.first_seen && d.last_seen
-        ? Math.max(1, Math.ceil((new Date(d.last_seen) - new Date(d.first_seen)) / 86400000)) + " ngày"
-        : "—"}</td>
-    </tr>`).join("") || `<tr><td colspan="9" class="empty">chưa có thiết bị nào</td></tr>`;
-  bindLocAddresses(devTbody);
-  filterDeviceTable();
+  const allDevs = o.devices || [];
+  const carDevs = allDevs.filter((d) => (d.app || "car") !== "phone");
+  const phoneDevs = allDevs.filter((d) => d.app === "phone");
+
+  if ($("badgeCarCount")) {
+    $("badgeCarCount").textContent = carDevs.length;
+    $("badgeCarCount").style.display = carDevs.length > 0 ? "inline-block" : "none";
+  }
+  if ($("badgePhoneCount")) {
+    $("badgePhoneCount").textContent = phoneDevs.length;
+    $("badgePhoneCount").style.display = phoneDevs.length > 0 ? "inline-block" : "none";
+  }
+
+  // 1. Render bảng đầu xe
+  const carTbody = $("carDeviceTable")?.querySelector("tbody");
+  if (carTbody) {
+    carTbody.innerHTML = carDevs.map((d) => `
+      <tr>
+        <td>${d.owner
+          ? `<a href="#" class="mono dev-owner-link" style="text-decoration:underline" data-device-id="${esc(d.linked_car_device_id || d.device_id)}" data-phone-id="">${esc(d.owner)}</a>`
+          : `<i class="muted">chưa kích hoạt</i> <a href="admin-keys.html?machine_id=${encodeURIComponent(d.device_id)}" target="_blank" rel="noopener" class="jsonbtn" style="display:inline-block; margin-left:4px; text-decoration:none; color:var(--accent); font-weight:600; white-space:nowrap;" title="Mở trang cấp mã với mã máy này">⚡ Cấp mã</a>`}
+            <div style="margin-top:4px"><button class="jsonbtn dev-filter-btn" data-device-id="${esc(d.device_id)}" data-device-label="${esc((d.owner ? d.owner + " · " : "") + (d.device_brand || "") + " " + (d.device_model || "") + " (xe)")}">👤 Xem riêng</button></div></td>
+        <td>${esc(d.device_brand || "")} <b>${esc(d.device_model || "")}</b><br>
+            <span class="mono muted" title="${esc(d.device_id)}">${shortId(d.device_id)}</span></td>
+        <td><b>${esc(d.app_version || "")}</b></td>
+        <td>${SDK_NAME[d.android_sdk] || (d.android_sdk ? "SDK " + esc(d.android_sdk) : "—")}</td>
+        <td class="num">${(+d.events).toLocaleString("vi-VN")}</td>
+        <td>${d.last_lat != null && d.last_lon != null
+          ? `📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${d.last_lat},${d.last_lon}" title="Mở Google Maps (±${Math.round(d.last_loc_accuracy || 0)} m)">mở bản đồ</a>
+             <div class="muted locaddr" data-lat="${d.last_lat}" data-lon="${d.last_lon}">đang tra địa chỉ…</div>`
+          : `<span class="muted">—</span>`}</td>
+        <td class="mono" title="${esc(fmtT(d.last_seen))}">${esc(fmtAgo(d.last_seen))}</td>
+        <td class="num" title="${esc(fmtT(d.first_seen))} → ${esc(fmtT(d.last_seen))}">${d.first_seen && d.last_seen
+          ? Math.max(1, Math.ceil((new Date(d.last_seen) - new Date(d.first_seen)) / 86400000)) + " ngày"
+          : "—"}</td>
+      </tr>`).join("") || `<tr><td colspan="8" class="empty">chưa có đầu xe nào</td></tr>`;
+    bindLocAddresses(carTbody);
+    filterCarDeviceTable();
+  }
+
+  // 2. Render bảng điện thoại
+  const phoneTbody = $("phoneDeviceTable")?.querySelector("tbody");
+  if (phoneTbody) {
+    phoneTbody.innerHTML = phoneDevs.map((d) => `
+      <tr>
+        <td>${d.owner
+          ? `<a href="#" class="mono dev-owner-link" style="text-decoration:underline" data-device-id="${esc(d.linked_car_device_id || d.device_id)}" data-phone-id="${esc(d.device_id)}">${esc(d.owner)}</a> <span class="badge" title="Điện thoại ghép đôi với xe" style="font-size:10px;padding:1px 4px">📱 xe</span>`
+          : `<i class="muted">📱 chưa ghép đôi</i>`}
+            <div style="margin-top:4px"><button class="jsonbtn dev-filter-btn" data-device-id="${esc(d.device_id)}" data-device-label="${esc((d.owner ? d.owner + " · " : "") + (d.device_brand || "") + " " + (d.device_model || "") + " (phone)")}">👤 Xem riêng</button></div></td>
+        <td>${esc(d.device_brand || "")} <b>${esc(d.device_model || "")}</b><br>
+            <span class="mono muted" title="${esc(d.device_id)}">${shortId(d.device_id)}</span></td>
+        <td><b>${esc(d.app_version || "")}</b></td>
+        <td>${SDK_NAME[d.android_sdk] || (d.android_sdk ? "SDK " + esc(d.android_sdk) : "—")}</td>
+        <td class="num">${(+d.events).toLocaleString("vi-VN")}</td>
+        <td>${d.last_lat != null && d.last_lon != null
+          ? `📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${d.last_lat},${d.last_lon}" title="Mở Google Maps (±${Math.round(d.last_loc_accuracy || 0)} m)">mở bản đồ</a>
+             <div class="muted locaddr" data-lat="${d.last_lat}" data-lon="${d.last_lon}">đang tra địa chỉ…</div>`
+          : `<span class="muted">—</span>`}</td>
+        <td class="mono" title="${esc(fmtT(d.last_seen))}">${esc(fmtAgo(d.last_seen))}</td>
+        <td class="num" title="${esc(fmtT(d.first_seen))} → ${esc(fmtT(d.last_seen))}">${d.first_seen && d.last_seen
+          ? Math.max(1, Math.ceil((new Date(d.last_seen) - new Date(d.first_seen)) / 86400000)) + " ngày"
+          : "—"}</td>
+      </tr>`).join("") || `<tr><td colspan="8" class="empty">chưa có điện thoại nào</td></tr>`;
+    bindLocAddresses(phoneTbody);
+    filterPhoneDeviceTable();
+  }
 }
 
 /* ================= Sự cố Phần cứng, VHAL, Giọng nói & Nghiệp vụ (Domain Errors) ================= */
@@ -2960,10 +3150,10 @@ async function loadDomainErrors() {
   const searchText = ($("fDomainErrText")?.value || "").trim().toLowerCase();
 
   const DOMAIN_GROUPS = {
-    vhal: ["vhal_ensure_connected_failed", "vhal_binder_timeout", "vhal_create_car_failed", "hardware_cmd_blocked"],
+    vhal: ["vhal_ensure_connected_failed", "vhal_binder_timeout", "vhal_create_car_failed", "hardware_cmd_blocked", "vhal_command_failed"],
     voice: ["voice_lenh_bi_nuot", "voice_speak_failed", "voice_upload_failed", "voice_mic_rebuild", "voice_mic_xe_khoa", "kws_decode_error", "stt_decode_native", "voice_kws_state", "model_download"],
     nav_media: ["nav_route_failed", "media_search_failed"],
-    conn: ["connect_failed", "car_connect_failed", "auth_failed", "auth_rejected", "relay_reject", "auth_lockout", "phone_rejected_too_many", "relay_state"],
+    conn: ["connect_failed", "car_connect_failed", "auth_failed", "auth_rejected", "relay_reject", "auth_lockout", "phone_rejected_too_many", "relay_state", "bt_permission_denied", "bt_adapter_disabled", "bt_socket_failed", "conn_high_latency"],
     system: ["watchdog_restart", "watchdog_safe_mode", "main_thread_hang", "app_trim", "app_low_memory", "crash_upload", "license_refresh_denied", "license_grace_warning", "finalizer_watchdog_off_failed", "admin_parked_gate_override", "admin_reboot", "exec_on_main_thread", "update_sig_invalid", "steering_key_flood", "main_looper_recovered", "ac_program_result", "apk_upload_result", "app_update"]
   };
 
@@ -4126,13 +4316,15 @@ async function refreshAll() {
 }
 
 /* ================= Tabs / Theme / Key ================= */
-const ALL_TABS = ["overview", "voice", "splitscreen", "connection", "hardware", "stability", "errors", "crash", "events", "devices"];
+const ALL_TABS = ["overview", "voice", "splitscreen", "connection", "hardware", "stability", "errors", "crash", "events", "devices-car", "devices-phone"];
 $("tabs").addEventListener("click", async (e) => {
   const btn = e.target.closest("button[data-tab]"); if (!btn) return;
+  let targetTab = btn.dataset.tab;
+  if (targetTab === "devices") targetTab = "devices-car";
   document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("active", b === btn));
   ALL_TABS.forEach((t) => {
     const el = $("tab-" + t);
-    if (el) el.style.display = t === btn.dataset.tab ? "" : "none";
+    if (el) el.style.display = t === targetTab ? "" : "none";
   });
   if (btn.dataset.tab === "events") await loadEvents();
   if (btn.dataset.tab === "crash") await loadCrashes();

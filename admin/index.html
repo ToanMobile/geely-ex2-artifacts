@@ -52,7 +52,6 @@
   .wrap { max-width: none; margin: 0; }
   h1 { font-size: 19px; margin-bottom: 4px; }
   .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
-  
   /* Tabs */
   .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; flex-wrap: wrap; overflow-x: auto; }
   .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
@@ -152,7 +151,6 @@
   .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
   .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; }
   .filters { display: flex; gap: 6px; flex-wrap: wrap; }
-  
   .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
   .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
   .modal h3 { font-size: 16px; margin-bottom: 8px; }
@@ -161,7 +159,6 @@
   .modal .actions { margin-top: 18px; justify-content: flex-end; }
   .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
   .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
   /* ================= Thống kê & Analytics KPI ================= */
   .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; }
   .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, box-shadow 0.15s ease; }
@@ -177,7 +174,6 @@
   .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
   .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; }
   .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
-
   .ratio-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--panel2); }
   .ratio-bar-segment { height: 100%; transition: width 0.4s ease; }
   .login-screen { min-height: calc(100vh - 48px); display: flex; align-items: center; justify-content: center; padding: 20px 0; }
@@ -190,31 +186,26 @@
 </style>
 </head>
 <body>
-
 <!-- Màn hình Đăng nhập OTP (Bảo mật 2 Lớp) -->
 <div id="loginScreen" class="login-screen">
   <div class="login-card">
     <div style="position:absolute; top:16px; right:16px">
       <button id="btnLoginTheme" class="ghost small" onclick="toggleTheme()">🌙 Dark</button>
     </div>
-    
     <div class="login-header">
       <div style="font-size:36px; margin-bottom:8px">🛡️</div>
       <h1>Admin Dashboard</h1>
       <div class="sub">Hệ thống Quản trị & Cấp mã Geely EX2</div>
     </div>
-
     <!-- Bước 1: Nhập Số điện thoại -->
     <div id="loginStepPhone">
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên</label>
       <input id="loginPhoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại Quản trị viên (VD: 09xxxxxxxx)" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
       <div class="hint">Nhập số điện thoại đã được cấp quyền Quản trị để nhận mã OTP qua Telegram.</div>
-
       <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">
         📲 Gửi mã OTP xác thực (Telegram)
       </button>
     </div>
-
     <!-- Bước 2: Nhập Mã OTP -->
     <div id="loginStepOtp" style="display:none">
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px">
@@ -222,28 +213,22 @@
         <div>📱 SĐT: <b id="loginTargetPhone" class="mono">--</b></div>
         <div id="loginBotHint" class="hint" style="margin-top:4px; color:var(--ok)">✅ Đã gửi mã OTP về Telegram.</div>
       </div>
-
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Nhập mã OTP 6 chữ số *</label>
       <input id="loginOtpInput" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" class="otp-field" maxlength="6" placeholder="••••••" onkeydown="if(event.key==='Enter')verifyLoginOtp()" oninput="this.value=this.value.replace(/\D/g,''); if(this.value.length===6)verifyLoginOtp()">
-      
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px">
         <span id="loginTimerText" class="hint" style="margin:0">Mã có hiệu lực: <b id="loginCountdown" class="mono">05:00</b></span>
         <button id="btnResendOtp" class="ghost small" style="display:none" onclick="requestLoginOtp(true)">🔄 Gửi lại mã</button>
       </div>
-
       <button id="btnVerifyOtp" class="login-btn" onclick="verifyLoginOtp()">
         🚀 Xác thực & Đăng nhập
       </button>
-
       <div style="text-align:center; margin-top:12px">
         <button type="button" class="ghost small" onclick="switchLoginStep('phone')">↩️ Đổi số điện thoại khác</button>
       </div>
     </div>
-
     <div id="loginMsg" class="msg" style="margin-top:14px; text-align:center"></div>
   </div>
 </div>
-
 <!-- Nội dung Admin Dashboard (Chỉ hiện khi đã đăng nhập) -->
 <div class="wrap" id="dashboardWrap" style="display:none">
   <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:12px; flex-wrap:wrap">
@@ -259,7 +244,6 @@
       <button class="danger small" onclick="handleLogout()">🚪 Đăng xuất</button>
     </div>
   </div>
-
   <!-- Top KPI Ribbon -->
   <div class="stat-ribbon" id="topStatRibbon">
     <div class="stat-card" style="border-left: 3px solid var(--accent)">
@@ -288,7 +272,6 @@
       <div class="stat-sub">Active 7d: <b id="topDev7d">--</b> (<span id="topDevBreakdown">--</span>)</div>
     </div>
   </div>
-
   <!-- Tab Navigation -->
   <div class="tab-nav">
     <button class="tab-btn active" id="tabBtnLicenses" onclick="switchTab('licenses')">🔑 Quản lý Mã kích hoạt</button>
@@ -298,7 +281,6 @@
     <button class="tab-btn" id="tabBtnForceUpdate" onclick="switchTab('forceUpdate')">🚀 Ép Cập nhật (OTA)</button>
     <button class="tab-btn" id="tabBtnResellers" onclick="switchTab('resellers')">🏢 Đại lý Cấp 1</button>
   </div>
-
   <!-- ================= TAB 1: MÃ KÍCH HOẠT (SUPABASE) ================= -->
   <div id="tabContentLicenses" class="tab-content active">
     <div class="panel">
@@ -334,7 +316,6 @@
             </div>
           </div>
         </div>
-
         <div id="trialConfigSection" style="display:none; grid-column: 1 / -1; background:rgba(59,130,246,0.08); border:1.5px solid rgba(59,130,246,0.4); border-radius:10px; padding:12px 14px; margin-bottom:4px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
             <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#3b82f6; font-size:13px;">
@@ -363,7 +344,6 @@
             </div>
           </div>
         </div>
-
         <div style="grid-column: 1 / -1; margin-top:4px;">
           <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px;">
             📝 Phần 1: Thông tin khách hàng (Bắt buộc nhập)
@@ -381,7 +361,6 @@
           <div class="field-card-head"><label class="field-card-label">Ghi chú</label><span class="badge-field-opt">Tuỳ chọn</span></div>
           <input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345">
         </div>
-
         <div style="grid-column: 1 / -1; margin-top:8px;">
           <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
             <span>⚙️ Phần 2: Thiết lập Kỹ thuật & Hạn mức</span>
@@ -422,7 +401,6 @@
         <div class="result" id="createResult"></div>
       </div>
     </div>
-
     <!-- Bảng quản lý mã -->
     <div class="panel">
       <div class="toolbar">
@@ -444,7 +422,6 @@
           <button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
         </div>
       </div>
-
       <div id="listMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="mainTable">
@@ -465,7 +442,6 @@
       </div>
     </div>
   </div>
-
   <!-- ================= TAB 2: QUẢN LÝ CÀI NHANH (GITHUB) ================= -->
   <div id="tabContentQuickInstall" class="tab-content">
     <div class="panel">
@@ -484,7 +460,6 @@
           <button id="btnSaveQi" onclick="saveQuickInstall()">💾 Lưu lên Supabase (Tăng v+1)</button>
         </div>
       </div>
-
       <!-- Thanh tìm kiếm & lọc Quick Install -->
       <div class="toolbar" style="margin-top:10px; margin-bottom:8px">
         <div class="search-box">
@@ -498,9 +473,7 @@
           <button class="ghost small" data-qifilter="prereq" onclick="setQiFilter('prereq', this)">🔗 Có Prereq</button>
         </div>
       </div>
-
       <div id="qiStatusMsg" class="msg"></div>
-
       <div style="overflow-x:auto; margin-top:12px">
         <table id="qiTable">
           <thead><tr>
@@ -518,7 +491,6 @@
       </div>
     </div>
   </div>
-
   <!-- ================= TAB 3: BÁN HÀNG & GIÁ (VIETQR) ================= -->
   <div id="tabContentSales" class="tab-content">
     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-bottom: 16px">
@@ -529,7 +501,6 @@
           <span id="salesPriceBadge" class="tag car mono">Active</span>
         </h2>
         <div class="hint">Mọi thay đổi giá đều có hiệu lực ngay lập tức trên màn hình xe của khách hàng.</div>
-
         <div class="grid" style="margin-top:12px">
           <div>
             <label>Giá Gói Trọn Đời (VND) *</label>
@@ -567,13 +538,11 @@
             <div class="hint">Quy định số tiền khách cũ phải trả khi gia hạn nếu sau này tăng giá gốc.</div>
           </div>
         </div>
-
         <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
           <button id="btnSaveSalesPrices" onclick="openSavePricesConfirmModal()">💾 Lưu Cấu hình Bảng giá</button>
           <span id="salesPriceSaveMsg" class="msg" style="margin:0"></span>
         </div>
       </div>
-
       <!-- Panel 2: Tài khoản Nhận tiền & Webhook -->
       <div class="panel" style="margin-bottom:0">
         <h2 style="color:var(--text); font-size:15px; display:flex; justify-content:space-between; align-items:center">
@@ -581,7 +550,6 @@
           <button class="ghost small" onclick="fillDefaultBankInfo()">⚡ Nạp TK VPBank</button>
         </h2>
         <div class="hint">Thông tin dùng để máy chủ tự động dựng chuỗi VietQR chuẩn EMVCo cho xe.</div>
-
         <div class="grid" style="margin-top:12px">
           <div>
             <label>Ngân hàng nhận (Mã BIN Napas) *</label>
@@ -617,13 +585,11 @@
             </select>
           </div>
         </div>
-
         <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
           <button id="btnSaveSalesBank" onclick="saveSalesBankInfo()">💾 Lưu Cấu hình Tài khoản</button>
           <button class="ghost small" onclick="openSimulateWebhookModal()">🧪 Giả lập Webhook Thanh toán</button>
           <span id="salesBankSaveMsg" class="msg" style="margin:0"></span>
         </div>
-
         <!-- Cấu hình Telegram Bot Bắn Noti & Duyệt Đơn -->
         <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border)">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
@@ -637,7 +603,6 @@
               <input type="checkbox" id="salesTelegramNotiEnabled" checked style="width:auto; margin:0"> Bật thông báo Telegram
             </label>
           </div>
-
           <!-- Token bot: 01/09/2026 KHÔNG nhúng cứng nữa — xem getTelegramBotToken() -->
           <div style="margin-top:14px">
             <label>Token bot Telegram (@BotFather)</label>
@@ -647,7 +612,6 @@
               Token lưu ở <code>sales_settings.telegram_bot_token</code> trên máy chủ, KHÔNG nằm trong trang này.
             </div>
           </div>
-
           <!-- Danh sách từng Chat ID riêng biệt -->
           <div style="margin-top:14px">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px">
@@ -657,13 +621,11 @@
                 <button type="button" class="ghost small" onclick="fetchTelegramChatId()" title="Quét tin nhắn /start mới nhất gửi tới bot để thêm tự động">🔍 Quét tự động (/start)</button>
               </div>
             </div>
-
             <div id="telegramChatListContainer" style="display:flex; flex-direction:column; gap:8px">
               <!-- Render từng dòng chat ID động ở đây -->
             </div>
             <div class="hint" style="margin-top:6px">Mỗi ô nhập 1 Chat ID cá nhân (ví dụ: <code>5218387973</code>) hoặc Group ID (ví dụ: <code>-100xxxxxxxxxx</code>). Mở bot gửi <code>/start</code> rồi bấm <b>Quét tự động</b>.</div>
           </div>
-
           <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
             <button id="btnSaveTelegramCfg" onclick="saveTelegramBotConfig()">💾 Lưu Cấu hình Telegram</button>
             <button class="ghost small" onclick="testTelegramNoti()">🔔 Bắn tin nhắn thử nghiệm</button>
@@ -673,7 +635,6 @@
         </div>
       </div>
     </div>
-
     <!-- Panel 3: Danh sách Đơn hàng (Orders) -->
     <div class="panel">
       <div class="toolbar">
@@ -696,7 +657,6 @@
           <button class="ghost small" onclick="loadSalesData()">🔄 Tải lại</button>
         </div>
       </div>
-
       <div id="salesOrdersMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="salesOrdersTable">
@@ -715,7 +675,6 @@
         </table>
       </div>
     </div>
-
     <!-- Panel 4: Khách hàng đang Khoá giá 5 năm & Nhật ký Audit -->
     <div style="display:flex; flex-direction:column; gap:16px">
       <!-- Khách hàng khoá giá -->
@@ -736,7 +695,6 @@
           </table>
         </div>
       </div>
-
       <!-- Nhật ký thay đổi Audit -->
       <div class="panel">
         <h2 style="color:var(--text); font-size:15px">5. Nhật ký Thay đổi Bảng giá & Đơn hàng</h2>
@@ -755,17 +713,14 @@
       </div>
     </div>
   </div>
-
   <!-- ================= TAB 3: BÁO CÁO & THỐNG KÊ TOÀN DIỆN ================= -->
   <div id="tabContentAnalytics" class="tab-content">
-    
     <!-- Hàng 1: Thống Kê Doanh Thu & Đơn Hàng (Sales & Revenue Overview) -->
     <div class="panel">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
         <h2 style="margin:0; font-size:15px; color:var(--text)">1. Thống kê Doanh thu & Bán hàng Tự động (VietQR)</h2>
         <button class="ghost small" onclick="loadAnalytics()">🔄 Làm mới số liệu</button>
       </div>
-
       <div class="metric-grid-4">
         <div class="kpi-box" style="border-left:3px solid var(--accent)">
           <div class="lbl">💰 Tổng Doanh Thu Thực Nhận</div>
@@ -788,7 +743,6 @@
           <div class="hint" style="margin-top:4px"><b id="anPaidBuyersCount">0</b> khách / <b id="anTotalOrdersCount">0</b> đơn tạo</div>
         </div>
       </div>
-
       <!-- Thanh tỷ lệ phân bổ doanh thu -->
       <div style="margin-top:10px; background:var(--panel2); border-radius:8px; padding:12px">
         <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px">
@@ -800,7 +754,6 @@
           <div id="anBarYearly" class="ratio-bar-segment" style="background:#16a34a; width:50%"></div>
         </div>
       </div>
-
       <!-- Grid chi tiết khung thời gian & tình trạng đơn -->
       <div class="metric-grid-2" style="margin-top:14px; margin-bottom:0">
         <div style="background:var(--panel2); border-radius:8px; padding:12px">
@@ -812,7 +765,6 @@
             <tr><td>Toàn thời gian</td><td class="mono" style="text-align:right; font-weight:700; color:var(--accent)" id="anRevTimeAll">0 ₫</td></tr>
           </table>
         </div>
-
         <div style="background:var(--panel2); border-radius:8px; padding:12px">
           <label style="font-weight:600; color:var(--text); font-size:13px">📦 Trạng thái xử lý toàn bộ đơn hàng</label>
           <table style="margin-top:8px">
@@ -824,7 +776,6 @@
           </table>
         </div>
       </div>
-
       <!-- ================= PHÂN CHIA DOANH THU & QUYẾT TOÁN LỢI NHUẬN (TOÀN 60% — ĐẠT 40%) ================= -->
       <div style="margin-top:16px; border-top:1px dashed var(--border); padding-top:16px">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px">
@@ -842,7 +793,6 @@
             <span id="profitSharingSaveMsg" class="msg" style="margin:0"></span>
           </div>
         </div>
-
         <!-- 3 Thẻ Tổng quan: Doanh thu, Chi phí, Lợi nhuận ròng -->
         <div class="metric-grid-3" style="margin-bottom:12px">
           <div class="kpi-box" style="border-left:3px solid var(--accent); background:var(--panel2)">
@@ -861,7 +811,6 @@
             <div class="hint" id="psNetProfitHint" style="margin-top:4px">= Doanh thu trừ Tổng chi phí đã thanh toán</div>
           </div>
         </div>
-
         <!-- 2 Thẻ Tỷ lệ 60:40 -->
         <div class="metric-grid-2" style="margin-bottom:14px">
           <div class="kpi-box" style="border:1px solid #93c5fd; background:rgba(2,132,199,0.05)">
@@ -872,7 +821,6 @@
             <div class="val" id="psToanShare" style="font-size:20px; color:#0369a1; margin-top:6px">0 ₫</div>
             <div class="hint" style="margin-top:4px">Toàn nhận 60% lợi nhuận sau khi trừ chi phí</div>
           </div>
-
           <div class="kpi-box" style="border:1px solid #86efac; background:rgba(22,163,74,0.05)">
             <div style="display:flex; justify-content:space-between; align-items:center">
               <span style="font-weight:700; color:#15803d; font-size:13px">💼 Phần ĐẠT Được Hưởng (40%)</span>
@@ -882,7 +830,6 @@
             <div class="hint" style="margin-top:4px">Đạt nhận 40% lợi nhuận sau khi trừ chi phí</div>
           </div>
         </div>
-
         <!-- Khối Đối soát Dòng tiền Thực tế Toàn & Đạt -->
         <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:14px">
           <div style="font-weight:700; font-size:13px; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:6px">
@@ -891,7 +838,6 @@
           <div class="hint" style="margin-bottom:10px">
             Vì doanh thu thực tế khách thanh toán chuyển vào tài khoản của Đạt, Toàn nhập số tiền Đạt đã chuyển cho Toàn vào ô bên dưới để hệ thống tính số tiền Đạt còn thiếu (hoặc Toàn đang nhận dư):
           </div>
-
           <div style="display:grid; grid-template-columns: minmax(240px, 320px) 1fr; gap:12px; align-items:center">
             <div>
               <label style="font-weight:600">Số tiền Toàn ĐÃ THỰC NHẬN từ Đạt (₫):</label>
@@ -899,14 +845,12 @@
                 <input id="psToanReceivedInput" type="text" placeholder="Ví dụ: 15,000,000" class="mono" style="font-weight:700; font-size:15px" oninput="handleToanReceivedInput(this)">
               </div>
             </div>
-
             <div id="psSettlementStatusBox" style="padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:var(--panel)">
               <div style="font-weight:600; font-size:13px" id="psSettlementStatusTitle">⏳ Đang tính toán đối soát...</div>
               <div class="hint" id="psSettlementStatusDetail" style="margin-top:2px">--</div>
             </div>
           </div>
         </div>
-
         <!-- Khối Quản lý Khai báo Chi phí (Model AI, Thiết bị, Apple, Server...) -->
         <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:14px">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
@@ -916,7 +860,6 @@
           <div class="hint" style="margin-bottom:10px">
             Các khoản chi tiêu đã đánh dấu <b>Đã thanh toán</b> sẽ được trừ trực tiếp khỏi tổng doanh thu trước khi chia 6:4. Các khoản chưa thanh toán sẽ lưu dưới dạng ghi chú kế hoạch chi.
           </div>
-
           <!-- Form thêm chi phí -->
           <div style="display:grid; grid-template-columns: 1.1fr 1.3fr 0.9fr auto auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
             <div>
@@ -957,7 +900,6 @@
           </div>
           <!-- Input ẩn để upload ảnh cho từng dòng chi phí đã có -->
           <input type="file" id="psRowReceiptFileInput" accept="image/*" style="display:none" onchange="handleRowReceiptFile(event)">
-
           <!-- Bảng danh sách chi phí -->
           <div style="overflow-x:auto">
             <table style="width:100%; margin-top:0">
@@ -994,7 +936,6 @@
               </tfoot>
             </table>
           </div>
-
           <!-- Ghi chú đối soát tự do -->
           <div style="margin-top:12px">
             <label style="font-size:12px; font-weight:600">📝 Ghi chú chung về thoả thuận & đối soát giữa Toàn và Đạt:</label>
@@ -1003,12 +944,10 @@
         </div>
       </div>
     </div>
-
     <!-- Hàng 2: Thống Kê Phân Bổ Bản Quyền Theo Gói (License Roles & Subscriptions) -->
     <div class="panel">
       <h2 style="font-size:15px; color:var(--text)">2. Phân bổ Bản quyền & Số lượng Đăng ký theo Gói</h2>
       <div class="hint">Thống kê chi tiết người dùng sở hữu Gói Xe (Car) vs Gói Chỉ PC (PC Only) vs Gói Quản trị (Admin).</div>
-
       <div class="metric-grid-3" style="margin-top:14px">
         <!-- Card Gói Xe -->
         <div class="kpi-box" style="border:1px solid #86efac">
@@ -1025,7 +964,6 @@
             <tr><td>Đã thu hồi:</td><td class="mono" style="text-align:right; color:var(--err)" id="anRoleCarRev">0</td></tr>
           </table>
         </div>
-
         <!-- Card Gói PC -->
         <div class="kpi-box" style="border:1px solid #7dd3fc">
           <div style="display:flex; justify-content:space-between; align-items:center">
@@ -1041,7 +979,6 @@
             <tr><td>Đã thu hồi:</td><td class="mono" style="text-align:right; color:var(--err)" id="anRolePcRev">0</td></tr>
           </table>
         </div>
-
         <!-- Card Gói Admin -->
         <div class="kpi-box" style="border:1px solid #fde68a">
           <div style="display:flex; justify-content:space-between; align-items:center">
@@ -1056,7 +993,6 @@
           </table>
         </div>
       </div>
-
       <!-- Thanh so sánh tỷ trọng người dùng Car vs PC -->
       <div style="margin-top:12px; background:var(--panel2); border-radius:8px; padding:12px">
         <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px">
@@ -1069,7 +1005,6 @@
         </div>
       </div>
     </div>
-
     <!-- Hàng 3: Thống Kê Hạ Tầng Thiết Bị & Khách Hàng Sắp Hết Hạn -->
     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px">
       <!-- Panel Thiết Bị -->
@@ -1084,7 +1019,6 @@
           <tr><td>🔒 Khách hàng đang Khoá giá 5 năm</td><td class="mono" style="text-align:right; font-weight:700; color:var(--warn)" id="anDevLocks">0</td></tr>
         </table>
       </div>
-
       <!-- Panel Khách Hàng Sắp Hết Hạn -->
       <div class="panel">
         <div style="display:flex; justify-content:space-between; align-items:center">
@@ -1107,7 +1041,6 @@
       </div>
     </div>
   </div>
-
   <!-- ================= TAB 5: ÉP CẬP NHẬT (FORCE UPDATE / OTA) ================= -->
   <div id="tabContentForceUpdate" class="tab-content">
       <div class="panel">
@@ -1126,19 +1059,18 @@
             <button class="ghost small" onclick="exportUpdateJson('phone')">📋 Copy apps.json (Phone)</button>
           </div>
         </div>
-
         <div class="warn" style="margin-top:10px; margin-bottom:14px; line-height:1.6">
           <b>💡 Cơ chế hoạt động & An toàn:</b><br>
           • <b>Hiệu lực tức thì:</b> Xe và Điện thoại ưu tiên đọc cấu hình từ Supabase RPC (1s sau khi lưu), fallback về GitHub CDN.<br>
           • <b>Chọn phiên bản đích tùy ý:</b> Cho phép chọn bất kỳ version cũ nào để ép lên một version đích cụ thể.<br>
           • <b>An toàn khi lái xe:</b> CarConnect chỉ cài đặt khi xe đang đỗ (P). Nếu đang di chuyển, cập nhật tự hoãn và chờ xe dừng đỗ.
         </div>
-
         <!-- App Switcher Sub-tabs & Môi trường -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:10px">
           <div style="display:flex; gap:8px; align-items:center">
             <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
-            <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại (PhoneConnect)</button>
+            <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại Android (PhoneConnect)</button>
+            <button class="tab-btn" id="fuSubIosBtn" onclick="switchFuApp('ios')" title="iPhone có version RIÊNG — App Store duyệt chậm hơn Android">🍎 iPhone (iOS)</button>
           </div>
           <div style="display:flex; gap:6px; align-items:center">
             <span class="hint" style="margin:0; font-size:12px">Môi trường:</span>
@@ -1146,17 +1078,18 @@
             <button class="tab-btn small" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình bản Dev nội bộ (carDev/phoneDev)">🧪 Dev</button>
           </div>
         </div>
-
         <!-- Dải thông tin Môi trường & Nhánh đang chỉnh sửa -->
         <div id="fuEnvBanner" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding:8px 12px; background:var(--panel2); border-left:3px solid var(--ok); border-radius:6px; margin-bottom:14px; font-size:12px">
           <div>
             Đang cấu hình: <b id="fuCurrentAppLabel">🚗 Đầu xe (CarConnect)</b> • Môi trường: <b id="fuCurrentEnvLabel" style="color:var(--ok)">🟢 Production (Phát hành chính thức)</b>
           </div>
-          <div class="hint" style="margin:0">
-            Nhánh máy chủ: <code id="fuCurrentBranchLabel" class="mono" style="font-weight:700">car</code>
+          <div style="display:flex; align-items:center; gap:10px">
+            <button type="button" class="small ghost" id="fuRefreshFleetBtn" onclick="refreshFleetData()" title="Làm mới số lượng thiết bị đang chạy từ Telemetry">🔄 Làm mới đội máy</button>
+            <div class="hint" style="margin:0">
+              Nhánh máy chủ: <code id="fuCurrentBranchLabel" class="mono" style="font-weight:700">car</code>
+            </div>
           </div>
         </div>
-
         <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
         <div class="panel" style="margin-top:0; margin-bottom:14px; border-left:4px solid var(--accent); padding:10px 14px">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
@@ -1187,9 +1120,7 @@
             <textarea id="otaSignatureBlock" rows="3" placeholder='{"payload_raw": "...", "payload_sig": "..."}' style="width:100%; font-family:monospace; font-size:11px"></textarea>
           </div>
         </div>
-
         <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
-
         <!-- Form: CAR CONNECT -->
         <div id="fuPanelCar">
           <!-- Section: Phiên bản mới nhất -->
@@ -1205,7 +1136,6 @@
               <div style="grid-column: 1 / -1"><label>Ghi chú phiên bản (Release Notes)</label><textarea id="car_releaseNotes" rows="2" placeholder="VD: Nâng cấp giao diện điều khiển, sửa lỗi kết nối..."></textarea></div>
             </div>
           </div>
-
           <!-- Section: Lịch sử Phiên bản Đã Phát Hành & Thao tác Ép nhanh -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
@@ -1229,7 +1159,6 @@
               </table>
             </div>
           </div>
-
           <!-- Section: Ép nâng cấp (Force Update) -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:0">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px">
@@ -1241,7 +1170,6 @@
               </div>
               <button class="small" onclick="openAddForceRuleModal('car')">➕ Thêm quy tắc ép tùy chỉnh</button>
             </div>
-
             <!-- Ngưỡng tối thiểu -->
             <div id="car_minBox" class="fu-min-box" style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border)">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
@@ -1255,7 +1183,6 @@
               </div>
               <span class="hint" style="margin-top:6px; display:block">Mọi xe có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
             </div>
-
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="car_rulesTable">
@@ -1272,7 +1199,6 @@
             </div>
           </div>
         </div>
-
         <!-- Form: PHONE CONNECT -->
         <div id="fuPanelPhone" style="display:none">
           <!-- Section: Phiên bản mới nhất -->
@@ -1285,15 +1211,9 @@
               <div><label>Mã build mới nhất (versionCode) *</label><input id="phone_versionCode" type="number" value="" placeholder="chưa tải"></div>
               <div style="grid-column: 1 / -1"><label>Link tải file APK chính thức (downloadUrl) *</label><input id="phone_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk"></div>
               <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label><input id="phone_sha256" class="mono" value="c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad" placeholder="VD: 3b1e... (64 ký tự hex)"></div>
-              <div style="grid-column: 1 / -1; background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px"><label style="font-weight:600; color:var(--text); margin:0">🍎 Apple iOS — Link cập nhật (TestFlight / App Store)</label><span class="tag phone">Nhánh phoneIos</span></div>
-                <input id="phoneIos_downloadUrl" value="" placeholder="https://testflight.apple.com/join/… (trống = itms-beta:// mở app TestFlight)">
-                <div class="hint" style="margin-top:4px">iPhone chỉ đọc nhánh <code>phoneIos</code>/<code>phoneIosDev</code>. Tên/mã build/ngưỡng ép dùng chung với ô PhoneConnect.</div>
-              </div>
               <div style="grid-column: 1 / -1"><label>Ghi chú phiên bản (Release Notes)</label><textarea id="phone_releaseNotes" rows="2" placeholder="VD: Thêm tính năng điều khiển điều hòa, sửa lỗi..."></textarea></div>
             </div>
           </div>
-
           <!-- Section: Lịch sử Phiên bản Đã Phát Hành & Thao tác Ép nhanh -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
             <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
@@ -1317,7 +1237,6 @@
               </table>
             </div>
           </div>
-
           <!-- Section: Ép nâng cấp (Force Update) -->
           <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:0">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px">
@@ -1329,7 +1248,6 @@
               </div>
               <button class="small" onclick="openAddForceRuleModal('phone')">➕ Thêm quy tắc ép tùy chỉnh</button>
             </div>
-
             <!-- Ngưỡng tối thiểu -->
             <div id="phone_minBox" class="fu-min-box" style="margin-bottom:14px; background:var(--panel); border:1px solid var(--border)">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
@@ -1343,7 +1261,6 @@
               </div>
               <span class="hint" style="margin-top:6px; display:block">Mọi điện thoại có mã build <b>&lt; giá trị này</b> sẽ bị ép cập nhật thẳng lên bản mới nhất. (0 = không ép theo ngưỡng).</span>
             </div>
-
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="phone_rulesTable">
@@ -1360,11 +1277,54 @@
             </div>
           </div>
         </div>
-
+        <!-- iPhone: version RIÊNG (24/09/2026) — script chỉ ghi phoneIosPending; App Store có bản thì bấm "Đã lên App Store" rồi Lưu. -->
+        <div id="fuPanelIos" style="display:none">
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
+            <h3 style="font-size:14px; margin-bottom:10px; color:var(--text)">🍎 Bản iPhone đang có trên App Store (<span id="ios_envTitle">Production</span>)</h3>
+            <div id="ios_pendingBox" class="hint" style="display:none; margin:0 0 10px; padding:8px 10px; border:1px dashed var(--border); border-radius:6px">
+              ⏳ Bản chờ App Store duyệt: <b id="ios_pendingLabel" class="mono"></b>
+              <button type="button" class="small" onclick="promoteIosPending() && showMsg($('fuStatusMsg'), 'ok', '🍎 Đã chép bản chờ duyệt vào ô iOS — kiểm tra rồi bấm 💾 Lưu lên Supabase.')">✅ Đã lên App Store — dùng bản này</button>
+            </div>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
+              <div><label>Tên phiên bản trên App Store *</label><input id="ios_latestVersionName" value="" placeholder="VD: 1.2.0"></div>
+              <div><label>Mã build (CFBundleVersion) *</label><input id="ios_versionCode" type="number" value="" placeholder="VD: 1200" oninput="kiemNguongIos()"></div>
+              <div style="grid-column: 1 / -1"><label>Link cập nhật</label><input id="ios_downloadUrl" value="" placeholder="https://apps.apple.com/app/id6813109149 (trống = link App Store)"></div>
+              <div style="grid-column: 1 / -1"><label>Ghi chú phiên bản iOS</label><textarea id="ios_releaseNotes" rows="2"></textarea></div>
+              <div><label>Ngưỡng ép iPhone (minVersionCode, 0 = tắt)</label><input id="ios_minVersionCode" type="number" value="0" oninput="kiemNguongIos()"><div class="hint" id="ios_minWarn" style="color:var(--danger); display:none">⛔ Lớn hơn bản trên App Store — iPhone bị ép lên bản KHÔNG tồn tại.</div></div>
+            </div>
+          </div>
+          <!-- Section: Lịch sử Phiên bản Đã Phát Hành & Thao tác Ép nhanh (iPhone) -->
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:14px">
+            <h3 style="font-size:14px; margin-bottom:8px; color:var(--text); display:flex; align-items:center; gap:6px">
+              <span>📋 Danh mục Phiên bản iPhone & Thao tác Ép Cập nhật Nhanh</span>
+            </h3>
+            <div class="hint" style="margin:0 0 10px">Bản đích lấy từ App Store / cấu hình máy chủ. Bấm <b>⚡ Ép</b> để buộc lên <span id="ios_targetHint" class="mono"></span>.</div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:170px">Phiên bản</th>
+                    <th style="width:90px; text-align:center">Mã build</th>
+                    <th style="width:160px">Thiết bị đang chạy</th>
+                    <th style="width:180px">Trạng thái hiện tại</th>
+                    <th style="text-align:right; min-width:195px">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="ios_knownVersionsBody">
+                  <tr><td colspan="5" class="hint">Đang tải cấu hình từ máy chủ…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel" style="background:var(--panel2); border-color:var(--border); margin-bottom:0">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px"><h3 style="font-size:14px; color:var(--danger); margin:0">⚠️ Quy tắc ép cập nhật iPhone</h3><button class="small" onclick="openAddForceRuleModal('ios')">➕ Thêm quy tắc ép</button></div>
+            <div style="overflow-x:auto"><table id="ios_rulesTable"><thead><tr><th style="width:40px; text-align:center">#</th><th style="width:140px">Bản cũ bị ép</th><th style="width:160px">Bản đích</th>
+              <th>Thông điệp</th><th style="width:170px">Link đích</th><th style="text-align:right; width:120px">Thao tác</th></tr></thead><tbody></tbody></table></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
   <!-- ================= TAB 6: ĐẠI LÝ CẤP 1 (RESELLERS) ================= -->
   <div id="tabContentResellers" class="tab-content">
     <!-- Thẻ KPI Đại lý -->
@@ -1390,7 +1350,6 @@
         <div class="hint">Khả dụng để xuất mã tiếp</div>
       </div>
     </div>
-
     <!-- Danh sách Đại Lý & Thanh Công Cụ -->
     <div class="panel">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px">
@@ -1409,7 +1368,6 @@
           <button type="button" class="small ghost" onclick="loadResellersData()">🔄 Làm mới</button>
         </div>
       </div>
-
       <!-- Thanh bộ lọc trạng thái nhanh -->
       <div id="resellerQuickFilter" style="display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; align-items:center">
         <span style="font-size:12px; font-weight:600; color:var(--muted)">Lọc nhanh:</span>
@@ -1425,7 +1383,6 @@
           </label>
         </div>
       </div>
-
       <div style="overflow-x:auto">
         <table id="resellersTable">
           <thead>
@@ -1447,7 +1404,6 @@
         </table>
       </div>
     </div>
-
     <!-- Lịch sử Giao dịch Ví Đại Lý Gần Nhất -->
     <div class="panel" style="margin-top:16px">
       <h2 style="font-size:15px; margin-bottom:10px; color:var(--text)">📜 Lịch sử Biến động Ví & Giao dịch Đại lý Gần đây</h2>
@@ -1471,7 +1427,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modal Cảnh báo Thiếu Chữ ký OTA -->
   <div class="modal-mask" id="otaUnsignedMask" style="display:none" onclick="if(event.target===this)closeOtaUnsignedModal()">
     <div class="modal" style="max-width:580px">
@@ -1480,7 +1435,6 @@
         Client 1.1.1+ chỉ nhận cấu hình có chữ ký ECDSA (<code>payload_raw</code> + <code>payload_sig</code>).<br>
         Lưu không ký = <b>mọi xe và điện thoại 1.1.1+ sẽ KHÔNG thấy bản mới</b>.
       </div>
-
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-top:14px">
         <div style="font-weight:600; margin-bottom:4px; font-size:13px">⚡ Cách 1: Nạp khoá riêng để Tự ký ngay (Khuyến nghị)</div>
         <div style="font-size:12px; color:var(--muted); margin-bottom:8px">
@@ -1489,7 +1443,6 @@
         <input type="file" id="otaKeyModalFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyModalFileInput(event)">
         <button type="button" class="small" onclick="$('otaKeyModalFileInput').click()">📂 Nạp ota_private.pem & Ký Lưu luôn</button>
       </div>
-
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-top:10px">
         <div style="font-weight:600; margin-bottom:4px; font-size:13px">💻 Cách 2: Ký bằng Terminal máy publish</div>
         <div style="font-size:12px; color:var(--muted); margin-bottom:8px">
@@ -1500,14 +1453,12 @@
           <button type="button" class="small ghost" onclick="copyTerminalSignCommand()">📋 Copy lệnh Terminal</button>
         </div>
       </div>
-
       <div class="actions" style="margin-top:20px; display:flex; justify-content:space-between; align-items:center">
         <button type="button" class="danger small" onclick="confirmSaveUnsigned()">⚠️ Vẫn lưu KHÔNG chữ ký (Bản ≤ 1.1.0)</button>
         <button type="button" class="ghost small" onclick="closeOtaUnsignedModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Xác nhận Thay đổi Bảng giá -->
   <div class="modal-mask" id="savePricesConfirmMask" style="display:none" onclick="if(event.target===this)closeSavePricesConfirmModal()">
     <div class="modal">
@@ -1524,7 +1475,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modal Giả lập Webhook Thanh toán (Testing Tool) -->
   <div class="modal-mask" id="simulateWebhookMask" style="display:none" onclick="if(event.target===this)closeSimulateWebhookModal()">
     <div class="modal">
@@ -1551,7 +1501,6 @@
       </div>
     </div>
   </div>
-
   <div class="modal-mask" id="editMask" style="display:none" onclick="if(event.target===this)closeEdit()">
     <div class="modal">
       <h3>Sửa mã <span id="edKeyLabel" class="mono"></span></h3>
@@ -1612,7 +1561,6 @@
       </div>
     </div>
   </div>
-
   <!-- Modal Chi tiết thiết bị License -->
   <div id="devBox" class="panel" style="display:none; margin-top:14px; border:1px solid var(--accent)">
     <div class="row" style="justify-content:space-between; align-items:center">
@@ -1643,7 +1591,6 @@
         <tbody></tbody>
       </table>
     </div>
-
     <h3 style="margin:18px 0 0; font-size:15px">📜 Nhật ký kích hoạt từng thiết bị</h3>
     <div class="hint">
       Ghi lại <b>mọi lần một máy mới</b> kích hoạt bằng mã này — kể cả lần bị từ chối.
@@ -1664,13 +1611,11 @@
       </table>
     </div>
   </div>
-
   <!-- Modal Thêm / Sửa Quick Install Item -->
   <div class="modal-mask" id="qiModalMask" style="display:none" onclick="if(event.target===this)closeQiModal()">
     <div class="modal">
       <h3 id="qiModalTitle">Thêm ứng dụng Cài Nhanh</h3>
       <div class="hint">Ứng dụng sẽ xuất hiện trên màn Cài nhanh của xe, điện thoại và máy tính.</div>
-      
       <div class="grid" style="grid-template-columns: 1fr 1fr">
         <div style="grid-column: 1 / -1">
           <label>Tên hiển thị trên menu *</label>
@@ -1711,20 +1656,17 @@
           <label class="chk"><input type="checkbox" id="qiHidden"> 👁️ Tạm ẩn (hidden - không hiện trên menu nhưng giữ link)</label>
         </div>
       </div>
-
       <div class="actions">
         <button id="btnSaveQiItem" onclick="saveQiItem()">Xác nhận</button>
         <button class="ghost" onclick="closeQiModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Thêm / Sửa Force Update Rule -->
   <div class="modal-mask" id="fuRuleModalMask" style="display:none" onclick="if(event.target===this)closeFuRuleModal()">
     <div class="modal" style="max-width:680px">
       <h3 id="fuRuleModalTitle">Thêm quy tắc ép nâng cấp</h3>
       <div class="hint" id="fuRuleModalSubtitle">Chỉ định phiên bản cũ bị ép và phiên bản đích cần ép lên.</div>
-
       <div class="panel" style="background:var(--panel2); margin-top:14px; margin-bottom:12px">
         <label style="font-weight:600; color:var(--text); margin-bottom:8px">1. Điều kiện: Phiên bản cũ nào bị ép cập nhật?</label>
         <div class="grid" style="grid-template-columns: 1fr 1fr">
@@ -1740,7 +1682,6 @@
           </div>
         </div>
       </div>
-
       <div class="panel" style="background:var(--panel2); margin-bottom:12px">
         <label style="font-weight:600; color:var(--text); margin-bottom:8px">2. Phiên bản đích cần ép lên (Target Version)</label>
         <div style="margin-bottom:10px; display:flex; gap:16px; flex-wrap:wrap">
@@ -1768,7 +1709,6 @@
           </div>
         </div>
       </div>
-
       <div class="panel" style="background:var(--panel2); margin-bottom:12px">
         <label style="font-weight:600; color:var(--text); margin-bottom:8px">3. Thông báo hiển thị cho người dùng</label>
         <div>
@@ -1780,14 +1720,12 @@
           <textarea id="fuRuleReleaseNotes" rows="2" placeholder="VD: Vá lỗi rò rỉ bộ nhớ và sửa lỗi màn hình lùi xe."></textarea>
         </div>
       </div>
-
       <div class="actions">
         <button id="btnSaveFuRule" onclick="saveFuRule()">Lưu quy tắc</button>
         <button class="ghost" onclick="closeFuRuleModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Cấu hình (Settings) -->
   <div class="modal-mask" id="settingsMask" style="display:none" onclick="if(event.target===this)closeSettingsModal()">
     <div class="modal">
@@ -1800,10 +1738,8 @@
           <input id="cfgSbUrl">
         </div>
         <div style="grid-column: 1 / -1">
-          
         </div>
       </div>
-
       <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border)">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px">
           <div>
@@ -1813,7 +1749,6 @@
           <button class="danger small" onclick="purgeTestData('orders_only')">Xoá đơn hàng test</button>
         </div>
       </div>
-
       <div class="actions">
         <button onclick="saveSettings()">Lưu cấu hình</button>
         <button class="ghost" onclick="resetDefaultSettings()">Khôi phục mặc định</button>
@@ -1821,13 +1756,11 @@
       </div>
     </div>
   </div>
-
   <!-- Modal Thêm / Sửa Đại Lý Cấp 1 -->
   <div class="modal-mask" id="resellerModalMask" style="display:none" onclick="if(event.target===this)closeResellerModal()">
     <div class="modal" style="max-width:620px">
       <h3 id="resellerModalTitle">➕ Thêm Đại Lý Cấp 1 Mới</h3>
       <div class="hint">Cấp tài khoản cho Gara / Thợ cài đặt để họ chủ động xuất mã bản quyền.</div>
-
       <input type="hidden" id="resellerEditId">
       <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px">
         <div>
@@ -1907,20 +1840,17 @@
           <input id="resellerModalNote" placeholder="Ghi chú thêm về đại lý...">
         </div>
       </div>
-
       <div class="actions" style="margin-top:16px">
         <button type="button" id="btnSaveReseller" onclick="saveReseller()">Lưu thông tin</button>
         <button type="button" class="ghost" onclick="closeResellerModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Đặt Lại / Đổi PIN Đại Lý (Admin) -->
   <div class="modal-mask" id="resellerResetPinMask" style="display:none" onclick="if(event.target===this)closeResetPinModal()">
     <div class="modal" style="max-width:440px">
       <h3 style="color:var(--text); margin-bottom:4px">🔑 Đặt Lại Mã PIN Đại Lý</h3>
       <div class="hint" id="resetPinResellerDesc">Cấp lại mã PIN mới cho thợ khi quên hoặc cần đổi bảo mật.</div>
-
       <input type="hidden" id="resetPinResellerId">
       <div style="margin:16px 0">
         <label>Mã PIN mới (chính xác 6 chữ số) *</label>
@@ -1930,18 +1860,15 @@
           <button type="button" class="small ghost" onclick="$('resetPinNewValue').value='123456'" title="Đặt về 123456">🔁 123456</button>
         </div>
       </div>
-
       <div class="hint" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:8px 10px; color:#1e40af; font-size:12px; margin-bottom:14px">
         ℹ️ Đặt lại PIN sẽ đồng thời xóa mọi cảnh báo thử sai (failed attempts) và mở khóa nếu tài khoản đang bị tạm khóa 15 phút.
       </div>
-
       <div class="actions">
         <button type="button" id="btnConfirmResetPin" class="primary" onclick="submitResetPin()">Xác nhận đổi PIN</button>
         <button type="button" class="ghost" onclick="closeResetPinModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Danh Sách Key Đại Lý Đã Cấp -->
   <div class="modal-mask" id="resellerLicensesMask" style="display:none" onclick="if(event.target===this)closeResellerLicensesModal()">
     <div class="modal" style="max-width:760px">
@@ -1950,7 +1877,6 @@
         <button type="button" class="small ghost" onclick="closeResellerLicensesModal()">✕ Đóng</button>
       </div>
       <div class="hint" id="resellerLicensesSubtitle">Danh sách tất cả bản quyền xe do đại lý xuất</div>
-
       <div style="overflow-x:auto; margin-top:14px; max-height:420px; overflow-y:auto">
         <table>
           <thead>
@@ -1968,26 +1894,22 @@
           </tbody>
         </table>
       </div>
-
       <div class="actions" style="margin-top:16px; justify-content:flex-end">
         <button type="button" class="ghost" onclick="closeResellerLicensesModal()">Đóng</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Nạp Tiền Ví Đại Lý -->
   <div class="modal-mask" id="resellerTopupMask" style="display:none" onclick="if(event.target===this)closeTopupModal()">
     <div class="modal" style="max-width:480px">
       <h3>💰 Nạp Tiền Số Dư Ví Đại Lý</h3>
       <div class="hint">Nạp tiền vào ví sau khi nhận được chuyển khoản từ đại lý. Số dư dùng để trừ sỉ khi thợ xuất mã.</div>
-
       <input type="hidden" id="topupResellerId">
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin:14px 0">
         <div style="font-size:12px; color:var(--muted)">Đại lý thụ hưởng:</div>
         <div id="topupResellerTitle" style="font-size:16px; font-weight:700; color:var(--text); margin:2px 0"></div>
         <div id="topupResellerCurrentBalance" style="font-size:13px; color:var(--accent); font-weight:600"></div>
       </div>
-
       <div style="margin-bottom:12px">
         <label>Số tiền nạp (VND) *</label>
         <input id="topupAmount" type="number" placeholder="VD: 5000000" style="font-size:16px; font-weight:700">
@@ -1998,19 +1920,16 @@
           <button type="button" class="small ghost" onclick="$('topupAmount').value=20000000">+20.000.000 ₫</button>
         </div>
       </div>
-
       <div>
         <label>Ghi chú đối soát (Lưu vào nhật ký biến động ví)</label>
         <input id="topupNote" placeholder="VD: Chuyển khoản VCB lúc 14:30">
       </div>
-
       <div class="actions" style="margin-top:16px">
         <button type="button" id="btnSubmitTopup" onclick="submitTopup()">Xác nhận nạp tiền</button>
         <button type="button" class="ghost" onclick="closeTopupModal()">Huỷ</button>
       </div>
     </div>
   </div>
-
   <!-- Modal Xem Chứng Từ Nghiệm Thu Chi Phí -->
   <div class="modal-mask" id="expenseReceiptModalMask" style="display:none" onclick="if(event.target===this)closeExpenseReceiptModal()">
     <div class="modal" style="max-width:680px">
@@ -2021,11 +1940,9 @@
         </div>
         <button type="button" class="ghost small" onclick="closeExpenseReceiptModal()" style="font-size:16px; padding:2px 8px; line-height:1">✕</button>
       </div>
-
       <div style="background:rgba(0,0,0,0.06); border:1px solid var(--border); border-radius:8px; padding:12px; text-align:center; max-height:65vh; overflow:auto">
         <img id="expenseReceiptModalImg" src="" alt="Chứng từ nghiệm thu" style="max-width:100%; max-height:60vh; object-fit:contain; border-radius:6px; box-shadow:0 2px 10px rgba(0,0,0,0.15)">
       </div>
-
       <div class="actions" style="margin-top:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
         <div style="display:flex; gap:6px">
           <button type="button" class="small ghost" id="btnExpenseReceiptOpenTab" onclick="openExpenseReceiptInNewTab()">↗️ Mở tab mới</button>
@@ -2036,9 +1953,7 @@
       </div>
     </div>
   </div>
-
 </div>
-
 <script>
 // ==================== CẤU HÌNH HỆ THỐNG TRỰC TIẾP TRONG CODE ====================
 const DEFAULT_CONFIG = {
@@ -2334,6 +2249,7 @@ async function verifyLoginOtp() {
       renderQuickInstallTable();
       loadQuickInstallCatalog();
       loadAppUpdateConfig();
+      applyUrlQueryParams();
     }, 400);
   } catch (err) {
     showMsg(msgEl, "err", "❌ " + err.message);
@@ -2466,8 +2382,29 @@ renderAppUpdateConfigUI();
     renderQuickInstallTable();
     loadQuickInstallCatalog();
     loadAppUpdateConfig();
+    applyUrlQueryParams();
   }
 });
+
+function applyUrlQueryParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const midParam = (urlParams.get("machine_id") || urlParams.get("device_id") || "").trim();
+  if (midParam) {
+    const noteEl = $("note");
+    if (noteEl && !noteEl.value) {
+      noteEl.value = "Xe EX2 (Máy: " + midParam + ")";
+    }
+    const searchEl = $("searchInput");
+    if (searchEl) {
+      searchEl.value = midParam;
+      searchKeyword = midParam;
+    }
+    const ownerNameEl = $("ownerName");
+    if (ownerNameEl) {
+      setTimeout(() => ownerNameEl.focus(), 150);
+    }
+  }
+}
 
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
@@ -2856,7 +2793,8 @@ function renderTable() {
       (r.owner_name || "").toLowerCase().includes(kw) ||
       (r.owner_phone || "").includes(kw) ||
       (r.key || "").toLowerCase().includes(kw) ||
-      (r.note || "").toLowerCase().includes(kw)
+      (r.note || "").toLowerCase().includes(kw) ||
+      (r.devices && r.devices.some(d => (d.machine_id || "").toLowerCase().includes(kw)))
     );
   }
 
@@ -2927,7 +2865,7 @@ async function loadKeys() {
     const res = await api("/rest/v1/licenses?select=key,owner_name,owner_phone,note,active,max_devices,max_pc_devices,activation_count,max_activations,last_activated_at,expires_at,created_at,role,is_trial,devices(id,machine_id,phone,ip,hostname,os,app_version,use_count,first_seen,last_seen,kicked_at,kick_attempts,last_kick_attempt_at)&order=created_at.desc&limit=500");
     window._allRows = await res.json();
     // Gom phiên bản đội xe đang chạy thật cho tab Ép cập nhật (bảng danh mục không còn danh sách cứng).
-    const fleet = { car: {}, phone: {} };
+    const fleet = { car: {}, phone: {}, ios: {} };
     for (const r of window._allRows) {
       for (const d of (r.devices || [])) {
         const isCar = (d.os || "").toLowerCase().includes("android");
@@ -2936,8 +2874,29 @@ async function loadKeys() {
         fleet.car[v] = (fleet.car[v] || 0) + 1;
       }
     }
+    // PhoneConnect không dùng license — truy vấn telemetry_events để đếm số máy điện thoại thực tế theo phiên bản
+    try {
+      const pRes = await api("/rest/v1/telemetry_events?app=eq.phone&select=app_version,version_code,device_id&order=ts.desc&limit=300");
+      const pRows = pRes && pRes.ok ? await pRes.json() : (Array.isArray(pRes) ? pRes : []);
+      if (Array.isArray(pRows)) {
+        const phoneDevsByVer = {};
+        for (const ev of pRows) {
+          const v = String(ev.app_version || "").trim();
+          if (!v) continue;
+          if (!phoneDevsByVer[v]) phoneDevsByVer[v] = new Set();
+          if (ev.device_id) phoneDevsByVer[v].add(ev.device_id);
+        }
+        for (const [v, devSet] of Object.entries(phoneDevsByVer)) {
+          fleet.phone[v] = devSet.size || 1;
+        }
+      }
+    } catch (_) {}
     window._fleetVersions = fleet;
-    if (window._appUpdateConfigLoaded) { renderKnownVersions("car"); renderKnownVersions("phone"); }
+    if (window._appUpdateConfigLoaded) {
+      renderKnownVersions("car");
+      renderKnownVersions("phone");
+      renderKnownVersions("ios");
+    }
     renderTable();
     loadAnalytics();
   } catch (e) {
@@ -5565,8 +5524,65 @@ window._appUpdateConfig = {
   phoneDev: { forceRules: [] }
 };
 window._appUpdateConfigLoaded = false;
-/** Phiên bản đội xe đang chạy thật: { car: { "1.0.67": 12, ... } } — gom từ licenses.devices (loadKeys). */
-window._fleetVersions = { car: {}, phone: {} };
+/** Phiên bản đội xe đang chạy thật: { car: { "1.0.67": 12, ... } } — gom từ licenses.devices & telemetry_events. */
+window._fleetVersions = { car: {}, phone: {}, ios: {} };
+
+/**
+ * Danh mục các phiên bản chính thức đã phát hành trong lịch sử dự án.
+ * Giúp bảng "Danh mục Phiên bản" luôn hiển thị đầy đủ các bản cũ (để admin bấm ⚡ Ép nhanh)
+ * ngay cả khi các máy đã nâng cấp xong và không còn máy nào online ở bản cũ đó.
+ */
+const OFFICIAL_RELEASES = {
+  car: [{ name: "1.2.0", code: 1200 }, { name: "1.1.5", code: 1105 }, { name: "1.1.3", code: 1103 }, { name: "1.1.2", code: 1102 }, { name: "1.1.1", code: 1101 }, { name: "1.1.0", code: 1100 }, { name: "1.0.67", code: 167 }, { name: "1.0.64", code: 164 }, { name: "1.0.60", code: 160 }, { name: "1.0.52", code: 152 }, { name: "1.0.40", code: 140 }],
+  phone: [{ name: "1.2.0", code: 1200 }, { name: "1.1.6", code: 1106 }, { name: "1.1.5", code: 1105 }, { name: "1.1.0", code: 1100 }, { name: "1.0.0", code: 100 }],
+  ios: [{ name: "1.2.0", code: 1200 }]
+};
+
+/**
+ * Tự động tải thống kê thiết bị từ telemetry_events chạy ngầm khi mở tab OTA.
+ * Giúp người dùng không bắt buộc phải bấm sang tab Giấy phép mới thấy số lượng máy.
+ */
+async function loadFleetFromTelemetryQuietly() {
+  try {
+    const fleet = window._fleetVersions || { car: {}, phone: {}, ios: {} };
+    const pRes = await api("/rest/v1/telemetry_events?select=app,app_version,version_code,device_id&order=ts.desc&limit=400");
+    const pRows = pRes && pRes.ok ? await pRes.json() : (Array.isArray(pRes) ? pRes : []);
+    if (Array.isArray(pRows)) {
+      const devsByAppVer = { car: {}, phone: {}, ios: {} };
+      for (const ev of pRows) {
+        const appKey = ev.app === "phone" ? "phone" : "car";
+        const v = String(ev.app_version || "").trim();
+        if (!v) continue;
+        if (!devsByAppVer[appKey][v]) devsByAppVer[appKey][v] = new Set();
+        if (ev.device_id) devsByAppVer[appKey][v].add(ev.device_id);
+      }
+      for (const a of ["car", "phone"]) {
+        for (const [v, devSet] of Object.entries(devsByAppVer[a])) {
+          fleet[a][v] = Math.max(fleet[a][v] || 0, devSet.size || 1);
+        }
+      }
+      window._fleetVersions = fleet;
+      if (window._appUpdateConfigLoaded) {
+        renderKnownVersions("car");
+        renderKnownVersions("phone");
+        renderKnownVersions("ios");
+      }
+    }
+  } catch (_) {}
+}
+
+async function refreshFleetData() {
+  const btn = $("fuRefreshFleetBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "⏳ Đang tải..."; }
+  try {
+    await loadFleetFromTelemetryQuietly();
+    showMsg($("fuStatusMsg"), "ok", "Đã làm mới dữ liệu thống kê đội máy thành công.");
+  } catch (e) {
+    showMsg($("fuStatusMsg"), "err", "Không thể làm mới dữ liệu: " + (e.message || e));
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "🔄 Làm mới đội máy"; }
+  }
+}
 
 /**
  * versionCode suy từ tên. Luật hiện hành (chủ xe chốt 13/09/2026): X*1000 + Y*100 + Z (1.1.1 → 1101).
@@ -5582,23 +5598,13 @@ function versionCodeFromName(name) {
 
 /**
  * Kiểm tra xem phiên bản có thuộc danh sách phát hành Production chính thức không.
- * Các bản dev thử nghiệm nội bộ (1.2.1, 1.1.9, 1.1.8, 1.1.6, 1.1.4, v.v.) sẽ bị loại bỏ
- * khi xem ở môi trường Production để danh mục ép cập nhật luôn tinh gọn và đúng nghiệp vụ.
+ * Các bản dev thử nghiệm nội bộ sẽ bị loại bỏ khi xem ở môi trường Production.
  */
 function isProductionVersionCode(app, code, name) {
   if (code == null || isNaN(code) || code <= 0) return false;
-  if (name && /(dev|alpha|beta|test)/i.test(name)) return false;
-  const devCodes = new Set([1201, 1109, 1108, 1107, 1104, 1103, 1102, 1101, 1100]);
-  if (devCodes.has(code)) return false;
-  if (app === "car" && code === 1106) return false;
-
-  if (code >= 1100 && code < 1200) {
-    return app === "phone" ? (code === 1105 || code === 1106) : (code === 1105);
-  }
-  if (code >= 1200 && code < 1300) {
-    return code === 1200;
-  }
-  if (code < 1000) return true;
+  if (name && /(dev|alpha|beta|test|snapshot)/i.test(name)) return false;
+  // Bản dev 1.2.1 đang ở nhánh develop
+  if (code === 1201) return false;
   return true;
 }
 // Môi trường đang chỉnh: "prod" -> nhánh car/phone, "dev" -> nhánh carDev/phoneDev.
@@ -5608,6 +5614,8 @@ function isProductionVersionCode(app, code, name) {
 window._fuEnv = "prod";
 
 function fuKey(app) {
+  // "ios" = tab iPhone riêng (24/09/2026): nhánh phoneIos/phoneIosDev, version KHÔNG dùng chung với Android.
+  if (app === "ios") return window._fuEnv === "dev" ? "phoneIosDev" : "phoneIos";
   return window._fuEnv === "dev" ? (app === "car" ? "carDev" : "phoneDev") : app;
 }
 
@@ -5620,7 +5628,7 @@ function fuNode(app) {
 
 function updateFuHeaderBanner() {
   const app = window._currentFuApp || "car", env = window._fuEnv || "prod", branch = fuKey(app);
-  if ($("fuCurrentAppLabel")) $("fuCurrentAppLabel").textContent = app === "car" ? "🚗 Đầu xe (CarConnect)" : "📱 Điện thoại (PhoneConnect)";
+  if ($("fuCurrentAppLabel")) $("fuCurrentAppLabel").textContent = app === "car" ? "🚗 Đầu xe (CarConnect)" : app === "ios" ? "🍎 iPhone (iOS)" : "📱 Điện thoại Android (PhoneConnect)";
   if ($("fuCurrentEnvLabel")) {
     $("fuCurrentEnvLabel").textContent = env === "prod" ? "🟢 Production (Phát hành chính thức)" : "🧪 Dev (Thử nghiệm nội bộ)";
     $("fuCurrentEnvLabel").style.color = env === "prod" ? "var(--ok)" : "#38bdf8";
@@ -5628,6 +5636,7 @@ function updateFuHeaderBanner() {
   if ($("fuCurrentBranchLabel")) $("fuCurrentBranchLabel").textContent = branch;
   if ($("car_envTitle")) $("car_envTitle").textContent = env === "prod" ? "Production" : "Dev (Thử nghiệm)";
   if ($("phone_envTitle")) $("phone_envTitle").textContent = env === "prod" ? "Production" : "Dev (Thử nghiệm)";
+  if ($("ios_envTitle")) $("ios_envTitle").textContent = env === "prod" ? "Production" : "Dev — TestFlight";
   if ($("fuEnvBanner")) $("fuEnvBanner").style.borderLeftColor = env === "prod" ? "var(--ok)" : "#38bdf8";
 }
 
@@ -5657,11 +5666,11 @@ function fuEscapeHtml(str) { return esc(str); }
 
 function switchFuApp(app) {
   window._currentFuApp = app;
-  const isCar = app === "car";
-  $("fuSubCarBtn").classList.toggle("active", isCar);
-  $("fuSubPhoneBtn").classList.toggle("active", !isCar);
-  $("fuPanelCar").style.display = isCar ? "block" : "none";
-  $("fuPanelPhone").style.display = isCar ? "none" : "block";
+  ["car", "phone", "ios"].forEach(function (a) {
+    const cap = a === "ios" ? "Ios" : a.charAt(0).toUpperCase() + a.slice(1);
+    $("fuSub" + cap + "Btn").classList.toggle("active", a === app);
+    $("fuPanel" + cap).style.display = a === app ? "block" : "none";
+  });
   updateFuHeaderBanner();
 }
 
@@ -5687,6 +5696,7 @@ async function loadAppUpdateConfig() {
     window._appUpdateConfigLoaded = true;
     renderAppUpdateConfigUI();
     showMsg(msg, "ok", "Đã tải cấu hình cập nhật từ Supabase (Phiên bản v" + (window._appUpdateConfig.version || 1) + ")");
+    loadFleetFromTelemetryQuietly();
   } catch (err) {
     showMsg(msg, "err", "Lỗi khi tải cấu hình cập nhật: " + err.message);
     renderAppUpdateConfigUI();
@@ -5717,10 +5727,20 @@ function renderAppUpdateConfigUI() {
   if ($("phone_sha256")) $("phone_sha256").value = phone.sha256 || "";
   if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phone.releaseNotes || "";
   if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "0";
-  const phoneIos = cfg[fuIosKey()] || {};
-  if ($("phoneIos_downloadUrl")) $("phoneIos_downloadUrl").value = phoneIos.downloadUrl || "";
   renderRulesTable("phone");
   renderKnownVersions("phone");
+
+  // iPhone (tab riêng): số lấy từ nhánh phoneIos*, KHÔNG từ phone.
+  const ios = cfg[fuKey("ios")] || {};
+  ["latestVersionName", "versionCode", "downloadUrl", "releaseNotes"].forEach(function (f) { if ($("ios_" + f)) $("ios_" + f).value = ios[f] || ""; });
+  if ($("ios_minVersionCode")) $("ios_minVersionCode").value = ios.minVersionCode != null ? ios.minVersionCode : "0";
+  const pending = cfg[fuKey("ios") + "Pending"];
+  const pendingCode = pending ? parseInt(pending.versionCode, 10) || 0 : 0;
+  if ($("ios_pendingBox")) $("ios_pendingBox").style.display = pendingCode > (parseInt(ios.versionCode, 10) || 0) ? "block" : "none";
+  if ($("ios_pendingLabel") && pending) $("ios_pendingLabel").textContent = "v" + (pending.latestVersionName || "?") + " (" + pendingCode + ")";
+  renderRulesTable("ios");
+  renderKnownVersions("ios");
+  kiemNguongIos();
 
   updateOtaKeyStatusUI();
   updateFuHeaderBanner();
@@ -5728,8 +5748,8 @@ function renderAppUpdateConfigUI() {
 
 /**
  * Dựng bảng "Danh mục phiên bản": hàng đầu = bản đích từ RPC; các hàng sau = phiên bản đội xe đang
- * chạy thật (window._fleetVersions, gom từ licenses.devices) + bản đã có quy tắc ép — KHÔNG có danh
- * sách cứng nào trong trang. Chưa tải cấu hình thì chỉ báo trạng thái, không bịa số.
+ * chạy thật (window._fleetVersions, gom từ licenses.devices & telemetry_events) + bản phát hành chuẩn (OFFICIAL_RELEASES)
+ * + bản đã có quy tắc ép — KHÔNG bị mất bản cũ khi xe/đt nâng cấp xong.
  */
 function renderKnownVersions(app) {
   const body = $(app + "_knownVersionsBody");
@@ -5742,8 +5762,9 @@ function renderKnownVersions(app) {
   const quickBtn = $(app + "_quickMinBtn");
   if (quickBtn) {
     quickBtn.disabled = !targetCode;
+    const appNoun = app === "car" ? "xe" : app === "ios" ? "iPhone" : "đt";
     quickBtn.textContent = targetCode
-      ? "⚡ Ép toàn bộ " + (app === "car" ? "xe" : "đt") + " cũ (< " + targetCode + ") lên " + targetName
+      ? "⚡ Ép toàn bộ " + appNoun + " cũ (< " + targetCode + ") lên " + targetName
       : "⚡ Ép toàn bộ lên bản đích (chưa tải)";
     quickBtn.onclick = function () { setQuickMinVersionCode(app, targetCode); };
   }
@@ -5755,9 +5776,22 @@ function renderKnownVersions(app) {
     body.innerHTML = '<tr><td colspan="5" class="hint">Máy chủ chưa có bản đích cho nhánh này (' + esc(fuKey(app)) + ').</td></tr>';
     return;
   }
-  // Gom phiên bản: đội xe thật + bản trong quy tắc ép, loại bản đích
+  // Gom phiên bản: Danh mục phát hành chuẩn (OFFICIAL_RELEASES) + đội xe thật + bản trong quy tắc ép, loại bản đích
   const seen = {}; // code -> { name, count }
   const fleet = (window._fleetVersions && window._fleetVersions[app]) || {};
+
+  // 1. Nạp từ danh mục phát hành chuẩn để đảm bảo các bản cũ luôn hiển thị sẵn sàng ép
+  const officialList = OFFICIAL_RELEASES[app] || [];
+  officialList.forEach(rel => {
+    if (rel.code !== targetCode && rel.code < targetCode) {
+      if (window._fuEnv === "prod") {
+        if (!isProductionVersionCode(app, rel.code, rel.name)) return;
+      }
+      seen[rel.code] = { name: rel.name, count: fleet[rel.name] || 0 };
+    }
+  });
+
+  // 2. Nạp thêm các phiên bản đang chạy thực tế từ đội xe/điện thoại (nếu có bản ngoài catalog)
   Object.keys(fleet).forEach(name => {
     const code = versionCodeFromName(name);
     if (code == null || code === targetCode) return;
@@ -5767,13 +5801,8 @@ function renderKnownVersions(app) {
     }
     seen[code] = { name: name, count: fleet[name] };
   });
-  if (window._fuEnv === "prod") {
-    // Đảm bảo ở tab Production luôn có sẵn bản production chính thức đã phát hành (< targetCode) để ép nhanh
-    const baselineVer = 1105;
-    if (baselineVer < targetCode && !seen[baselineVer]) {
-      seen[baselineVer] = { name: "1.1.5", count: fleet["1.1.5"] || 0 };
-    }
-  }
+
+  // 3. Nạp từ các quy tắc ép đang kích hoạt
   (cfg.forceRules || []).forEach(r => {
     (Array.isArray(r.matchVersionCodes) ? r.matchVersionCodes : []).forEach(code => {
       if (code !== targetCode && !seen[code]) {
@@ -5785,9 +5814,11 @@ function renderKnownVersions(app) {
       }
     });
   });
+
+  const appTag = app === "car" ? "car" : app === "ios" ? "admin" : "phone";
   const rows = [];
   rows.push('<tr data-code="' + targetCode + '">' +
-    '<td><b>v' + esc(targetName) + '</b> <span class="tag car">' + (window._fuEnv === "dev" ? "Dev" : "Production (Bản chuẩn)") + '</span></td>' +
+    '<td><b>v' + esc(targetName) + '</b> <span class="tag ' + appTag + '">' + (window._fuEnv === "dev" ? "Dev" : "Production (Bản chuẩn)") + '</span></td>' +
     '<td class="mono" style="text-align:center">' + targetCode + '</td>' +
     '<td style="font-size:12px; color:var(--muted)">' + (fleet[targetName] ? fleet[targetName] + " thiết bị đang chạy" : "—") + '</td>' +
     '<td><span class="tag on">🟢 Bản đích (máy chủ v' + (window._appUpdateConfig.version || 0) + ')</span></td>' +
@@ -5806,7 +5837,7 @@ function renderKnownVersions(app) {
   if (rows.length === 1) {
     rows.push('<tr><td colspan="5" class="hint">' + (Object.keys(fleet).length
       ? "Toàn bộ thiết bị đã ở bản đích."
-      : "Chưa có dữ liệu đội xe — mở tab Giấy phép (tải danh sách) rồi quay lại để thấy các bản đang chạy.") + '</td></tr>');
+      : "Chưa có dữ liệu đội xe — mở tab Giấy phép (tải danh sách) hoặc gửi telemetry để thấy các bản đang chạy.") + '</td></tr>');
   }
   body.innerHTML = rows.join("");
   updateKnownVersionsStatus(app);
@@ -5894,8 +5925,8 @@ function renderRulesTable(app) {
   const rules = (window._appUpdateConfig[fuKey(app)] && window._appUpdateConfig[fuKey(app)].forceRules) || [];
 
   if (!rules.length) {
-    const appLabel = app === "car" ? "xe" : "điện thoại";
-    const appName = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
+    const appLabel = app === "car" ? "xe" : app === "ios" ? "iPhone" : "điện thoại";
+    const appName = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
     const latestCode = parseInt((window._appUpdateConfig[fuKey(app)] || {}).versionCode, 10) || "(mã bản đích)";
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px 16px; background:var(--panel2); border-radius:8px">
       <div style="font-size:24px; margin-bottom:6px">📋</div>
@@ -5977,20 +6008,21 @@ function syncFormToConfig() {
   _phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
   _phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
 
-  // Nhánh iOS (19/09/2026): cùng số hiệu với PhoneConnect Android, chỉ khác link mở TestFlight và
-  // không có SHA. Giữ nguyên forceRules riêng của nhánh (chỉ script/JSON sửa được).
-  const iosKey = fuIosKey();
-  const iosUrl = ($("phoneIos_downloadUrl") ? $("phoneIos_downloadUrl").value : "").trim();
-  if (iosUrl || window._appUpdateConfig[iosKey]) {
+  // iPhone (24/09/2026): version RIÊNG từ tab iOS — CẤM chép số/ngưỡng ép từ Android (App Store duyệt chậm hơn
+  // ⇒ iPhone thấy "có bản mới"/bị ÉP lên bản chưa có). Tab trống + máy chủ chưa có nhánh ⇒ không tạo.
+  const iosKey = fuKey("ios");
+  const iosVal = function (id) { return $(id) ? String($(id).value || "").trim() : ""; };
+  const iosName = iosVal("ios_latestVersionName"), iosCode = parseInt(iosVal("ios_versionCode"), 10) || 0;
+  if (iosName || iosCode || window._appUpdateConfig[iosKey]) {
     const _ios = window._appUpdateConfig[iosKey] || {};
     _ios.packageName = "com.techlead.app.geely.phone";
     _ios.name = "PhoneConnect iOS";
-    _ios.latestVersionName = _phone.latestVersionName;
-    _ios.versionCode = _phone.versionCode;
-    _ios.downloadUrl = iosUrl || "itms-beta://";
+    _ios.latestVersionName = iosName;
+    _ios.versionCode = iosCode;
+    _ios.downloadUrl = iosVal("ios_downloadUrl") || (window._fuEnv === "dev" ? "itms-beta://" : IOS_APP_STORE_URL);
     _ios.sha256 = "";
-    _ios.releaseNotes = _phone.releaseNotes;
-    _ios.minVersionCode = _phone.minVersionCode;
+    _ios.releaseNotes = iosVal("ios_releaseNotes");
+    _ios.minVersionCode = parseInt(iosVal("ios_minVersionCode"), 10) || 0;
     if (!Array.isArray(_ios.forceRules)) _ios.forceRules = [];
     window._appUpdateConfig[iosKey] = _ios;
   }
@@ -5998,7 +6030,30 @@ function syncFormToConfig() {
 
 /** Khoá nhánh iOS theo môi trường đang chỉnh — như fuKey nhưng cho phoneIos/phoneIosDev. */
 function fuIosKey() {
-  return window._fuEnv === "dev" ? "phoneIosDev" : "phoneIos";
+  return fuKey("ios");
+}
+
+/** Link App Store của PhoneConnect iOS (chủ xe cung cấp 24/09/2026). */
+const IOS_APP_STORE_URL = "https://apps.apple.com/app/id6813109149";
+
+/** "✅ Đã lên App Store": chép phoneIosPending (publish-artifacts.sh ghi) vào ô tab iOS; bấm Lưu mới phát hành. */
+function promoteIosPending() {
+  const pending = (window._appUpdateConfig || {})[fuKey("ios") + "Pending"];
+  const code = pending ? parseInt(pending.versionCode, 10) || 0 : 0;
+  if (!code || !$("ios_versionCode") || !$("ios_latestVersionName")) return false;
+  $("ios_latestVersionName").value = pending.latestVersionName || "";
+  $("ios_versionCode").value = code;
+  if (pending.releaseNotes && $("ios_releaseNotes")) $("ios_releaseNotes").value = pending.releaseNotes;
+  kiemNguongIos();
+  return true;
+}
+
+/** Cảnh báo: ngưỡng ép iPhone lớn hơn bản đang có trên App Store = ép lên bản không tồn tại. */
+function kiemNguongIos() {
+  const warn = $("ios_minWarn");
+  if (!warn || !$("ios_minVersionCode") || !$("ios_versionCode")) return;
+  const min = parseInt($("ios_minVersionCode").value, 10) || 0;
+  warn.style.display = min > 0 && min > (parseInt($("ios_versionCode").value, 10) || 0) ? "block" : "none";
 }
 
 
@@ -6434,7 +6489,7 @@ async function saveAppUpdateConfig(allowUnsigned) {
 function openAddForceRuleModal(app) {
   window._editingRuleApp = app;
   window._editingRuleIndex = -1;
-  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
+  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
   $("fuRuleModalTitle").textContent = "Thêm quy tắc ép nâng cấp — " + appLabel;
   $("fuRuleModalSubtitle").textContent = "Chỉ định các bản cũ bị ép và phiên bản đích cần nâng cấp.";
   
@@ -6455,7 +6510,7 @@ function openAddForceRuleModal(app) {
 function openEditForceRuleModal(app, idx) {
   window._editingRuleApp = app;
   window._editingRuleIndex = idx;
-  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : "Điện thoại (PhoneConnect)";
+  const appLabel = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
   const rule = window._appUpdateConfig[fuKey(app)].forceRules[idx];
   if (!rule) return;
 
@@ -6601,7 +6656,7 @@ function exportUpdateJson(app) {
     };
     jsonString = JSON.stringify(obj, null, 2);
   } else {
-    const phone = window._appUpdateConfig[fuKey("phone")] || {};
+    const phone = window._appUpdateConfig[fuKey(app === "ios" ? "ios" : "phone")] || {};
     const obj = {
       version: window._appUpdateConfig.version || 1,
       apps: [
