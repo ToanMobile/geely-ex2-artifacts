@@ -1672,7 +1672,7 @@
       <h3 style="margin:0 0 6px 0">📁 Đồng bộ link từ Google Drive</h3>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
         <span style="font-size:12px; font-weight:600; color:var(--text)">Danh sách link Drive:</span>
-        <button type="button" class="small ghost" id="btnFillPresetDrive" onclick="fillDrivePresetFolder()" title="Điền sẵn 15 link file APK từ thư mục Geely_EX2">📂 Nạp nhanh từ kho Geely_EX2</button>
+        <button type="button" class="small ghost" id="btnFillPresetDrive" onclick="fillDrivePresetFolder()" title="Điền sẵn 14 link file APK từ thư mục Geely_EX2">📂 Nạp nhanh từ kho Geely_EX2</button>
       </div>
       <div style="display:flex; flex-direction:column; gap:10px">
         <textarea id="syncDriveInput" rows="7" style="width:100%; box-sizing:border-box; font-family:monospace; font-size:12px; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--keybox-bg); color:var(--text); resize:vertical" placeholder="Dán link file hoặc link folder Google Drive vào đây:&#10;https://drive.google.com/drive/folders/1BRhMJJ7267-UTHx7pGJvjB3P1kCuaKpR&#10;hoặc dán danh sách link file https://drive.google.com/file/d/..."></textarea>
@@ -3189,14 +3189,14 @@ async function delKey(key) {
 // (service_role). Không còn token GitHub trong trang này.
 const DEFAULT_QI_CATALOG = {
   "type": "quick_install",
-  "version": 41,
+  "version": 44,
   "apps": [
     { "name": "CarConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk", "packageName": "com.techlead.app.geely.car", "versionName": "1.2.0", "versionCode": 1200, "targets": ["pc"] },
     { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "versionName": "1.2.0", "versionCode": 1200, "targets": ["pc"] },
     { "name": "Google Map", "url": "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link", "packageName": "app.morphe.android.apps.maps", "versionName": "26.35.04.969485213", "versionCode": 1068751348, "requiresFirst": "MicroG" },
     { "name": "Waze", "url": "https://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
-    { "name": "YouTube RVX", "url": "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link", "packageName": "anddea.youtube", "versionName": "21.13.164", "versionCode": 1561063732, "requiresFirst": "MicroG" },
-    { "name": "YouTube Music RVX", "url": "https://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link", "packageName": "anddea.youtube.music", "versionName": "9.15.51", "versionCode": 91551240, "requiresFirst": "MicroG" },
+    { "name": "YouTube", "url": "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link", "packageName": "anddea.youtube", "versionName": "21.13.164", "versionCode": 1561063732, "requiresFirst": "MicroG" },
+    { "name": "YouTube Music", "url": "https://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link", "packageName": "anddea.youtube.music", "versionName": "9.15.51", "versionCode": 91551240, "requiresFirst": "MicroG" },
     { "name": "Spotify", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/assets/apps/Spotify.apk", "packageName": "com.spotify.music", "versionName": "9.0.52.505", "versionCode": 128978383 },
     { "name": "Google Chrome", "url": "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link", "packageName": "com.android.chrome", "versionName": "138.0.7204.179", "versionCode": 720417921 },
     { "name": "Cốc Cốc", "url": "https://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link", "packageName": "com.coccoc.trinhduyet", "versionName": "143.0.204", "versionCode": 915120424 },
@@ -3214,10 +3214,10 @@ const DEFAULT_QI_CATALOG = {
     { "name": "Equalizer Geely", "url": "https://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link", "packageName": "com.jazibkhan.equalizer", "versionName": "4.2.6", "versionCode": 83, "targets": [] }
   ],
   "removed": [
-    "App Manager", "ADB AppControl", "YouTube ReVanced", "ChiLy Phone", "ChiLy Car",
-    "Google Maps", "GMS (Google Play Services)", "Sapo app", "Geely EX2 Phone", "Geely EX2 Car",
-    "YouTube (bản 2, chưa rõ)", "Geely Custom Profiles", "Zalo Kiki Car", "Google Map Lite",
-    "CentralEXAuto", "Waze Mod", "CentralEXAuto (Geely)", "YouTube Morphe", "TikTok"
+    "App Manager", "ADB AppControl", "YouTube ReVanced", "ChiLy Phone", "ChiLy Car", "Google Maps",
+    "GMS (Google Play Services)", "Sapo app", "Geely EX2 Phone", "Geely EX2 Car", "YouTube (bản 2, chưa rõ)", "Geely Custom Profiles",
+    "Zalo Kiki Car", "Google Map Lite", "CentralEXAuto", "Waze Mod", "CentralEXAuto (Geely)", "YouTube Morphe",
+    "TikTok", "YouTube RVX", "YouTube Music RVX"
   ]
 };
 window._qiCatalog = JSON.parse(JSON.stringify(DEFAULT_QI_CATALOG));
@@ -3779,14 +3779,14 @@ function closeSyncDriveModal() {
   $("syncDriveModalMask").style.display = "none";
 }
 const GEELY_EX2_PRESET_LINKS = "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link (Google Map)\nhttps://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link (Waze)\nhttps://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link (Equalizer Geely)\n" +
-  "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube RVX)\nhttps://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link (YouTube Music RVX)\nhttps://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drive_link (Spotify)\n" +
+  "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube)\nhttps://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link (YouTube Music)\n" +
   "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link (Google Chrome)\nhttps://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link (Cốc Cốc)\nhttps://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=drive_link (VietMap Live)\n" +
   "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drive_link (AuresEyes)\nhttps://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link (TikTok Lite)\nhttps://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=drive_link (VTV Go)\n" +
   "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drive_link (GOFA)\nhttps://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link (Speed Display)\nhttps://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link (MicroG)";
 function fillDrivePresetFolder() {
   $("syncDriveInput").value = GEELY_EX2_PRESET_LINKS;
   const msg = $("syncDriveMsg");
-  if (msg) showMsg(msg, "ok", "Đã nạp 15 link file APK từ kho Geely_EX2. Hãy bấm nút 'Cập nhật' bên dưới!");
+  if (msg) showMsg(msg, "ok", "Đã nạp 14 link file APK từ kho Geely_EX2. Hãy bấm nút 'Cập nhật' bên dưới!");
 }
 function applyDriveLinksBatch() {
   let text = $("syncDriveInput").value.trim();
@@ -3817,7 +3817,8 @@ function applyDriveLinksBatch() {
     for (const l of lines) {
       if (l.includes(fid)) { lineContext = l.toLowerCase(); break; }
     }
-    for (const app of (window._qiCatalog.apps || [])) {
+    // Tên dài khớp trước: "youtube" là chuỗi con của "youtube music" (tên chuẩn từ 27/09/2026).
+    for (const app of (window._qiCatalog.apps || []).slice().sort((x, y) => y.name.length - x.name.length)) {
       const an = app.name.toLowerCase();
       let isMatch = false;
       if (lineContext) {
