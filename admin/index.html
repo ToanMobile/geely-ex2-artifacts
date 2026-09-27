@@ -126,18 +126,9 @@
   .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
   .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   /* ================= Thống kê & Analytics KPI ================= */
-  .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; }
-  .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, box-shadow 0.15s ease; }
-  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
-  .stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; }
-  .stat-val { font-size: 20px; font-weight: 700; color: var(--text); margin: 4px 0 2px; font-family: var(--mono); }
-  .stat-sub { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-  .stat-sub b { color: var(--text); }
-  .stat-progress { height: 6px; background: var(--panel2); border-radius: 4px; overflow: hidden; margin: 6px 0 2px; display: flex; }
-  .stat-progress-bar { height: 100%; transition: width 0.3s ease; }
-  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; }
-  .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; }
-  .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+  .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; } .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, box-shadow 0.15s ease; } .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+  .stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; } .stat-val { font-size: 20px; font-weight: 700; color: var(--text); margin: 4px 0 2px; font-family: var(--mono); } .stat-sub { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; } .stat-sub b { color: var(--text); } .stat-progress { height: 6px; background: var(--panel2); border-radius: 4px; overflow: hidden; margin: 6px 0 2px; display: flex; } .stat-progress-bar { height: 100%; transition: width 0.3s ease; }
+  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; } .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; } .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
   .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; }
   .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
   .ratio-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--panel2); }
@@ -1028,41 +1019,28 @@
           </div>
         </div>
         <div class="hint" style="margin:4px 0 10px; font-size:12px; color:var(--muted)">💡 <b>Cơ chế an toàn:</b> Đọc tức thì từ Supabase RPC • Chỉ cài đặt khi xe đang đỗ (P) • Tự động ký OTA ECDSA P-256.</div>
-        <!-- App Switcher Sub-tabs & Môi trường -->
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:10px">
-          <div style="display:flex; gap:8px; align-items:center">
-            <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
-            <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại Android (PhoneConnect)</button>
-            <button class="tab-btn" id="fuSubIosBtn" onclick="switchFuApp('ios')" title="iPhone có version RIÊNG — App Store duyệt chậm hơn Android">🍎 iPhone (iOS)</button>
-          </div>
-          <div style="display:flex; gap:6px; align-items:center">
-            <span class="hint" style="margin:0; font-size:12px">Môi trường:</span>
-            <button class="tab-btn active small" id="fuEnvProdBtn" onclick="switchFuEnv('prod')" title="Cấu hình bản phát hành chính thức (car/phone)">🟢 Production</button>
-            <button class="tab-btn small" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình bản Dev nội bộ (carDev/phoneDev)">🧪 Dev</button>
-          </div>
-        </div>
-        <!-- Dải thông tin Môi trường & Nhánh đang chỉnh sửa -->
-        <div id="fuEnvBanner" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding:8px 12px; background:var(--panel2); border-left:3px solid var(--ok); border-radius:6px; margin-bottom:14px; font-size:12px">
-          <div>
-            Đang cấu hình: <b id="fuCurrentAppLabel">🚗 Đầu xe (CarConnect)</b> • Môi trường: <b id="fuCurrentEnvLabel" style="color:var(--ok)">🟢 Production (Phát hành chính thức)</b>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px">
-            <button type="button" class="small ghost" id="fuRefreshFleetBtn" onclick="refreshFleetData()" title="Làm mới số lượng thiết bị đang chạy từ Telemetry">🔄 Làm mới đội máy</button>
-            <div class="hint" style="margin:0">
-              Nhánh máy chủ: <code id="fuCurrentBranchLabel" class="mono" style="font-weight:700">car</code>
-            </div>
-          </div>
-        </div>
         <!-- BẢNG ĐIỀU HÀNH ÉP CẬP NHẬT 1-CLICK (QUICK FORCE UPDATE COCKPIT) -->
         <div class="panel" style="background:linear-gradient(135deg, rgba(31,138,77,0.06), rgba(37,99,235,0.06)); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:14px">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px">
             <span style="font-weight:700; font-size:13px; color:var(--text); display:flex; align-items:center; gap:6px">
               ⚡ <b>Trung tâm Điều hành Ép Cập nhật 1-Click:</b>
             </span>
-            <span class="hint" style="margin:0">Tối ưu 1-2 bước: Ép toàn bộ hoặc nạp bản mới tức thì</span>
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
+              <span id="otaKeyBadge" class="tag off" style="font-size:11px" title="Trạng thái khoá ký OTA">⚪ Chưa có khoá OTA</span>
+              <input type="file" id="otaKeyFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyFile(event)">
+              <button type="button" class="small ghost" onclick="$('otaKeyFileInput').click()" title="Nạp file khoá riêng ECDSA .pem">📂 Nạp khoá</button>
+              <button type="button" class="small ghost" onclick="promptPasteOtaKey()" title="Dán nội dung PEM">📝 Dán</button>
+              <button type="button" class="small danger" id="btnForgetOtaKey" style="display:none" onclick="forgetOtaKey()" title="Xoá khoá đã lưu">🗑️</button>
+              <button type="button" class="small ghost" id="btnToggleOtaAdvanced" onclick="toggleOtaAdvancedSign()">⚙️ Ký Terminal ▼</button>
+              <button type="button" class="small ghost" id="fuRefreshFleetBtn" onclick="refreshFleetData()" title="Làm mới số lượng thiết bị đang chạy từ Telemetry">🔄 Làm mới đội máy</button>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin-bottom:10px">
+            <span class="hint" style="margin:0; font-size:11px" id="otaKeyStatusText">Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần để web tự ký khi Lưu.</span>
+            <span class="hint" style="margin:0; font-size:11px">Nhánh máy chủ: <code id="fuCurrentBranchLabel" class="mono" style="font-weight:700">car</code></span>
           </div>
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px; margin-bottom:12px">
-            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('car')" title="Bấm để chuyển sang cấu hình Đầu xe">
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('car', true)" title="Bấm để xem & chỉnh sửa chi tiết Đầu xe">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
                 <span style="font-weight:700; font-size:12px; color:var(--text)">🚗 Đầu xe (CarConnect)</span>
                 <span id="quickCarStatusBadge" class="tag off">⚪ Tự nguyện</span>
@@ -1070,7 +1048,7 @@
               <div style="font-size:12px; color:var(--muted)">Bản mới: <b id="quickCarVerText" class="mono" style="color:var(--text)">--</b></div>
               <div style="font-size:11px; color:var(--muted); margin-top:2px" id="quickCarFleetText">Đội xe: --</div>
             </div>
-            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('phone')" title="Bấm để chuyển sang cấu hình Điện thoại Android">
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('phone', true)" title="Bấm để xem & chỉnh sửa chi tiết Điện thoại Android">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
                 <span style="font-weight:700; font-size:12px; color:var(--text)">📱 Điện thoại (Android)</span>
                 <span id="quickPhoneStatusBadge" class="tag off">⚪ Tự nguyện</span>
@@ -1078,7 +1056,7 @@
               <div style="font-size:12px; color:var(--muted)">Bản mới: <b id="quickPhoneVerText" class="mono" style="color:var(--text)">--</b></div>
               <div style="font-size:11px; color:var(--muted); margin-top:2px" id="quickPhoneFleetText">Đội máy: --</div>
             </div>
-            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('ios')" title="Bấm để xem iPhone iOS">
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('ios', true)" title="Bấm để xem & chỉnh sửa chi tiết iPhone iOS">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
                 <span style="font-weight:700; font-size:12px; color:var(--text)">🍎 iPhone (iOS)</span>
                 <span id="quickIosStatusBadge" class="tag off">⚪ Tự nguyện</span>
@@ -1097,23 +1075,6 @@
               <button type="button" class="small" style="background:var(--accent); color:#fff; font-weight:700; box-shadow:0 2px 6px rgba(31,138,77,.35)" onclick="saveAppUpdateConfig()">💾 Lưu Supabase ngay</button>
             </div>
           </div>
-        </div>
-        <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
-        <div class="panel" style="margin-top:0; margin-bottom:14px; border-left:4px solid var(--accent); padding:10px 14px">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap">
-              <span style="font-weight:600; font-size:13px; color:var(--text)">🔒 Chữ ký OTA (Client 1.1.1+):</span>
-              <span id="otaKeyBadge" class="tag off" style="font-size:11px">⚪ Chưa nạp khoá riêng</span>
-            </div>
-            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
-              <input type="file" id="otaKeyFileInput" accept=".pem,.key,text/plain" style="display:none" onchange="handleOtaKeyFile(event)">
-              <button type="button" class="small" onclick="$('otaKeyFileInput').click()">📂 Nạp .pem</button>
-              <button type="button" class="small ghost" onclick="promptPasteOtaKey()">📝 Dán text</button>
-              <button type="button" class="small danger" id="btnForgetOtaKey" style="display:none" onclick="forgetOtaKey()">🗑️ Xoá khoá</button>
-              <button type="button" class="small ghost" id="btnToggleOtaAdvanced" onclick="toggleOtaAdvancedSign()">⚙️ Tuỳ chọn nâng cao ▼</button>
-            </div>
-          </div>
-          <div id="otaKeyStatusText" style="font-size:11px; color:var(--muted); margin-top:4px">Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần để web tự ký khi Lưu.</div>
           <div id="otaAdvancedSignBox" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid var(--border)">
             <div class="hint" style="margin-bottom:8px">💡 <b>Ký ngoài Terminal:</b> Tải JSON ➔ Chạy <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.</div>
             <div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap">
@@ -1125,6 +1086,28 @@
           </div>
         </div>
         <div id="fuStatusMsg" class="msg" style="margin-bottom:12px"></div>
+        <!-- NÚT MỞ GẬP CẤU HÌNH CHI TIẾT (PROGRESSIVE DISCLOSURE) -->
+        <button type="button" id="btnToggleDetailedConfig" class="ghost" style="width:100%; text-align:center; padding:10px 14px; margin-bottom:14px; border:1px dashed var(--border); border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; background:var(--panel)" onclick="toggleDetailedConfig()">⚙️ Xem Cấu hình Chi tiết & Danh mục Phiên bản Từng App <span id="detailedConfigChevron">▼</span></button>
+        <div id="fuDetailedConfigSection" style="display:none">
+          <!-- App Switcher Sub-tabs & Môi trường -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:10px">
+            <div style="display:flex; gap:8px; align-items:center">
+              <button class="tab-btn active" id="fuSubCarBtn" onclick="switchFuApp('car')">🚗 Đầu xe (CarConnect)</button>
+              <button class="tab-btn" id="fuSubPhoneBtn" onclick="switchFuApp('phone')">📱 Điện thoại Android (PhoneConnect)</button>
+              <button class="tab-btn" id="fuSubIosBtn" onclick="switchFuApp('ios')" title="iPhone có version RIÊNG — App Store duyệt chậm hơn Android">🍎 iPhone (iOS)</button>
+            </div>
+            <div style="display:flex; gap:6px; align-items:center">
+              <span class="hint" style="margin:0; font-size:12px">Môi trường:</span>
+              <button class="tab-btn active small" id="fuEnvProdBtn" onclick="switchFuEnv('prod')" title="Cấu hình bản phát hành chính thức (car/phone)">🟢 Production</button>
+              <button class="tab-btn small" id="fuEnvDevBtn" onclick="switchFuEnv('dev')" title="Cấu hình bản Dev nội bộ (carDev/phoneDev)">🧪 Dev</button>
+            </div>
+          </div>
+          <!-- Dải thông tin Môi trường & Nhánh đang chỉnh sửa -->
+          <div id="fuEnvBanner" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; padding:8px 12px; background:var(--panel2); border-left:3px solid var(--ok); border-radius:6px; margin-bottom:14px; font-size:12px">
+            <div>
+              Đang cấu hình: <b id="fuCurrentAppLabel">🚗 Đầu xe (CarConnect)</b> • Môi trường: <b id="fuCurrentEnvLabel" style="color:var(--ok)">🟢 Production (Phát hành chính thức)</b>
+            </div>
+          </div>
         <!-- Form: CAR CONNECT -->
         <div id="fuPanelCar">
           <!-- Section: Phiên bản mới nhất -->
@@ -1328,6 +1311,7 @@
               <th>Thông điệp</th><th style="width:170px">Link đích</th><th style="text-align:right; width:120px">Thao tác</th></tr></thead><tbody></tbody></table></div>
           </div>
         </div>
+        </div> <!-- /fuDetailedConfigSection -->
         <div id="fuStickySaveBar" style="display:none; position:fixed; bottom:20px; right:20px; z-index:9999; background:var(--panel); border:2px solid var(--accent); border-radius:12px; padding:10px 16px; box-shadow:0 8px 30px rgba(0,0,0,0.3); align-items:center; gap:12px; backdrop-filter:blur(8px)">
           <span style="font-size:13px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px">⚠️ <span id="fuStickySaveText">Có thay đổi cấu hình chưa lưu</span></span>
           <button type="button" style="background:var(--accent); color:#fff; font-weight:700; padding:6px 14px; box-shadow:0 2px 8px rgba(31,138,77,.4)" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase ngay</button>
@@ -3797,7 +3781,7 @@ function closeSyncDriveModal() {
 const GEELY_EX2_PRESET_LINKS = "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link (Google Map)\nhttps://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link (Waze)\nhttps://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link (Equalizer Geely)\n" +
   "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube RVX)\nhttps://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link (YouTube Music RVX)\nhttps://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drive_link (Spotify)\n" +
   "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link (Google Chrome)\nhttps://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link (Cốc Cốc)\nhttps://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=drive_link (VietMap Live)\n" +
-  "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drive_link (AuresEyes)\nhttps://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link (TikTok)\nhttps://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=drive_link (VTV Go)\n" +
+  "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drive_link (AuresEyes)\nhttps://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link (TikTok Lite)\nhttps://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=drive_link (VTV Go)\n" +
   "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drive_link (GOFA)\nhttps://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link (Speed Display)\nhttps://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link (MicroG)";
 function fillDrivePresetFolder() {
   $("syncDriveInput").value = GEELY_EX2_PRESET_LINKS;
@@ -5600,14 +5584,27 @@ window._currentFuApp = "car";
 window._editingRuleApp = "car";
 window._editingRuleIndex = -1;
 function fuEscapeHtml(str) { return esc(str); }
-function switchFuApp(app) {
+function toggleDetailedConfig(forceOpen) {
+  const sec = $("fuDetailedConfigSection");
+  if (!sec) return;
+  const willShow = forceOpen !== undefined ? !!forceOpen : sec.style.display === "none";
+  sec.style.display = willShow ? "block" : "none";
+  const btn = $("btnToggleDetailedConfig");
+  if (btn) btn.innerHTML = willShow ? "⚙️ Thu gọn Cấu hình Chi tiết ▲" : "⚙️ Xem Cấu hình Chi tiết & Danh mục Phiên bản Từng App ▼";
+}
+function switchFuApp(app, autoExpand) {
   window._currentFuApp = app;
   ["car", "phone", "ios"].forEach(function (a) {
     const cap = a === "ios" ? "Ios" : a.charAt(0).toUpperCase() + a.slice(1);
-    $("fuSub" + cap + "Btn").classList.toggle("active", a === app);
-    $("fuPanel" + cap).style.display = a === app ? "block" : "none";
+    if ($("fuSub" + cap + "Btn")) $("fuSub" + cap + "Btn").classList.toggle("active", a === app);
+    if ($("fuPanel" + cap)) $("fuPanel" + cap).style.display = a === app ? "block" : "none";
   });
   updateFuHeaderBanner();
+  if (autoExpand) {
+    toggleDetailedConfig(true);
+    const el = $("fuPanel" + (app === "ios" ? "Ios" : app.charAt(0).toUpperCase() + app.slice(1)));
+    if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 async function loadAppUpdateConfig() {
   const msg = $("fuStatusMsg");
