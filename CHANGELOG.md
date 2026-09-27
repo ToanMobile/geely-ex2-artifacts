@@ -22,6 +22,27 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.3
+
+- **⚡ Trợ lý giọng nói siêu tốc & Nhận diện tự nhiên**: Rút ngắn tối đa thời gian phản hồi xuống dưới 1.5s (lệnh điều hòa gần như ăn ngay tức thì ~100ms). Hệ thống tự động nhận lệnh ngay khi người lái dứt lời mà không bắt chờ đợi; lọc tiếng ồn cabin thông minh chấm dứt hiện tượng xe tự bật nghe khi đang nói chuyện phiếm.
+- **🎵 Tìm bài hát & Dẫn đường liên tục không gián đoạn**: Thoải mái gọi liên tiếp nhiều bài hát (*"Mở bài Cắt đôi nỗi sầu"* ➔ đổi tiếp *"Mở nhạc Đan Trường"*...) hoặc đổi lộ trình dẫn đường liên tục trên Vietmap / Google Maps mà không bao giờ bị đơ mic, nghẽn hay treo lệnh sau bài đầu tiên.
+- **🗣️ Bật lại từ khóa "Hi Geely" & Thực thi rảnh tay**: Khôi phục khả năng gọi xe rảnh tay tức thì với mô hình nhận diện siêu nhẹ (<140 KB), phản hồi dưới 50ms, không nuốt âm, không rụng chữ. Bãi bỏ hoàn toàn các câu hỏi xác nhận rườm rà khi xe đang chạy: khẩu lệnh hạ kính, đổi chế độ thể thao, phanh tái sinh... được thực thi ngay lập tức.
+- **🪟 Hé kính cửa đối diện thông minh**: Khi mở cửa bên này (cửa tài), xe tự động hạ hé nhẹ kính ở cửa đối diện cùng hàng (kính phụ) để triệt tiêu áp suất nén khí, giúp đóng cửa êm ái như hít và không bị tức màng nhĩ; đóng cửa lại kính tự động kéo kín hoàn toàn. Không lo bụi hay mưa hắt vào người, hỗ trợ 3 mức hé tùy chọn (7%, 10%, 20%).
+- **🚗 Khôi phục chuẩn xác chế độ lái (Nhớ chế độ lái)**: Tự động phát hiện xe rơi về mặc định ECU (Comfort) sau khi mở máy, chủ động khôi phục lại đúng chế độ lái Eco/Sport mà người dùng đã lưu trước đó, không còn lo bị trôi cấu hình sau mỗi lần tắt máy.
+- **📱 Đa nhiệm chia đôi màn hình 2.0 (Siêu mượt 60 FPS)**: Đang chia đôi 2 app, tắt 1 bên thì app còn lại tự động bung trọn màn hình ngay lập tức, không còn bị kẹt nửa màn hình; giữ vững bố cục chia đôi khi Google Maps dẫn đường; vuốt chia đôi 60 FPS tự căn chuẩn tỷ lệ (30:70, 50:50, 70:30); thêm nút "Reset màn hình" cứu hộ 2 bước an toàn; tự động khôi phục chia đôi khi ứng dụng quay lại từ PiP.
+- **🔘 Phím vô-lăng chuyển bài chuẩn xác**: Điều khiển Next / Previous trên vô-lăng chuyển bài mượt mà dứt khoát trên YouTube, YouTube Music, Spotify, SmartTube, không còn bị nhảy cóc 2 bài; khắc phục triệt để lỗi SmartTube bị dừng ở 0:00 và tối ưu luồng chạm tự tránh phím nổi của Spotify.
+- **🛡️ Chế độ bảo dưỡng xe (Maintenance Mode)**: Tạm ẩn các ứng dụng bên thứ ba để bảo vệ dữ liệu cá nhân khi giao xe đi bảo dưỡng/rửa xe; trợ lý giọng nói phản hồi thông minh "xe đang bảo dưỡng" khi có người cố tình ra lệnh mở app.
+- **🛑 Cập nhật OTA an toàn 2 tầng**: Bảo vệ hệ thống bằng điều kiện an toàn nghiêm ngặt — bản cập nhật tải ngầm tự động nhưng chỉ được phép cài đặt khi xe đang đỗ (về số P hoặc vận tốc 0 km/h), ngăn chặn hoàn toàn nguy cơ gián đoạn khi đang lái xe.
+- **📦 Cập nhật danh mục Cài nhanh**: Cập nhật Spotify Premium, YouTube Premium, YouTube Music Premium, Waze, TikTok Lite tối ưu cho màn xe.
+- **💡 Cách cập nhật**: Các bác mở ứng dụng CarConnect trên xe ➔ vào Cài đặt ➔ bấm Kiểm tra cập nhật (hoặc nhận file cài trực tiếp từ điện thoại qua ứng dụng PhoneConnect). Chúc các bác luôn có những chuyến đi vui vẻ và an toàn!
+
+## PhoneConnect 1.2.3
+
+- **🪟 Đồng bộ cấu hình tiện ích xe**: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.
+- **🔗 Ghép đôi 1 chạm siêu tốc**: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm "Cho phép" trên màn hình xe là xong.
+- **🖼️ Đổi hình nền màn hình xe trực tiếp**: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.
+- **🍏 Đồng bộ 100% Android & iOS**: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa.
+- 
 ---
 
 ## CarConnect 1.2.2
