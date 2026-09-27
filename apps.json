@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.2",
-    "versionCode": 1202,
+    "latestVersionName": "1.2.3",
+    "versionCode": 1203,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "dbe14d6d99e2d066da3c3ee49bd9fd27df5c38f70072c84c893ca0045e94a210",
-    "releaseNotes": "- Tách biệt và tối ưu kênh cập nhật iOS: Hỗ trợ phiên bản riêng cho iPhone qua App Store & TestFlight, đảm bảo đồng bộ hoàn hảo với hệ sinh thái xe mà không bị lệch nhịp phê duyệt kho ứng dụng.\n- Tăng tốc phản hồi lệnh điều khiển từ xa: Giảm thiểu độ trễ kết nối TCP :44700 và Bluetooth SPP khi gửi lệnh điều hòa, mở cốp và kiểm tra thông tin xe.\n- Bảo toàn trạng thái đa nhiệm & giao diện: Đồng bộ 100% logic hiển thị và giao diện người dùng theo chuẩn CarConnect v1.2.2 trên xe.\n- Two-Stage Safe OTA Integration (EN): Coordinated safe update checks ensuring in-car installation only triggers when parked.\n- iOS Independent Channel & Stability (EN): Dedicated release track for iOS TestFlight / App Store with optimized remote command responsiveness.",
+    "sha256": "6cab843a1b4c21599da74da6f75d081ffc1c967e13d54fd0041c816e36919422",
+    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa. - ---",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,11 +78,11 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.2.1",
-    "versionCode": 1201,
+    "latestVersionName": "1.2.3",
+    "versionCode": 1203,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- Đồng bộ phiên bản 1.2.1 với màn hình xe: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định."
+    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa. - ---"
   },
   "phoneIos": {
     "packageName": "com.techlead.app.geely.phone",
