@@ -467,6 +467,11 @@
       <option value="8760">Tất cả (~1 năm)</option>
     </select>
   </label>
+  <label class="filters" style="margin:0"><span style="font-size:12px;color:var(--text-muted)">Phiên bản:</span>
+    <select id="versionSel" style="max-width:180px">
+      <option value="">Tất cả phiên bản</option>
+    </select>
+  </label>
   <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer">
     <input type="checkbox" id="autoRefresh" style="cursor:pointer"> Tự làm mới 60s
   </label>
@@ -492,6 +497,11 @@
 <div id="deviceBanner" style="display:none;background:var(--surface-1);border:1px solid var(--accent);border-radius:10px;padding:10px 16px;max-width:1560px;margin:12px auto 0;align-items:center;gap:12px;font-size:13px;box-shadow:var(--card-shadow);box-sizing:border-box">
   <span id="deviceBannerText" style="flex:1;font-weight:600"></span>
   <button id="btnClearDevice" class="ghost small">✕ Xem tất cả thiết bị</button>
+</div>
+
+<div id="versionBanner" style="display:none;background:var(--surface-1);border:1px solid #10b981;border-radius:10px;padding:10px 16px;max-width:1560px;margin:12px auto 0;align-items:center;gap:12px;font-size:13px;box-shadow:var(--card-shadow);box-sizing:border-box">
+  <span id="versionBannerText" style="flex:1;font-weight:600;color:var(--good)"></span>
+  <button id="btnClearVersion" class="ghost small">✕ Xem tất cả phiên bản</button>
 </div>
 
 <div id="fleetHealthBanner" style="display:none;max-width:1560px;margin:12px auto 0;border-radius:12px;padding:12px 18px;align-items:center;gap:14px;box-shadow:var(--card-shadow);box-sizing:border-box;font-size:13px;transition:all 0.3s ease">
@@ -579,6 +589,17 @@
   <!-- ============ 2. VOICE (GIỌNG NÓI — 2 TẦNG CHUYÊN SÂU) ============ -->
   <section id="tab-voice" style="display:none">
     <p class="hint">🎙 <b>Voice là tính năng cốt lõi.</b> Hệ thống giám sát trọn vẹn 2 tầng: <b>Tầng 1 (STT &amp; Khớp lệnh)</b> và <b>Tầng 2 (Thực thi phần cứng xe &amp; Phản hồi âm thanh)</b>. <i>(Bấm nút <b>▶ Nghe</b> để nghe file ghi âm WAV từ micro xe; nếu file lỗi hoặc chưa upload, hệ thống tự động kích hoạt <b>Fail Callback</b> phát qua <b>Online TTS tiếng Việt</b>. Bạn cũng có thể bấm <b>🗣 Đọc TTS</b> để nghe đọc văn bản trực tiếp)</i>.</p>
+    
+    <!-- Bộ lọc theo Phiên bản dành riêng cho Voice -->
+    <div class="filters" style="margin-bottom:14px;background:var(--surface-1);padding:10px 16px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:var(--card-shadow);flex-wrap:wrap">
+      <span style="font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px">📦 Lọc Voice theo Phiên bản:</span>
+      <select id="voiceVersionSel" style="font-weight:600;min-width:200px">
+        <option value="">Tất cả phiên bản (Toàn bộ đội xe)</option>
+      </select>
+      <span id="voiceVersionStats" class="muted" style="font-size:12px"></span>
+      <button id="btnResetVoiceVersion" class="ghost small" style="display:none">✕ Bỏ lọc</button>
+    </div>
+
     <div class="tiles" id="voiceTiles"></div>
     <!-- 15/09/2026: tỉ lệ hiểu đúng theo BẢN + MÁY — tách "pipeline kém" khỏi "xe chưa cập nhật / STT chết" -->
     <div class="card">
@@ -1253,6 +1274,37 @@ document.addEventListener("click", (e) => {
 });
 $("btnClearDevice").onclick = clearDeviceFilter;
 
+let selectedVersion = ""; // lọc theo phiên bản app (vd: "1.1.2")
+function setVersionFilter(ver) {
+  selectedVersion = (ver || "").trim();
+  const vSel = $("versionSel");
+  if (vSel) vSel.value = selectedVersion;
+  const vvSel = $("voiceVersionSel");
+  if (vvSel) vvSel.value = selectedVersion;
+
+  const vBanner = $("versionBanner");
+  const vBannerText = $("versionBannerText");
+  const btnReset = $("btnResetVoiceVersion");
+  if (selectedVersion) {
+    if (vBanner) vBanner.style.display = "flex";
+    if (vBannerText) vBannerText.textContent = `📦 Đang xem riêng phiên bản: ${selectedVersion}`;
+    if (btnReset) btnReset.style.display = "inline-block";
+  } else {
+    if (vBanner) vBanner.style.display = "none";
+    if (btnReset) btnReset.style.display = "none";
+  }
+  refreshAll();
+}
+
+function clearVersionFilter() {
+  setVersionFilter("");
+}
+
+$("btnClearVersion")?.addEventListener("click", clearVersionFilter);
+$("btnResetVoiceVersion")?.addEventListener("click", clearVersionFilter);
+$("versionSel")?.addEventListener("change", (e) => setVersionFilter(e.target.value));
+$("voiceVersionSel")?.addEventListener("change", (e) => setVersionFilter(e.target.value));
+
 // Lọc tìm kiếm trên bảng Đầu xe
 function filterCarDeviceTable() {
   const q = ($("fCarDeviceSearch")?.value || "").trim().toLowerCase();
@@ -1353,6 +1405,18 @@ $("verTable").addEventListener("click", (e) => {
       if (isPhone) filterPhoneDeviceTable(); else filterCarDeviceTable();
       searchInput.focus();
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+});
+
+// Bấm vào phiên bản ở bảng voiceByVersion -> kích hoạt bộ lọc theo phiên bản đó ngay lập tức
+$("voiceByVersion")?.addEventListener("click", (e) => {
+  const verLink = e.target.closest("a.voice-ver-link");
+  if (verLink) {
+    e.preventDefault();
+    setVersionFilter(verLink.dataset.version || "");
+    const voiceTabBtn = document.querySelector('#tabs button[data-tab="voice"]');
+    if (voiceTabBtn) voiceTabBtn.click();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 });
@@ -1969,7 +2033,21 @@ async function api(path, opts = {}) {
   return res.json();
 }
 async function rpcOverview() {
-  return api("/rest/v1/rpc/telemetry_overview", { method: "POST", body: { p_hours: hours, p_device_id: selectedDevice } });
+  const body = { p_hours: hours, p_device_id: selectedDevice };
+  if (selectedVersion) {
+    body.p_app_version = selectedVersion;
+  }
+  try {
+    return await api("/rest/v1/rpc/telemetry_overview", { method: "POST", body });
+  } catch (err) {
+    // Nếu RPC trên máy chủ Supabase chưa chạy bản schema mới có tham số p_app_version,
+    // tự động fallback gọi không có p_app_version để client-side tự lọc mà không bị lỗi mạng
+    if (selectedVersion) {
+      console.warn("RPC telemetry_overview chưa có tham số p_app_version trên DB, fallback gọi cơ bản và lọc client-side:", err);
+      return api("/rest/v1/rpc/telemetry_overview", { method: "POST", body: { p_hours: hours, p_device_id: selectedDevice } });
+    }
+    throw err;
+  }
 }
 function setConn(ok, text) {
   $("connDot").className = "dot " + (ok ? "ok" : "bad");
@@ -2241,7 +2319,59 @@ function updateFleetHealthBanner(o) {
   $("fleetHealthBadges").innerHTML = badges;
 }
 
+function updateVersionDropdowns(o) {
+  const versionsMap = new Map(); // ver -> { carDevices: 0, phoneDevices: 0, events: 0, voiceEvents: 0 }
+
+  (o.versions || []).forEach((v) => {
+    const ver = String(v.app_version || "").trim();
+    if (!ver || ver === "?" || ver === "—") return;
+    const entry = versionsMap.get(ver) || { carDevices: 0, phoneDevices: 0, events: 0, voiceEvents: 0 };
+    if (v.app === "phone") entry.phoneDevices += (+v.devices || 0);
+    else entry.carDevices += (+v.devices || 0);
+    entry.events += (+v.n || 0);
+    versionsMap.set(ver, entry);
+  });
+
+  (o.voice?.by_version || []).forEach((r) => {
+    const ver = String(r.app_version || "").trim();
+    if (!ver || ver === "?" || ver === "—") return;
+    const entry = versionsMap.get(ver) || { carDevices: 0, phoneDevices: 0, events: 0, voiceEvents: 0 };
+    entry.voiceEvents += (+r.n || 0);
+    versionsMap.set(ver, entry);
+  });
+
+  const sortedVersions = Array.from(versionsMap.keys()).sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' }));
+
+  const buildOptions = (isVoiceOnly = false) => {
+    let html = `<option value="">${isVoiceOnly ? "Tất cả phiên bản (Toàn bộ đội xe)" : "Tất cả phiên bản"}</option>`;
+    for (const ver of sortedVersions) {
+      const info = versionsMap.get(ver);
+      let label = ver;
+      if (isVoiceOnly) {
+        if (info.voiceEvents > 0) label += ` (${info.voiceEvents.toLocaleString("vi-VN")} lượt voice)`;
+        else if (info.carDevices > 0) label += ` (${info.carDevices} xe)`;
+      } else {
+        const parts = [];
+        if (info.carDevices > 0) parts.push(`${info.carDevices} xe`);
+        if (info.phoneDevices > 0) parts.push(`${info.phoneDevices} phone`);
+        if (parts.length) label += ` (${parts.join(" · ")})`;
+      }
+      const sel = (ver === selectedVersion) ? " selected" : "";
+      html += `<option value="${esc(ver)}"${sel}>${esc(label)}</option>`;
+    }
+    return html;
+  };
+
+  const vSel = $("versionSel");
+  const vvSel = $("voiceVersionSel");
+  if (vSel) vSel.innerHTML = buildOptions(false);
+  if (vvSel) vvSel.innerHTML = buildOptions(true);
+}
+
 function renderOverview(o) {
+  // Cập nhật bộ lọc dropdown phiên bản
+  updateVersionDropdowns(o);
+
   // Cập nhật Banner sức khỏe thông minh đội xe
   updateFleetHealthBanner(o);
 
@@ -2399,23 +2529,61 @@ function renderOverview(o) {
 /* ================= 2. Render: Giọng nói (Voice 2 Tầng) ================= */
 function renderVoice(o) {
   const v = o.voice || {};
-  const vUser = userVoiceTotal(v);
-  const matchPct = vUser ? Math.min(100, Math.round((v.matched || 0) / vUser * 100)) : null;
-  const execPct = (v.executed_total) ? Math.min(100, Math.round((v.executed_ok || 0) / v.executed_total * 100)) : (v.matched ? Math.min(100, Math.round((v.executed_ok || 0) / v.matched * 100)) : null);
-  const e2ePct = vUser ? Math.min(100, Math.round((v.executed_ok || 0) / vUser * 100)) : null;
-  const missPct = vUser ? Math.min(100, Math.round((v.parser_miss || 0) / vUser * 100)) : null;
-  const ambient = (v.ambient_utterances ?? 0) + (v.no_wake ?? 0) + (v.ambient_empty ?? 0);
+  let vUser = userVoiceTotal(v);
+  let matchPct = vUser ? Math.min(100, Math.round((v.matched || 0) / vUser * 100)) : null;
+  let execPct = (v.executed_total) ? Math.min(100, Math.round((v.executed_ok || 0) / v.executed_total * 100)) : (v.matched ? Math.min(100, Math.round((v.executed_ok || 0) / v.matched * 100)) : null);
+  let e2ePct = vUser ? Math.min(100, Math.round((v.executed_ok || 0) / vUser * 100)) : null;
+  let missPct = vUser ? Math.min(100, Math.round((v.parser_miss || 0) / vUser * 100)) : null;
+  let ambient = (v.ambient_utterances ?? 0) + (v.no_wake ?? 0) + (v.ambient_empty ?? 0);
+
+  // Lọc theo phiên bản (Version Filter) nếu người dùng chọn
+  const verRows = (v.by_version || []).filter((r) => r.app_version === selectedVersion);
+  let scopedN = 0, scopedMatched = 0, scopedEmpty = 0, scopedMiss = 0, scopedNoWake = 0, scopedAmbient = 0, scopedPtt = 0;
+  let scopedDevices = 0;
+  if (selectedVersion && verRows.length > 0) {
+    scopedN = verRows.reduce((acc, r) => acc + (+r.n || 0), 0);
+    scopedMatched = verRows.reduce((acc, r) => acc + (+r.matched || 0), 0);
+    scopedEmpty = verRows.reduce((acc, r) => acc + (+r.empty || 0), 0);
+    scopedMiss = verRows.reduce((acc, r) => acc + (+r.parser_miss || 0), 0);
+    scopedNoWake = verRows.reduce((acc, r) => acc + (+r.no_wake || 0), 0);
+    scopedAmbient = verRows.reduce((acc, r) => acc + (+r.ambient || 0), 0);
+    scopedPtt = verRows.reduce((acc, r) => acc + (+r.ptt || 0), 0);
+    scopedDevices = new Set(verRows.map((r) => r.device).filter(Boolean)).size;
+
+    vUser = scopedN;
+    matchPct = scopedN ? Math.min(100, Math.round(scopedMatched / scopedN * 100)) : null;
+    missPct = scopedN ? Math.min(100, Math.round(scopedMiss / scopedN * 100)) : null;
+    ambient = scopedAmbient + scopedNoWake + scopedEmpty;
+  }
+
+  // Cập nhật thanh hiển thị trạng thái bộ lọc Voice
+  if ($("voiceVersionStats")) {
+    if (selectedVersion) {
+      if (verRows.length > 0) {
+        $("voiceVersionStats").innerHTML = `Đang xem bản <b style="color:var(--accent)">${esc(selectedVersion)}</b>: <b>${scopedDevices}</b> máy · <b>${scopedN.toLocaleString("vi-VN")}</b> lượt gọi xe · <b style="color:var(--good)">Hiểu đúng ${matchPct !== null ? matchPct + "%" : "—"}</b> (${scopedMatched.toLocaleString("vi-VN")} lượt) · Chưa hiểu ${missPct !== null ? missPct + "%" : "—"} (${scopedMiss.toLocaleString("vi-VN")} lượt)`;
+      } else {
+        $("voiceVersionStats").innerHTML = `Phiên bản <b style="color:var(--accent)">${esc(selectedVersion)}</b>: <i class="muted">chưa có dữ liệu voice trong cửa sổ này</i>`;
+      }
+    } else {
+      const distinctVers = new Set((v.by_version || []).map((r) => r.app_version).filter(Boolean));
+      $("voiceVersionStats").textContent = `(Toàn bộ ${distinctVers.size} phiên bản đang hoạt động)`;
+    }
+  }
 
   const speedAvg = (v.speed_avg_kmh !== undefined && v.speed_avg_kmh !== null) ? v.speed_avg_kmh + " km/h" : "—";
   const snrAvg = (v.snr_avg_db !== undefined && v.snr_avg_db !== null) ? v.snr_avg_db + " dB" : "—";
   const noiseAvg = (v.noise_avg_dbfs !== undefined && v.noise_avg_dbfs !== null) ? v.noise_avg_dbfs + " dBFS" : "—";
   const clippingCount = v.clipping_total || 0;
 
+  const verBadge = selectedVersion ? ` (${esc(selectedVersion)})` : "";
+  const matchedDisplay = selectedVersion && verRows.length > 0 ? scopedMatched : (v.matched ?? 0);
+  const missDisplay = selectedVersion && verRows.length > 0 ? scopedMiss : (v.parser_miss ?? 0);
+
   $("voiceTiles").innerHTML =
-    tile(matchPct === null ? "—" : matchPct + "%", "🎯 Tầng 1: Hiểu đúng lệnh", `hiểu ${v.matched ?? 0} / ${vUser.toLocaleString("vi-VN")} lượt gọi xe`, "highlight") +
-    tile(execPct === null ? "—" : execPct + "%", "⚡ Tầng 2: Thực hiện thành công", `chạy được ${v.executed_ok ?? 0} / ${(v.executed_total ?? v.matched ?? 0)} lệnh`, "highlight-good") +
-    tile(e2ePct === null ? "—" : e2ePct + "%", "🏁 Hoàn thành trọn vẹn (E2E)", `thành công ${v.executed_ok ?? 0} / ${vUser.toLocaleString("vi-VN")} lượt gọi xe`) +
-    tile(missPct === null ? "—" : missPct + "%", "Chưa hiểu cú pháp", `không khớp lệnh: ${v.parser_miss ?? 0} lượt`) +
+    tile(matchPct === null ? "—" : matchPct + "%", "🎯 Tầng 1: Hiểu đúng lệnh" + verBadge, `hiểu ${matchedDisplay} / ${vUser.toLocaleString("vi-VN")} lượt gọi xe`, "highlight") +
+    tile(execPct === null ? "—" : execPct + "%", "⚡ Tầng 2: Thực hiện thành công" + verBadge, `chạy được ${v.executed_ok ?? 0} / ${(v.executed_total ?? v.matched ?? 0)} lệnh`, "highlight-good") +
+    tile(e2ePct === null ? "—" : e2ePct + "%", "🏁 Hoàn thành trọn vẹn (E2E)" + verBadge, `thành công ${v.executed_ok ?? 0} / ${vUser.toLocaleString("vi-VN")} lượt gọi xe`) +
+    tile(missPct === null ? "—" : missPct + "%", "Chưa hiểu cú pháp" + verBadge, `không khớp lệnh: ${missDisplay} lượt`) +
     tile(speedAvg, "🚗 Tốc độ TB khi gọi", "vận tốc xe lúc người dùng nói") +
     tile(snrAvg, "🔊 SNR trung bình (dB)", "tỉ số tín hiệu / tạp âm") +
     tile(noiseAvg, "🔇 Độ ồn nền TB (dBFS)", "mức ồn nền trong cabin") +
@@ -2431,6 +2599,7 @@ function renderVoice(o) {
   // Theo bản + máy (RPC `by_version`, server chưa dán schema mới thì để trống). Không loại lượt nào;
   // cột "dấu hiệu" suy từ chính số liệu để chỉ thẳng chỗ tìm nguyên nhân gốc, không giấu.
   $("voiceByVersion").innerHTML = (v.by_version || []).map((r) => {
+    const isSelected = selectedVersion && r.app_version === selectedVersion;
     const n = +r.n || 0, m = +r.matched || 0, e = +r.empty || 0, miss = +r.parser_miss || 0;
     const nw = +r.no_wake || 0, amb = +r.ambient || 0, ptt = +r.ptt || 0;
     const stt = r.stt_p50_ms === null || r.stt_p50_ms === undefined ? null : +r.stt_p50_ms;
@@ -2441,7 +2610,9 @@ function renderVoice(o) {
     if (n >= 5 && miss >= n * 0.3) dauHieu.push("parser không hiểu ≥ 30 % — xem bảng lượt nói");
     if (n >= 5 && nw >= n * 0.5) dauHieu.push("mic nghe tiếng nhưng không ai gọi xe");
     const style = rate === null ? "" : rate < 40 ? ' style="color:var(--critical)"' : "";
-    return `<tr><td>${esc(r.app_version)}</td><td class="mono">${esc(r.device)}</td><td class="num">${n.toLocaleString("vi-VN")}</td>
+    const rowStyle = isSelected ? ' style="background:rgba(59, 130, 246, 0.12);font-weight:600"' : '';
+    const verLink = `<a href="#" class="voice-ver-link" data-version="${esc(r.app_version)}" title="Bấm để lọc riêng phiên bản ${esc(r.app_version)}" style="color:var(--accent);font-weight:700;text-decoration:none">${esc(r.app_version)} 🔍</a>`;
+    return `<tr${rowStyle}><td>${verLink}</td><td class="mono">${esc(r.device)}</td><td class="num">${n.toLocaleString("vi-VN")}</td>
       <td class="num">${ptt.toLocaleString("vi-VN")}</td><td class="num">${m.toLocaleString("vi-VN")}</td><td class="num">${e.toLocaleString("vi-VN")}</td>
       <td class="num">${amb.toLocaleString("vi-VN")}</td><td class="num">${miss.toLocaleString("vi-VN")}</td><td class="num">${nw.toLocaleString("vi-VN")}</td>
       <td class="num">${stt === null ? "—" : stt + " ms"}</td><td class="num"${style}><b>${rate === null ? "—" : rate + "%"}</b></td><td>${esc(dauHieu.join(" · ") || "—")}</td></tr>`;
@@ -2449,7 +2620,7 @@ function renderVoice(o) {
 
   // Funnel
   const sttCount = vUser;
-  const matchedCount = v.matched || 0;
+  const matchedCount = (selectedVersion && verRows.length > 0) ? scopedMatched : (v.matched || 0);
   const execOkCount = v.executed_ok || 0;
   const speakFailCount = v.speak_failed_total || 0;
   const spokenCount = Math.max(0, execOkCount - speakFailCount);
@@ -3623,6 +3794,7 @@ async function loadVoiceHistory() {
   q.set("order", "ts.desc"); q.set("limit", "100");
   q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
   if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
+  if (selectedVersion) q.set("app_version", "eq." + selectedVersion);
   const rows = await api("/rest/v1/telemetry_events?" + q.toString());
 
   // NỬA SAU CỦA LƯỢT NÓI. Trước đây dashboard chỉ hiện câu người dùng nói rồi dừng ở đó:
@@ -3635,6 +3807,7 @@ async function loadVoiceHistory() {
   rq.set("order", "ts.desc"); rq.set("limit", "400");
   rq.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
   if (selectedDevice) rq.set("device_id", "eq." + selectedDevice);
+  if (selectedVersion) rq.set("app_version", "eq." + selectedVersion);
   const turnMap = new Map();
   try {
     for (const r of await api("/rest/v1/telemetry_events?" + rq.toString())) {
@@ -3878,6 +4051,7 @@ async function loadVoiceIssues() {
   q.set("order", "ts.desc"); q.set("limit", "100");
   q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
   if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
+  if (selectedVersion) q.set("app_version", "eq." + selectedVersion);
 
   const rows = await api("/rest/v1/telemetry_events?" + q.toString());
   const filtered = rows.filter((e) => {
@@ -4073,6 +4247,7 @@ async function loadEvents() {
   const dev = $("fDevice").value.trim();
   if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
   else if (dev) q.set("device_id", "like." + dev + "*");
+  if (selectedVersion) q.set("app_version", "eq." + selectedVersion);
   renderEvents(await api("/rest/v1/telemetry_events?" + q.toString()));
   renderEventChips();
 }
@@ -4341,6 +4516,7 @@ async function loadCrashes() {
   q.set("order", "ts.desc"); q.set("limit", "50");
   q.set("ts", "gte." + new Date(Date.now() - hours * 3600e3).toISOString());
   if (selectedDevice) q.set("device_id", "eq." + selectedDevice);
+  if (selectedVersion) q.set("app_version", "eq." + selectedVersion);
   if ($("fCrashApp").value) q.set("app", "eq." + $("fCrashApp").value);
   try { renderCrashes(await api("/rest/v1/crash_reports?" + q.toString())); } catch (err) { setConn(false, err.message); }
 }

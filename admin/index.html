@@ -457,6 +457,7 @@
         <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
           <button class="small" onclick="openAddQuickInstallModal()">➕ Thêm ứng dụng</button>
           <button class="ghost small" onclick="loadQuickInstallCatalog()">🔄 Tải lại từ Supabase</button>
+          <button class="ghost small" id="btnCheckQiUpstream" onclick="checkQiUpstreamReleases()">⚡ Nguồn gốc GitHub</button>
           <button id="btnSaveQi" onclick="saveQuickInstall()">💾 Lưu lên Supabase (Tăng v+1)</button>
         </div>
       </div>
@@ -1612,11 +1613,20 @@
     </div>
   </div>
   <!-- Modal Thêm / Sửa Quick Install Item -->
-  <div class="modal-mask" id="qiModalMask" style="display:none" onclick="if(event.target===this)closeQiModal()">
+  <div class="modal-mask" id="qiModalMask" style="display:none" onclick="if(event.target===this)closeQiModal()" ondragover="event.preventDefault()">
     <div class="modal">
       <h3 id="qiModalTitle">Thêm ứng dụng Cài Nhanh</h3>
       <div class="hint">Ứng dụng sẽ xuất hiện trên màn Cài nhanh của xe, điện thoại và máy tính.</div>
       <div class="grid" style="grid-template-columns: 1fr 1fr">
+        <div style="grid-column: 1 / -1; margin-bottom: 2px">
+          <div id="qiApkDropzone" style="border: 2px dashed var(--accent); border-radius: 8px; padding: 12px; text-align: center; background: var(--keybox-bg); cursor: pointer; transition: all 0.2s" onclick="$('qiApkFileInput').click()">
+            <input type="file" id="qiApkFileInput" accept=".apk" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])">
+            <div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px">
+              <span>⚡ Kéo thả file APK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span>
+            </div>
+            <div id="qiApkParseStatus" class="hint" style="margin-top: 3px; font-size: 12px">Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%</div>
+          </div>
+        </div>
         <div style="grid-column: 1 / -1">
           <label>Tên hiển thị trên menu *</label>
           <input id="qiName" placeholder="VD: VietMap Live, YouTube Morphe...">
@@ -1626,8 +1636,8 @@
           <input id="qiUrl" placeholder="https://drive.google.com/file/d/... hoặc https://.../app.apk">
         </div>
         <div>
-          <label>Package Name (Android ID)</label>
-          <input id="qiPackage" placeholder="VD: vn.vietmap.live (hoặc để trống)">
+          <label>Package Name (Android ID) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+          <input id="qiPackage" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
         <div>
           <label>Cần cài trước (Requires First)</label>
@@ -1636,12 +1646,12 @@
           </select>
         </div>
         <div>
-          <label>Version Name (Phiên bản hiển thị)</label>
-          <input id="qiVersionName" placeholder="VD: 2.4.6, 31.94 (hoặc để trống)">
+          <label>Version Name (Phiên bản) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+          <input id="qiVersionName" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
         <div>
-          <label>Version Code (Mã build số)</label>
-          <input id="qiVersionCode" type="number" placeholder="VD: 246, 3194 (hoặc để trống)">
+          <label>Version Code (Mã build số) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+          <input id="qiVersionCode" type="number" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
         <div style="grid-column: 1 / -1">
           <label>Phạm vi hiển thị (Targets)</label>
@@ -1960,17 +1970,14 @@ const DEFAULT_CONFIG = {
   supabaseUrl: "https://cjipuxusqujhqunvjuxc.supabase.co",
   supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8",
 };
-
 const CONFIG = {
   supabaseUrl: localStorage.getItem("geely_admin_sb_url") || DEFAULT_CONFIG.supabaseUrl,
   supabaseAnonKey: DEFAULT_CONFIG.supabaseAnonKey,
 };
-
 // ==================== TÀI KHOẢN QUẢN TRỊ ====================
 // Số điện thoại của người quản trị. Mã thuộc các số này được tô nền riêng và
 // luôn xếp lên ĐẦU danh sách.
 const ADMIN_PHONES = ["0333332093", "0762629292"];
-
 // Chuẩn hoá y hệt hàm normalize_phone() bên Supabase: bỏ mọi ký tự không phải
 // số, rồi 84xxxxxxxxx (11 số) -> 0xxxxxxxxx.
 function normalizePhoneJs(p) {
@@ -1979,17 +1986,13 @@ function normalizePhoneJs(p) {
 }
 const ADMIN_PHONE_SET = new Set(ADMIN_PHONES.map(normalizePhoneJs));
 function isAdminPhone(p) { return ADMIN_PHONE_SET.has(normalizePhoneJs(p)); }
-
 const $ = id => document.getElementById(id);
 const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
 // ==================== QUẢN LÝ PHIÊN ĐĂNG NHẬP (SESSION & OTP) ====================
 const SESSION_KEY = "geely_admin_session";
 const SESSION_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000; // 3 days (tự động gia hạn rolling khi dùng)
-
 let currentSession = null;
 let otpCountdownInterval = null;
-
 function getSession() {
   try {
     let raw = localStorage.getItem(SESSION_KEY);
@@ -1997,7 +2000,6 @@ function getSession() {
     if (!raw) return null;
     const s = JSON.parse(raw);
     if (!s || !s.session_token) return null;
-
     // Kiểm tra hết hạn phiên (3 ngày kể từ lần hoạt động gần nhất)
     const lastActive = s.last_active_timestamp || s.login_timestamp || (s.logged_in_at ? new Date(s.logged_in_at).getTime() : 0);
     if (lastActive > 0 && (Date.now() - lastActive > SESSION_MAX_AGE_MS)) {
@@ -2009,7 +2011,6 @@ function getSession() {
     return null;
   }
 }
-
 function getAdminIdentity() {
   const s = getSession();
   if (s && s.admin_phone) {
@@ -2017,7 +2018,6 @@ function getAdminIdentity() {
   }
   return "admin";
 }
-
 function sbHeaders(extra = {}) {
   const headers = {
     "apikey": CONFIG.supabaseAnonKey,
@@ -2030,7 +2030,6 @@ function sbHeaders(extra = {}) {
   }
   return headers;
 }
-
 function showConfigMissingWarning() {
   let warnEl = $("sessionWarnBanner");
   if (!warnEl) {
@@ -2043,12 +2042,10 @@ function showConfigMissingWarning() {
   }
   warnEl.style.display = "flex";
 }
-
 function hideConfigMissingWarning() {
   const warnEl = $("sessionWarnBanner");
   if (warnEl) warnEl.style.display = "none";
 }
-
 function setSession(s) {
   if (!s) return;
   const now = Date.now();
@@ -2062,7 +2059,6 @@ function setSession(s) {
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
   } catch (e) {}
 }
-
 function touchClientSession() {
   const s = getSession();
   if (s) {
@@ -2075,7 +2071,6 @@ function touchClientSession() {
     } catch (e) {}
   }
 }
-
 function clearSession() {
   currentSession = null;
   try {
@@ -2085,7 +2080,6 @@ function clearSession() {
     sessionStorage.removeItem(SESSION_KEY);
   } catch (e) {}
 }
-
 // Dashboard đọc phiên qua localStorage cùng origin; mở khác origin (file:// vs http://127.0.0.1) thì không thấy
 // ⇒ nút này chép JSON phiên để dán tay vào modal "Kết nối Supabase" của telemetry-dashboard.html (14/09/2026).
 async function copySessionForDashboard() {
@@ -2095,7 +2089,6 @@ async function copySessionForDashboard() {
   try { await navigator.clipboard.writeText(txt); alert("Đã sao chép phiên. Mở telemetry-dashboard.html → modal Kết nối → dán vào ô Phiên."); }
   catch (e) { prompt("Sao chép chuỗi này rồi dán vào ô Phiên của dashboard:", txt); }
 }
-
 function checkAuthUI() {
   const session = getSession();
   if (session && session.session_token) {
@@ -2112,12 +2105,10 @@ function checkAuthUI() {
     return false;
   }
 }
-
 function switchLoginStep(step) {
   const msgEl = $("loginMsg");
   msgEl.className = "msg";
   msgEl.textContent = "";
-
   if (step === "phone") {
     $("loginStepPhone").style.display = "block";
     $("loginStepOtp").style.display = "none";
@@ -2129,14 +2120,12 @@ function switchLoginStep(step) {
     setTimeout(() => $("loginOtpInput").focus(), 50);
   }
 }
-
 function startOtpCountdown(seconds = 300) {
   clearInterval(otpCountdownInterval);
   let remain = seconds;
   const countEl = $("loginCountdown");
   const resendBtn = $("btnResendOtp");
   resendBtn.style.display = "none";
-
   function update() {
     const m = Math.floor(remain / 60);
     const s = remain % 60;
@@ -2151,40 +2140,33 @@ function startOtpCountdown(seconds = 300) {
   update();
   otpCountdownInterval = setInterval(update, 1000);
 }
-
 async function requestLoginOtp(isResend = false) {
   const phoneInput = $("loginPhoneInput");
   const rawPhone = (phoneInput.value || "").trim();
   const phone = normalizePhoneJs(rawPhone);
   const msgEl = $("loginMsg");
   const btn = isResend ? $("btnResendOtp") : $("btnRequestOtp");
-
   if (!phone || phone.length < 9) {
     showMsg(msgEl, "err", "Vui lòng nhập số điện thoại Quản trị viên hợp lệ");
     phoneInput.focus();
     return;
   }
-
   btn.disabled = true;
   showMsg(msgEl, "", "⏳ Đang kết nối máy chủ & gửi mã OTP qua Telegram...");
-
   try {
         const res = await fetch(CONFIG.supabaseUrl + "/rest/v1/rpc/admin_request_login_otp", {
       method: "POST",
       headers: sbHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ p_phone: phone })
     });
-
     const data = await res.json();
     if (!res.ok || !data.success) {
       throw new Error(data.message || data.reason || "Không thể gửi OTP");
     }
-
     // Chuyển sang bước nhập OTP
     $("loginAdminName").textContent = data.admin_name || "Quản trị viên";
     $("loginTargetPhone").textContent = data.phone || phone;
     $("loginOtpInput").value = "";
-
     // Hiển thị đích danh Bot Telegram được bắn OTP
     const botHintEl = $("loginBotHint");
     if (botHintEl) {
@@ -2198,7 +2180,6 @@ async function requestLoginOtp(isResend = false) {
         botHintEl.innerHTML = `✅ Đã gửi mã OTP về Bot Telegram.`;
       }
     }
-
     showMsg(msgEl, "ok", data.message || "Đã gửi mã OTP thành công! Kiểm tra tin nhắn Telegram.");
     switchLoginStep("otp");
     startOtpCountdown(data.expires_in_seconds || 300);
@@ -2208,39 +2189,32 @@ async function requestLoginOtp(isResend = false) {
     btn.disabled = false;
   }
 }
-
 async function verifyLoginOtp() {
   const phone = $("loginTargetPhone").textContent.trim() || $("loginPhoneInput").value.trim();
   const otp = ($("loginOtpInput").value || "").trim();
   const msgEl = $("loginMsg");
   const btn = $("btnVerifyOtp");
-
   if (!otp || otp.length !== 6) {
     showMsg(msgEl, "err", "Vui lòng nhập đủ 6 chữ số mã OTP");
     $("loginOtpInput").focus();
     return;
   }
-
   btn.disabled = true;
   showMsg(msgEl, "", "⏳ Đang xác thực mã OTP...");
-
   try {
         const res = await fetch(CONFIG.supabaseUrl + "/rest/v1/rpc/admin_verify_login_otp", {
       method: "POST",
       headers: sbHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ p_phone: phone, p_otp: otp })
     });
-
     const data = await res.json();
     if (!res.ok || !data.success) {
       throw new Error(data.message || data.reason || "Xác thực OTP thất bại");
     }
-
     // Đăng nhập thành công!
     clearInterval(otpCountdownInterval);
     setSession(data);
     showMsg(msgEl, "ok", "🎉 Xác thực thành công! Đang tải dữ liệu Quản trị...");
-
     setTimeout(() => {
       checkAuthUI();
       setCreateRoleDefaults();
@@ -2257,7 +2231,6 @@ async function verifyLoginOtp() {
     btn.disabled = false;
   }
 }
-
 async function handleLogout() {
   if (!confirm("Bạn có chắc chắn muốn đăng xuất khỏi Admin Dashboard?")) return;
   try {
@@ -2266,30 +2239,24 @@ async function handleLogout() {
   clearSession();
   checkAuthUI();
 }
-
 // ==================== SETTINGS MODAL ====================
 function openSettingsModal() {
   $("cfgSbUrl").value = CONFIG.supabaseUrl;
-  
   $("settingsMask").style.display = "flex";
 }
 function closeSettingsModal() { $("settingsMask").style.display = "none"; }
 function saveSettings() {
   CONFIG.supabaseUrl = $("cfgSbUrl").value.trim() || DEFAULT_CONFIG.supabaseUrl;
-  
-
   // Dọn nốt token GitHub cũ còn sót trong trình duyệt từ bản trước.
   localStorage.removeItem("geely_admin_gh_token");
   localStorage.removeItem("geely_admin_gh_owner");
   localStorage.removeItem("geely_admin_gh_repo");
   localStorage.setItem("geely_admin_sb_url", CONFIG.supabaseUrl);
-
   // Đồng bộ vào session hiện tại
   const session = getSession();
   if (session) {
     setSession(session);
   }
-
   hideConfigMissingWarning();
   closeSettingsModal();
   alert("Đã lưu cấu hình thành công!");
@@ -2306,12 +2273,10 @@ function resetDefaultSettings() {
   Object.assign(CONFIG, DEFAULT_CONFIG);
   openSettingsModal();
 }
-
 // ==================== TAB NAVIGATION ====================
 function switchTab(tabId) {
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-  
   if (tabId === "licenses") {
     $("tabBtnLicenses").classList.add("active");
     $("tabContentLicenses").classList.add("active");
@@ -2346,7 +2311,6 @@ function switchTab(tabId) {
     loadResellersData();
   }
 }
-
 // ==================== THEME ====================
 function applyTheme(theme) {
   document.body.classList.toggle("dark", theme === "dark");
@@ -2356,12 +2320,10 @@ function applyTheme(theme) {
   if ($("btnLoginTheme")) $("btnLoginTheme").textContent = text;
 }
 function toggleTheme() { applyTheme(document.body.classList.contains("dark") ? "light" : "dark"); }
-
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(localStorage.getItem("geely_admin_theme") || "light");
   try { localStorage.removeItem("geely_ota_priv_key_pem"); } catch (e) {}
   document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices, closeExpenseReceiptModal].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
-  
   // T0024: Touch session on load and every 10 mins (Rolling session 3 ngày)
   if (getSession()) {
     touchClientSession();
@@ -2385,7 +2347,6 @@ renderAppUpdateConfigUI();
     applyUrlQueryParams();
   }
 });
-
 function applyUrlQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const midParam = (urlParams.get("machine_id") || urlParams.get("device_id") || "").trim();
@@ -2405,20 +2366,16 @@ function applyUrlQueryParams() {
     }
   }
 }
-
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
   const url = CONFIG.supabaseUrl;
-
   const isAuth = path.includes("admin_request_login_otp") || path.includes("admin_verify_login_otp");
   if (!isAuth && !getSession()) {
     showConfigMissingWarning();
     throw new Error("Chưa có phiên đăng nhập. Vui lòng đăng nhập qua mã OTP.");
   }
-
   const extraHeaders = opts.body ? { "Content-Type": "application/json" } : {};
   const headers = sbHeaders(extraHeaders);
-
   const res = await fetch(url + path, { ...opts, headers });
   if (!res.ok) {
     let detail = "";
@@ -2435,25 +2392,20 @@ async function api(path, opts = {}) {
   }
   return res;
 }
-
 // ==================== TAB 1: QUẢN LÝ MÃ KÍCH HOẠT ====================
 window._allRows = [];
 window._editData = {};
 let currentFilter = "all";
 let searchKeyword = "";
 let expiryTouched = false;
-
 function markExpiryTouched() { expiryTouched = true; syncCreateExpiryUI(); }
-
 function setCreateRoleDefaults() {
   const r = $("role").value;
   const hintEl = $("roleHint");
   const expHintEl = $("expiryHint");
-
   // Trần PC mặc định theo role: mã Dev/Admin phải để trống (nhiều máy tự do),
   // nếu không mã nội bộ dính trần 3 trong khi max_devices của nó là 20.
   $("maxPcDevices").value = (r === "admin" || r === "dev" ? "" : "2");
-
   if (r === "car") {
     hintEl.textContent = "Khách mua xe (mặc định kèm PC): 1 đầu xe Android + số máy tính theo ô bên cạnh.";
     expHintEl.textContent = 'Mặc định hạn 2 tuần — tick "Vĩnh viễn" nếu bán đứt.';
@@ -2479,7 +2431,6 @@ function setCreateRoleDefaults() {
   syncCreateExpiryUI();
 }
 $("role").addEventListener("change", setCreateRoleDefaults);
-
 function defaultExpiry() {
   const d = new Date();
   d.setDate(d.getDate() + 14);
@@ -2487,13 +2438,11 @@ function defaultExpiry() {
 }
 function syncCreateExpiryUI() { $("expiresAt").disabled = $("expiresForever").checked; }
 function syncEditExpiryUI() { $("edExpires").disabled = $("edExpiresForever").checked; }
-
 function selectLicenseType(type) {
   if (type === "official") { $("typeOfficial").checked = true; }
   else { $("typeTrial").checked = true; }
   syncTrialUI();
 }
-
 function syncTrialUI() {
   const isTrial = $("typeTrial").checked;
   const cardOff = $("cardOfficial"), cardTr = $("cardTrial");
@@ -2503,11 +2452,9 @@ function syncTrialUI() {
   }
   const trialBox = $("trialConfigSection");
   if (trialBox) trialBox.style.display = isTrial ? "block" : "none";
-  
   const fcRole = $("fcRole"), fcMaxAct = $("fcMaxActivations"), fcMaxPc = $("fcMaxPcDevices"), fcExp = $("fcExpires");
   const techBadge = $("techModeBadge");
   const bRole = $("badgeRole"), bAct = $("badgeMaxAct"), bPc = $("badgeMaxPc"), bExp = $("badgeExpires");
-  
   if (isTrial) {
     if (techBadge) { techBadge.className = "badge-sec-locked"; techBadge.textContent = "🔒 Đã tự động khoá theo chính sách Dùng thử"; }
     $("role").value = "car";
@@ -2515,57 +2462,47 @@ function syncTrialUI() {
     if (fcRole) fcRole.classList.add("is-locked");
     if (bRole) bRole.innerHTML = '<span class="badge-field-locked">🔒 Cố định: Xe</span>';
     $("roleHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Bản dùng thử chỉ cấp cho Đầu xe (Flyme Auto), không cấp quyền Admin/Dev.</span>';
-
     $("maxActivations").value = "1";
     $("maxActivations").disabled = true;
     if (fcMaxAct) fcMaxAct.classList.add("is-locked");
     if (bAct) bAct.innerHTML = '<span class="badge-field-locked">🔒 Cố định: 1 lần</span>';
     $("maxActHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Mã dùng thử chỉ cho phép kích hoạt duy nhất trên 1 xe.</span>';
-
     $("maxPcDevices").value = "0";
     $("maxPcDevices").disabled = true;
     if (fcMaxPc) fcMaxPc.classList.add("is-locked");
     if (bPc) bPc.innerHTML = '<span class="badge-field-locked">🔒 Cố định: 0 PC</span>';
     $("maxPcHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Mã dùng thử không hỗ trợ máy tính PCConnect (chỉ chạy trên xe).</span>';
-
     $("expiresForever").checked = false;
     $("expiresForever").disabled = true;
     $("expiresAt").disabled = true;
     if (fcExp) fcExp.classList.add("is-locked");
     if (bExp) bExp.innerHTML = '<span class="badge-field-auto">🔒 Tự động theo ngày</span>';
     $("expiryHint").innerHTML = '<span style="color:#2563eb;font-weight:500;">Hạn dùng được tính tự động từ "Cấu hình Thời hạn Dùng thử" ở trên.</span>';
-
     onTrialDaysInput();
   } else {
     if (techBadge) { techBadge.className = "badge-sec-editable"; techBadge.textContent = "✏️ Tuỳ chỉnh tự do"; }
     $("role").disabled = false;
     if (fcRole) fcRole.classList.remove("is-locked");
     if (bRole) bRole.innerHTML = '';
-
     $("maxActivations").disabled = false;
     if (fcMaxAct) fcMaxAct.classList.remove("is-locked");
     if (bAct) bAct.innerHTML = '';
     $("maxActHint").innerHTML = 'Đếm số lần mã được kích hoạt trên một <b>máy mới</b> — bộ đếm <b>không giảm</b> khi xoá thiết bị.';
-
     $("maxPcDevices").disabled = false;
     if (fcMaxPc) fcMaxPc.classList.remove("is-locked");
     if (bPc) bPc.innerHTML = '';
     $("maxPcHint").innerHTML = 'Số <b>máy tính</b> được giữ chỗ cùng lúc (đầu xe đếm riêng). Để trống = không giới hạn.';
-
     $("expiresForever").disabled = false;
     $("expiresAt").disabled = $("expiresForever").checked;
     if (fcExp) fcExp.classList.remove("is-locked");
     if (bExp) bExp.innerHTML = '';
-
     setCreateRoleDefaults();
   }
 }
-
 function setTrialDays(days) {
   $("trialDays").value = days;
   onTrialDaysInput();
 }
-
 function onTrialDaysInput() {
   const val = parseInt($("trialDays").value) || 0;
   [1, 3, 7, 14].forEach(d => {
@@ -2574,7 +2511,6 @@ function onTrialDaysInput() {
   });
   updateTrialExpiryPreview();
 }
-
 function updateTrialExpiryPreview() {
   const days = Math.min(parseInt($("trialDays").value) || 3, 90);
   const d = new Date();
@@ -2584,7 +2520,6 @@ function updateTrialExpiryPreview() {
     preview.textContent = "📅 Hết hạn: " + toDateInput(d) + " (23:59:59)";
   }
 }
-
 let createKeyBusy = false;
 async function createKey() {
   if (createKeyBusy) return;
@@ -2611,13 +2546,11 @@ async function createKey() {
     if (!isTrial && maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 1)) {
       showMsg(out, "err", "Số máy tính tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
     }
-
     let expIso = null;
     let maxDevices = 1;
     let maxPcVal = maxPc;
     let maxActVal = maxAct;
     let offlineDays = 14;
-
     if (isTrial) {
       const trialDaysRaw = parseInt($("trialDays").value);
       const trialDays = (!Number.isFinite(trialDaysRaw) || trialDaysRaw < 1) ? 3 : Math.min(trialDaysRaw, 90);
@@ -2633,7 +2566,6 @@ async function createKey() {
       maxDevices = (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1);
       offlineDays = 14;
     }
-
     const body = {
       p_owner_name: name, p_owner_phone: phone, p_note: $("note").value.trim() || null,
       p_max_devices: maxDevices,
@@ -2671,7 +2603,6 @@ async function createKey() {
     btn.disabled = false;
   }
 }
-
 function roleLabel(r) {
   if (r === "car") return "🚗 Xe (+PC)";
   if (r === "pc") return "💻 Chỉ PC";
@@ -2687,13 +2618,11 @@ function roleBadge(r, isTrial) {
   }
   return html;
 }
-
 function copyKey(k) {
   (navigator.clipboard ? navigator.clipboard.writeText(k) : Promise.reject())
     .catch(() => { const t = document.createElement("textarea"); t.value = k; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); });
 }
 function showMsg(el, kind, text) { el.className = "msg " + kind; el.textContent = text; }
-
 // Đếm máy ĐANG DÙNG — máy bị đá ra không tính, đúng như cách check_license đếm
 // (mọi phép đếm giới hạn máy ở server đều lọc `kicked_at is null`). Đếm cả máy bị
 // đá thì bảng hiện "2 xe" trong khi server vẫn cho kích hoạt thêm — nhìn là hoang mang.
@@ -2717,7 +2646,6 @@ function formatDeviceCount(r) {
     ? ' <span class="tag off">đầy PC</span>' : '';
   return parts.join(", ") + ' <span class="hint" style="display:inline">(' + alive.length + ' máy)</span>' + pcFull + kickTag;
 }
-
 // Bộ đếm số lần mã được kích hoạt trên máy MỚI (không giảm khi xoá thiết bị).
 // Chạm trần / gần chạm trần thì tô màu cảnh báo để nhìn bảng là thấy ngay.
 function formatActivations(r) {
@@ -2733,7 +2661,6 @@ function formatActivations(r) {
     (used >= max ? ' <span class="tag off">Hết lượt</span>' : '') +
     '<div class="hint">Gần nhất: ' + esc(last) + '</div>';
 }
-
 function rowHtml(r) {
   const adminTag = isAdminPhone(r.owner_phone)
     ? ' <span class="tag admin">👑 Quản trị</span>' : '';
@@ -2753,7 +2680,6 @@ function rowHtml(r) {
     ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button>' +
       '<button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>'
     : '';
-
   return '<td class="mono nowrap"><b>' + esc(r.key) + '</b></td>' +
     '<td><b>' + esc(r.owner_name) + '</b>' + adminTag + '</td>' +
     '<td class="mono nowrap">' + esc(r.owner_phone) + '</td>' +
@@ -2772,13 +2698,10 @@ function rowHtml(r) {
       '<button class="danger small" data-act="del">Xoá</button>' +
     '</div></td>';
 }
-
 function renderTable() {
   const tbody = $("mainTable").querySelector("tbody");
   tbody.innerHTML = "";
-
   let filtered = window._allRows.slice();
-
   if (currentFilter === "trial") filtered = filtered.filter(r => r.is_trial);
   else if (currentFilter === "car") filtered = filtered.filter(r => (r.role || "car") === "car");
   else if (currentFilter === "pc") filtered = filtered.filter(r => r.role === "pc");
@@ -2786,7 +2709,6 @@ function renderTable() {
   else if (currentFilter === "dev") filtered = filtered.filter(r => r.role === "dev");
   else if (currentFilter === "active") filtered = filtered.filter(r => r.active);
   else if (currentFilter === "revoked") filtered = filtered.filter(r => !r.active);
-
   if (searchKeyword) {
     const kw = searchKeyword.toLowerCase();
     filtered = filtered.filter(r =>
@@ -2797,22 +2719,18 @@ function renderTable() {
       (r.devices && r.devices.some(d => (d.machine_id || "").toLowerCase().includes(kw)))
     );
   }
-
   // Admin lên đầu; trong mỗi nhóm giữ nguyên thứ tự máy chủ trả về (mới nhất trước).
   // Dùng sort ổn định của JS nên không cần khoá phụ.
   filtered.sort((a, b) => (isAdminPhone(b.owner_phone) ? 1 : 0) - (isAdminPhone(a.owner_phone) ? 1 : 0));
-
   const adminCount = filtered.filter(r => isAdminPhone(r.owner_phone)).length;
   $("totalCount").textContent = "(" + filtered.length + "/" + window._allRows.length + " mã" +
     (adminCount ? " · " + adminCount + " của quản trị" : "") + ")";
-
   if (!filtered.length) {
     const tr = document.createElement("tr");
     tr.innerHTML = '<td colspan="10" class="hint" style="text-align:center; padding:24px">Không tìm thấy mã nào phù hợp.</td>';
     tbody.appendChild(tr);
     return;
   }
-
   for (const r of filtered) {
     window._editData[r.key] = r;
     const tr = document.createElement("tr");
@@ -2822,19 +2740,16 @@ function renderTable() {
     tbody.appendChild(tr);
   }
 }
-
 function setFilter(filter, btn) {
   currentFilter = filter;
   document.querySelectorAll(".filters button[data-filter]").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
   renderTable();
 }
-
 function onSearchChange() {
   searchKeyword = $("searchInput").value.trim();
   renderTable();
 }
-
 async function extendTrialKey(key, days) {
   const r = window._editData[key];
   if (!r) return;
@@ -2857,7 +2772,6 @@ async function extendTrialKey(key, days) {
     alert("Lỗi gia hạn: " + e.message);
   }
 }
-
 async function loadKeys() {
   const msg = $("listMsg");
   msg.textContent = "";
@@ -2904,14 +2818,12 @@ async function loadKeys() {
     showMsg(msg, "err", err);
   }
 }
-
 $("mainTable").addEventListener("click", async (e) => {
   const btn = e.target.closest("button[data-act]");
   if (!btn || btn.disabled) return;
   const key = btn.closest("tr").dataset.key;
   const r = window._editData[key];
   if (!r) { alert("Không tìm thấy dữ liệu mã này — bấm Tải lại rồi thử."); return; }
-
   if (btn.dataset.act === "edit") { openEdit(key); return; }
   if (btn.dataset.act === "devices") { openDevices(key); return; }
   if (btn.dataset.act === "extendTrial") {
@@ -2924,7 +2836,6 @@ $("mainTable").addEventListener("click", async (e) => {
     }
     return;
   }
-
   btn.disabled = true;
   try {
     switch (btn.dataset.act) {
@@ -2936,7 +2847,6 @@ $("mainTable").addEventListener("click", async (e) => {
     btn.disabled = false;
   }
 });
-
 function openDevices(key) {
   const r = window._editData[key];
   if (!r) { alert("Không tìm thấy dữ liệu mã này — bấm Tải lại rồi thử."); return; }
@@ -2950,7 +2860,6 @@ function openDevices(key) {
   $("devTitle").textContent = "Chi tiết thiết bị — " + r.owner_name + " (" + key + " - " + roleLabel(r.role) + ")";
   const tb = $("devTable").querySelector("tbody");
   tb.innerHTML = "";
-
   const used = r.activation_count || 0;
   const max = r.max_activations;
   showMsg($("devSummary"), (max != null && used >= max) ? "err" : "ok",
@@ -2958,7 +2867,6 @@ function openDevices(key) {
     " · đang giữ " + dsAlive.length + " máy" +
     (dsKicked > 0 ? " · " + dsKicked + " máy đã bị đá" : "") +
     (r.last_activated_at ? " · lần kích hoạt gần nhất " + String(r.last_activated_at).slice(0, 10) : ""));
-
   if (!ds.length) {
     tb.innerHTML = '<td colspan="8" class="hint" style="text-align:center; padding:16px">Chưa có thiết bị nào kích hoạt bằng mã này.</td>';
   } else {
@@ -2998,7 +2906,6 @@ function openDevices(key) {
   loadActivationLogs(key);
 }
 function closeDevices() { $("devBox").style.display = "none"; }
-
 const ACT_RESULT_VI = {
   ok: '<span class="tag on">✅ Kích hoạt OK</span>',
   migrated: '<span class="tag car">🔄 Di trú mã máy</span>',
@@ -3006,7 +2913,6 @@ const ACT_RESULT_VI = {
   too_many_activations: '<span class="tag off">⛔ Hết lượt kích hoạt</span>',
   role_not_allowed: '<span class="tag off">⛔ Sai loại thiết bị</span>'
 };
-
 // Nhật ký chỉ nạp khi mở đúng 1 mã (không nhét vào select 500 dòng ở loadKeys
 // — bảng này chỉ tăng, mã cũ có thể có hàng trăm dòng).
 async function loadActivationLogs(key) {
@@ -3042,7 +2948,6 @@ async function loadActivationLogs(key) {
     tb.appendChild(tr);
   }
 }
-
 $("devTable").addEventListener("click", async (e) => {
   const btn = e.target.closest('button[data-act="delDev"], button[data-act="kickDev"], button[data-act="unkickDev"]');
   if (!btn || btn.disabled) return;
@@ -3051,7 +2956,6 @@ $("devTable").addEventListener("click", async (e) => {
   const tr = btn.closest("tr");
   const machineId = tr.dataset.machine;
   const devId = tr.dataset.id;
-
   // Đá ra / cho phép lại đi theo devices.id (khoá chính) thay vì cặp
   // license_key+machine_id: machine_id là chuỗi băm dài, lọt dấu = PATCH nhầm dòng.
   if (act === "kickDev" || act === "unkickDev") {
@@ -3080,7 +2984,6 @@ $("devTable").addEventListener("click", async (e) => {
     }
     return;
   }
-
   if (!confirm("Xoá hẳn thiết bị này khỏi mã " + key + "?\n\n" +
       "Máy này sẽ kích hoạt lại được như MÁY MỚI (ăn thêm 1 lượt kích hoạt).\n" +
       "Muốn cấm hẳn thì bấm \"Đá ra\" chứ đừng xoá.")) return;
@@ -3095,7 +2998,6 @@ $("devTable").addEventListener("click", async (e) => {
     btn.disabled = false;
   }
 });
-
 const REASONS_VI = {
   not_found: "không tìm thấy mã này",
   wrong_phone: "sai số điện thoại kích hoạt",
@@ -3110,7 +3012,6 @@ const REASONS_VI = {
   too_many_attempts: "nhập sai số điện thoại quá nhiều lần — tạm khoá 15 phút",
   dev_role_required: "bản thử nghiệm (Dev) chỉ dành cho tài khoản Dev"
 };
-
 function makeAdminMachineId() { return "admin-check-" + Math.random().toString(36).slice(2, 10); }
 async function dropAdminProbe(key, machineId) {
   try {
@@ -3144,7 +3045,6 @@ async function testKey(key, phone) {
   loadKeys();
   alert(out);
 }
-
 function toDateInput(iso) {
   if (!iso) return "";
   const d = new Date(iso);
@@ -3173,7 +3073,6 @@ function openEdit(key) {
     (r.last_activated_at ? " · gần nhất " + esc(String(r.last_activated_at).slice(0, 10)) : "");
   $("edExpires").value = toDateInput(r.expires_at);
   $("edExpiresForever").checked = !r.expires_at;
-
   const trialBox = $("edTrialBox");
   if (trialBox) {
     if ($("edConvertToOfficial")) $("edConvertToOfficial").checked = false;
@@ -3186,12 +3085,10 @@ function openEdit(key) {
       trialBox.style.display = "none";
     }
   }
-
   syncEditExpiryUI();
   $("editMask").style.display = "flex";
 }
 function closeEdit() { $("editMask").style.display = "none"; window._editKey = null; }
-
 function onToggleConvertToOfficial() {
   if ($("edConvertToOfficial") && $("edConvertToOfficial").checked) {
     $("edExpiresForever").checked = true;
@@ -3204,7 +3101,6 @@ function onToggleConvertToOfficial() {
     syncEditExpiryUI();
   }
 }
-
 function quickExtendModal(days) {
   const curVal = $("edExpires").value;
   const cur = curVal ? new Date(curVal + "T23:59:59") : new Date();
@@ -3214,7 +3110,6 @@ function quickExtendModal(days) {
   $("edExpiresForever").checked = false;
   syncEditExpiryUI();
 }
-
 async function saveEdit() {
   const key = window._editKey;
   if (!key) return;
@@ -3268,7 +3163,6 @@ async function saveEdit() {
     btn.disabled = false;
   }
 }
-
 // Cấp lại lượt kích hoạt cho khách đổi máy chính đáng. Chỉ đưa bộ đếm về 0 —
 // nhật ký activation_logs giữ nguyên nên vẫn truy được lịch sử thật.
 async function resetActivations() {
@@ -3293,7 +3187,6 @@ async function resetActivations() {
     btn.disabled = false;
   }
 }
-
 async function toggleActive(key, active) {
   if (!confirm((active ? "Mở lại" : "Thu hồi") + " mã " + key + "?")) return;
   try {
@@ -3303,7 +3196,6 @@ async function toggleActive(key, active) {
     loadKeys();
   } catch (e) { alert("Lỗi: " + e.message); }
 }
-
 async function delKey(key) {
   if (!confirm("Xoá vĩnh viễn mã " + key + "?\nMọi thiết bị đã kích hoạt bằng mã này cũng sẽ bị thu hồi.")) return;
   try {
@@ -3311,36 +3203,33 @@ async function delKey(key) {
     loadKeys();
   } catch (e) { alert("Lỗi: " + e.message); }
 }
-
-
 // ==================== TAB 2: QUẢN LÝ QUICK INSTALL (SUPABASE RPC) ====================
 // 21/08/2026: chuyển từ GitHub API sang Supabase. Đọc `get_quick_install` (RPC mà
 // 3 app đang gọi — admin nhìn đúng thứ khách nhìn), ghi `admin_save_quick_install`
 // (service_role). Không còn token GitHub trong trang này.
 const DEFAULT_QI_CATALOG = {
   "type": "quick_install",
-  "version": 31,
+  "version": 35,
   "apps": [
     { "name": "CarConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk", "packageName": "com.techlead.app.geely.car", "versionName": "1.1.5", "versionCode": 1105, "targets": ["pc"] },
     { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "versionName": "1.1.5", "versionCode": 1106, "targets": ["pc"] },
     { "name": "Google Map", "url": "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link", "packageName": "app.morphe.android.apps.maps", "versionName": "26.35.04", "versionCode": 1068751348, "requiresFirst": "MicroG" },
     { "name": "Waze", "url": "https://drive.google.com/file/d/1izW7flhnnKXbjlKJg0dpZ-u5LZ2mN2cI/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
     { "name": "Waze Mod", "url": "https://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
-    { "name": "YouTube Morphe", "url": "https://drive.google.com/file/d/1qFFXyZ_MU8c56HcfLqeladoG-FubSl96/view?usp=drive_link", "packageName": "anddea.youtube", "versionName": "21.07.247", "versionCode": 1561056418, "requiresFirst": "MicroG" },
-    { "name": "Youtube Music", "url": "https://drive.google.com/file/d/1FHTQP0EGwPR5Zm9zNJGLJdqFTEa6D1LH/view?usp=drive_link", "packageName": "anddea.youtube.music", "versionName": "9.15.51", "versionCode": 91551240, "requiresFirst": "MicroG" },
-    { "name": "Spotify", "url": "https://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drivesdk", "packageName": "com.spotify.music", "versionName": "9.1.72.1891", "versionCode": 144716725 },
+    { "name": "YouTube RVX", "url": "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link", "packageName": "anddea.youtube", "versionName": "21.13.164", "versionCode": 1561063732, "requiresFirst": "MicroG" },
+    { "name": "YouTube Music RVX", "url": "https://drive.google.com/file/d/1FHTQP0EGwPR5Zm9zNJGLJdqFTEa6D1LH/view?usp=drive_link", "packageName": "anddea.youtube.music", "versionName": "9.15.51", "versionCode": 91551240, "requiresFirst": "MicroG" },
+    { "name": "Spotify", "url": "https://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drivesdk", "packageName": "com.spotify.music", "versionName": "9.0.52.505", "versionCode": 128978383 },
     { "name": "Google Chrome", "url": "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link", "packageName": "com.android.chrome", "versionName": "138.0.7204.179", "versionCode": 720417921 },
     { "name": "Cốc Cốc", "url": "https://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link", "packageName": "com.coccoc.trinhduyet", "versionName": "143.0.204", "versionCode": 915120424 },
-    { "name": "VietMap Live", "url": "https://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=sharing", "packageName": "vn.vietmap.live", "versionName": "3.4.0", "versionCode": 178749559 },
+    { "name": "VietMap Live", "url": "https://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=sharing", "packageName": "vn.vietmap.live", "versionName": "3.3.3", "versionCode": 178453857 },
     { "name": "AuresEyes", "url": "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drivesdk", "packageName": "com.bilang042.aureseyes", "versionName": "1.1", "versionCode": 2 },
-    { "name": "SmartTube", "url": "https://drive.google.com/file/d/1V9rHHHhHlRpkVASFlVcDu6XEavIVvzlE/view?usp=drive_link", "packageName": "org.smarttube.stable", "versionName": "32.47", "versionCode": 2437 },
-    { "name": "TikTok", "url": "https://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link", "packageName": "com.zhiliaoapp.musically.go", "versionName": "46.9.1", "versionCode": 460901, "forceLandscape": true },
+    { "name": "SmartTube", "url": "https://github.com/yuliskov/SmartTube/releases/download/32.56s/SmartTube_stable_32.56_arm64-v8a.apk", "packageName": "org.smarttube.stable", "versionName": "32.56", "versionCode": 2446 },
+    { "name": "TikTok", "url": "https://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link", "packageName": "com.zhiliaoapp.musically", "versionName": "46.5.3", "versionCode": 2024605030, "forceLandscape": true },
     { "name": "VTV Go", "url": "https://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=sharing", "packageName": "vn.vtv.vtvgo", "versionName": "12.6.29-vtvgo", "versionCode": 351 },
     { "name": "GOFA", "url": "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drivesdk", "packageName": "com.gofa.mobile", "versionName": "4.1.3", "versionCode": 521 },
     { "name": "VLC", "url": "https://drive.google.com/file/d/1UM2jfXdoZiPO8Iv3zs14h-7LQZk1vFVc/view?usp=sharing", "packageName": "org.videolan.vlc", "versionName": "3.7.1", "versionCode": 13070106 },
     { "name": "Speed Display", "url": "https://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=sharing", "packageName": "com.kay.speeddisplay", "versionName": "1.1", "versionCode": 2 },
     { "name": "File Manager (ES Explorer)", "url": "https://drive.google.com/file/d/1T6ygnjdwlJ6gPpCt-6zkzcQ_2jG8T174/view?usp=sharing", "packageName": "com.estrongs.android.pop", "versionName": "4.4.3.5", "versionCode": 10351 },
-    { "name": "CentralEXAuto (Geely)", "url": "https://raw.githubusercontent.com/swimapps/CentralEXAuto/main/CentralEXAuto-geely-platform-signed.apk", "packageName": "com.ex.auto", "versionName": "2.19.8", "versionCode": 605, "targets": ["car"] },
     { "name": "Downloader", "url": "https://drive.google.com/file/d/1TtmkTWIwRRsfsN_JqWObEgYKAYeES4WJ/view?usp=share_link", "packageName": "com.esaba.downloader", "versionName": "2.0.4", "versionCode": 75 },
     { "name": "MicroG", "url": "https://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link", "packageName": "app.revanced.android.gms", "versionName": "0.3.13.2.250932-hw", "versionCode": 250932004 }
   ],
@@ -3348,16 +3237,14 @@ const DEFAULT_QI_CATALOG = {
     "App Manager", "ADB AppControl", "Equalizer Geely", "YouTube ReVanced",
     "ChiLy Phone", "ChiLy Car", "Google Maps", "GMS (Google Play Services)", "Sapo app",
     "Geely EX2 Phone", "Geely EX2 Car", "YouTube (bản 2, chưa rõ)", "Geely Custom Profiles",
-    "Zalo Kiki Car", "Google Map Lite"
+    "Zalo Kiki Car", "Google Map Lite", "CentralEXAuto"
   ]
 };
-
 window._qiCatalog = JSON.parse(JSON.stringify(DEFAULT_QI_CATALOG));
 window._qiEditingIndex = -1;
 window._qiCatalogLoaded = false;
 let qiSearchKeyword = "";
 let qiCurrentFilter = "all";
-
 async function loadQuickInstallCatalog() {
   const msg = $("qiStatusMsg");
   showMsg(msg, "", "⏳ Đang tải danh mục từ Supabase...");
@@ -3370,38 +3257,30 @@ async function loadQuickInstallCatalog() {
     if (!window._qiCatalog.apps) window._qiCatalog.apps = [];
     if (!window._qiCatalog.removed) window._qiCatalog.removed = [];
     window._qiCatalogLoaded = true;
-
     renderQuickInstallTable();
     showMsg(msg, "ok", "✅ Đã tải danh mục (Bản v" + (window._qiCatalog.version || 1) + " — " + window._qiCatalog.apps.length + " ứng dụng)");
   } catch (err) {
     showMsg(msg, "err", "Lỗi tải danh mục: " + err.message);
   }
 }
-
 function onQiSearchChange() {
   qiSearchKeyword = $("qiSearchInput").value.trim();
   renderQuickInstallTable();
 }
-
 function setQiFilter(filter, btn) {
   qiCurrentFilter = filter;
   document.querySelectorAll(".filters button[data-qifilter]").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
   renderQuickInstallTable();
 }
-
 function renderQuickInstallTable() {
   const tbody = $("qiTable").querySelector("tbody");
   tbody.innerHTML = "";
-
   const catalog = window._qiCatalog || { apps: [] };
   const apps = catalog.apps || [];
-
   $("qiVersionBadge").textContent = "v" + (catalog.version || 1);
   $("qiTotalCount").textContent = "(" + apps.length + " ứng dụng)";
-
   let filteredIndices = apps.map((app, idx) => ({ app, idx }));
-
   // 1. Lọc theo filter
   if (qiCurrentFilter === "car") {
     filteredIndices = filteredIndices.filter(item => !item.app.targets || !item.app.targets.length || item.app.targets.includes("car"));
@@ -3412,7 +3291,6 @@ function renderQuickInstallTable() {
   } else if (qiCurrentFilter === "prereq") {
     filteredIndices = filteredIndices.filter(item => Boolean(item.app.requiresFirst));
   }
-
   // 2. Lọc theo từ khoá
   if (qiSearchKeyword) {
     const kw = qiSearchKeyword.toLowerCase();
@@ -3422,16 +3300,13 @@ function renderQuickInstallTable() {
       (item.app.requiresFirst || "").toLowerCase().includes(kw)
     );
   }
-
   if (!filteredIndices.length) {
     tbody.innerHTML = '<tr><td colspan="8" class="hint" style="text-align:center; padding:24px">Không tìm thấy ứng dụng nào phù hợp.</td></tr>';
     return;
   }
-
   filteredIndices.forEach(({ app, idx }) => {
     const tr = document.createElement("tr");
     tr.dataset.index = idx;
-
     // Targets badge
     let targetsBadge = "";
     const targets = app.targets || [];
@@ -3444,23 +3319,19 @@ function renderQuickInstallTable() {
       if (targets.includes("phone")) parts.push('<span class="tag phone">📱 Phone</span>');
       targetsBadge = parts.join(" ");
     }
-
     if (app.forceLandscape) {
       targetsBadge += ' <span class="tag admin" title="Khóa xoay ngang khi mở trên xe">🔄 Ngang</span>';
     }
     if (app.hidden) {
       targetsBadge += ' <span class="tag hidden" title="Đang tạm ẩn">👁️ Ẩn</span>';
     }
-
     // Prereq badge
     const prereqBadge = app.requiresFirst 
       ? '<span class="tag prereq">🔗 Cần ' + esc(app.requiresFirst) + ' trước</span>' 
       : '<span style="color:var(--muted)">-</span>';
-
     const verBadge = app.versionName 
       ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>'
       : '';
-
     tr.innerHTML = 
       '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
       '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
@@ -3479,7 +3350,6 @@ function renderQuickInstallTable() {
     tbody.appendChild(tr);
   });
 }
-
 // Chuyển 1 app tới vị trí bất kỳ (15/09/2026): dùng chung cho ô số vị trí và kéo-thả (▲▼ từng nấc đã bỏ).
 // Không đổi chỗ (swap) mà rút ra rồi chèn vào ⇒ các app ở giữa giữ nguyên thứ tự tương đối.
 function moveQiItemTo(from, to) {
@@ -3487,14 +3357,11 @@ function moveQiItemTo(from, to) {
   if (!Number.isInteger(to)) { renderQuickInstallTable(); return; }
   to = Math.max(0, Math.min(apps.length - 1, to));
   if (from < 0 || from >= apps.length || from === to) { renderQuickInstallTable(); return; }
-
   const [item] = apps.splice(from, 1);
   apps.splice(to, 0, item);
-
   renderQuickInstallTable();
   showMsg($("qiStatusMsg"), "ok", 'Đã chuyển "' + item.name + '" tới vị trí ' + (to + 1) + ' (chưa lưu — bấm "Lưu lên Supabase" khi hoàn tất).');
 }
-
 // Kéo-thả hàng trong bảng Cài nhanh. Chỉ bắt đầu kéo khi mousedown vào tay cầm ⠿ (tay cầm bật
 // tr.draggable; dragend tắt lại) để bấm nút/chọn chữ trong hàng không vô tình kéo.
 (function bindQiDragDrop() {
@@ -3540,22 +3407,18 @@ function moveQiItemTo(from, to) {
   });
   tbody.addEventListener("mouseup", () => tbody.querySelectorAll("tr[draggable=true]").forEach(tr => tr.draggable = false));
 })();
-
 function deleteQiItem(index) {
   const item = window._qiCatalog.apps[index];
   if (!confirm('Xoá ứng dụng "' + item.name + '" (' + item.packageName + ') khỏi danh mục Cài nhanh?\n\nỨng dụng này cũng sẽ tự động được gỡ khỏi danh mục trên xe/máy tính khách hàng.')) return;
-
   // Ghi vào danh sách removed để client tự động gỡ
   if (!window._qiCatalog.removed) window._qiCatalog.removed = [];
   if (!window._qiCatalog.removed.includes(item.name)) {
     window._qiCatalog.removed.push(item.name);
   }
-
   window._qiCatalog.apps.splice(index, 1);
   renderQuickInstallTable();
   showMsg($("qiStatusMsg"), "ok", 'Đã xoá "' + item.name + '" (chưa lưu lên GitHub — bấm "Lưu lên GitHub" khi hoàn tất).');
 }
-
 function updatePrereqDropdown(selectedPrereq, currentItemName) {
   const sel = $("qiRequiresFirst");
   if (!sel) return;
@@ -3578,7 +3441,160 @@ function updatePrereqDropdown(selectedPrereq, currentItemName) {
     sel.value = "";
   }
 }
-
+async function parseApkFile(file) {
+  if (typeof DecompressionStream === "undefined") throw new Error("Trình duyệt không hỗ trợ DecompressionStream. Vui lòng cập nhật Chrome/Safari mới nhất.");
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = new Uint8Array(arrayBuffer);
+  if (buffer.length < 22) throw new Error("Tệp không đúng định dạng APK / ZIP (kích thước quá nhỏ)");
+  const view = new DataView(arrayBuffer);
+  let eocdOffset = -1;
+  const maxSearch = Math.min(buffer.length, 65536);
+  for (let i = buffer.length - 22; i >= buffer.length - maxSearch; i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+  }
+  if (eocdOffset === -1) throw new Error("Tệp không đúng định dạng APK / ZIP");
+  const cdOffset = view.getUint32(eocdOffset + 16, true);
+  const cdCount = view.getUint16(eocdOffset + 10, true);
+  let offset = cdOffset;
+  let manifestEntry = null;
+  const decoder = new TextDecoder("utf-8");
+  for (let i = 0; i < cdCount; i++) {
+    if (offset + 46 > buffer.length || view.getUint32(offset, true) !== 0x02014b50) break;
+    const method = view.getUint16(offset + 10, true), compSize = view.getUint32(offset + 20, true);
+    const nameLen = view.getUint16(offset + 28, true), extraLen = view.getUint16(offset + 30, true), commentLen = view.getUint16(offset + 32, true);
+    const localHeaderOffset = view.getUint32(offset + 42, true);
+    const name = decoder.decode(buffer.subarray(offset + 46, offset + 46 + nameLen));
+    if (name === "AndroidManifest.xml") { manifestEntry = { method, compSize, localHeaderOffset }; break; }
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+  if (!manifestEntry) throw new Error("Không tìm thấy AndroidManifest.xml trong file APK");
+  const lhOffset = manifestEntry.localHeaderOffset;
+  if (lhOffset + 30 > buffer.length || view.getUint32(lhOffset, true) !== 0x04034b50) throw new Error("Local header của AndroidManifest.xml không hợp lệ");
+  const lhNameLen = view.getUint16(lhOffset + 26, true), lhExtraLen = view.getUint16(lhOffset + 28, true);
+  const dataOffset = lhOffset + 30 + lhNameLen + lhExtraLen;
+  const rawData = buffer.subarray(dataOffset, dataOffset + manifestEntry.compSize);
+  let xmlBytes;
+  if (manifestEntry.method === 0) {
+    xmlBytes = rawData;
+  } else if (manifestEntry.method === 8) {
+    const ds = new DecompressionStream("deflate-raw");
+    const writer = ds.writable.getWriter();
+    writer.write(rawData); writer.close();
+    xmlBytes = new Uint8Array(await new Response(ds.readable).arrayBuffer());
+  } else {
+    throw new Error("Kiểu nén không được hỗ trợ: " + manifestEntry.method);
+  }
+  return parseAxmlData(xmlBytes);
+}
+function parseAxmlData(buf) {
+  if (buf.length < 8) throw new Error("Dữ liệu AndroidManifest.xml quá ngắn");
+  const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+  if (view.getUint16(0, true) !== 0x0003) throw new Error("AndroidManifest.xml không phải định dạng AXML nhị phân");
+  let pos = 8;
+  const stringPool = [], resMap = [];
+  const utf8Dec = new TextDecoder("utf-8"), utf16Dec = new TextDecoder("utf-16le");
+  while (pos < buf.length) {
+    if (pos + 8 > buf.length) break;
+    const chunkType = view.getUint32(pos, true), chunkSize = view.getUint32(pos + 4, true);
+    if (chunkSize <= 0 || pos + chunkSize > buf.length + 1024) break;
+    const typeLo = chunkType & 0xFFFF;
+    if (chunkType === 0x001C0001) {
+      const stringCount = view.getUint32(pos + 8, true), flags = view.getUint32(pos + 16, true);
+      const isUtf8 = (flags & (1 << 8)) !== 0, stringsStart = pos + view.getUint32(pos + 20, true);
+      const offsets = [];
+      for (let i = 0; i < stringCount; i++) offsets.push(view.getUint32(pos + 28 + i * 4, true));
+      for (let i = 0; i < stringCount; i++) {
+        const strOffset = stringsStart + offsets[i];
+        if (strOffset >= buf.length) { stringPool.push(""); continue; }
+        if (isUtf8) {
+          let sPos = strOffset, len1 = buf[sPos++];
+          if (len1 & 0x80) len1 = ((len1 & 0x7f) << 8) | buf[sPos++];
+          let bLen = buf[sPos++];
+          if (bLen & 0x80) bLen = ((bLen & 0x7f) << 8) | buf[sPos++];
+          stringPool.push(utf8Dec.decode(buf.subarray(sPos, sPos + bLen)));
+        } else {
+          let sPos = strOffset, u16len = view.getUint16(sPos, true);
+          sPos += 2;
+          if (u16len & 0x8000) { u16len = ((u16len & 0x7fff) << 16) | view.getUint16(sPos, true); sPos += 2; }
+          stringPool.push(utf16Dec.decode(buf.subarray(sPos, sPos + u16len * 2)));
+        }
+      }
+    } else if (typeLo === 0x0180 || chunkType === 0x80180) {
+      const count = (chunkSize - 8) >> 2;
+      for (let i = 0; i < count; i++) resMap.push(view.getUint32(pos + 8 + i * 4, true));
+    } else if (typeLo === 0x0102) {
+      const nameIdx = view.getInt32(pos + 20, true);
+      if (stringPool[nameIdx] === "manifest") {
+        const attrCount = view.getUint16(pos + 28, true), attrStart = pos + 36, result = {};
+        for (let a = 0; a < attrCount; a++) {
+          const aOffset = attrStart + a * 20;
+          const aNameIdx = view.getInt32(aOffset + 4, true), aRawValIdx = view.getInt32(aOffset + 8, true);
+          const valType = view.getUint32(aOffset + 12, true) >> 24, valData = view.getUint32(aOffset + 16, true);
+          let aName = stringPool[aNameIdx];
+          if (resMap[aNameIdx] === 0x0101021b) aName = "versionCode";
+          else if (resMap[aNameIdx] === 0x0101021c) aName = "versionName";
+          let val = null;
+          if (aRawValIdx >= 0 && aRawValIdx < stringPool.length) val = stringPool[aRawValIdx];
+          else if (valType === 0x10 || valType === 0x11) val = valData;
+          else if (valType === 0x03) val = stringPool[valData] || String(valData);
+          result[aName] = val;
+        }
+        return result;
+      }
+    }
+    pos += chunkSize;
+  }
+  throw new Error("Không phân tích được thẻ manifest trong AXML");
+}
+async function handleQiApkFileSelect(file) {
+  if (!file) return;
+  const statusEl = $("qiApkParseStatus");
+  const mb = (file.size / (1024 * 1024)).toFixed(1);
+  if (statusEl) statusEl.innerHTML = `<span style="color:var(--accent)">⏳ Đang giải nén và phân tích ${esc(file.name)} (${mb} MB)...</span>`;
+  try {
+    const info = await parseApkFile(file);
+    if (!info || !info.package) throw new Error("Không tìm thấy Package Name trong file APK này.");
+    if ($("qiPackage")) $("qiPackage").value = info.package || "";
+    if ($("qiVersionName")) $("qiVersionName").value = info.versionName || "";
+    if ($("qiVersionCode")) $("qiVersionCode").value = (info.versionCode !== undefined && info.versionCode !== null) ? String(info.versionCode) : "";
+    if ($("qiName") && !$("qiName").value.trim()) {
+      let suggested = file.name.replace(/\.apk$/i, "").replace(/[-_]/g, " ").replace(/\s+v?\d+(\.\d+)+.*$/i, "");
+      suggested = suggested.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/\bYoutube\b/g, "YouTube");
+      $("qiName").value = suggested.trim();
+    }
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc(info.versionCode ?? "?")}) • ${mb} MB</span>`;
+    }
+    toast(`Đã tự động điền: ${info.package} (v${info.versionName || '?'})`);
+  } catch (err) {
+    console.error("Lỗi đọc APK:", err);
+    if (statusEl) statusEl.innerHTML = `<span style="color:var(--err)">❌ Lỗi đọc APK: ${esc(err.message)}</span>`;
+    toast("Không thể đọc thông tin APK: " + err.message, "err");
+  } finally {
+    if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
+  }
+}
+function setupQiApkDropzone() {
+  const dropzone = $("qiApkDropzone");
+  if (!dropzone || dropzone._dragSetup) return;
+  dropzone._dragSetup = true;
+  ["dragenter", "dragover"].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropzone.style.background = "var(--tag-on-bg)"; dropzone.style.borderColor = "var(--ok)";
+    }, false);
+  });
+  ["dragleave", "drop"].forEach(evt => {
+    dropzone.addEventListener(evt, (e) => {
+      e.preventDefault(); e.stopPropagation();
+      dropzone.style.background = "var(--keybox-bg)"; dropzone.style.borderColor = "var(--accent)";
+    }, false);
+  });
+  dropzone.addEventListener("drop", (e) => {
+    const dt = e.dataTransfer;
+    if (dt && dt.files && dt.files[0]) handleQiApkFileSelect(dt.files[0]);
+  }, false);
+}
 function openAddQuickInstallModal() {
   window._qiEditingIndex = -1;
   $("qiModalTitle").textContent = "Thêm ứng dụng Cài Nhanh mới";
@@ -3592,10 +3608,12 @@ function openAddQuickInstallModal() {
   $("qiTargetPhone").checked = true;
   $("qiForceLandscape").checked = false;
   $("qiHidden").checked = false;
+  if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
+  if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
+  setupQiApkDropzone();
   updatePrereqDropdown("", "");
   $("qiModalMask").style.display = "flex";
 }
-
 function openEditQuickInstallModal(index) {
   window._qiEditingIndex = index;
   const item = window._qiCatalog.apps[index];
@@ -3607,7 +3625,9 @@ function openEditQuickInstallModal(index) {
   $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
   $("qiForceLandscape").checked = Boolean(item.forceLandscape);
   $("qiHidden").checked = Boolean(item.hidden);
-
+  if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
+  if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
+  setupQiApkDropzone();
   const targets = item.targets || [];
   if (!targets.length) {
     $("qiTargetCar").checked = true;
@@ -3618,16 +3638,13 @@ function openEditQuickInstallModal(index) {
     $("qiTargetPc").checked = targets.includes("pc");
     $("qiTargetPhone").checked = targets.includes("phone");
   }
-
   updatePrereqDropdown(item.requiresFirst || "", item.name || "");
   $("qiModalMask").style.display = "flex";
 }
-
 function closeQiModal() {
   $("qiModalMask").style.display = "none";
   window._qiEditingIndex = -1;
 }
-
 function saveQiItem() {
   const name = $("qiName").value.trim();
   const url = $("qiUrl").value.trim();
@@ -3638,7 +3655,6 @@ function saveQiItem() {
   const prereq = $("qiRequiresFirst").value.trim();
   const forceLandscape = $("qiForceLandscape").checked;
   const hidden = $("qiHidden").checked;
-
   if (!name || !url) {
     alert("Vui lòng nhập Tên ứng dụng và Link tải APK.");
     return;
@@ -3647,49 +3663,40 @@ function saveQiItem() {
     alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://");
     return;
   }
-
   const targets = [];
   if ($("qiTargetCar").checked) targets.push("car");
   if ($("qiTargetPc").checked) targets.push("pc");
   if ($("qiTargetPhone").checked) targets.push("phone");
-
   const newItem = {
     name: name,
     url: url,
     packageName: pkg
   };
-
   if (verName) newItem.versionName = verName;
   if (verCode > 0) newItem.versionCode = verCode;
   if (prereq) newItem.requiresFirst = prereq;
   if (forceLandscape) newItem.forceLandscape = true;
   if (hidden) newItem.hidden = true;
-
   if (targets.length > 0 && targets.length < 3) {
     newItem.targets = targets;
   }
-
   // Nếu app từng nằm trong danh sách removed thì gỡ ra
   if (window._qiCatalog.removed) {
     window._qiCatalog.removed = window._qiCatalog.removed.filter(n => n !== name);
   }
-
   if (window._qiEditingIndex >= 0) {
     window._qiCatalog.apps[window._qiEditingIndex] = newItem;
-    showMsg($("qiStatusMsg"), "ok", 'Đã sửa "' + name + '" (chưa lưu lên GitHub — bấm "Lưu lên GitHub" khi hoàn tất).');
+    showMsg($("qiStatusMsg"), "ok", 'Đã sửa "' + name + '" (chưa lưu lên Supabase — bấm "Lưu lên Supabase" khi hoàn tất).');
   } else {
     window._qiCatalog.apps.push(newItem);
-    showMsg($("qiStatusMsg"), "ok", 'Đã thêm "' + name + '" vào danh mục (chưa lưu lên GitHub — bấm "Lưu lên GitHub" khi hoàn tất).');
+    showMsg($("qiStatusMsg"), "ok", 'Đã thêm "' + name + '" vào danh mục (chưa lưu lên Supabase — bấm "Lưu lên Supabase" khi hoàn tất).');
   }
-
   closeQiModal();
   renderQuickInstallTable();
 }
-
 async function saveQuickInstall() {
   const btn = $("btnSaveQi");
   const msg = $("qiStatusMsg");
-
   // CHỐT AN TOÀN: chỉ cho lưu khi đã tải được danh mục thật từ máy chủ.
   // Bản GitHub cũ có tham số `sha` chặn ghi đè nhầm; RPC không có thứ đó. Nếu
   // lần tải hỏng (chưa chạy schema.sql, mất mạng…) thì _qiCatalog vẫn đang là
@@ -3700,17 +3707,14 @@ async function saveQuickInstall() {
     alert("❌ Chưa tải được danh mục từ Supabase.\n\nBấm \"🔄 Tải lại từ Supabase\" cho thành công rồi mới sửa và lưu.");
     return;
   }
-
   const currentVer = window._qiCatalog.version || 1;
   if (!confirm("Xác nhận lưu danh mục (" + window._qiCatalog.apps.length + " ứng dụng) lên Supabase?\n\n" +
       "Phiên bản tự tăng từ v" + currentVer + " -> v" + (currentVer + 1) + ".\n" +
       "Cả 3 app (Xe, Phone, PC) sẽ nhận bản mới ở lần đồng bộ kế tiếp.")) {
     return;
   }
-
   btn.disabled = true;
   showMsg(msg, "", "⏳ Đang lưu danh mục lên Supabase...");
-
   try {
     // Version do MÁY CHỦ tự tăng (admin_save_quick_install) — trang không tự đặt số,
     // tránh 2 tab admin mở cùng lúc ghi đè nhau về cùng một số.
@@ -3720,7 +3724,6 @@ async function saveQuickInstall() {
     });
     const out = await res.json();
     if (!out || out.success !== true) throw new Error((out && out.reason) || "máy chủ từ chối");
-
     window._qiCatalog.version = out.version;
     renderQuickInstallTable();
     showMsg(msg, "ok", "🎉 ĐÃ LƯU! Phiên bản hiện tại: v" + out.version + " (" + out.so_muc + " ứng dụng).");
@@ -3732,17 +3735,68 @@ async function saveQuickInstall() {
     btn.disabled = false;
   }
 }
-
+async function checkQiUpstreamReleases() {
+  const btn = $("btnCheckQiUpstream");
+  const msg = $("qiStatusMsg");
+  if (!window._qiCatalogLoaded) {
+    showMsg(msg, "err", "Chưa tải danh mục — vui lòng bấm 🔄 Tải lại từ Supabase trước.");
+    alert("Vui lòng bấm '🔄 Tải lại từ Supabase' để tải danh mục trước khi kiểm tra GitHub.");
+    return;
+  }
+  if (btn) btn.disabled = true;
+  showMsg(msg, "", "⏳ Đang kiểm tra bản phát hành mới từ GitHub (SmartTube, MicroG)...");
+  try {
+    const repos = [
+      { name: "SmartTube", repo: "Yuliskov/SmartTube", matchPkg: "org.smarttube.stable", assetRegex: /SmartTube_stable_.*arm64-v8a\.apk$/i },
+      { name: "MicroG", repo: "ReVanced/GmsCore", matchPkg: "app.revanced.android.gms", assetRegex: /app\.revanced\.android\.gms.*\.apk$/i }
+    ];
+    let updateFound = 0;
+    for (const item of repos) {
+      try {
+        const resp = await fetch("https://api.github.com/repos/" + item.repo + "/releases/latest");
+        if (!resp.ok) continue;
+        const data = await resp.json();
+        const tag = (data.tag_name || "").replace(/^v/, "");
+        const cleanVer = tag.replace(/[^0-9.]/g, "");
+        const asset = (data.assets || []).find(a => item.assetRegex.test(a.browser_download_url || ""));
+        if (!asset) continue;
+        const app = (window._qiCatalog.apps || []).find(a => a.packageName === item.matchPkg || (a.name || "").includes(item.name));
+        if (app) {
+          const curVer = app.versionName || "";
+          if (curVer !== cleanVer && curVer !== tag && !curVer.startsWith(cleanVer)) {
+            updateFound++;
+            const doUpdate = confirm("🐙 Tìm thấy bản mới cho " + item.name + " từ GitHub:\n- Hiện tại: v" + curVer + "\n- Mới nhất: v" + cleanVer + " (" + tag + ")\n\nCập nhật link tải và phiên bản cho app này không?");
+            if (doUpdate) {
+              app.versionName = cleanVer;
+              app.url = asset.browser_download_url;
+              app.downloadUrl = asset.browser_download_url;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("GitHub check error for " + item.name, e);
+      }
+    }
+    renderQuickInstallTable();
+    if (updateFound > 0) {
+      showMsg(msg, "ok", "🎉 Đã cập nhật " + updateFound + " ứng dụng từ GitHub! Hãy bấm 'Lưu lên Supabase' để áp dụng.");
+    } else {
+      showMsg(msg, "ok", "✅ Các ứng dụng từ nguồn GitHub (SmartTube, MicroG) đều đang ở phiên bản mới nhất.");
+    }
+  } catch (err) {
+    showMsg(msg, "err", "Lỗi kiểm tra GitHub: " + err.message);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
 // ==================== TAB 3: BÁN HÀNG & GIÁ (VIETQR) ====================
 window._salesData = { settings: {}, orders: [], price_locks: [], logs: [] };
 let salesCurrentOrderFilter = "all";
 let salesOrderSearchKeyword = "";
-
 function formatVndNumber(n) {
   const num = Number(n) || 0;
   return num.toLocaleString("vi-VN") + " ₫";
 }
-
 function formatIsoTime(iso) {
   if (!iso) return "-";
   try {
@@ -3752,18 +3806,15 @@ function formatIsoTime(iso) {
     return iso;
   }
 }
-
 function updateSalesPricePreview() {
   const orig = parseInt($("salesYearlyPrice").value) || 0;
   const disc = parseInt($("salesYearlyDiscount").value) || 0;
   const after = Math.round(orig * (100 - disc) / 100);
   $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after);
 }
-
 function syncSalesPromoExpiryUI() {
   $("salesPromoEndDate").disabled = $("salesPromoForever").checked;
 }
-
 function fillDefaultBankInfo() {
   $("salesBankBin").value = "970432";
   $("salesBankName").value = "VPBank";
@@ -3771,17 +3822,14 @@ function fillDefaultBankInfo() {
   $("salesBankAccountName").value = "HUYNH VAN TOAN";
   showMsg($("salesBankSaveMsg"), "ok", "Đã điền thông tin tài khoản VPBank mặc định (bấm Lưu để áp dụng).");
 }
-
 // ==================== TAB 3: THỐNG KÊ & BÁO CÁO TOÀN DIỆN ====================
 window._analyticsData = null;
-
 async function loadAnalytics() {
   let stats = null;
   // 1. Nếu data từ sales_data đã có stats (từ RPC admin_get_sales_data) -> dùng ngay
   if (window._salesData && window._salesData.stats) {
     stats = window._salesData.stats;
   }
-  
   // 2. Thử gọi RPC admin_get_dashboard_analytics nếu chưa có stats
   if (!stats) {
     try {
@@ -3792,34 +3840,28 @@ async function loadAnalytics() {
       stats = computeClientSideStats();
     }
   }
-
   // Nếu stats từ DB thiếu bảng chi tiết -> fallback merge client
   if (!stats || !stats.sales || !stats.licenses) {
     stats = computeClientSideStats();
   }
-
   window._analyticsData = stats;
   renderAnalyticsUI(stats);
 }
-
 function computeClientSideStats() {
   const rows = window._allRows || [];
   const sales = window._salesData || {};
   const orders = sales.orders || [];
   const locks = sales.price_locks || [];
-
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000);
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000);
   const sevenDaysFuture = new Date(now.getTime() + 7 * 86400000);
-
   let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0;
   let revLifetime = 0, countLifetime = 0;
   let revYearly = 0, countYearly = 0;
   let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0;
   const uniqueBuyers = new Set();
-
   for (const o of orders) {
     const d = o.paid_at ? new Date(o.paid_at) : new Date(o.created_at);
     if (o.status === "paid") {
@@ -3830,7 +3872,6 @@ function computeClientSideStats() {
       if (d >= sevenDaysAgo) rev7d += amt;
       if (d >= thirtyDaysAgo) rev30d += amt;
       if (o.owner_phone) uniqueBuyers.add(o.owner_phone);
-
       if (o.plan_id === "lifetime") {
         revLifetime += amt;
         countLifetime++;
@@ -3848,10 +3889,8 @@ function computeClientSideStats() {
       cancelledOrders++;
     }
   }
-
   const totalOrders = orders.length;
   const convRate = totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0;
-
   // License roles breakdown
   let carTotal = 0, carActive = 0, carLife = 0, carYear = 0, carExp = 0, carRev = 0;
   let pcTotal = 0, pcActive = 0, pcLife = 0, pcYear = 0, pcExp = 0, pcRev = 0;
@@ -3859,14 +3898,12 @@ function computeClientSideStats() {
   let totalDevs = 0, carDevs = 0, pcDevs = 0;
   const activeDevs24h = new Set(), activeDevs7d = new Set();
   const expiringSoonList = [];
-
   for (const r of rows) {
     const role = (r.role || "car").toLowerCase();
     const isAct = Boolean(r.active);
     const exp = r.expires_at ? new Date(r.expires_at) : null;
     const isExpired = exp && exp <= now;
     const isExpiringSoon = isAct && exp && exp > now && exp <= sevenDaysFuture;
-
     if (isExpiringSoon) {
       const daysLeft = ((exp - now) / 86400000).toFixed(1);
       expiringSoonList.push({
@@ -3878,7 +3915,6 @@ function computeClientSideStats() {
         days_left: daysLeft
       });
     }
-
     if (role === "car") {
       carTotal++;
       if (isAct && !isExpired) carActive++;
@@ -3895,7 +3931,6 @@ function computeClientSideStats() {
       adminTotal++;
       if (isAct) adminActive++;
     }
-
     // Devices
     const devs = r.devices || [];
     for (const d of devs) {
@@ -3909,9 +3944,7 @@ function computeClientSideStats() {
       }
     }
   }
-
   expiringSoonList.sort((a, b) => new Date(a.expires_at) - new Date(b.expires_at));
-
   return {
     sales: {
       total_orders: totalOrders,
@@ -3954,55 +3987,43 @@ function computeClientSideStats() {
     expiring_soon_list: expiringSoonList
   };
 }
-
 function renderAnalyticsUI(stats) {
   if (!stats) return;
   const s = stats.sales || {};
   const lic = stats.licenses || {};
   const dev = stats.devices || {};
   const expList = stats.expiring_soon_list || [];
-
   // ================= 1. CẬP NHẬT TOP STAT RIBBON =================
   if ($("topRevTotal")) $("topRevTotal").textContent = formatVndNumber(s.total_revenue || 0);
   if ($("topRevToday")) $("topRevToday").textContent = formatVndNumber(s.revenue_today || 0);
   if ($("topRev7d")) $("topRev7d").textContent = formatVndNumber(s.revenue_last_7d || 0);
-
   if ($("topPaidCount")) $("topPaidCount").textContent = (s.unique_paid_customers || 0) + " khách";
   if ($("topPaidOrders")) $("topPaidOrders").textContent = (s.paid_orders || 0) + " đơn";
   if ($("topLocksCount")) $("topLocksCount").textContent = (s.price_locks_count || 0) + " khách";
-
   if ($("topCarCount")) $("topCarCount").textContent = (lic.car_total || 0) + " mã";
   if ($("topCarActive")) $("topCarActive").textContent = (lic.car_active || 0);
   if ($("topCarLife")) $("topCarLife").textContent = (lic.car_lifetime || 0);
-
   if ($("topPcCount")) $("topPcCount").textContent = (lic.pc_total || 0) + " mã";
   if ($("topPcActive")) $("topPcActive").textContent = (lic.pc_active || 0);
   if ($("topPcExp")) $("topPcExp").textContent = (lic.pc_expired || 0);
-
   if ($("topDevCount")) $("topDevCount").textContent = (dev.total_devices || 0) + " máy";
   if ($("topDev7d")) $("topDev7d").textContent = (dev.active_7d || 0) + " active";
   if ($("topDevBreakdown")) $("topDevBreakdown").textContent = (dev.car_devices || 0) + " xe, " + (dev.pc_devices || 0) + " PC";
-
   // ================= 2. CẬP NHẬT TAB ANALYTICS CONTENT =================
   if ($("anRevTotal")) $("anRevTotal").textContent = formatVndNumber(s.total_revenue || 0);
   if ($("anPaidOrdersCount")) $("anPaidOrdersCount").textContent = (s.paid_orders || 0);
-  
   if ($("anRevLifetime")) $("anRevLifetime").textContent = formatVndNumber(s.lifetime_revenue || 0);
   if ($("anCountLifetime")) $("anCountLifetime").textContent = (s.lifetime_paid_count || 0);
-  
   if ($("anRevYearly")) $("anRevYearly").textContent = formatVndNumber(s.yearly_revenue || 0);
   if ($("anCountYearly")) $("anCountYearly").textContent = (s.yearly_paid_count || 0);
-  
   if ($("anConvRate")) $("anConvRate").textContent = (s.conversion_rate || 0) + "%";
   if ($("anPaidBuyersCount")) $("anPaidBuyersCount").textContent = (s.unique_paid_customers || 0);
   if ($("anTotalOrdersCount")) $("anTotalOrdersCount").textContent = (s.total_orders || 0);
-
   // Tỷ trọng doanh thu theo gói
   const hasRev = Boolean(s.total_revenue && Number(s.total_revenue) > 0);
   const totalRevNum = Number(s.total_revenue) || 1;
   const pctLife = hasRev ? Math.round(((s.lifetime_revenue || 0) / totalRevNum) * 100) : 0;
   const pctYear = hasRev ? Math.max(0, 100 - pctLife) : 0;
-
   if ($("anPctLifetime")) $("anPctLifetime").textContent = pctLife + "%";
   if ($("anPctYearly")) $("anPctYearly").textContent = pctYear + "%";
   if ($("anRatioLifetimeText")) $("anRatioLifetimeText").textContent = pctLife + "% (" + formatVndNumber(s.lifetime_revenue || 0) + ")";
@@ -4086,17 +4107,14 @@ function renderAnalyticsUI(stats) {
       tbody.appendChild(tr);
     });
   }
-
   // Cập nhật phân hệ Phân chia Doanh thu & Quyết toán Lợi nhuận (Toàn 60% - Đạt 40%)
   const totalRev = Number(s.total_revenue) || 0;
   window._currentTotalRevenue = totalRev;
   renderProfitSharingUI(totalRev);
 }
-
 // ==================== PHÂN CHIA DOANH THU & QUYẾT TOÁN LỢI NHUẬN (TOÀN 60% — ĐẠT 40%) ====================
 window._profitSharingData = null;
 window._currentTotalRevenue = 0;
-
 function ensureProfitSharingData() {
   if (!window._profitSharingData) {
     try {
@@ -4112,7 +4130,6 @@ function ensureProfitSharingData() {
   }
   return window._profitSharingData;
 }
-
 function renderProfitSharingUI(totalRevenue) {
   if (!$("psGrossRevenue")) return;
   const data = ensureProfitSharingData();
@@ -4120,7 +4137,6 @@ function renderProfitSharingUI(totalRevenue) {
     window._currentTotalRevenue = Number(totalRevenue) || 0;
   }
   const grossRev = window._currentTotalRevenue || 0;
-
   // 1. Phân loại & tính tổng chi phí (Đã thanh toán vs Chờ thanh toán)
   const expenses = data.expenses || [];
   let totalExpenses = 0;
@@ -4135,18 +4151,14 @@ function renderProfitSharingUI(totalRevenue) {
       pendingExpenses += amt;
     }
   }
-
   // 2. Lợi nhuận ròng = Doanh thu - Chi phí ĐÃ THANH TOÁN
   // (Khoản chưa thanh toán lưu dưới dạng ghi chú kế hoạch, chưa trừ vào dòng tiền chia thực tế)
   const netProfit = grossRev - paidExpenses;
-
   // 3. Tỷ lệ 60% Toàn - 40% Đạt
   const toanShare = Math.round(netProfit * 0.6);
   const datShare = netProfit - toanShare;
-
   // 4. Số tiền Toàn đã thực nhận từ Đạt
   const toanReceived = Number(data.toan_received) || 0;
-
   // 5. Cập nhật thẻ KPI
   if ($("psGrossRevenue")) $("psGrossRevenue").textContent = formatVndNumber(grossRev);
   if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(paidExpenses);
@@ -4163,19 +4175,16 @@ function renderProfitSharingUI(totalRevenue) {
   }
   if ($("psToanShare")) $("psToanShare").textContent = formatVndNumber(toanShare);
   if ($("psDatShare")) $("psDatShare").textContent = formatVndNumber(datShare);
-
   // 6. Cập nhật ô nhập Số tiền Toàn đã nhận nếu không đang gõ
   const toanReceivedInput = $("psToanReceivedInput");
   if (toanReceivedInput && document.activeElement !== toanReceivedInput) {
     toanReceivedInput.value = toanReceived > 0 ? toanReceived.toLocaleString("vi-VN") : "";
   }
-
   // 7. Cập nhật trạng thái đối soát dòng tiền
   const diff = toanReceived - toanShare; // Đã nhận - Được hưởng
   const statusBox = $("psSettlementStatusBox");
   const statusTitle = $("psSettlementStatusTitle");
   const statusDetail = $("psSettlementStatusDetail");
-
   if (statusBox && statusTitle && statusDetail) {
     if (diff < 0) {
       // Đạt còn thiếu Toàn
@@ -4201,7 +4210,6 @@ function renderProfitSharingUI(totalRevenue) {
       statusDetail.innerHTML = `Toàn đã nhận đủ 100% phần 60% lợi nhuận ròng (${formatVndNumber(toanShare)}).`;
     }
   }
-
   // 8. Render bảng danh sách chi phí
   const paidCount = expenses.filter(e => e.is_paid).length;
   const pendingCount = expenses.length - paidCount;
@@ -4211,7 +4219,6 @@ function renderProfitSharingUI(totalRevenue) {
   if ($("psExpenseTablePaidTotal")) $("psExpenseTablePaidTotal").textContent = formatVndNumber(paidExpenses);
   if ($("psExpenseTablePendingTotal")) $("psExpenseTablePendingTotal").textContent = formatVndNumber(pendingExpenses);
   if ($("psExpenseTableTotal")) $("psExpenseTableTotal").textContent = formatVndNumber(totalExpenses);
-
   const tbody = $("psExpenseTableBody");
   if (tbody) {
     tbody.innerHTML = "";
@@ -4246,14 +4253,12 @@ function renderProfitSharingUI(totalRevenue) {
       });
     }
   }
-
   // 9. Ghi chú chung
   const generalNoteEl = $("psGeneralNote");
   if (generalNoteEl && document.activeElement !== generalNoteEl) {
     generalNoteEl.value = data.general_note || "";
   }
 }
-
 function handleToanReceivedInput(el) {
   const raw = el.value.replace(/\D/g, "");
   const num = parseInt(raw, 10) || 0;
@@ -4262,22 +4267,18 @@ function handleToanReceivedInput(el) {
   data.toan_received = num;
   renderProfitSharingUI();
 }
-
 function handleGeneralNoteInput(el) {
   const data = ensureProfitSharingData();
   data.general_note = el.value;
 }
-
 function formatNumberInput(el) {
   const raw = el.value.replace(/\D/g, "");
   const num = parseInt(raw, 10) || 0;
   el.value = num > 0 ? num.toLocaleString("vi-VN") : "";
 }
-
 window._newExpenseReceipt = null;
 window._targetRowExpId = null;
 window._currentPreviewExpId = null;
-
 function compressImageFile(file, maxWidth = 1200, maxHeight = 1200, quality = 0.75) {
   return new Promise((resolve, reject) => {
     if (!file || !file.type || !file.type.startsWith("image/")) {
@@ -4324,7 +4325,6 @@ function compressImageFile(file, maxWidth = 1200, maxHeight = 1200, quality = 0.
     reader.readAsDataURL(file);
   });
 }
-
 function handleExpenseReceiptFile(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
@@ -4344,7 +4344,6 @@ function handleExpenseReceiptFile(event) {
     event.target.value = "";
   });
 }
-
 function handleReceiptDrop(event) {
   event.preventDefault();
   if (event.currentTarget) event.currentTarget.style.borderColor = "var(--border)";
@@ -4364,7 +4363,6 @@ function handleReceiptDrop(event) {
     alert("Lỗi tải ảnh: " + (err.message || err));
   });
 }
-
 function clearNewExpenseReceipt() {
   window._newExpenseReceipt = null;
   const fileInput = $("psNewExpenseReceiptFile");
@@ -4376,18 +4374,15 @@ function clearNewExpenseReceipt() {
   const btn = $("btnUploadReceipt");
   if (btn) btn.style.display = "inline-flex";
 }
-
 function triggerRowReceiptUpload(expId) {
   window._targetRowExpId = expId;
   const input = $("psRowReceiptFileInput");
   if (input) input.click();
 }
-
 function handleRowReceiptFile(event) {
   const file = event.target.files && event.target.files[0];
   const expId = window._targetRowExpId;
   if (!file || !expId) return;
-
   compressImageFile(file).then(res => {
     const data = ensureProfitSharingData();
     const exp = (data.expenses || []).find(e => e.id === expId);
@@ -4404,18 +4399,15 @@ function handleRowReceiptFile(event) {
     event.target.value = "";
   });
 }
-
 function previewExpenseReceipt(id) {
   const data = ensureProfitSharingData();
   const exp = (data.expenses || []).find(e => e.id === id);
   if (!exp || !exp.receipt_img) return;
-
   window._currentPreviewExpId = id;
   const modal = $("expenseReceiptModalMask");
   const titleEl = $("expenseReceiptModalTitle");
   const subtitleEl = $("expenseReceiptModalSubtitle");
   const imgEl = $("expenseReceiptModalImg");
-
   if (titleEl) titleEl.textContent = `🧾 Chứng từ: ${exp.title || 'Chi phí'}`;
   if (subtitleEl) {
     const statusText = exp.is_paid ? "✅ Đã thanh toán" : "⏳ Chờ thanh toán";
@@ -4430,7 +4422,6 @@ function previewExpenseReceipt(id) {
   const btnRemove = $("btnExpenseReceiptRemove");
   if (btnChange) btnChange.style.display = "inline-block";
   if (btnRemove) btnRemove.style.display = "inline-block";
-
   if (modal) modal.style.display = "flex";
 }
 
