@@ -479,21 +479,23 @@
         <div class="grid" style="margin-top:12px">
           <div>
             <label>Giá Gói Trọn Đời (VND) *</label>
-            <input id="salesLifetimePrice" type="number" step="10000" placeholder="2950000">
+            <input id="salesLifetimePrice" type="text" inputmode="numeric" placeholder="2.950.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
+            <div class="hint" id="salesLifetimePricePreview" style="color:var(--ok); font-weight:700">→ Gói Vĩnh Viễn: 2.950.000 ₫</div>
           </div>
           <div>
             <label>Giá Gốc Gói Theo Năm (VND) *</label>
-            <input id="salesYearlyPrice" type="number" step="10000" placeholder="1950000" oninput="updateSalesPricePreview()">
+            <input id="salesYearlyPrice" type="text" inputmode="numeric" placeholder="1.950.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
+            <div class="hint" id="salesYearlyPricePreview" style="color:var(--text); font-weight:600">→ Giá gốc 1 Năm: 1.950.000 ₫</div>
           </div>
           <div>
             <label>Giá Gói 3 Tháng (VND) *</label>
-            <input id="salesThreeMonthsPrice" type="number" step="10000" placeholder="495000" value="495000">
-            <div class="hint" style="color:var(--ok); font-weight:600">→ Gói 3 Tháng: 495.000 ₫</div>
+            <input id="salesThreeMonthsPrice" type="text" inputmode="numeric" placeholder="495.000" value="495.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
+            <div class="hint" id="salesThreeMonthsPreview" style="color:var(--ok); font-weight:700">→ Gói 3 Tháng: 495.000 ₫</div>
           </div>
           <div>
             <label>% Giảm Khuyến Mãi Năm *</label>
             <input id="salesYearlyDiscount" type="number" min="0" max="100" placeholder="40" oninput="updateSalesPricePreview()">
-            <div class="hint" id="salesDiscountPreview" style="color:var(--ok); font-weight:600">→ Sau giảm: 1.170.000 ₫</div>
+            <div class="hint" id="salesDiscountPreview" style="color:var(--ok); font-weight:700">→ Sau giảm: 1.170.000 ₫ (Tiết kiệm 780.000 ₫)</div>
           </div>
           <div>
             <label>Hạn Khuyến Mãi</label>
@@ -521,9 +523,9 @@
         <div style="margin-top:10px; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:12px;">
           <b style="color:var(--text);">📋 Tóm tắt 3 Gói Bán hàng:</b>
           <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
-            <span>👑 <b>Vĩnh viễn:</b> 2.950.000 ₫</span>
-            <span>📅 <b>1 Năm:</b> 1.170.000 ₫ (giá gốc 1.950k)</span>
-            <span>⚡ <b>3 Tháng:</b> 495.000 ₫</span>
+            <span>👑 <b>Vĩnh viễn:</b> <span id="summaryLifetimePreview" style="color:var(--ok); font-weight:700">2.950.000 ₫</span></span>
+            <span>📅 <b>1 Năm:</b> <span id="summaryYearlyPreview" style="color:var(--ok); font-weight:700">1.170.000 ₫ (giá gốc 1.950.000 ₫)</span></span>
+            <span>⚡ <b>3 Tháng:</b> <span id="summaryQuarterPreview" style="color:var(--ok); font-weight:700">495.000 ₫</span></span>
           </div>
         </div>
         <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
@@ -1412,7 +1414,7 @@
         </div>
         <div>
           <label>Số tiền chuyển (VND) *</label>
-          <input id="simAmount" type="number" placeholder="1170000">
+          <input id="simAmount" type="text" inputmode="numeric" placeholder="1.170.000" oninput="onPriceInputChange(this)">
         </div>
         <div>
           <label>Mã giao dịch ngân hàng giả lập</label>
@@ -1818,12 +1820,12 @@
       </div>
       <div style="margin-bottom:12px">
         <label>Số tiền nạp (VND) *</label>
-        <input id="topupAmount" type="number" placeholder="VD: 5000000" style="font-size:16px; font-weight:700">
+        <input id="topupAmount" type="text" inputmode="numeric" placeholder="VD: 5.000.000" style="font-size:16px; font-weight:700" oninput="onPriceInputChange(this)">
         <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap">
-          <button type="button" class="small ghost" onclick="$('topupAmount').value=2000000">+2.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value=5000000">+5.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value=10000000">+10.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value=20000000">+20.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='2.000.000'">+2.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='5.000.000'">+5.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='10.000.000'">+10.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='20.000.000'">+20.000.000 ₫</button>
         </div>
       </div>
       <div>
@@ -3856,6 +3858,23 @@ function formatVndNumber(n) {
   const num = Number(n) || 0;
   return num.toLocaleString("vi-VN") + " ₫";
 }
+function parseVndNumber(val) {
+  if (typeof val === "number") return Math.round(val);
+  return parseInt(String(val || "").replace(/\D/g, ""), 10) || 0;
+}
+function formatVndDots(val) {
+  const num = parseVndNumber(val);
+  return num ? num.toLocaleString("vi-VN") : "";
+}
+function onPriceInputChange(input) {
+  const raw = input.value;
+  const num = parseVndNumber(raw);
+  if (!num) {
+    input.value = "";
+    return;
+  }
+  input.value = num.toLocaleString("vi-VN");
+}
 function formatIsoTime(iso) {
   if (!iso) return "-";
   try {
@@ -3866,10 +3885,34 @@ function formatIsoTime(iso) {
   }
 }
 function updateSalesPricePreview() {
-  const orig = parseInt($("salesYearlyPrice").value) || 0;
-  const disc = parseInt($("salesYearlyDiscount").value) || 0;
+  const life = parseVndNumber($("salesLifetimePrice") ? $("salesLifetimePrice").value : 2950000);
+  const orig = parseVndNumber($("salesYearlyPrice") ? $("salesYearlyPrice").value : 1950000);
+  const quarter = parseVndNumber($("salesThreeMonthsPrice") ? $("salesThreeMonthsPrice").value : 495000);
+  const disc = parseInt($("salesYearlyDiscount") ? $("salesYearlyDiscount").value : 40, 10) || 0;
   const after = Math.round(orig * (100 - disc) / 100);
-  $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after);
+  const saveAmt = orig - after;
+
+  if ($("salesLifetimePricePreview")) {
+    $("salesLifetimePricePreview").textContent = "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
+  }
+  if ($("salesYearlyPricePreview")) {
+    $("salesYearlyPricePreview").textContent = "→ Giá gốc 1 Năm: " + formatVndNumber(orig);
+  }
+  if ($("salesThreeMonthsPreview")) {
+    $("salesThreeMonthsPreview").textContent = "→ Gói 3 Tháng: " + formatVndNumber(quarter);
+  }
+  if ($("salesDiscountPreview")) {
+    $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after) + (saveAmt > 0 ? " (Tiết kiệm " + formatVndNumber(saveAmt) + ")" : "");
+  }
+  if ($("summaryLifetimePreview")) {
+    $("summaryLifetimePreview").textContent = formatVndNumber(life);
+  }
+  if ($("summaryYearlyPreview")) {
+    $("summaryYearlyPreview").textContent = formatVndNumber(after) + " (giá gốc " + formatVndNumber(orig) + ")";
+  }
+  if ($("summaryQuarterPreview")) {
+    $("summaryQuarterPreview").textContent = formatVndNumber(quarter);
+  }
 }
 function syncSalesPromoExpiryUI() {
   $("salesPromoEndDate").disabled = $("salesPromoForever").checked;
@@ -4686,9 +4729,9 @@ async function loadSalesData() {
     window._salesData = data;
     // Fill settings
     const s = data.settings || {};
-    $("salesLifetimePrice").value = s.lifetime_price || 2950000;
-    $("salesYearlyPrice").value = s.yearly_price || 1950000;
-    $("salesThreeMonthsPrice").value = s.three_months_price || s.quarter_price || 495000;
+    $("salesLifetimePrice").value = formatVndDots(s.lifetime_price || 2950000);
+    $("salesYearlyPrice").value = formatVndDots(s.yearly_price || 1950000);
+    $("salesThreeMonthsPrice").value = formatVndDots(s.three_months_price || s.quarter_price || 495000);
     $("salesYearlyDiscount").value = s.yearly_discount_percent !== undefined ? s.yearly_discount_percent : 40;
     updateSalesPricePreview();
     if (s.promo_end_date) {
@@ -4866,9 +4909,9 @@ function renderSalesLogsTable() {
 // ==================== ACTIONS: LƯU BẢNG GIÁ & TÀI KHOẢN ====================
 function openSavePricesConfirmModal() {
   const cur = (window._salesData && window._salesData.settings) || {};
-  const newLifetime = parseInt($("salesLifetimePrice").value) || 0;
-  const newYearly = parseInt($("salesYearlyPrice").value) || 0;
-  const newQuarter = parseInt($("salesThreeMonthsPrice").value) || 495000;
+  const newLifetime = parseVndNumber($("salesLifetimePrice").value) || 2950000;
+  const newYearly = parseVndNumber($("salesYearlyPrice").value) || 1950000;
+  const newQuarter = parseVndNumber($("salesThreeMonthsPrice").value) || 495000;
   const newDisc = parseInt($("salesYearlyDiscount").value) || 0;
   const newYears = parseInt($("salesPriceLockYears").value) || 5;
   const newRule = $("salesPriceLockRule").value;
@@ -4894,9 +4937,9 @@ async function executeSaveSalesPrices() {
     const forever = $("salesPromoForever").checked;
     const expDate = $("salesPromoEndDate").value;
     const settingsPayload = {
-      lifetime_price: parseInt($("salesLifetimePrice").value) || 2950000,
-      yearly_price: parseInt($("salesYearlyPrice").value) || 1950000,
-      three_months_price: parseInt($("salesThreeMonthsPrice").value) || 495000,
+      lifetime_price: parseVndNumber($("salesLifetimePrice").value) || 2950000,
+      yearly_price: parseVndNumber($("salesYearlyPrice").value) || 1950000,
+      three_months_price: parseVndNumber($("salesThreeMonthsPrice").value) || 495000,
       yearly_discount_percent: parseInt($("salesYearlyDiscount").value) || 40,
       promo_end_date: forever ? null : expDate ? expDate + "T23:59:59+07:00" : null,
       price_lock_years: parseInt($("salesPriceLockYears").value) || 5,
@@ -5350,7 +5393,7 @@ async function refundOrder(orderId, orderCode, licKey, btnEl) {
 // ==================== ACTIONS: GIẢ LẬP WEBHOOK THANH TOÁN ====================
 function openSimulateWebhookModal() {
   $("simOrderCode").value = "";
-  $("simAmount").value = "1170000";
+  $("simAmount").value = "1.170.000";
   $("simTransId").value = "SIM_" + Date.now();
   $("simWebhookResult").textContent = "";
   $("simulateWebhookMask").style.display = "flex";
@@ -5360,7 +5403,7 @@ function closeSimulateWebhookModal() {
 }
 async function runSimulateWebhook() {
   const code = $("simOrderCode").value.trim().toUpperCase();
-  const amt = parseInt($("simAmount").value) || 0;
+  const amt = parseVndNumber($("simAmount").value) || 0;
   const transId = $("simTransId").value.trim() || ("SIM_" + Date.now());
   const out = $("simWebhookResult");
   if (!code || amt <= 0) {
@@ -7431,7 +7474,7 @@ function openTopupModal(resellerId) {
   $("topupResellerId").value = r.id;
   $("topupResellerTitle").textContent = r.reseller_code + " — " + r.garage_name + " (" + r.owner_name + ")";
   $("topupResellerCurrentBalance").textContent = "Số dư hiện tại: " + (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
-  $("topupAmount").value = "5000000";
+  $("topupAmount").value = "5.000.000";
   $("topupNote").value = "";
   $("resellerTopupMask").style.display = "flex";
 }
@@ -7440,7 +7483,7 @@ function closeTopupModal() {
 }
 async function submitTopup() {
   const resellerId = $("topupResellerId").value;
-  const amount = parseInt($("topupAmount").value, 10);
+  const amount = parseVndNumber($("topupAmount").value);
   const note = $("topupNote").value.trim();
   if (!amount || amount <= 0) {
     alert("❌ Vui lòng nhập số tiền nạp hợp lệ (> 0 VND)");
