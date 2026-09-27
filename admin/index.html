@@ -458,6 +458,7 @@
           <button class="small" onclick="openAddQuickInstallModal()">➕ Thêm ứng dụng</button>
           <button class="ghost small" onclick="loadQuickInstallCatalog()">🔄 Tải lại từ Supabase</button>
           <button class="ghost small" id="btnCheckQiUpstream" onclick="checkQiUpstreamReleases()">⚡ Nguồn gốc GitHub</button>
+          <button class="ghost small" id="btnSyncDrive" onclick="openSyncDriveModal()">📁 Nhập link Drive</button>
           <button id="btnSaveQi" onclick="saveQuickInstall()">💾 Lưu lên Supabase (Tăng v+1)</button>
         </div>
       </div>
@@ -1060,12 +1061,7 @@
             <button class="ghost small" onclick="exportUpdateJson('phone')">📋 Copy apps.json (Phone)</button>
           </div>
         </div>
-        <div class="warn" style="margin-top:10px; margin-bottom:14px; line-height:1.6">
-          <b>💡 Cơ chế hoạt động & An toàn:</b><br>
-          • <b>Hiệu lực tức thì:</b> Xe và Điện thoại ưu tiên đọc cấu hình từ Supabase RPC (1s sau khi lưu), fallback về GitHub CDN.<br>
-          • <b>Chọn phiên bản đích tùy ý:</b> Cho phép chọn bất kỳ version cũ nào để ép lên một version đích cụ thể.<br>
-          • <b>An toàn khi lái xe:</b> CarConnect chỉ cài đặt khi xe đang đỗ (P). Nếu đang di chuyển, cập nhật tự hoãn và chờ xe dừng đỗ.
-        </div>
+        <div class="hint" style="margin:4px 0 10px; font-size:12px; color:var(--muted)">💡 <b>Cơ chế an toàn:</b> Đọc tức thì từ Supabase RPC • Chỉ cài đặt khi xe đang đỗ (P) • Tự động ký OTA ECDSA P-256.</div>
         <!-- App Switcher Sub-tabs & Môi trường -->
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:10px">
           <div style="display:flex; gap:8px; align-items:center">
@@ -1091,6 +1087,51 @@
             </div>
           </div>
         </div>
+        <!-- BẢNG ĐIỀU HÀNH ÉP CẬP NHẬT 1-CLICK (QUICK FORCE UPDATE COCKPIT) -->
+        <div class="panel" style="background:linear-gradient(135deg, rgba(31,138,77,0.06), rgba(37,99,235,0.06)); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin-bottom:14px">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px">
+            <span style="font-weight:700; font-size:13px; color:var(--text); display:flex; align-items:center; gap:6px">
+              ⚡ <b>Trung tâm Điều hành Ép Cập nhật 1-Click:</b>
+            </span>
+            <span class="hint" style="margin:0">Tối ưu 1-2 bước: Ép toàn bộ hoặc nạp bản mới tức thì</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px; margin-bottom:12px">
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('car')" title="Bấm để chuyển sang cấu hình Đầu xe">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+                <span style="font-weight:700; font-size:12px; color:var(--text)">🚗 Đầu xe (CarConnect)</span>
+                <span id="quickCarStatusBadge" class="tag off">⚪ Tự nguyện</span>
+              </div>
+              <div style="font-size:12px; color:var(--muted)">Bản mới: <b id="quickCarVerText" class="mono" style="color:var(--text)">--</b></div>
+              <div style="font-size:11px; color:var(--muted); margin-top:2px" id="quickCarFleetText">Đội xe: --</div>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('phone')" title="Bấm để chuyển sang cấu hình Điện thoại Android">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+                <span style="font-weight:700; font-size:12px; color:var(--text)">📱 Điện thoại (Android)</span>
+                <span id="quickPhoneStatusBadge" class="tag off">⚪ Tự nguyện</span>
+              </div>
+              <div style="font-size:12px; color:var(--muted)">Bản mới: <b id="quickPhoneVerText" class="mono" style="color:var(--text)">--</b></div>
+              <div style="font-size:11px; color:var(--muted); margin-top:2px" id="quickPhoneFleetText">Đội máy: --</div>
+            </div>
+            <div style="background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:10px 12px; cursor:pointer; transition:all .15s" onclick="switchFuApp('ios')" title="Bấm để xem iPhone iOS">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
+                <span style="font-weight:700; font-size:12px; color:var(--text)">🍎 iPhone (iOS)</span>
+                <span id="quickIosStatusBadge" class="tag off">⚪ Tự nguyện</span>
+              </div>
+              <div style="font-size:12px; color:var(--muted)">App Store: <b id="quickIosVerText" class="mono" style="color:var(--text)">--</b></div>
+              <div style="font-size:11px; color:var(--muted); margin-top:2px" id="quickIosFleetText">Đội máy: --</div>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:var(--panel); padding:8px 12px; border-radius:8px; border:1px dashed var(--accent)">
+            <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
+              <button type="button" class="small" style="background:var(--danger); color:#fff; font-weight:700" onclick="quickForceAllOldVersions()" title="Ép mọi thiết bị chạy bản cũ hơn bản mới nhất phải nâng cấp">🚨 Ép toàn bộ bản cũ (Car + Phone)</button>
+              <button type="button" class="small ghost" onclick="quickDisableForceAll()" title="Cho phép cập nhật tự nguyện (minVersionCode = 0)">⚪ Tắt ép (Về tự nguyện)</button>
+              <button type="button" class="small ghost" onclick="fetchLatestFromGitHubArtifacts()" title="Tự động lấy Version, Link APK, SHA-256 từ repo GitHub geely-ex2-artifacts">🐙 Nạp bản mới từ GitHub</button>
+            </div>
+            <div style="display:flex; align-items:center; gap:6px">
+              <button type="button" class="small" style="background:var(--accent); color:#fff; font-weight:700; box-shadow:0 2px 6px rgba(31,138,77,.35)" onclick="saveAppUpdateConfig()">💾 Lưu Supabase ngay</button>
+            </div>
+          </div>
+        </div>
         <!-- T0024 OTA Signature & 1-Click Auto-Signing -->
         <div class="panel" style="margin-top:0; margin-bottom:14px; border-left:4px solid var(--accent); padding:10px 14px">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">
@@ -1106,13 +1147,9 @@
               <button type="button" class="small ghost" id="btnToggleOtaAdvanced" onclick="toggleOtaAdvancedSign()">⚙️ Tuỳ chọn nâng cao ▼</button>
             </div>
           </div>
-          <div id="otaKeyStatusText" style="font-size:11px; color:var(--muted); margin-top:4px">
-            Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần. Web sẽ tự ký khi bấm "Lưu lên Supabase".
-          </div>
+          <div id="otaKeyStatusText" style="font-size:11px; color:var(--muted); margin-top:4px">Nạp file <code style="background:rgba(0,0,0,0.2); padding:1px 4px; border-radius:3px">~/.config/geely-ota/ota_private.pem</code> 1 lần để web tự ký khi Lưu.</div>
           <div id="otaAdvancedSignBox" style="display:none; margin-top:10px; padding-top:10px; border-top:1px solid var(--border)">
-            <div class="hint" style="margin-bottom:8px">
-              💡 <b>Cách hoạt động:</b> Đã nạp khoá ➔ bấm "Lưu lên Supabase" sẽ tự ký. Nếu muốn ký ngoài Terminal: Tải JSON ➔ Chạy <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.
-            </div>
+            <div class="hint" style="margin-bottom:8px">💡 <b>Ký ngoài Terminal:</b> Tải JSON ➔ Chạy <code>./scripts/ota/ota-sign-config.sh</code> ➔ Dán kết quả vào ô chữ ký.</div>
             <div style="display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap">
               <button type="button" class="small ghost" id="btnManualAutoSign" onclick="doManualAutoSign()">✍️ Ký tự động ngay</button>
               <button type="button" class="small ghost" onclick="downloadJsonForSigning()">⬇️ Tải JSON</button>
@@ -1129,8 +1166,9 @@
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📦 Phiên bản mới nhất (Latest Release — <span id="car_envTitle">Production</span>)</span>
             </h3>
+            <button type="button" class="small ghost" onclick="quickSyncCarToPhone()" title="Sao chép phiên bản sang Điện thoại Android">🔗 Đồng bộ sang Điện thoại</button>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
-              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="car_latestVersionName" value="" placeholder="chưa tải từ máy chủ"></div>
+              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="car_latestVersionName" value="" placeholder="chưa tải từ máy chủ" oninput="onVersionNameInput('car')"></div>
               <div><label>Mã build mới nhất (versionCode) *</label><input id="car_versionCode" type="number" value="" placeholder="chưa tải"></div>
               <div style="grid-column: 1 / -1"><label>Link tải file APK chính thức (downloadUrl) *</label><input id="car_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk"></div>
               <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label><input id="car_sha256" class="mono" value="1fd315605546136668f8305fa895281311ace021a208cefce3d88e6e7787e743" placeholder="VD: 4a2f8c... (64 ký tự hex)"></div>
@@ -1207,8 +1245,9 @@
             <h3 style="font-size:14px; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:6px">
               <span>📦 Phiên bản mới nhất (Latest Release — <span id="phone_envTitle">Production</span>)</span>
             </h3>
+            <button type="button" class="small ghost" onclick="quickSyncPhoneToCar()" title="Sao chép phiên bản từ Đầu xe">🔗 Đồng bộ từ Xe sang</button>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
-              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="phone_latestVersionName" value="" placeholder="chưa tải từ máy chủ"></div>
+              <div><label>Tên phiên bản mới nhất (latestVersionName) *</label><input id="phone_latestVersionName" value="" placeholder="chưa tải từ máy chủ" oninput="onVersionNameInput('phone')"></div>
               <div><label>Mã build mới nhất (versionCode) *</label><input id="phone_versionCode" type="number" value="" placeholder="chưa tải"></div>
               <div style="grid-column: 1 / -1"><label>Link tải file APK chính thức (downloadUrl) *</label><input id="phone_downloadUrl" value="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk" placeholder="https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk"></div>
               <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 (Tùy chọn - nếu có sẽ xác thực trước khi cài)</label><input id="phone_sha256" class="mono" value="c452a7e08e55a9c9678cec216e54506869c95d685d16521b76837570cd2cf4ad" placeholder="VD: 3b1e... (64 ký tự hex)"></div>
@@ -1322,6 +1361,11 @@
             <div style="overflow-x:auto"><table id="ios_rulesTable"><thead><tr><th style="width:40px; text-align:center">#</th><th style="width:140px">Bản cũ bị ép</th><th style="width:160px">Bản đích</th>
               <th>Thông điệp</th><th style="width:170px">Link đích</th><th style="text-align:right; width:120px">Thao tác</th></tr></thead><tbody></tbody></table></div>
           </div>
+        </div>
+        <div id="fuStickySaveBar" style="display:none; position:fixed; bottom:20px; right:20px; z-index:9999; background:var(--panel); border:2px solid var(--accent); border-radius:12px; padding:10px 16px; box-shadow:0 8px 30px rgba(0,0,0,0.3); align-items:center; gap:12px; backdrop-filter:blur(8px)">
+          <span style="font-size:13px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px">⚠️ <span id="fuStickySaveText">Có thay đổi cấu hình chưa lưu</span></span>
+          <button type="button" style="background:var(--accent); color:#fff; font-weight:700; padding:6px 14px; box-shadow:0 2px 8px rgba(31,138,77,.4)" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase ngay</button>
+          <button type="button" class="small ghost" style="padding:4px 8px" onclick="dismissStickyBar()">✕</button>
         </div>
       </div>
     </div>
@@ -1672,6 +1716,21 @@
       </div>
     </div>
   </div>
+  <!-- Modal Nhập link Google Drive hàng loạt -->
+  <div class="modal-mask" id="syncDriveModalMask" style="display:none" onclick="if(event.target===this)closeSyncDriveModal()">
+    <div class="modal" style="max-width:560px">
+      <h3 style="margin:0 0 6px 0">📁 Đồng bộ link từ Google Drive</h3>
+      <div class="hint" style="margin-bottom:12px">Dán link file hoặc danh sách link tải Google Drive vào đây. Hệ thống tự động nhận diện và cập nhật vào danh mục.</div>
+      <div style="display:flex; flex-direction:column; gap:10px">
+        <textarea id="syncDriveInput" rows="7" style="width:100%; box-sizing:border-box; font-family:monospace; font-size:12px; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--keybox-bg); color:var(--text); resize:vertical" placeholder="Dán các link Google Drive vào đây (mỗi dòng 1 link hoặc cả đoạn văn bản):&#10;https://drive.google.com/file/d/1.../view&#10;https://drive.google.com/file/d/2.../view"></textarea>
+        <div id="syncDriveMsg" class="msg" style="display:none"></div>
+      </div>
+      <div class="actions" style="margin-top:14px">
+        <button onclick="applyDriveLinksBatch()">⚡ Cập nhật vào Danh mục</button>
+        <button class="ghost" onclick="closeSyncDriveModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
   <!-- Modal Thêm / Sửa Force Update Rule -->
   <div class="modal-mask" id="fuRuleModalMask" style="display:none" onclick="if(event.target===this)closeFuRuleModal()">
     <div class="modal" style="max-width:680px">
@@ -1680,16 +1739,8 @@
       <div class="panel" style="background:var(--panel2); margin-top:14px; margin-bottom:12px">
         <label style="font-weight:600; color:var(--text); margin-bottom:8px">1. Điều kiện: Phiên bản cũ nào bị ép cập nhật?</label>
         <div class="grid" style="grid-template-columns: 1fr 1fr">
-          <div style="grid-column: 1 / -1">
-            <label>Danh sách mã build cũ bị ép (matchVersionCodes) *</label>
-            <input id="fuRuleMatchCodes" placeholder="VD: 140, 142, 145 (cách nhau bởi dấu phẩy)">
-            <div class="hint">Nhập các mã build (versionCode) cụ thể muốn ép.</div>
-          </div>
-          <div style="grid-column: 1 / -1">
-            <label>Hoặc mọi mã build nhỏ hơn (minVersionCode)</label>
-            <input id="fuRuleMinCode" type="number" placeholder="VD: 150 (hoặc để trống)">
-            <div class="hint">Để trống nếu chỉ so khớp theo danh sách trên.</div>
-          </div>
+          <div style="grid-column: 1 / -1"><label>Danh sách mã build cũ bị ép (matchVersionCodes) *</label><input id="fuRuleMatchCodes" placeholder="VD: 140, 142, 145 (cách nhau bởi dấu phẩy)"><div class="hint">Nhập các mã build (versionCode) cụ thể muốn ép.</div></div>
+          <div style="grid-column: 1 / -1"><label>Hoặc mọi mã build nhỏ hơn (minVersionCode)</label><input id="fuRuleMinCode" type="number" placeholder="VD: 150 (hoặc để trống)"><div class="hint">Để trống nếu chỉ so khớp theo danh sách trên.</div></div>
         </div>
       </div>
       <div class="panel" style="background:var(--panel2); margin-bottom:12px">
@@ -1700,22 +1751,10 @@
         </div>
         <div id="fuCustomTargetFields" style="display:none">
           <div class="grid" style="grid-template-columns: 1fr 1fr">
-            <div>
-              <label>Mã build đích (targetVersionCode) *</label>
-              <input id="fuRuleTargetCode" type="number" placeholder="VD: 160">
-            </div>
-            <div>
-              <label>Tên phiên bản đích (targetVersionName)</label>
-              <input id="fuRuleTargetName" placeholder="VD: 1.0.60">
-            </div>
-            <div style="grid-column: 1 / -1">
-              <label>Link tải APK đích (targetDownloadUrl) *</label>
-              <input id="fuRuleTargetUrl" placeholder="https://.../CarConnect-1.0.60.apk">
-            </div>
-            <div style="grid-column: 1 / -1">
-              <label>Mã băm SHA-256 của file APK đích (Tùy chọn)</label>
-              <input id="fuRuleTargetSha" class="mono" placeholder="VD: a1b2c3... (tùy chọn)">
-            </div>
+            <div><label>Mã build đích (targetVersionCode) *</label><input id="fuRuleTargetCode" type="number" placeholder="VD: 160"></div>
+            <div><label>Tên phiên bản đích (targetVersionName)</label><input id="fuRuleTargetName" placeholder="VD: 1.0.60"></div>
+            <div style="grid-column: 1 / -1"><label>Link tải APK đích (targetDownloadUrl) *</label><input id="fuRuleTargetUrl" placeholder="https://.../CarConnect-1.0.60.apk"></div>
+            <div style="grid-column: 1 / -1"><label>Mã băm SHA-256 của file APK đích (Tùy chọn)</label><input id="fuRuleTargetSha" class="mono" placeholder="VD: a1b2c3... (tùy chọn)"></div>
           </div>
         </div>
       </div>
@@ -3789,6 +3828,70 @@ async function checkQiUpstreamReleases() {
     if (btn) btn.disabled = false;
   }
 }
+function openSyncDriveModal() {
+  $("syncDriveModalMask").style.display = "flex";
+  $("syncDriveInput").value = "";
+  const msg = $("syncDriveMsg");
+  if (msg) msg.style.display = "none";
+}
+function closeSyncDriveModal() {
+  $("syncDriveModalMask").style.display = "none";
+}
+function applyDriveLinksBatch() {
+  const text = $("syncDriveInput").value.trim();
+  const msg = $("syncDriveMsg");
+  if (!text) {
+    showMsg(msg, "err", "Vui lòng dán ít nhất 1 link Google Drive.");
+    return;
+  }
+  const driveRegex = /(?:https?:\/\/(?:drive\.google\.com|drive\.usercontent\.google\.com)\/(?:file\/d\/|open\?id=|download\?id=))([a-zA-Z0-9_-]{28,35})/g;
+  const ids = [];
+  let m;
+  while ((m = driveRegex.exec(text)) !== null) {
+    if (m[1] && !ids.includes(m[1])) ids.push(m[1]);
+  }
+  if (!ids.length) {
+    showMsg(msg, "err", "Không tìm thấy link file Google Drive hợp lệ (ID 28-35 ký tự) nào.");
+    return;
+  }
+  let updated = 0;
+  const lines = text.split("\n");
+  for (const fid of ids) {
+    const directUrl = "https://drive.google.com/file/d/" + fid + "/view?usp=drive_link";
+    let lineContext = "";
+    for (const l of lines) {
+      if (l.includes(fid)) { lineContext = l.toLowerCase(); break; }
+    }
+    for (const app of (window._qiCatalog.apps || [])) {
+      const an = app.name.toLowerCase();
+      let isMatch = false;
+      if (lineContext) {
+        if (lineContext.includes(an)) isMatch = true;
+        else if (an.includes("spotify") && lineContext.includes("spotify")) isMatch = true;
+        else if (an.includes("youtube rvx") && (lineContext.includes("youtube") && !lineContext.includes("music"))) isMatch = true;
+        else if (an.includes("youtube music") && (lineContext.includes("music") || lineContext.includes("youtube-music"))) isMatch = true;
+        else if (an.includes("chrome") && lineContext.includes("chrome")) isMatch = true;
+        else if (an.includes("cốc cốc") && (lineContext.includes("coccoc") || lineContext.includes("cốc cốc"))) isMatch = true;
+        else if (an.includes("vietmap") && lineContext.includes("vietmap")) isMatch = true;
+        else if (an.includes("vtv") && lineContext.includes("vtv")) isMatch = true;
+        else if (an.includes("gofa") && lineContext.includes("gofa")) isMatch = true;
+        else if (an.includes("vlc") && lineContext.includes("vlc")) isMatch = true;
+        else if (an.includes("tiktok") && lineContext.includes("tiktok")) isMatch = true;
+        else if (an.includes("waze") && lineContext.includes("waze")) isMatch = true;
+        else if (an.includes("downloader") && lineContext.includes("downloader")) isMatch = true;
+      }
+      if (isMatch) {
+        app.url = directUrl;
+        updated++;
+        break;
+      }
+    }
+  }
+  renderQuickInstallTable();
+  closeSyncDriveModal();
+  showMsg($("qiStatusMsg"), "ok", "🎉 Đã nhận diện " + ids.length + " link Drive (khớp " + updated + " app)! Hãy bấm 'Lưu lên Supabase' để xuất bản.");
+  alert("🎉 Đã nhận diện " + ids.length + " link Google Drive (đối chiếu thành công " + updated + " app)!\n\nHãy kiểm tra lại bảng và bấm \"💾 Lưu lên Supabase\" để lưu phiên bản mới.");
+}
 // ==================== TAB 3: BÁN HÀNG & GIÁ (VIETQR) ====================
 window._salesData = { settings: {}, orders: [], price_locks: [], logs: [] };
 let salesCurrentOrderFilter = "all";
@@ -4030,20 +4133,17 @@ function renderAnalyticsUI(stats) {
   if ($("anRatioYearlyText")) $("anRatioYearlyText").textContent = pctYear + "% (" + formatVndNumber(s.yearly_revenue || 0) + ")";
   if ($("anBarLifetime")) $("anBarLifetime").style.width = (hasRev ? pctLife : 50) + "%";
   if ($("anBarYearly")) $("anBarYearly").style.width = (hasRev ? pctYear : 50) + "%";
-
   // Doanh thu theo thời gian
   if ($("anRevTimeToday")) $("anRevTimeToday").textContent = formatVndNumber(s.revenue_today || 0);
   if ($("anRevTime7d")) $("anRevTime7d").textContent = formatVndNumber(s.revenue_last_7d || 0);
   if ($("anRevTime30d")) $("anRevTime30d").textContent = formatVndNumber(s.revenue_last_30d || 0);
   if ($("anRevTimeAll")) $("anRevTimeAll").textContent = formatVndNumber(s.total_revenue || 0);
-
   // Tình trạng đơn hàng
   if ($("anStatPaid")) $("anStatPaid").textContent = (s.paid_orders || 0);
   if ($("anStatPending")) $("anStatPending").textContent = (s.pending_orders || 0);
   if ($("anStatMismatch")) $("anStatMismatch").textContent = (s.mismatch_orders || 0);
   if ($("anStatRefunded")) $("anStatRefunded").textContent = (s.refunded_orders || 0);
   if ($("anStatCancelled")) $("anStatCancelled").textContent = (s.cancelled_orders || 0);
-
   // Phân bổ gói Car / PC / Admin
   if ($("anRoleCarTotal")) $("anRoleCarTotal").textContent = (lic.car_total || 0);
   if ($("anRoleCarActive")) $("anRoleCarActive").textContent = (lic.car_active || 0);
@@ -4051,35 +4151,29 @@ function renderAnalyticsUI(stats) {
   if ($("anRoleCarYear")) $("anRoleCarYear").textContent = (lic.car_yearly || 0);
   if ($("anRoleCarExp")) $("anRoleCarExp").textContent = (lic.car_expired || 0);
   if ($("anRoleCarRev")) $("anRoleCarRev").textContent = (lic.car_revoked || 0);
-
   if ($("anRolePcTotal")) $("anRolePcTotal").textContent = (lic.pc_total || 0);
   if ($("anRolePcActive")) $("anRolePcActive").textContent = (lic.pc_active || 0);
   if ($("anRolePcLife")) $("anRolePcLife").textContent = (lic.pc_lifetime || 0);
   if ($("anRolePcYear")) $("anRolePcYear").textContent = (lic.pc_yearly || 0);
   if ($("anRolePcExp")) $("anRolePcExp").textContent = (lic.pc_expired || 0);
   if ($("anRolePcRev")) $("anRolePcRev").textContent = (lic.pc_revoked || 0);
-
   if ($("anRoleAdminTotal")) $("anRoleAdminTotal").textContent = (lic.admin_total || 0);
   if ($("anRoleAdminActive")) $("anRoleAdminActive").textContent = (lic.admin_active || 0);
-
   // Tỷ trọng người dùng Car vs PC
   const hasUsers = Boolean((lic.car_total || 0) + (lic.pc_total || 0) > 0);
   const totalUsersNum = (lic.car_total || 0) + (lic.pc_total || 0) || 1;
   const pctCar = hasUsers ? Math.round(((lic.car_total || 0) / totalUsersNum) * 100) : 0;
   const pctPc = hasUsers ? Math.max(0, 100 - pctCar) : 0;
-
   if ($("anRatioCarText")) $("anRatioCarText").textContent = pctCar + "% (" + (lic.car_total || 0) + " mã)";
   if ($("anRatioPcText")) $("anRatioPcText").textContent = pctPc + "% (" + (lic.pc_total || 0) + " mã)";
   if ($("anBarCar")) $("anBarCar").style.width = (hasUsers ? pctCar : 50) + "%";
   if ($("anBarPc")) $("anBarPc").style.width = (hasUsers ? pctPc : 50) + "%";
-
   // Thiết bị
   if ($("anDevCars")) $("anDevCars").textContent = (dev.car_devices || 0);
   if ($("anDevPcs")) $("anDevPcs").textContent = (dev.pc_devices || 0);
   if ($("anDevActive24h")) $("anDevActive24h").textContent = (dev.active_24h || 0);
   if ($("anDevActive7d")) $("anDevActive7d").textContent = (dev.active_7d || 0);
   if ($("anDevLocks")) $("anDevLocks").textContent = (s.price_locks_count || 0) + " khách";
-
   // Bảng khách sắp hết hạn (Expiring soon)
   if ($("anExpiringSoonCount")) $("anExpiringSoonCount").textContent = "(" + expList.length + " khách)";
   const tbody = $("anExpiringTable").querySelector("tbody");
@@ -4424,7 +4518,6 @@ function previewExpenseReceipt(id) {
   if (btnRemove) btnRemove.style.display = "inline-block";
   if (modal) modal.style.display = "flex";
 }
-
 function previewImageDirect(src, title = "Xem trước ảnh") {
   if (!src) return;
   window._currentPreviewExpId = null;
@@ -4432,7 +4525,6 @@ function previewImageDirect(src, title = "Xem trước ảnh") {
   const titleEl = $("expenseReceiptModalTitle");
   const subtitleEl = $("expenseReceiptModalSubtitle");
   const imgEl = $("expenseReceiptModalImg");
-
   if (titleEl) titleEl.textContent = title;
   if (subtitleEl) subtitleEl.textContent = "Xem trước ảnh hoá đơn / biên bản nghiệm thu trước khi thêm";
   if (imgEl) {
@@ -4443,16 +4535,13 @@ function previewImageDirect(src, title = "Xem trước ảnh") {
   const btnRemove = $("btnExpenseReceiptRemove");
   if (btnChange) btnChange.style.display = "none";
   if (btnRemove) btnRemove.style.display = "none";
-
   if (modal) modal.style.display = "flex";
 }
-
 function closeExpenseReceiptModal() {
   const modal = $("expenseReceiptModalMask");
   if (modal) modal.style.display = "none";
   window._currentPreviewExpId = null;
 }
-
 function openExpenseReceiptInNewTab() {
   const imgEl = $("expenseReceiptModalImg");
   if (!imgEl || !imgEl.src) return;
@@ -4474,14 +4563,12 @@ function openExpenseReceiptInNewTab() {
     a.click();
   }
 }
-
 function changeCurrentExpenseReceipt() {
   const id = window._currentPreviewExpId;
   if (!id) return;
   closeExpenseReceiptModal();
   triggerRowReceiptUpload(id);
 }
-
 function removeCurrentExpenseReceipt() {
   const id = window._currentPreviewExpId;
   if (!id) return;
@@ -4496,7 +4583,6 @@ function removeCurrentExpenseReceipt() {
   }
   closeExpenseReceiptModal();
 }
-
 function addProfitSharingExpense() {
   const titleEl = $("psNewExpenseTitle");
   const noteEl = $("psNewExpenseNote");
@@ -4506,7 +4592,6 @@ function addProfitSharingExpense() {
   const note = noteEl ? (noteEl.value || "").trim() : "";
   const amt = parseInt((amtEl.value || "").replace(/\D/g, ""), 10) || 0;
   const isPaid = isPaidEl ? isPaidEl.checked : false;
-
   if (!title) {
     alert("Vui lòng nhập tên khoản chi tiêu (ví dụ: Model AI, mua thiết bị...)");
     titleEl.focus();
@@ -4517,10 +4602,8 @@ function addProfitSharingExpense() {
     amtEl.focus();
     return;
   }
-
   const receiptImg = window._newExpenseReceipt ? window._newExpenseReceipt.dataUrl : null;
   const receiptName = window._newExpenseReceipt ? (window._newExpenseReceipt.name || "") : null;
-
   const data = ensureProfitSharingData();
   const newExp = {
     id: "exp_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
@@ -4535,17 +4618,14 @@ function addProfitSharingExpense() {
     newExp.receipt_name = receiptName;
   }
   data.expenses.push(newExp);
-
   titleEl.value = "";
   if (noteEl) noteEl.value = "";
   amtEl.value = "";
   if (isPaidEl) isPaidEl.checked = false;
   clearNewExpenseReceipt();
-
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
-
 // Hỗ trợ paste ảnh chụp màn hình bill / hoá đơn nghiệm thu (Ctrl+V / Cmd+V)
 document.addEventListener("paste", function(e) {
   const items = e.clipboardData && e.clipboardData.items;
@@ -4554,7 +4634,6 @@ document.addEventListener("paste", function(e) {
   const active = document.activeElement;
   const container = $("psNewExpenseTitle")?.closest("div[style*='panel2']");
   if (!container || !container.contains(active)) return;
-
   for (let i = 0; i < items.length; i++) {
     if (items[i].type && items[i].type.indexOf("image") !== -1) {
       const blob = items[i].getAsFile();
@@ -4577,7 +4656,6 @@ document.addEventListener("paste", function(e) {
     }
   }
 });
-
 function editProfitSharingExpenseNote(id) {
   const data = ensureProfitSharingData();
   const exp = (data.expenses || []).find(e => e.id === id);
@@ -4589,7 +4667,6 @@ function editProfitSharingExpenseNote(id) {
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
-
 function toggleProfitSharingExpensePaid(id, isPaid) {
   const data = ensureProfitSharingData();
   const exp = (data.expenses || []).find(e => e.id === id);
@@ -4599,7 +4676,6 @@ function toggleProfitSharingExpensePaid(id, isPaid) {
     saveProfitSharingConfig(true);
   }
 }
-
 function deleteProfitSharingExpense(id) {
   if (!confirm("Bạn có chắc chắn muốn xoá khoản chi tiêu này?")) return;
   const data = ensureProfitSharingData();
@@ -4610,11 +4686,9 @@ function deleteProfitSharingExpense(id) {
   renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
-
 async function saveProfitSharingConfig(isSilent = false) {
   const msgEl = $("profitSharingSaveMsg");
   if (!isSilent) showMsg(msgEl, "", "⏳ Đang lưu dữ liệu đối soát...");
-
   const data = ensureProfitSharingData();
   if ($("psToanReceivedInput")) {
     const raw = $("psToanReceivedInput").value.replace(/\D/g, "");
@@ -4623,12 +4697,10 @@ async function saveProfitSharingConfig(isSilent = false) {
   if ($("psGeneralNote")) {
     data.general_note = $("psGeneralNote").value;
   }
-
   // 1. Luôn lưu vào localStorage dự phòng
   try {
     localStorage.setItem("geely_profit_sharing", JSON.stringify(data));
   } catch (e) {}
-
   // 2. Lưu lên Supabase sales_settings
   try {
     const res = await api("/rest/v1/rpc/admin_save_sales_settings", {
@@ -4646,7 +4718,6 @@ async function saveProfitSharingConfig(isSilent = false) {
     if (!isSilent) showMsg(msgEl, "err", "⚠️ Đã lưu trên máy (Supabase: " + err.message + ")");
   }
 }
-
 async function loadSalesData() {
   const orderMsg = $("salesOrdersMsg");
   showMsg(orderMsg, "", "⏳ Đang tải dữ liệu bán hàng & đơn hàng từ Supabase...");
@@ -4657,14 +4728,12 @@ async function loadSalesData() {
     });
     const data = await res.json();
     window._salesData = data;
-
     // Fill settings
     const s = data.settings || {};
     $("salesLifetimePrice").value = s.lifetime_price || 2950000;
     $("salesYearlyPrice").value = s.yearly_price || 1950000;
     $("salesYearlyDiscount").value = s.yearly_discount_percent !== undefined ? s.yearly_discount_percent : 40;
     updateSalesPricePreview();
-
     if (s.promo_end_date) {
       $("salesPromoForever").checked = false;
       $("salesPromoEndDate").value = toDateInput(new Date(s.promo_end_date));
@@ -4673,17 +4742,14 @@ async function loadSalesData() {
       $("salesPromoEndDate").value = "";
     }
     syncSalesPromoExpiryUI();
-
     $("salesPriceLockYears").value = s.price_lock_years || 5;
     $("salesPriceLockRule").value = s.price_lock_rule || "percent";
-
     $("salesBankBin").value = s.bank_bin || "970432";
     $("salesBankName").value = s.bank_name || "VPBank";
     $("salesBankAccount").value = s.bank_account || "0333332093";
     $("salesBankAccountName").value = s.bank_account_name || "HUYNH VAN TOAN";
     $("salesReconMode").value = s.reconciliation_mode || "both";
     $("salesWebhookProvider").value = s.webhook_provider || "sepay";
-
     setTelegramChatIdsToUI(s.telegram_chat_id || "5218387973, 1641294365");
     $("salesTelegramNotiEnabled").checked = (s.telegram_noti_enabled !== false);
     // KHÔNG đổ token ra ô: để trống = giữ nguyên. Chỉ báo máy chủ đã có hay chưa.
@@ -4691,7 +4757,6 @@ async function loadSalesData() {
     $("salesTelegramBotTokenHint").textContent = s.telegram_bot_token
       ? "✅ Máy chủ đã có token. Để trống nếu không muốn đổi."
       : "⚠️ Máy chủ CHƯA có token — Telegram sẽ không chạy tới khi dán token vào đây rồi bấm Lưu.";
-
     // Nạp dữ liệu Phân chia Doanh thu & Quyết toán (Toàn 60% - Đạt 40%)
     if (s.profit_sharing && typeof s.profit_sharing === "object") {
       window._profitSharingData = s.profit_sharing;
@@ -4707,7 +4772,6 @@ async function loadSalesData() {
     if (!Array.isArray(window._profitSharingData.expenses)) {
       window._profitSharingData.expenses = [];
     }
-
     renderSalesOrdersTable();
     renderPriceLocksTable();
     renderSalesLogsTable();
@@ -4717,25 +4781,21 @@ async function loadSalesData() {
     showMsg(orderMsg, "err", "Lỗi tải dữ liệu bán hàng: " + err.message);
   }
 }
-
 function onSalesOrderSearchChange() {
   salesOrderSearchKeyword = $("salesOrderSearchInput").value.trim().toLowerCase();
   renderSalesOrdersTable();
 }
-
 function setOrderFilter(filter, btn) {
   salesCurrentOrderFilter = filter;
   document.querySelectorAll(".filters button[data-orderfilter]").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
   renderSalesOrdersTable();
 }
-
 function renderSalesOrdersTable() {
   const tbody = $("salesOrdersTable").querySelector("tbody");
   tbody.innerHTML = "";
   const orders = (window._salesData && window._salesData.orders) || [];
   $("salesOrdersCount").textContent = "(" + orders.length + " đơn)";
-
   let filtered = orders;
   if (salesCurrentOrderFilter !== "all") {
     if (salesCurrentOrderFilter === "cancelled") {
@@ -4744,7 +4804,6 @@ function renderSalesOrdersTable() {
       filtered = filtered.filter(o => o.status === salesCurrentOrderFilter);
     }
   }
-
   if (salesOrderSearchKeyword) {
     const kw = salesOrderSearchKeyword;
     filtered = filtered.filter(o =>
@@ -4754,15 +4813,12 @@ function renderSalesOrdersTable() {
       (o.license_key || "").toLowerCase().includes(kw)
     );
   }
-
   if (!filtered.length) {
     tbody.innerHTML = '<tr><td colspan="9" class="hint" style="text-align:center; padding:24px">Không tìm thấy đơn hàng nào phù hợp.</td></tr>';
     return;
   }
-
   filtered.forEach(o => {
     const tr = document.createElement("tr");
-
     // Status Badge
     let statusBadge = "";
     if (o.status === "pending") {
@@ -4778,12 +4834,10 @@ function renderSalesOrdersTable() {
     } else if (o.status === "refunded") {
       statusBadge = '<span class="tag off">🔴 Đã hoàn tiền</span>';
     }
-
     // Plan Badge
     const planBadge = o.plan_id === "yearly" 
       ? '<span class="tag phone">12 Tháng</span>' 
       : '<span class="tag car">Trọn đời</span>';
-
     // Action buttons (dùng data-* và this để chống XSS và event-handler breakout)
     let actionsHtml = "";
     if (o.status === "pending" || o.status === "payment_mismatch") {
@@ -4796,7 +4850,6 @@ function renderSalesOrdersTable() {
     } else {
       actionsHtml = '<span style="color:var(--muted)">-</span>';
     }
-
     tr.innerHTML = 
       '<td class="mono nowrap"><b>' + esc(o.order_code) + '</b></td>' +
       '<td class="nowrap" style="font-size:12px; color:var(--muted)">' + formatIsoTime(o.created_at) + '</td>' +
@@ -4810,25 +4863,21 @@ function renderSalesOrdersTable() {
     tbody.appendChild(tr);
   });
 }
-
 function renderPriceLocksTable() {
   const tbody = $("priceLocksTable").querySelector("tbody");
   tbody.innerHTML = "";
   const locks = (window._salesData && window._salesData.price_locks) || [];
   $("priceLocksCount").textContent = "(" + locks.length + " khách)";
-
   if (!locks.length) {
     tbody.innerHTML = '<tr><td colspan="6" class="hint" style="text-align:center; padding:16px">Chưa có khách hàng nào trong danh sách khoá giá.</td></tr>';
     return;
   }
-
   locks.forEach(p => {
     const tr = document.createElement("tr");
     const isStillActive = p.is_active && new Date(p.locked_until) > new Date();
     const statusTag = isStillActive 
       ? '<span class="tag on">🟢 Hiệu lực 5 năm</span>' 
       : '<span class="tag off">🔴 Hết hiệu lực</span>';
-
     tr.innerHTML = 
       '<td class="mono nowrap"><b>' + esc(p.phone) + '</b></td>' +
       '<td class="nowrap">' + esc(p.owner_name) + '</td>' +
@@ -4839,17 +4888,14 @@ function renderPriceLocksTable() {
     tbody.appendChild(tr);
   });
 }
-
 function renderSalesLogsTable() {
   const tbody = $("salesLogsTable").querySelector("tbody");
   tbody.innerHTML = "";
   const logs = (window._salesData && window._salesData.logs) || [];
-
   if (!logs.length) {
     tbody.innerHTML = '<tr><td colspan="4" class="hint" style="text-align:center; padding:16px">Chưa có nhật ký thay đổi nào.</td></tr>';
     return;
   }
-
   logs.forEach(l => {
     const tr = document.createElement("tr");
     tr.innerHTML = 
@@ -4860,7 +4906,6 @@ function renderSalesLogsTable() {
     tbody.appendChild(tr);
   });
 }
-
 // ==================== ACTIONS: LƯU BẢNG GIÁ & TÀI KHOẢN ====================
 function openSavePricesConfirmModal() {
   const cur = (window._salesData && window._salesData.settings) || {};
@@ -4869,28 +4914,23 @@ function openSavePricesConfirmModal() {
   const newDisc = parseInt($("salesYearlyDiscount").value) || 0;
   const newYears = parseInt($("salesPriceLockYears").value) || 5;
   const newRule = $("salesPriceLockRule").value;
-
   let diffHtml = '<table style="width:100%">';
   diffHtml += '<tr><td><b>Gói Trọn Đời:</b></td><td>' + formatVndNumber(cur.lifetime_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newLifetime) + '</b></td></tr>';
   diffHtml += '<tr><td><b>Giá Gốc Năm:</b></td><td>' + formatVndNumber(cur.yearly_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newYearly) + '</b></td></tr>';
   diffHtml += '<tr><td><b>% Khuyến Mãi Năm:</b></td><td>' + (cur.yearly_discount_percent || 0) + '% → <b style="color:var(--ok)">' + newDisc + '%</b></td></tr>';
   diffHtml += '<tr><td><b>Luật Khoá Giá:</b></td><td>' + (cur.price_lock_rule || 'percent') + ' → <b>' + newRule + '</b></td></tr>';
   diffHtml += '</table>';
-
   $("savePricesDiffBox").innerHTML = diffHtml;
   $("salesAdminNote").value = "";
   $("savePricesConfirmMask").style.display = "flex";
 }
-
 function closeSavePricesConfirmModal() {
   $("savePricesConfirmMask").style.display = "none";
 }
-
 async function executeSaveSalesPrices() {
   const btn = $("btnConfirmSavePrices");
   const note = $("salesAdminNote").value.trim() || "Cập nhật bảng giá từ Admin Tool";
   btn.disabled = true;
-
   try {
     const forever = $("salesPromoForever").checked;
     const expDate = $("salesPromoEndDate").value;
@@ -4903,12 +4943,10 @@ async function executeSaveSalesPrices() {
       price_lock_rule: $("salesPriceLockRule").value,
       admin_note: note
     };
-
     const res = await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
       body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
-
     closeSavePricesConfirmModal();
     showMsg($("salesPriceSaveMsg"), "ok", "✅ Đã lưu cấu hình bảng giá thành công!");
     await loadSalesData();
@@ -4919,7 +4957,6 @@ async function executeSaveSalesPrices() {
     btn.disabled = false;
   }
 }
-
 async function saveSalesBankInfo() {
   const btn = $("btnSaveSalesBank");
   btn.disabled = true;
@@ -4933,12 +4970,10 @@ async function saveSalesBankInfo() {
       webhook_provider: $("salesWebhookProvider").value,
       admin_note: "Cập nhật tài khoản nhận tiền / đối soát"
     };
-
     await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
       body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
-
     showMsg($("salesBankSaveMsg"), "ok", "✅ Đã lưu thông tin tài khoản nhận tiền thành công!");
     await loadSalesData();
   } catch (err) {
@@ -4947,7 +4982,6 @@ async function saveSalesBankInfo() {
     btn.disabled = false;
   }
 }
-
 // ==================== TELEGRAM BOT CONFIG & CHAT ID LIST ====================
 // 🔴 01/09/2026 — GỠ TOKEN NHÚNG CỨNG.
 //
@@ -4978,7 +5012,6 @@ async function getTelegramBotToken() {
   }
   return t;
 }
-
 /** Fail-closed dùng chung cho 3 nút gọi thẳng api.telegram.org. */
 async function requireTelegramBotToken() {
   const t = await getTelegramBotToken();
@@ -4988,7 +5021,6 @@ async function requireTelegramBotToken() {
   }
   return t;
 }
-
 function getTelegramChatItemsFromUI() {
   const container = $("telegramChatListContainer");
   if (!container) return [];
@@ -5007,26 +5039,22 @@ function getTelegramChatItemsFromUI() {
   });
   return items;
 }
-
 function setTelegramChatIdsToUI(chatIdsOrString) {
   const container = $("telegramChatListContainer");
   if (!container) return;
   container.innerHTML = "";
-
   let list = [];
   if (Array.isArray(chatIdsOrString)) {
     list = chatIdsOrString;
   } else if (typeof chatIdsOrString === "string") {
     list = chatIdsOrString.split(/[,;\n\r]+/).map(s => s.trim()).filter(Boolean);
   }
-
   if (list.length === 0) {
     list = [
       { id: "5218387973", name: "Đạt Trần" },
       { id: "1641294365", name: "Toàn Mobile" }
     ];
   }
-
   list.forEach((item, index) => {
     let id = "";
     let name = "";
@@ -5052,17 +5080,14 @@ function setTelegramChatIdsToUI(chatIdsOrString) {
     addTelegramChatRow(id, name, index + 1);
   });
 }
-
 function addTelegramChatRow(initialId = "", initialName = "", rowNum) {
   const container = $("telegramChatListContainer");
   if (!container) return;
   const currentCount = container.children.length + 1;
   const num = rowNum || currentCount;
-
   const div = document.createElement("div");
   div.className = "tg-chat-row";
   div.style = "display:flex; gap:8px; align-items:center; flex-wrap:wrap; background:var(--panel2); padding:8px 10px; border-radius:8px; border:1px solid var(--border);";
-
   div.innerHTML = `
     <div style="width:28px; font-weight:700; font-size:12px; color:var(--muted); text-align:center">#${num}</div>
     <input type="text" class="tg-chat-name" value="${esc(initialName)}" placeholder="Tên định danh (VD: Đạt Trần)" style="width:160px; min-width:130px; font-size:13px" title="Tên người quản trị hoặc tên nhóm">
@@ -5071,11 +5096,9 @@ function addTelegramChatRow(initialId = "", initialName = "", rowNum) {
       🗑️ Xoá
     </button>
   `;
-
   container.appendChild(div);
   updateTelegramChatRowNumbers();
 }
-
 function removeTelegramChatRow(btn) {
   const container = $("telegramChatListContainer");
   if (!container) return;
@@ -5088,7 +5111,6 @@ function removeTelegramChatRow(btn) {
     updateTelegramChatRowNumbers();
   }
 }
-
 function updateTelegramChatRowNumbers() {
   const container = $("telegramChatListContainer");
   if (!container) return;
@@ -5098,14 +5120,12 @@ function updateTelegramChatRowNumbers() {
     if (numDiv) numDiv.textContent = `#${i + 1}`;
   });
 }
-
 async function saveTelegramBotConfig() {
   const btn = $("btnSaveTelegramCfg");
   btn.disabled = true;
   try {
     const items = getTelegramChatItemsFromUI();
     const chatIdsString = items.map(it => it.name ? `${it.id} (${it.name})` : it.id).join(", ");
-
     const settingsPayload = {
       telegram_chat_id: chatIdsString,
       telegram_noti_enabled: $("salesTelegramNotiEnabled").checked,
@@ -5116,12 +5136,10 @@ async function saveTelegramBotConfig() {
     // không ghi đè. Gửi chuỗi rỗng mới là xoá mất token.
     const tokenMoi = ($("salesTelegramBotToken").value || "").trim();
     if (tokenMoi) settingsPayload.telegram_bot_token = tokenMoi;
-
     await api("/rest/v1/rpc/admin_save_sales_settings", {
       method: "POST",
       body: JSON.stringify({ p_settings: settingsPayload, p_admin_by: getAdminIdentity() })
     });
-
     showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã lưu cấu hình Telegram Bot thành công (" + items.length + " Chat ID)!");
     await loadSalesData();
   } catch (err) {
@@ -5130,7 +5148,6 @@ async function saveTelegramBotConfig() {
     btn.disabled = false;
   }
 }
-
 async function fetchTelegramChatId() {
   const token = await requireTelegramBotToken();
   if (!token) return;
@@ -5143,7 +5160,6 @@ async function fetchTelegramChatId() {
       showMsg($("salesTelegramSaveMsg"), "err", "Chưa có tin nhắn nào tới bot. Hãy mở bot và bấm Start.");
       return;
     }
-
     const lastUpdate = data.result[data.result.length - 1];
     const msg = lastUpdate.message || lastUpdate.callback_query?.message;
     const chat = msg?.chat || lastUpdate.callback_query?.from;
@@ -5166,14 +5182,12 @@ async function fetchTelegramChatId() {
     alert("❌ Lỗi gọi API Telegram: " + err.message);
   }
 }
-
 async function testTelegramNoti() {
   const items = getTelegramChatItemsFromUI();
   if (items.length === 0) {
     alert("⚠️ Vui lòng nhập ít nhất một Chat ID hoặc bấm [🔍 Quét tự động (/start)] trước khi thử nghiệm.");
     return;
   }
-
   const token = await requireTelegramBotToken();
   if (!token) return;
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang gửi tin nhắn test tới " + items.length + " Chat ID...");
@@ -5193,7 +5207,6 @@ async function testTelegramNoti() {
       + "⏰ <b>Thời gian:</b> " + sampleTime + "\n"
       + "━━━━━━━━━━━━━━━━━━━\n"
       + "👉 <i>Bấm nút [✅ Duyệt & Cấp mã] hoặc [❌ Huỷ đơn] bên dưới để kiểm tra tính năng duyệt tức thì:</i>";
-
     for (const it of items) {
       const c = it.id;
       const label = it.name ? `${it.name} (${c})` : c;
@@ -5227,7 +5240,6 @@ async function testTelegramNoti() {
         failList.push({ label, error: e.message });
       }
     }
-
     if (failList.length === 0) {
       const okMsg = "🎉 Đã gửi thành công tới toàn bộ " + successList.length + "/" + items.length + " người nhận:\n• " + successList.join("\n• ");
       showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã gửi thành công tới toàn bộ " + successList.length + " người nhận!");
@@ -5252,7 +5264,6 @@ async function testTelegramNoti() {
     alert("❌ Lỗi: " + err.message);
   }
 }
-
 async function registerTelegramWebhook() {
   const token = await requireTelegramBotToken();
   if (!token) return;
@@ -5260,7 +5271,6 @@ async function registerTelegramWebhook() {
   const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseAnonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
   const webhookUrl = prompt("Nhập Webhook URL cho Telegram Bot (Mặc định gọi thẳng REST RPC Supabase 24/7):", defaultWebhook);
   if (!webhookUrl) return;
-
   // 31/08/2026 — BẮT BUỘC GỬI KÈM secret_token.
   //
   // Từ bản schema 31/08, `handle_telegram_webhook` có cổng bí mật: gọi mà không kèm
@@ -5288,7 +5298,6 @@ async function registerTelegramWebhook() {
           "Hãy dán lại supabase/schema.sql (bản 31/08 trở đi) rồi bấm Tải lại dữ liệu bán hàng.");
     return;
   }
-
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang đăng ký Webhook...");
   try {
     const res = await fetch("https://api.telegram.org/bot" + token + "/setWebhook", {
@@ -5309,10 +5318,8 @@ async function registerTelegramWebhook() {
     alert("❌ Lỗi: " + err.message);
   }
 }
-
 // ==================== ACTIONS: DUYỆT / HUỶ / HOÀN TIỀN ĐƠN ====================
 let orderActionBusy = false;
-
 async function confirmOrder(orderId, orderCode, btnEl) {
   if (orderActionBusy) return;
   if (!confirm('Xác nhận đã nhận tiền cho đơn hàng "' + orderCode + '"?\n\nHệ thống sẽ cấp mã license mới và kích hoạt quyền khoá giá 5 năm cho khách hàng ngay lập tức.')) return;
@@ -5335,7 +5342,6 @@ async function confirmOrder(orderId, orderCode, btnEl) {
     if (btnEl) btnEl.disabled = false;
   }
 }
-
 async function cancelOrder(orderId, orderCode, btnEl) {
   if (orderActionBusy) return;
   const reason = prompt('Nhập lý do huỷ đơn "' + orderCode + '":', "Khách không chuyển khoản");
@@ -5357,7 +5363,6 @@ async function cancelOrder(orderId, orderCode, btnEl) {
     if (btnEl) btnEl.disabled = false;
   }
 }
-
 async function refundOrder(orderId, orderCode, licKey, btnEl) {
   if (orderActionBusy) return;
   const warning = '⚠️ CẢNH BÁO HOÀN TIỀN & THU HỒI MÃ:\n\nĐơn hàng: ' + orderCode + '\nMã License: ' + licKey + '\n\nThao tác này sẽ:\n1. Thu hồi mã license (xe sẽ bị khoá lại).\n2. Gỡ cờ khoá giá 5 năm của khách hàng này.\n3. Đổi trạng thái đơn sang "Đã hoàn tiền".\n\nBạn có chắc chắn muốn thực hiện?';
@@ -5367,7 +5372,6 @@ async function refundOrder(orderId, orderCode, licKey, btnEl) {
   orderActionBusy = true;
   if (btnEl) btnEl.disabled = true;
   const adminName = getAdminIdentity();
-
   try {
     await api("/rest/v1/rpc/admin_refund_order", {
       method: "POST",
@@ -5383,7 +5387,6 @@ async function refundOrder(orderId, orderCode, licKey, btnEl) {
     if (btnEl) btnEl.disabled = false;
   }
 }
-
 // ==================== ACTIONS: GIẢ LẬP WEBHOOK THANH TOÁN ====================
 function openSimulateWebhookModal() {
   $("simOrderCode").value = "";
@@ -5392,22 +5395,18 @@ function openSimulateWebhookModal() {
   $("simWebhookResult").textContent = "";
   $("simulateWebhookMask").style.display = "flex";
 }
-
 function closeSimulateWebhookModal() {
   $("simulateWebhookMask").style.display = "none";
 }
-
 async function runSimulateWebhook() {
   const code = $("simOrderCode").value.trim().toUpperCase();
   const amt = parseInt($("simAmount").value) || 0;
   const transId = $("simTransId").value.trim() || ("SIM_" + Date.now());
   const out = $("simWebhookResult");
-
   if (!code || amt <= 0) {
     showMsg(out, "err", "Vui lòng nhập Mã đơn hàng và Số tiền hợp lệ.");
     return;
   }
-
   showMsg(out, "", "⏳ Đang bắn tín hiệu webhook giả lập...");
   try {
     const res = await api("/rest/v1/rpc/admin_simulate_payment_webhook", {
@@ -5430,7 +5429,6 @@ async function runSimulateWebhook() {
     showMsg(out, "err", "Lỗi gọi webhook: " + err.message);
   }
 }
-
 // ==================== ACTIONS: DỌN SẠCH DỮ LIỆU KIỂM THỬ ====================
 async function purgeTestData(mode = "orders_only") {
   let promptMsg = "";
@@ -5439,14 +5437,12 @@ async function purgeTestData(mode = "orders_only") {
   } else {
     promptMsg = '🚨 CẢNH BÁO: XOÁ TRẮNG TOÀN BỘ HỆ THỐNG:\n\nThao tác này sẽ XOÁ SẠCH:\n- Toàn bộ đơn hàng\n- Toàn bộ mã license (trừ admin)\n- Toàn bộ thiết bị đã kích hoạt\n\nGõ "XOA HET" để xác nhận thực hiện:';
   }
-
   const expectedInput = (mode === "orders_only") ? "XOA DON" : "XOA HET";
   const confirmText = prompt(promptMsg);
   if (confirmText !== expectedInput) {
     if (confirmText !== null) alert("Mã xác nhận không khớp. Đã huỷ thao tác.");
     return;
   }
-
   try {
     try {
       const res = await api("/rest/v1/rpc/admin_purge_test_data", {
@@ -5469,19 +5465,16 @@ async function purgeTestData(mode = "orders_only") {
             try { await api("/rest/v1/licenses?key=eq." + encodeURIComponent(k), { method: "DELETE" }); } catch (_) {}
           }
         } catch (_) {}
-
         // Dọn dẹp thêm các test phone nếu có tạo mã test
         try {
           await api("/rest/v1/licenses?owner_phone=in.(0988123456,0912345678,0911111111)", { method: "DELETE" });
         } catch (_) {}
-
         // 2. Xoá toàn bộ đơn hàng, quyền khoá giá test và nhật ký test (mục 5)
         await api("/rest/v1/orders?id=not.is.null", { method: "DELETE" });
         await api("/rest/v1/price_locks?phone=not.is.null", { method: "DELETE" });
         try { await api("/rest/v1/sales_config_logs?id=not.is.null", { method: "DELETE" }); } catch (_) {}
         try { await api("/rest/v1/audit_logs?id=not.is.null", { method: "DELETE" }); } catch (_) {}
         try { await api("/rest/v1/login_attempts?id=not.is.null", { method: "DELETE" }); } catch (_) {}
-
         alert("🎉 ĐÃ DỌN SẠCH TOÀN BỘ ĐƠN HÀNG, KHOÁ GIÁ VÀ NHẬT KÝ TEST THÀNH CÔNG!\n\n🛡️ Toàn bộ mã License tạo tay ở Tab 1 vẫn còn nguyên vẹn.");
       } else {
         await api("/rest/v1/devices?id=not.is.null", { method: "DELETE" });
@@ -5502,11 +5495,8 @@ async function purgeTestData(mode = "orders_only") {
     alert("❌ Lỗi khi dọn dữ liệu: " + err.message);
   }
 }
-
 // ==================== TAB 5: ÉP CẬP NHẬT (FORCE UPDATE / OTA) ====================
-// KHÔNG nhúng snapshot phiên bản vào trang (14/09/2026: trang từng in cứng 1.0.67/167 và hiện
-// đúng số đó khi RPC chưa tải/lỗi ⇒ admin tưởng bản mới 1.1.1 chưa lên). Nguồn duy nhất là RPC
-// `get_app_update_config` — cùng nguồn xe/điện thoại đọc; chưa tải thì ô để trống + bảng báo "đang tải".
+// Nguồn duy nhất là RPC get_app_update_config; chưa tải thì ô trống + báo "đang tải".
 window._appUpdateConfig = {
   version: 0,
   car: { forceRules: [] },
@@ -5517,18 +5507,12 @@ window._appUpdateConfig = {
 window._appUpdateConfigLoaded = false;
 /** Phiên bản đội xe đang chạy thật: { car: { "1.0.67": 12, ... } } — gom từ licenses.devices & telemetry_events. */
 window._fleetVersions = { car: {}, phone: {}, ios: {} };
-
-/**
- * Danh mục các phiên bản chính thức đã phát hành trong lịch sử dự án.
- * Giúp bảng "Danh mục Phiên bản" luôn hiển thị đầy đủ các bản cũ (để admin bấm ⚡ Ép nhanh)
- * ngay cả khi các máy đã nâng cấp xong và không còn máy nào online ở bản cũ đó.
- */
+/** Danh mục phát hành chuẩn (OFFICIAL_RELEASES) hiển thị bản cũ ngay cả khi đội xe nâng cấp xong. */
 const OFFICIAL_RELEASES = {
   car: [{ name: "1.2.0", code: 1200 }, { name: "1.1.5", code: 1105 }, { name: "1.1.3", code: 1103 }, { name: "1.1.2", code: 1102 }, { name: "1.1.1", code: 1101 }, { name: "1.1.0", code: 1100 }, { name: "1.0.67", code: 167 }, { name: "1.0.64", code: 164 }, { name: "1.0.60", code: 160 }, { name: "1.0.52", code: 152 }, { name: "1.0.40", code: 140 }],
   phone: [{ name: "1.2.0", code: 1200 }, { name: "1.1.6", code: 1106 }, { name: "1.1.5", code: 1105 }, { name: "1.1.0", code: 1100 }, { name: "1.0.0", code: 100 }],
   ios: [{ name: "1.2.0", code: 1200 }]
 };
-
 /**
  * Tự động tải thống kê thiết bị từ telemetry_events chạy ngầm khi mở tab OTA.
  * Giúp người dùng không bắt buộc phải bấm sang tab Giấy phép mới thấy số lượng máy.
@@ -5561,7 +5545,6 @@ async function loadFleetFromTelemetryQuietly() {
     }
   } catch (_) {}
 }
-
 async function refreshFleetData() {
   const btn = $("fuRefreshFleetBtn");
   if (btn) { btn.disabled = true; btn.textContent = "⏳ Đang tải..."; }
@@ -5574,7 +5557,6 @@ async function refreshFleetData() {
     if (btn) { btn.disabled = false; btn.textContent = "🔄 Làm mới đội máy"; }
   }
 }
-
 /**
  * versionCode suy từ tên. Luật hiện hành (chủ xe chốt 13/09/2026): X*1000 + Y*100 + Z (1.1.1 → 1101).
  * Dòng 1.0.x phát hành trước luật đó dùng 100 + Z (1.0.67 → 167, 1.0.52 → 152) — giữ để nút ép trỏ đúng mã.
@@ -5586,7 +5568,6 @@ function versionCodeFromName(name) {
   if (x === 1 && y === 0) return 100 + z;
   return x * 1000 + y * 100 + z;
 }
-
 /**
  * Kiểm tra xem phiên bản có thuộc danh sách phát hành Production chính thức không.
  * Các bản dev thử nghiệm nội bộ sẽ bị loại bỏ khi xem ở môi trường Production.
@@ -5598,25 +5579,19 @@ function isProductionVersionCode(app, code, name) {
   if (code === 1201) return false;
   return true;
 }
-// Môi trường đang chỉnh: "prod" -> nhánh car/phone, "dev" -> nhánh carDev/phoneDev.
-// Vì sao phải tách: app chọn nhánh theo BuildConfig.APP_ENV (AppUpdateConfig.carFor/phoneFor).
-// Gộp chung một nhánh thì xe cài bản Dev bị chào bản stable ngay khi stable vượt versionCode —
-// đúng cái bẫy "bản debug bị AppUpdater đè" (audit 08/09/2026).
+// Môi trường: "prod" -> car/phone, "dev" -> carDev/phoneDev (tránh bản debug bị AppUpdater đè).
 window._fuEnv = "prod";
-
 function fuKey(app) {
   // "ios" = tab iPhone riêng (24/09/2026): nhánh phoneIos/phoneIosDev, version KHÔNG dùng chung với Android.
   if (app === "ios") return window._fuEnv === "dev" ? "phoneIosDev" : "phoneIos";
   return window._fuEnv === "dev" ? (app === "car" ? "carDev" : "phoneDev") : app;
 }
-
 function fuNode(app) {
   const k = fuKey(app);
   if (!window._appUpdateConfig[k]) window._appUpdateConfig[k] = {};
   if (!Array.isArray(window._appUpdateConfig[k].forceRules)) window._appUpdateConfig[k].forceRules = [];
   return window._appUpdateConfig[k];
 }
-
 function updateFuHeaderBanner() {
   const app = window._currentFuApp || "car", env = window._fuEnv || "prod", branch = fuKey(app);
   if ($("fuCurrentAppLabel")) $("fuCurrentAppLabel").textContent = app === "car" ? "🚗 Đầu xe (CarConnect)" : app === "ios" ? "🍎 iPhone (iOS)" : "📱 Điện thoại Android (PhoneConnect)";
@@ -5630,7 +5605,6 @@ function updateFuHeaderBanner() {
   if ($("ios_envTitle")) $("ios_envTitle").textContent = env === "prod" ? "Production" : "Dev — TestFlight";
   if ($("fuEnvBanner")) $("fuEnvBanner").style.borderLeftColor = env === "prod" ? "var(--ok)" : "#38bdf8";
 }
-
 function toggleOtaAdvancedSign() {
   const box = $("otaAdvancedSignBox");
   if (!box) return;
@@ -5639,7 +5613,6 @@ function toggleOtaAdvancedSign() {
   const btn = $("btnToggleOtaAdvanced");
   if (btn) btn.textContent = isHidden ? "⚙️ Thu gọn ký Terminal ▲" : "⚙️ Tuỳ chọn nâng cao ▼";
 }
-
 function switchFuEnv(env) {
   syncFormToConfig();
   window._fuEnv = env;
@@ -5648,13 +5621,10 @@ function switchFuEnv(env) {
   updateFuHeaderBanner();
   renderAppUpdateConfigUI();
 }
-
 window._currentFuApp = "car";
 window._editingRuleApp = "car";
 window._editingRuleIndex = -1;
-
 function fuEscapeHtml(str) { return esc(str); }
-
 function switchFuApp(app) {
   window._currentFuApp = app;
   ["car", "phone", "ios"].forEach(function (a) {
@@ -5664,7 +5634,6 @@ function switchFuApp(app) {
   });
   updateFuHeaderBanner();
 }
-
 async function loadAppUpdateConfig() {
   const msg = $("fuStatusMsg");
   showMsg(msg, "", "⏳ Đang tải cấu hình cập nhật từ Supabase...");
@@ -5693,14 +5662,11 @@ async function loadAppUpdateConfig() {
     renderAppUpdateConfigUI();
   }
 }
-
 function renderAppUpdateConfigUI() {
   const cfg = window._appUpdateConfig || {};
   const car = cfg[fuKey("car")] || {};
   const phone = cfg[fuKey("phone")] || {};
-
   if ($("fuVersionBadge")) $("fuVersionBadge").textContent = window._appUpdateConfigLoaded ? ("v" + (cfg.version || 0)) : "chưa tải";
-
   // Car fields
   if ($("car_latestVersionName")) $("car_latestVersionName").value = car.latestVersionName || "";
   if ($("car_versionCode")) $("car_versionCode").value = car.versionCode || "";
@@ -5710,7 +5676,6 @@ function renderAppUpdateConfigUI() {
   if ($("car_minVersionCode")) $("car_minVersionCode").value = car.minVersionCode != null ? car.minVersionCode : "0";
   renderRulesTable("car");
   renderKnownVersions("car");
-
   // Phone fields
   if ($("phone_latestVersionName")) $("phone_latestVersionName").value = phone.latestVersionName || "";
   if ($("phone_versionCode")) $("phone_versionCode").value = phone.versionCode || "";
@@ -5720,7 +5685,6 @@ function renderAppUpdateConfigUI() {
   if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phone.minVersionCode != null ? phone.minVersionCode : "0";
   renderRulesTable("phone");
   renderKnownVersions("phone");
-
   // iPhone (tab riêng): số lấy từ nhánh phoneIos*, KHÔNG từ phone.
   const ios = cfg[fuKey("ios")] || {};
   ["latestVersionName", "versionCode", "downloadUrl", "releaseNotes"].forEach(function (f) { if ($("ios_" + f)) $("ios_" + f).value = ios[f] || ""; });
@@ -5732,11 +5696,10 @@ function renderAppUpdateConfigUI() {
   renderRulesTable("ios");
   renderKnownVersions("ios");
   kiemNguongIos();
-
   updateOtaKeyStatusUI();
   updateFuHeaderBanner();
+  updateQuickCockpit();
 }
-
 /**
  * Dựng bảng "Danh mục phiên bản": hàng đầu = bản đích từ RPC; các hàng sau = phiên bản đội xe đang
  * chạy thật (window._fleetVersions, gom từ licenses.devices & telemetry_events) + bản phát hành chuẩn (OFFICIAL_RELEASES)
@@ -5770,7 +5733,6 @@ function renderKnownVersions(app) {
   // Gom phiên bản: Danh mục phát hành chuẩn (OFFICIAL_RELEASES) + đội xe thật + bản trong quy tắc ép, loại bản đích
   const seen = {}; // code -> { name, count }
   const fleet = (window._fleetVersions && window._fleetVersions[app]) || {};
-
   // 1. Nạp từ danh mục phát hành chuẩn để đảm bảo các bản cũ luôn hiển thị sẵn sàng ép
   const officialList = OFFICIAL_RELEASES[app] || [];
   officialList.forEach(rel => {
@@ -5781,7 +5743,6 @@ function renderKnownVersions(app) {
       seen[rel.code] = { name: rel.name, count: fleet[rel.name] || 0 };
     }
   });
-
   // 2. Nạp thêm các phiên bản đang chạy thực tế từ đội xe/điện thoại (nếu có bản ngoài catalog)
   Object.keys(fleet).forEach(name => {
     const code = versionCodeFromName(name);
@@ -5792,7 +5753,6 @@ function renderKnownVersions(app) {
     }
     seen[code] = { name: name, count: fleet[name] };
   });
-
   // 3. Nạp từ các quy tắc ép đang kích hoạt
   (cfg.forceRules || []).forEach(r => {
     (Array.isArray(r.matchVersionCodes) ? r.matchVersionCodes : []).forEach(code => {
@@ -5805,7 +5765,6 @@ function renderKnownVersions(app) {
       }
     });
   });
-
   const appTag = app === "car" ? "car" : app === "ios" ? "admin" : "phone";
   const rows = [];
   rows.push('<tr data-code="' + targetCode + '">' +
@@ -5822,7 +5781,10 @@ function renderKnownVersions(app) {
       '<td style="font-size:12px; color:var(--muted)">' + (it.count ? it.count + " thiết bị đang chạy" : "không thấy trên đội xe") + '</td>' +
       '<td id="' + app + '_stat_' + code + '"></td>' +
       '<td style="text-align:right; min-width:195px">' + (code < targetCode
-        ? '<button class="small ghost" data-app="' + esc(app) + '" data-code="' + code + '" data-ver="' + esc(it.name) + '" onclick="quickAddForceRule(this.dataset.app, parseInt(this.dataset.code, 10), this.dataset.ver)">⚡ Ép ' + code + ' ➔ Lên ' + targetCode + '</button>'
+        ? '<div style="display:inline-flex; gap:4px; align-items:center; justify-content:flex-end">' +
+          '<button id="\' + app + \'_btn_force_\' + code + \'" class="small" style="background:#f59e0b; color:#000; font-weight:600" data-app="\' + esc(app) + \'" data-code="\' + code + \'" data-ver="\' + esc(it.name) + \'" onclick="toggleInlineForceRule(this.dataset.app, parseInt(this.dataset.code, 10), this.dataset.ver)">⚡ Ép bản này</button>' +
+          '<button class="small ghost" title="Tuỳ biến nâng cao" data-app="\' + esc(app) + \'" data-code="\' + code + \'" data-ver="\' + esc(it.name) + \'" onclick="quickAddForceRule(this.dataset.app, parseInt(this.dataset.code, 10), this.dataset.ver)">⚙️</button>' +
+          '</div>'
         : '<span class="hint">mới hơn bản đích</span>') + '</td></tr>');
   });
   if (rows.length === 1) {
@@ -5833,21 +5795,17 @@ function renderKnownVersions(app) {
   body.innerHTML = rows.join("");
   updateKnownVersionsStatus(app);
 }
-
 function updateKnownVersionsStatus(app) {
   const cfg = (window._appUpdateConfig && window._appUpdateConfig[fuKey(app)]) || {};
   const minVer = parseInt(cfg.minVersionCode, 10) || 0;
   const rules = cfg.forceRules || [];
-
   const knownCodes = Array.from(document.querySelectorAll('#' + app + '_knownVersionsBody tr[data-code]'))
     .map(tr => parseInt(tr.getAttribute("data-code"), 10)).filter(n => !isNaN(n));
   knownCodes.forEach(code => {
     const statEl = $(app + "_stat_" + code);
     if (!statEl) return;
-
     let isForced = false;
     let forceReason = "";
-
     if (minVer > 0 && code < minVer) {
       isForced = true;
       forceReason = `🔴 Bị ép (< min ${minVer})`;
@@ -5866,13 +5824,29 @@ function updateKnownVersionsStatus(app) {
         }
       }
     }
-
     if (isForced) {
       statEl.innerHTML = `<span class="tag danger">${forceReason}</span>`;
     } else {
       statEl.innerHTML = `<span class="tag off">⚪ Tự nguyện (Chưa ép)</span>`;
     }
+    const forceBtn = $(app + "_btn_force_" + code);
+    if (forceBtn) {
+      if (isForced) {
+        forceBtn.className = "small danger";
+        forceBtn.style.background = "";
+        forceBtn.style.color = "";
+        forceBtn.textContent = "🔴 Bỏ ép";
+        forceBtn.title = "Phiên bản này đang bị ép. Bấm để huỷ bỏ quy tắc ép.";
+      } else {
+        forceBtn.className = "small";
+        forceBtn.style.background = "#f59e0b";
+        forceBtn.style.color = "#000";
+        forceBtn.textContent = "⚡ Ép bản này";
+        forceBtn.title = "Bấm 1-click để ép phiên bản này lên bản mới nhất";
+      }
+    }
   });
+  updateQuickCockpit();
   const minBox = $(app + "_minBox"), minBadge = $(app + "_minStatusBadge");
   if (minBox && minBadge) {
     if (minVer > 0) {
@@ -5886,7 +5860,6 @@ function updateKnownVersionsStatus(app) {
     }
   }
 }
-
 function quickAddForceRule(app, oldBuild, oldVer) {
   openAddForceRuleModal(app);
   if ($("fuRuleMatchCodes")) $("fuRuleMatchCodes").value = String(oldBuild);
@@ -5894,7 +5867,6 @@ function quickAddForceRule(app, oldBuild, oldVer) {
   const targetVer = (window._appUpdateConfig && window._appUpdateConfig[fuKey(app)] && window._appUpdateConfig[fuKey(app)].latestVersionName) || "bản mới nhất";
   if ($("fuRuleMessage")) $("fuRuleMessage").value = `${appTitle} phiên bản v${oldVer} (Build ${oldBuild}) đã cũ. Vui lòng nâng cấp lên v${targetVer} để sử dụng các tính năng mới nhất và đảm bảo an toàn.`;
 }
-
 function setQuickMinVersionCode(app, val) {
   const el = $(app + "_minVersionCode");
   if (!el) return;
@@ -5907,14 +5879,12 @@ function setQuickMinVersionCode(app, val) {
     showMsg($("fuStatusMsg"), "ok", `⚪ Đã tắt ngưỡng minVersionCode = 0 (Cho phép cập nhật tự nguyện). Hãy bấm "💾 Lưu lên Supabase" để áp dụng.`);
   }
 }
-
 function renderRulesTable(app) {
   const table = $(app + "_rulesTable");
   if (!table) return;
   const tbody = table.querySelector("tbody");
   tbody.innerHTML = "";
   const rules = (window._appUpdateConfig[fuKey(app)] && window._appUpdateConfig[fuKey(app)].forceRules) || [];
-
   if (!rules.length) {
     const appLabel = app === "car" ? "xe" : app === "ios" ? "iPhone" : "điện thoại";
     const appName = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
@@ -5931,10 +5901,8 @@ function renderRulesTable(app) {
     </td></tr>`;
     return;
   }
-
   rules.forEach((rule, idx) => {
     const tr = document.createElement("tr");
-
     // Điều kiện match
     let condHtml = "";
     if (rule.matchVersionCodes && rule.matchVersionCodes.length > 0) {
@@ -5945,7 +5913,6 @@ function renderRulesTable(app) {
       condHtml += `<span class="hint" style="margin:0">Hoặc build &lt; ${rule.minVersionCode}</span>`;
     }
     if (!condHtml) condHtml = `<span class="hint" style="margin:0">Không có điều kiện</span>`;
-
     // Target
     let targetHtml = "";
     if (rule.targetVersionCode && rule.targetVersionCode > 0) {
@@ -5956,11 +5923,9 @@ function renderRulesTable(app) {
       const latestName = window._appUpdateConfig[fuKey(app)]?.latestVersionName || "";
       targetHtml = `<span class="tag pc mono">Bản mới nhất (v${latestName} / ${latestCode})</span>`;
     }
-
     // APK URL
     const url = rule.targetDownloadUrl || (window._appUpdateConfig[fuKey(app)]?.downloadUrl || "");
     const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
-
     tr.innerHTML = `
       <td class="mono" style="text-align:center">${idx + 1}</td>
       <td>${condHtml}</td>
@@ -5977,11 +5942,9 @@ function renderRulesTable(app) {
     tbody.appendChild(tr);
   });
 }
-
 function syncFormToConfig() {
   const _car = fuNode("car");
   const _phone = fuNode("phone");
-
   _car.latestVersionName = ($("car_latestVersionName").value || "").trim();
   _car.versionCode = parseInt($("car_versionCode").value, 10) || 0;
   _car.downloadUrl = ($("car_downloadUrl").value || "").trim();
@@ -5989,7 +5952,6 @@ function syncFormToConfig() {
   _car.releaseNotes = ($("car_releaseNotes").value || "").trim();
   _car.minVersionCode = parseInt($("car_minVersionCode").value, 10) || 0;
   _car.channel = window._fuEnv === "dev" ? "develop" : "stable";
-
   _phone.packageName = "com.techlead.app.geely.phone";
   _phone.name = "PhoneConnect";
   _phone.latestVersionName = ($("phone_latestVersionName").value || "").trim();
@@ -5998,7 +5960,6 @@ function syncFormToConfig() {
   _phone.sha256 = ($("phone_sha256").value || "").trim();
   _phone.releaseNotes = ($("phone_releaseNotes").value || "").trim();
   _phone.minVersionCode = parseInt($("phone_minVersionCode").value, 10) || 0;
-
   // iPhone (24/09/2026): version RIÊNG từ tab iOS — CẤM chép số/ngưỡng ép từ Android (App Store duyệt chậm hơn
   // ⇒ iPhone thấy "có bản mới"/bị ÉP lên bản chưa có). Tab trống + máy chủ chưa có nhánh ⇒ không tạo.
   const iosKey = fuKey("ios");
@@ -6018,15 +5979,12 @@ function syncFormToConfig() {
     window._appUpdateConfig[iosKey] = _ios;
   }
 }
-
 /** Khoá nhánh iOS theo môi trường đang chỉnh — như fuKey nhưng cho phoneIos/phoneIosDev. */
 function fuIosKey() {
   return fuKey("ios");
 }
-
 /** Link App Store của PhoneConnect iOS (chủ xe cung cấp 24/09/2026). */
 const IOS_APP_STORE_URL = "https://apps.apple.com/app/id6813109149";
-
 /** "✅ Đã lên App Store": chép phoneIosPending (publish-artifacts.sh ghi) vào ô tab iOS; bấm Lưu mới phát hành. */
 function promoteIosPending() {
   const pending = (window._appUpdateConfig || {})[fuKey("ios") + "Pending"];
@@ -6038,7 +5996,6 @@ function promoteIosPending() {
   kiemNguongIos();
   return true;
 }
-
 /** Cảnh báo: ngưỡng ép iPhone lớn hơn bản đang có trên App Store = ép lên bản không tồn tại. */
 function kiemNguongIos() {
   const warn = $("ios_minWarn");
@@ -6046,18 +6003,13 @@ function kiemNguongIos() {
   const min = parseInt($("ios_minVersionCode").value, 10) || 0;
   warn.style.display = min > 0 && min > (parseInt($("ios_versionCode").value, 10) || 0) ? "block" : "none";
 }
-
-
 // ==========================================
 // OTA ECDSA P-256 Web Crypto Auto-Signing
 // ==========================================
-
 const OTA_PRIV_KEY_STORAGE = "geely_ota_priv_key_pem";
-
 function getStoredOtaPrivateKey() {
   return window._otaPrivKeyPem || "";
 }
-
 function setStoredOtaPrivateKey(pem) {
   pem = (pem || "").trim();
   window._otaPrivKeyPem = pem;
@@ -6067,7 +6019,6 @@ function setStoredOtaPrivateKey(pem) {
   } catch (e) {}
   updateOtaKeyStatusUI();
 }
-
 function updateOtaKeyStatusUI() {
   const pem = getStoredOtaPrivateKey();
   const badge = $("otaKeyBadge");
@@ -6086,14 +6037,12 @@ function updateOtaKeyStatusUI() {
     if (btnForget) btnForget.style.display = "none";
   }
 }
-
 function forgetOtaKey() {
   if (confirm("Xoá khoá riêng OTA khỏi bộ nhớ phiên làm việc?")) {
     setStoredOtaPrivateKey("");
     alert("Đã xoá khoá riêng khỏi bộ nhớ.");
   }
 }
-
 function handleOtaKeyFile(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
@@ -6111,7 +6060,6 @@ function handleOtaKeyFile(event) {
   reader.readAsText(file);
   event.target.value = "";
 }
-
 function promptPasteOtaKey() {
   const val = prompt("Dán nội dung khoá riêng private key ECDSA (bắt đầu bằng -----BEGIN ... PRIVATE KEY-----):");
   if (!val) return;
@@ -6123,22 +6071,18 @@ function promptPasteOtaKey() {
   alert("✅ Đã nạp thành công khoá riêng OTA vào bộ nhớ RAM!\nWeb sẽ tự động ký 1-click trong phiên làm việc này.");
   doManualAutoSign(true);
 }
-
 function openOtaUnsignedModal() {
   const mask = $("otaUnsignedMask");
   if (mask) mask.style.display = "flex";
 }
-
 function closeOtaUnsignedModal() {
   const mask = $("otaUnsignedMask");
   if (mask) mask.style.display = "none";
 }
-
 function confirmSaveUnsigned() {
   closeOtaUnsignedModal();
   saveAppUpdateConfig(true);
 }
-
 function handleOtaKeyModalFileInput(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
@@ -6157,7 +6101,6 @@ function handleOtaKeyModalFileInput(event) {
   reader.readAsText(file);
   event.target.value = "";
 }
-
 // Canonical JSON generation matching scripts/lib/ota_canonical.py
 function canonicalJsonString(obj) {
   if (obj === null || typeof obj !== "object") {
@@ -6170,7 +6113,6 @@ function canonicalJsonString(obj) {
   const pairs = keys.map(k => JSON.stringify(k) + ":" + canonicalJsonString(obj[k]));
   return "{" + pairs.join(",") + "}";
 }
-
 function stripMeta(cfg) {
   const c = JSON.parse(JSON.stringify(cfg));
   delete c.version;
@@ -6178,12 +6120,10 @@ function stripMeta(cfg) {
   delete c.payload_sig;
   return c;
 }
-
 function getCanonicalOtaPayload(cfg) {
   return canonicalJsonString(stripMeta(cfg));
 }
-
-// Convert IEEE P1363 (64 bytes: r || s) signature to ASN.1 DER format (compatible with OpenSSL & Java SHA256withECDSA)
+// Convert IEEE P1363 (64 bytes: r || s) signature to ASN.1 DER format
 function p1363ToDer(sig) {
   let r = Array.from(sig.slice(0, 32));
   let s = Array.from(sig.slice(32, 64));
@@ -6194,7 +6134,6 @@ function p1363ToDer(sig) {
   const len = r.length + s.length + 4;
   return new Uint8Array([0x30, len, 0x02, r.length, ...r, 0x02, s.length, ...s]);
 }
-
 function pemToDer(pem) {
   const cleanBase64 = (pem || "")
     .split(/\r?\n/)
@@ -6209,7 +6148,6 @@ function pemToDer(pem) {
   }
   return bytes;
 }
-
 function base64url(bytes) {
   let binary = "";
   for (let i = 0; i < bytes.byteLength; i++) {
@@ -6217,7 +6155,6 @@ function base64url(bytes) {
   }
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-
 function bytesToBase64(bytes) {
   let binary = "";
   for (let i = 0; i < bytes.byteLength; i++) {
@@ -6225,7 +6162,6 @@ function bytesToBase64(bytes) {
   }
   return btoa(binary);
 }
-
 async function importEcPrivateKey(pemStr) {
   const der = pemToDer(pemStr);
   const subtle = window.crypto.subtle;
@@ -6271,7 +6207,6 @@ async function importEcPrivateKey(pemStr) {
     );
   }
 }
-
 async function signOtaPayload(cfg) {
   const pem = getStoredOtaPrivateKey();
   if (!pem) return null;
@@ -6290,7 +6225,6 @@ async function signOtaPayload(cfg) {
     payload_sig: sigB64
   };
 }
-
 async function doManualAutoSign(silent) {
   syncFormToConfig();
   const pem = getStoredOtaPrivateKey();
@@ -6310,7 +6244,6 @@ async function doManualAutoSign(silent) {
     alert("❌ Lỗi khi ký: " + (e.message || e));
   }
 }
-
 function copyTerminalSignCommand() {
   const cmd = 'export OTA_SIGN_KEY="$(cat ~/.config/geely-ota/ota_private.pem)" && ./scripts/ota/ota-sign-config.sh ~/Downloads/ota_config_to_sign.json';
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -6320,7 +6253,6 @@ function copyTerminalSignCommand() {
     prompt("Copy lệnh dưới đây để chạy trong Terminal:", cmd);
   }
 }
-
 function downloadJsonForSigning() {
   syncFormToConfig();
   const cfg = stripMeta(window._appUpdateConfig);
@@ -6332,20 +6264,15 @@ function downloadJsonForSigning() {
   a.click();
   URL.revokeObjectURL(url);
 }
-
 async function saveAppUpdateConfig(allowUnsigned) {
   const btn = $("btnSaveFu");
   const msg = $("fuStatusMsg");
-
   if (!window._appUpdateConfigLoaded) {
     return alert("❌ Chưa tải xong cấu hình hiện tại từ máy chủ (hoặc tải lỗi). Không thể lưu đè vì sẽ làm mất dữ liệu của các kênh khác.\n\nVui lòng làm mới trang (F5) để thử lại.");
   }
-
   syncFormToConfig();
-
   const car = fuNode("car");
   const phone = fuNode("phone");
-
   if (!car.latestVersionName || !car.versionCode || !car.downloadUrl) {
     alert("❌ Vui lòng nhập đầy đủ Tên version, Mã build và Link tải APK cho Đầu xe (CarConnect).");
     switchFuApp("car");
@@ -6365,7 +6292,6 @@ async function saveAppUpdateConfig(allowUnsigned) {
       return;
     }
   }
-
   if (!phone.latestVersionName || !phone.versionCode || !phone.downloadUrl) {
     alert("❌ Vui lòng nhập đầy đủ Tên version, Mã build và Link tải APK cho Điện thoại (PhoneConnect).");
     switchFuApp("phone");
@@ -6376,7 +6302,6 @@ async function saveAppUpdateConfig(allowUnsigned) {
     switchFuApp("phone");
     return;
   }
-
   // Nếu đã nạp khoá riêng: luôn luôn tự động ký lại cấu hình mới nhất từ form (tránh stale signature)
   let sigBlock = ($("otaSignatureBlock").value || "").trim();
   if (getStoredOtaPrivateKey()) {
@@ -6393,7 +6318,6 @@ async function saveAppUpdateConfig(allowUnsigned) {
       return;
     }
   }
-
   let p_payload_raw = null;
   let p_payload_sig = null;
   if (sigBlock) {
@@ -6418,9 +6342,7 @@ async function saveAppUpdateConfig(allowUnsigned) {
       return;
     }
   }
-
   const currentVer = window._appUpdateConfig.version || 1;
-  
   const currentKeys = Object.keys(window._appUpdateConfig).filter(k => k !== 'version');
   const savingKeys = currentKeys.join(", ");
   const serverKeys = window._appUpdateConfigServerKeys || [];
@@ -6430,7 +6352,6 @@ async function saveAppUpdateConfig(allowUnsigned) {
     warningMsg = "⚠️ CẢNH BÁO NGUY HIỂM: Cấu hình chuẩn bị lưu đang THIẾU các khóa sau so với máy chủ: " + missingKeys.join(", ") + ".\n" +
                  "Nếu tiếp tục lưu, các khóa này SẼ BỊ XOÁ MẤT khỏi máy chủ!\n\n";
   }
-  
   if (!confirm("Xác nhận lưu cấu hình Cập nhật & Ép nâng cấp lên Supabase?\n\n" +
       warningMsg +
       (sigBlock ? "Chữ ký OTA: CÓ (payload_raw + payload_sig từ scripts/ota/ota-sign-config.sh).\n\n" : "Chữ ký OTA: KHÔNG — client 1.1.1+ sẽ từ chối cấu hình này.\n\n") +
@@ -6441,10 +6362,8 @@ async function saveAppUpdateConfig(allowUnsigned) {
       "Cả Đầu xe và Điện thoại chạy đúng nhánh đó sẽ nhận chỉ thị nâng cấp mới ngay lập tức.")) {
     return;
   }
-
   btn.disabled = true;
   showMsg(msg, "", "⏳ Đang lưu cấu hình lên Supabase...");
-
   try {
     const res = await api("/rest/v1/rpc/admin_save_app_update_config", {
       method: "POST",
@@ -6463,8 +6382,8 @@ async function saveAppUpdateConfig(allowUnsigned) {
       }
       throw new Error((out && out.reason) || "Máy chủ từ chối lưu");
     }
-
     window._appUpdateConfig.version = out.version;
+    dismissStickyBar();
     $("fuVersionBadge").textContent = "v" + out.version;
     showMsg(msg, "ok", "🎉 ĐÃ LƯU THÀNH CÔNG! Phiên bản cấu hình: v" + out.version);
     alert("🎉 Thành công!\n\nĐã lưu cấu hình cập nhật bản v" + out.version + " lên Supabase.\nĐầu xe và Điện thoại sẽ áp dụng ngay tức thì.");
@@ -6475,7 +6394,6 @@ async function saveAppUpdateConfig(allowUnsigned) {
     btn.disabled = false;
   }
 }
-
 // Modal Thêm / Sửa Force Update Rule
 function openAddForceRuleModal(app) {
   window._editingRuleApp = app;
@@ -6483,7 +6401,6 @@ function openAddForceRuleModal(app) {
   const appLabel = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
   $("fuRuleModalTitle").textContent = "Thêm quy tắc ép nâng cấp — " + appLabel;
   $("fuRuleModalSubtitle").textContent = "Chỉ định các bản cũ bị ép và phiên bản đích cần nâng cấp.";
-  
   $("fuRuleMatchCodes").value = "";
   $("fuRuleMinCode").value = "";
   $("fuTargetTypeLatest").checked = true;
@@ -6494,23 +6411,18 @@ function openAddForceRuleModal(app) {
   $("fuRuleTargetSha").value = "";
   $("fuRuleMessage").value = "";
   $("fuRuleReleaseNotes").value = "";
-
   $("fuRuleModalMask").style.display = "flex";
 }
-
 function openEditForceRuleModal(app, idx) {
   window._editingRuleApp = app;
   window._editingRuleIndex = idx;
   const appLabel = app === "car" ? "Đầu xe (CarConnect)" : app === "ios" ? "iPhone (iOS)" : "Điện thoại Android (PhoneConnect)";
   const rule = window._appUpdateConfig[fuKey(app)].forceRules[idx];
   if (!rule) return;
-
   $("fuRuleModalTitle").textContent = "Sửa quy tắc ép nâng cấp #" + (idx + 1) + " — " + appLabel;
   $("fuRuleModalSubtitle").textContent = "Chỉ định các bản cũ bị ép và phiên bản đích cần nâng cấp.";
-
   $("fuRuleMatchCodes").value = (rule.matchVersionCodes || []).join(", ");
   $("fuRuleMinCode").value = (rule.minVersionCode != null && rule.minVersionCode > 0) ? rule.minVersionCode : "";
-
   const isCustom = Boolean(rule.targetVersionCode && rule.targetVersionCode > 0);
   if (isCustom) {
     $("fuTargetTypeCustom").checked = true;
@@ -6527,51 +6439,40 @@ function openEditForceRuleModal(app, idx) {
     $("fuRuleTargetUrl").value = "";
     $("fuRuleTargetSha").value = "";
   }
-
   $("fuRuleMessage").value = rule.message || "";
   $("fuRuleReleaseNotes").value = rule.releaseNotes || "";
-
   $("fuRuleModalMask").style.display = "flex";
 }
-
 function closeFuRuleModal() {
   $("fuRuleModalMask").style.display = "none";
   window._editingRuleIndex = -1;
 }
-
 function onFuTargetTypeChange() {
   const isCustom = $("fuTargetTypeCustom").checked;
   $("fuCustomTargetFields").style.display = isCustom ? "block" : "none";
 }
-
 function saveFuRule() {
   const app = window._editingRuleApp;
   const rawCodes = ($("fuRuleMatchCodes").value || "").trim();
   const rawMin = ($("fuRuleMinCode").value || "").trim();
-
   const matchVersionCodes = rawCodes.split(",")
     .map(s => parseInt(s.trim(), 10))
     .filter(n => !isNaN(n) && n > 0);
-
   const minVersionCode = rawMin ? parseInt(rawMin, 10) : null;
-
   if (!matchVersionCodes.length && (!minVersionCode || minVersionCode <= 0)) {
     alert("❌ Vui lòng nhập ít nhất một điều kiện: Danh sách mã build cũ (matchVersionCodes) hoặc Mã build nhỏ hơn (minVersionCode).");
     return;
   }
-
   const isCustom = $("fuTargetTypeCustom").checked;
   let targetVersionCode = 0;
   let targetVersionName = "";
   let targetDownloadUrl = "";
   let targetSha256 = "";
-
   if (isCustom) {
     targetVersionCode = parseInt($("fuRuleTargetCode").value, 10) || 0;
     targetVersionName = ($("fuRuleTargetName").value || "").trim();
     targetDownloadUrl = ($("fuRuleTargetUrl").value || "").trim();
     targetSha256 = ($("fuRuleTargetSha").value || "").trim();
-
     if (targetVersionCode <= 0) {
       alert("❌ Với phiên bản đích chỉ định, Mã build đích (targetVersionCode) phải là số nguyên > 0.");
       return;
@@ -6593,10 +6494,8 @@ function saveFuRule() {
       }
     }
   }
-
   const message = ($("fuRuleMessage").value || "").trim();
   const releaseNotes = ($("fuRuleReleaseNotes").value || "").trim();
-
   const ruleObj = {
     matchVersionCodes: matchVersionCodes,
     minVersionCode: (minVersionCode && minVersionCode > 0) ? minVersionCode : null,
@@ -6607,21 +6506,17 @@ function saveFuRule() {
     releaseNotes: releaseNotes,
     message: message
   };
-
   fuNode(app);
-
   if (window._editingRuleIndex >= 0) {
     window._appUpdateConfig[fuKey(app)].forceRules[window._editingRuleIndex] = ruleObj;
   } else {
     window._appUpdateConfig[fuKey(app)].forceRules.push(ruleObj);
   }
-
   closeFuRuleModal();
   renderRulesTable(app);
   updateKnownVersionsStatus(app);
   showMsg($("fuStatusMsg"), "ok", "Đã cập nhật quy tắc trong bộ nhớ. Nhớ bấm \"💾 Lưu lên Supabase\" để áp dụng.");
 }
-
 function deleteForceRule(app, idx) {
   if (!confirm("Xác nhận xoá quy tắc ép nâng cấp #" + (idx + 1) + "?")) return;
   window._appUpdateConfig[fuKey(app)].forceRules.splice(idx, 1);
@@ -6629,7 +6524,201 @@ function deleteForceRule(app, idx) {
   updateKnownVersionsStatus(app);
   showMsg($("fuStatusMsg"), "ok", "Đã xoá quy tắc. Nhớ bấm \"💾 Lưu lên Supabase\" để áp dụng.");
 }
-
+function updateQuickCockpit() {
+  const cfg = window._appUpdateConfig || {};
+  const fleet = window._fleetVersions || { car: {}, phone: {}, ios: {} };
+  const car = cfg[fuKey("car")] || {};
+  const carVer = car.latestVersionName ? ("v" + car.latestVersionName + " (" + (car.versionCode || 0) + ")") : "--";
+  if ($("quickCarVerText")) $("quickCarVerText").textContent = carVer;
+  const carMin = parseInt(car.minVersionCode, 10) || 0;
+  const carRulesCount = (car.forceRules || []).length;
+  let carBadgeText = "⚪ Tự nguyện", carBadgeClass = "tag off";
+  if (carMin > 0) { carBadgeText = "🚨 Ép toàn bộ (< " + carMin + ")"; carBadgeClass = "tag danger"; }
+  else if (carRulesCount > 0) { carBadgeText = "⚠️ Ép " + carRulesCount + " bản"; carBadgeClass = "tag car"; }
+  if ($("quickCarStatusBadge")) { $("quickCarStatusBadge").textContent = carBadgeText; $("quickCarStatusBadge").className = carBadgeClass; }
+  const carFleetTotal = Object.values(fleet.car || {}).reduce((a, b) => a + b, 0);
+  if ($("quickCarFleetText")) $("quickCarFleetText").textContent = "Đội xe: " + (carFleetTotal > 0 ? (carFleetTotal + " xe hoạt động") : "chưa có xe online");
+  const phone = cfg[fuKey("phone")] || {};
+  const phoneVer = phone.latestVersionName ? ("v" + phone.latestVersionName + " (" + (phone.versionCode || 0) + ")") : "--";
+  if ($("quickPhoneVerText")) $("quickPhoneVerText").textContent = phoneVer;
+  const phoneMin = parseInt(phone.minVersionCode, 10) || 0;
+  const phoneRulesCount = (phone.forceRules || []).length;
+  let phoneBadgeText = "⚪ Tự nguyện", phoneBadgeClass = "tag off";
+  if (phoneMin > 0) { phoneBadgeText = "🚨 Ép toàn bộ (< " + phoneMin + ")"; phoneBadgeClass = "tag danger"; }
+  else if (phoneRulesCount > 0) { phoneBadgeText = "⚠️ Ép " + phoneRulesCount + " bản"; phoneBadgeClass = "tag phone"; }
+  if ($("quickPhoneStatusBadge")) { $("quickPhoneStatusBadge").textContent = phoneBadgeText; $("quickPhoneStatusBadge").className = phoneBadgeClass; }
+  const phoneFleetTotal = Object.values(fleet.phone || {}).reduce((a, b) => a + b, 0);
+  if ($("quickPhoneFleetText")) $("quickPhoneFleetText").textContent = "Đội máy: " + (phoneFleetTotal > 0 ? (phoneFleetTotal + " máy hoạt động") : "chưa có máy online");
+  const ios = cfg[fuKey("ios")] || {};
+  const iosVer = ios.latestVersionName ? ("v" + ios.latestVersionName + " (" + (ios.versionCode || 0) + ")") : "--";
+  if ($("quickIosVerText")) $("quickIosVerText").textContent = iosVer;
+  const iosMin = parseInt(ios.minVersionCode, 10) || 0;
+  let iosBadgeText = "⚪ Tự nguyện", iosBadgeClass = "tag off";
+  if (iosMin > 0) { iosBadgeText = "🚨 Ép toàn bộ (< " + iosMin + ")"; iosBadgeClass = "tag danger"; }
+  if ($("quickIosStatusBadge")) { $("quickIosStatusBadge").textContent = iosBadgeText; $("quickIosStatusBadge").className = iosBadgeClass; }
+  const iosFleetTotal = Object.values(fleet.ios || {}).reduce((a, b) => a + b, 0);
+  if ($("quickIosFleetText")) $("quickIosFleetText").textContent = "Đội máy: " + (iosFleetTotal > 0 ? (iosFleetTotal + " máy") : "App Store");
+}
+function quickForceAllOldVersions() {
+  syncFormToConfig();
+  const car = fuNode("car"), phone = fuNode("phone");
+  const carTarget = parseInt($("car_versionCode") ? $("car_versionCode").value : 0, 10) || parseInt(car.versionCode, 10) || 0;
+  const phoneTarget = parseInt($("phone_versionCode") ? $("phone_versionCode").value : 0, 10) || parseInt(phone.versionCode, 10) || 0;
+  if (!carTarget && !phoneTarget) { alert("❌ Chưa có mã build bản mới nhất để đặt ngưỡng ép."); return; }
+  if (carTarget) { car.minVersionCode = carTarget; if ($("car_minVersionCode")) $("car_minVersionCode").value = carTarget; updateKnownVersionsStatus("car"); }
+  if (phoneTarget) { phone.minVersionCode = phoneTarget; if ($("phone_minVersionCode")) $("phone_minVersionCode").value = phoneTarget; updateKnownVersionsStatus("phone"); }
+  updateQuickCockpit();
+  showStickySaveBar();
+  showMsg($("fuStatusMsg"), "ok", "🚨 ĐÃ BẬT ÉP TOÀN BỘ (1-Click): Xe < " + carTarget + " và ĐT < " + phoneTarget + " sẽ bị ép cập nhật! Bấm '💾 Lưu lên Supabase' để áp dụng.");
+}
+function quickDisableForceAll() {
+  syncFormToConfig();
+  const car = fuNode("car"), phone = fuNode("phone");
+  car.minVersionCode = 0; if ($("car_minVersionCode")) $("car_minVersionCode").value = 0; updateKnownVersionsStatus("car");
+  phone.minVersionCode = 0; if ($("phone_minVersionCode")) $("phone_minVersionCode").value = 0; updateKnownVersionsStatus("phone");
+  updateQuickCockpit();
+  showStickySaveBar();
+  showMsg($("fuStatusMsg"), "ok", "⚪ ĐÃ TẮT ÉP TOÀN BỘ (1-Click): Đầu xe & Điện thoại được phép cập nhật tự nguyện. Nhớ bấm '💾 Lưu lên Supabase' để áp dụng.");
+}
+async function fetchLatestFromGitHubArtifacts() {
+  const msg = $("fuStatusMsg");
+  showMsg(msg, "", "⏳ Đang kết nối GitHub lấy thông tin bản phát hành mới nhất...");
+  try {
+    const res = await fetch("https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/apps.json");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    let updatedCount = 0;
+    const isDev = window._fuEnv === "dev";
+    const carData = isDev ? (data.carDev || data.car) : (data.car || data);
+    if (carData) {
+      if ($("car_latestVersionName")) $("car_latestVersionName").value = carData.latestVersionName || carData.versionName || "";
+      if ($("car_versionCode")) $("car_versionCode").value = carData.versionCode || "";
+      if ($("car_downloadUrl")) $("car_downloadUrl").value = carData.downloadUrl || carData.url || "";
+      if ($("car_sha256")) $("car_sha256").value = carData.sha256 || "";
+      if ($("car_releaseNotes")) $("car_releaseNotes").value = carData.releaseNotes || "";
+      updatedCount++;
+    }
+    const phoneData = isDev ? (data.phoneDev || data.phone) : (data.phone || data);
+    if (phoneData) {
+      if ($("phone_latestVersionName")) $("phone_latestVersionName").value = phoneData.latestVersionName || phoneData.versionName || "";
+      if ($("phone_versionCode")) $("phone_versionCode").value = phoneData.versionCode || "";
+      if ($("phone_downloadUrl")) $("phone_downloadUrl").value = phoneData.downloadUrl || phoneData.url || "";
+      if ($("phone_sha256")) $("phone_sha256").value = phoneData.sha256 || "";
+      if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phoneData.releaseNotes || "";
+      updatedCount++;
+    }
+    const iosData = isDev ? (data.phoneIosDev || data.phoneIos) : data.phoneIos;
+    if (iosData && $("ios_latestVersionName") && !$("ios_latestVersionName").value) {
+      if ($("ios_latestVersionName")) $("ios_latestVersionName").value = iosData.latestVersionName || "";
+      if ($("ios_versionCode")) $("ios_versionCode").value = iosData.versionCode || "";
+      if ($("ios_releaseNotes")) $("ios_releaseNotes").value = iosData.releaseNotes || "";
+    }
+    syncFormToConfig();
+    updateKnownVersionsStatus("car");
+    updateKnownVersionsStatus("phone");
+    updateQuickCockpit();
+    showStickySaveBar();
+    showMsg(msg, "ok", "🎉 ĐÃ NẠP BẢN MỚI TỪ GITHUB (1-Click): Đã tự động điền Tên version, Mã build, Link tải và SHA-256 chuẩn cho " + updatedCount + " ứng dụng! Kiểm tra rồi bấm '💾 Lưu lên Supabase'.");
+  } catch (e) {
+    showMsg(msg, "err", "Lỗi lấy dữ liệu từ GitHub: " + e.message);
+  }
+}
+function quickSyncCarToPhone() {
+  const name = ($("car_latestVersionName").value || "").trim();
+  const code = ($("car_versionCode").value || "").trim();
+  const notes = ($("car_releaseNotes").value || "").trim();
+  if (!name || !code) { alert("❌ Vui lòng nhập Tên version và Mã build của Đầu xe trước khi đồng bộ."); return; }
+  $("phone_latestVersionName").value = name;
+  $("phone_versionCode").value = code;
+  $("phone_downloadUrl").value = "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk";
+  if (notes && !$("phone_releaseNotes").value) $("phone_releaseNotes").value = notes;
+  syncFormToConfig();
+  updateKnownVersionsStatus("phone");
+  showStickySaveBar();
+  showMsg($("fuStatusMsg"), "ok", "🔗 Đã đồng bộ phiên bản v" + name + " (" + code + ") sang Điện thoại Android! Nhớ bấm '💾 Lưu lên Supabase'.");
+}
+function quickSyncPhoneToCar() {
+  const name = ($("phone_latestVersionName").value || "").trim();
+  const code = ($("phone_versionCode").value || "").trim();
+  const notes = ($("phone_releaseNotes").value || "").trim();
+  if (!name || !code) { alert("❌ Vui lòng nhập Tên version và Mã build của Điện thoại trước khi đồng bộ."); return; }
+  $("car_latestVersionName").value = name;
+  $("car_versionCode").value = code;
+  $("car_downloadUrl").value = "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk";
+  if (notes && !$("car_releaseNotes").value) $("car_releaseNotes").value = notes;
+  syncFormToConfig();
+  updateKnownVersionsStatus("car");
+  showStickySaveBar();
+  showMsg($("fuStatusMsg"), "ok", "🔗 Đã đồng bộ phiên bản v" + name + " (" + code + ") từ Điện thoại sang Đầu xe! Nhớ bấm '💾 Lưu lên Supabase'.");
+}
+function onVersionNameInput(app) {
+  const nameInput = $(app + "_latestVersionName");
+  const codeInput = $(app + "_versionCode");
+  if (!nameInput || !codeInput) return;
+  const name = nameInput.value.trim();
+  const calculated = versionCodeFromName(name);
+  if (calculated && (!codeInput.value || codeInput.value === "0" || codeInput.dataset.autofilled === "true")) {
+    codeInput.value = calculated;
+    codeInput.dataset.autofilled = "true";
+  }
+  syncFormToConfig();
+  updateKnownVersionsStatus(app);
+  showStickySaveBar();
+}
+function toggleInlineForceRule(app, oldBuild, oldVer) {
+  const node = fuNode(app);
+  if (!Array.isArray(node.forceRules)) node.forceRules = [];
+  const minVer = parseInt(node.minVersionCode, 10) || 0;
+  if (minVer > 0 && oldBuild < minVer) {
+    if (confirm("Bản build " + oldBuild + " đang bị ép bởi 'Ngưỡng tối thiểu toàn bộ' (minVersionCode = " + minVer + ").\n\nBạn có muốn tắt ngưỡng toàn bộ (về 0) để quản lý ép theo từng bản không?")) {
+      setQuickMinVersionCode(app, 0);
+      return;
+    }
+    return;
+  }
+  let existingRuleIdx = -1;
+  for (let i = 0; i < node.forceRules.length; i++) {
+    const r = node.forceRules[i];
+    if (Array.isArray(r.matchVersionCodes) && r.matchVersionCodes.includes(oldBuild)) {
+      existingRuleIdx = i;
+      break;
+    }
+  }
+  if (existingRuleIdx >= 0) {
+    const r = node.forceRules[existingRuleIdx];
+    r.matchVersionCodes = r.matchVersionCodes.filter(c => c !== oldBuild);
+    if (r.matchVersionCodes.length === 0 && (!r.minVersionCode || r.minVersionCode <= 0)) {
+      node.forceRules.splice(existingRuleIdx, 1);
+    }
+    showMsg($("fuStatusMsg"), "ok", "⚪ Đã gỡ bỏ ép nâng cấp cho bản build " + oldBuild + ". Nhớ bấm '💾 Lưu lên Supabase'!");
+  } else {
+    const targetCode = parseInt(node.versionCode, 10) || 0;
+    const targetName = node.latestVersionName || "";
+    const appLabel = app === "car" ? "CarConnect" : app === "ios" ? "PhoneConnect iOS" : "PhoneConnect";
+    node.forceRules.push({
+      matchVersionCodes: [oldBuild],
+      minVersionCode: null,
+      targetVersionCode: 0,
+      targetVersionName: "",
+      targetDownloadUrl: "",
+      targetSha256: "",
+      releaseNotes: "",
+      message: appLabel + " phiên bản cũ (Build " + oldBuild + ") bắt buộc nâng cấp lên v" + (targetName || 'mới nhất') + " để tiếp tục sử dụng an toàn."
+    });
+    showMsg($("fuStatusMsg"), "ok", "🚨 ĐÃ BẬT ÉP (1-Click): Bản build " + oldBuild + " bắt buộc nâng cấp lên v" + (targetName || targetCode) + ". Nhớ bấm '💾 Lưu lên Supabase'!");
+  }
+  renderRulesTable(app);
+  updateKnownVersionsStatus(app);
+  showStickySaveBar();
+}
+function showStickySaveBar() {
+  const bar = $("fuStickySaveBar");
+  if (bar) bar.style.display = "flex";
+}
+function dismissStickyBar() {
+  const bar = $("fuStickySaveBar");
+  if (bar) bar.style.display = "none";
+}
 function exportUpdateJson(app) {
   syncFormToConfig();
   let jsonString = "";
@@ -6666,7 +6755,6 @@ function exportUpdateJson(app) {
     };
     jsonString = JSON.stringify(obj, null, 2);
   }
-
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(jsonString).then(() => {
       alert("📋 Đã sao chép cấu hình JSON (" + (app === "car" ? "update.json" : "apps.json") + ") vào Clipboard!\n\nBạn có thể dán vào file tương ứng trên GitHub artifacts nếu cần.");
@@ -6677,21 +6765,18 @@ function exportUpdateJson(app) {
     prompt("Sao chép JSON dưới đây:", jsonString);
   }
 }
-
 // Khởi tạo giao diện cấu hình OTA ngay lập tức khi nạp script
 try {
   renderAppUpdateConfigUI();
 } catch (e) {
   console.warn("Lỗi render OTA mặc định:", e);
 }
-
 // ==================== QUẢN LÝ ĐẠI LÝ CẤP 1 (RESELLERS) ====================
 window._resellersList = [];
 window._resellerTransactions = [];
 window._resellerActiveFilter = 'all';
 window._showAllPins = false;
 window._revealedPinIds = new Set();
-
 async function copyToClipboard(text, successMessage = "Đã sao chép vào bộ nhớ tạm!") {
   try {
     if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -6702,33 +6787,27 @@ async function copyToClipboard(text, successMessage = "Đã sao chép vào bộ 
   } catch (e) {}
   prompt("Sao chép văn bản dưới đây:", text);
 }
-
 function openResellerPortalLink() {
   const url = window.location.origin + "/reseller";
   window.open(url, "_blank");
 }
-
 function copyResellerPortalUrl() {
   const url = "https://ex2.toanmobile.com/reseller";
   copyToClipboard(url, "Đã sao chép đường link Cổng Đại Lý: " + url);
 }
-
 async function loadResellersData() {
   const tbody = $("resellersTableBody");
   if (tbody) {
     tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
   }
-
   try {
     const res = await api("/rest/v1/rpc/admin_get_resellers", { method: "POST", body: "{}" });
     const data = await res.json();
     if (!data.success) {
       throw new Error(data.message || "Không thể tải danh sách đại lý");
     }
-
     window._resellersList = data.resellers || [];
     window._resellerTransactions = data.recent_transactions || [];
-
     // Cập nhật thẻ KPI
     let totalRev = 0;
     let totalBal = 0;
@@ -6737,33 +6816,28 @@ async function loadResellersData() {
     let suspendedCount = 0;
     let lockedPinCount = 0;
     let lowBalCount = 0;
-
     const now = new Date();
     window._resellersList.forEach(r => {
       totalRev += (Number(r.total_revenue_contributed) || 0);
       totalBal += (Number(r.wallet_balance) || 0);
       totalKeys += (Number(r.total_sales_count) || 0);
-
       if (r.status === "active") activeCount++;
       if (r.status === "suspended") suspendedCount++;
       const isLockedPin = (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
       if (isLockedPin) lockedPinCount++;
       if (Number(r.wallet_balance) <= 0) lowBalCount++;
     });
-
     if ($("resellerKpiCount")) $("resellerKpiCount").textContent = window._resellersList.length;
     if ($("resellerKpiTotalRevenue")) $("resellerKpiTotalRevenue").textContent = totalRev.toLocaleString("vi-VN") + " ₫";
     if ($("resellerKpiKeysCount")) $("resellerKpiKeysCount").textContent = totalKeys;
     if ($("resellerKpiTotalBalance")) $("resellerKpiTotalBalance").textContent = totalBal.toLocaleString("vi-VN") + " ₫";
     if ($("resellerCountBadge")) $("resellerCountBadge").textContent = window._resellersList.length + " đại lý";
-
     // Cập nhật số lượng trên các nút filter
     if ($("fltResellerAllCount")) $("fltResellerAllCount").textContent = window._resellersList.length;
     if ($("fltResellerActiveCount")) $("fltResellerActiveCount").textContent = activeCount;
     if ($("fltResellerSuspendedCount")) $("fltResellerSuspendedCount").textContent = suspendedCount;
     if ($("fltResellerLockedPinCount")) $("fltResellerLockedPinCount").textContent = lockedPinCount;
     if ($("fltResellerLowBalCount")) $("fltResellerLowBalCount").textContent = lowBalCount;
-
     applyResellerFilter();
     renderResellerTransactionsTable(window._resellerTransactions);
   } catch (err) {
@@ -6773,7 +6847,6 @@ async function loadResellersData() {
     }
   }
 }
-
 function setResellerFilter(filterType) {
   window._resellerActiveFilter = filterType;
   const buttons = [
@@ -6796,16 +6869,13 @@ function setResellerFilter(filterType) {
   });
   applyResellerFilter();
 }
-
 function filterResellersTable() {
   applyResellerFilter();
 }
-
 function applyResellerFilter() {
   const q = ($("resellerSearchInput") ? $("resellerSearchInput").value : "").trim().toLowerCase();
   const filterType = window._resellerActiveFilter || "all";
   const now = new Date();
-
   const filtered = (window._resellersList || []).filter(r => {
     // 1. Text Search match
     const textMatch = !q || (
@@ -6818,7 +6888,6 @@ function applyResellerFilter() {
       (r.bank_account || "").toLowerCase().includes(q)
     );
     if (!textMatch) return false;
-
     // 2. Filter Tab match
     if (filterType === "active") return r.status === "active";
     if (filterType === "suspended") return r.status === "suspended";
@@ -6828,15 +6897,12 @@ function applyResellerFilter() {
     if (filterType === "low_balance") return Number(r.wallet_balance) <= 0;
     return true;
   });
-
   renderResellersTable(filtered);
 }
-
 function toggleShowAllPins(checked) {
   window._showAllPins = Boolean(checked);
   applyResellerFilter();
 }
-
 function togglePinRow(resellerId) {
   if (window._revealedPinIds.has(resellerId)) {
     window._revealedPinIds.delete(resellerId);
@@ -6845,16 +6911,13 @@ function togglePinRow(resellerId) {
   }
   applyResellerFilter();
 }
-
 function renderResellersTable(list) {
   const tbody = $("resellersTableBody");
   if (!tbody) return;
-
   if (!list || !list.length) {
     tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:24px">Không tìm thấy đại lý nào phù hợp.</td></tr>';
     return;
   }
-
   const now = new Date();
   let html = "";
   list.forEach(r => {
@@ -6862,23 +6925,19 @@ function renderResellersTable(list) {
     const statusBadge = isSuspended
       ? '<span class="tag off">⛔ Đang khoá</span>'
       : '<span class="tag on">🟢 Hoạt động</span>';
-
     const balanceFormatted = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
     const creditFormatted = r.credit_limit > 0
       ? '<div class="hint" style="color:var(--warn); font-size:11px">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>'
       : '';
-
     const discLifetime = (r.discount_rate_lifetime || 35) + "%";
     const discYearly = (r.discount_rate_yearly || 40) + "%";
     const commRenewal = (r.renewal_commission_percent || 25) + "%";
-
     // PIN Display
     const pin = r.pin_plain || "123456";
     const isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
     const pinDisplay = isRevealed
       ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>`
       : `<span class="mono" style="font-size:13px; color:var(--muted); letter-spacing:2px">••••••</span>`;
-
     // Khóa do gõ sai PIN (Brute-force)
     let pinLockHtml = "";
     if (r.locked_until && new Date(r.locked_until) > now) {
@@ -6888,13 +6947,11 @@ function renderResellersTable(list) {
     } else if (r.failed_attempts > 0) {
       pinLockHtml = `<div style="margin-top:3px; font-size:11px; color:#d97706">⚠️ Sai ${r.failed_attempts}/5 lần <button type="button" class="small ghost" style="padding:0 4px; font-size:10px" onclick="adminUnlockReseller('${esc(r.id)}')">Xoá</button></div>`;
     }
-
     // Bank Account Info
     let bankInfoHtml = "";
     if (r.bank_account) {
       bankInfoHtml = `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" onclick="copyToClipboard('${esc(r.bank_account)}', 'Đã chép số tài khoản ${esc(r.bank_account)}')" title="Sao chép STK">📋</span></div>`;
     }
-
     html += '<tr>' +
       '<td>' +
         '<div class="mono" style="font-weight:800; font-size:13px; color:var(--accent)">' + esc(r.reseller_code) + '</div>' +
@@ -6948,19 +7005,15 @@ function renderResellersTable(list) {
       '</td>' +
     '</tr>';
   });
-
   tbody.innerHTML = html;
 }
-
 function renderResellerTransactionsTable(transList) {
   const tbody = $("resellerTransTableBody");
   if (!tbody) return;
-
   if (!transList || !transList.length) {
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--muted); padding:20px">Chưa có giao dịch biến động ví nào gần đây.</td></tr>';
     return;
   }
-
   let html = "";
   transList.forEach(t => {
     const isPositive = t.amount > 0;
@@ -6968,7 +7021,6 @@ function renderResellerTransactionsTable(transList) {
     const amtSign = isPositive ? "+" : "";
     const amtStr = amtSign + Number(t.amount).toLocaleString("vi-VN") + " ₫";
     const balAfter = Number(t.balance_after).toLocaleString("vi-VN") + " ₫";
-
     let typeBadge = "";
     if (t.type === "topup") {
       typeBadge = '<span class="tag on">💰 Nạp tiền</span>';
@@ -6981,9 +7033,7 @@ function renderResellerTransactionsTable(transList) {
     } else {
       typeBadge = '<span class="tag off">' + esc(t.type) + '</span>';
     }
-
     const timeStr = t.created_at ? new Date(t.created_at).toLocaleString("vi-VN") : "—";
-
     html += '<tr>' +
       '<td class="hint">' + esc(timeStr) + '</td>' +
       '<td><b>' + esc(t.reseller_code || "") + '</b><div class="hint">' + esc(t.garage_name || "") + '</div></td>' +
@@ -6994,43 +7044,34 @@ function renderResellerTransactionsTable(transList) {
       '<td>' + esc(t.note || "—") + '</td>' +
     '</tr>';
   });
-
   tbody.innerHTML = html;
 }
-
 // Modal Reset PIN
 function openResetPinModal(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!r) return;
-
   $("resetPinResellerId").value = r.id;
   $("resetPinResellerDesc").textContent = `Đại lý: ${r.reseller_code} — ${r.garage_name} (${r.owner_name} • ${r.phone})`;
   $("resetPinNewValue").value = r.pin_plain || "123456";
   $("resellerResetPinMask").style.display = "flex";
 }
-
 function closeResetPinModal() {
   $("resellerResetPinMask").style.display = "none";
 }
-
 function generateRandomResetPin() {
   const pin = Math.floor(100000 + Math.random() * 900000).toString();
   $("resetPinNewValue").value = pin;
 }
-
 async function submitResetPin() {
   const resellerId = $("resetPinResellerId").value;
   const newPin = ($("resetPinNewValue").value || "").trim();
-
   if (!/^\d{6}$/.test(newPin)) {
     alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9).");
     return;
   }
-
   const btn = $("btnConfirmResetPin");
   btn.disabled = true;
   btn.textContent = "Đang lưu...";
-
   try {
     const res = await api("/rest/v1/rpc/admin_reset_reseller_pin", {
       method: "POST",
@@ -7041,10 +7082,8 @@ async function submitResetPin() {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Không thể đặt lại mã PIN");
-
     closeResetPinModal();
     await loadResellersData();
-
     if (confirm(`🎉 Đã đặt lại mã PIN thành công thành: ${newPin}\n\nBạn có muốn sao chép tin nhắn bàn giao tài khoản kèm mã PIN mới này để gửi Zalo cho đại lý không?`)) {
       copyResellerHandoverMessage(resellerId);
     }
@@ -7055,13 +7094,11 @@ async function submitResetPin() {
     btn.textContent = "Xác nhận đổi PIN";
   }
 }
-
 async function adminUnlockReseller(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) {
     return;
   }
-
   try {
     const res = await api("/rest/v1/rpc/admin_unlock_reseller", {
       method: "POST",
@@ -7069,37 +7106,31 @@ async function adminUnlockReseller(resellerId) {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi mở khóa");
-
     alert("✅ Đã mở khóa tài khoản đại lý thành công!");
     loadResellersData();
   } catch (err) {
     alert("❌ Lỗi: " + err.message);
   }
 }
-
 // Modal Xem Key Đã Cấp Của Đại Lý
 async function openResellerLicensesModal(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!r) return;
-
   $("resellerLicensesTitle").textContent = `🔑 Key Đã Cấp: ${r.reseller_code} — ${r.garage_name}`;
   $("resellerLicensesSubtitle").textContent = `Chủ gara: ${r.owner_name} • SĐT: ${r.phone} • Tổng đã xuất: ${r.total_sales_count || 0} key`;
   const tbody = $("resellerLicensesTableBody");
   tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải danh sách key từ Supabase...</td></tr>';
   $("resellerLicensesMask").style.display = "flex";
-
   try {
     const res = await api("/rest/v1/rpc/admin_get_reseller_licenses", {
       method: "POST",
       body: JSON.stringify({ p_reseller_id: resellerId })
     });
     const list = await res.json();
-
     if (!list || !list.length) {
       tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Đại lý này chưa cấp bản quyền nào.</td></tr>';
       return;
     }
-
     let html = "";
     list.forEach(lic => {
       const timeStr = lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "—";
@@ -7107,15 +7138,12 @@ async function openResellerLicensesModal(resellerId) {
       const roleBadge = isTrial
         ? '<span class="tag off">Dùng thử</span>'
         : (lic.role === "yearly" ? '<span class="tag on" style="background:#0284c7; color:#fff">1 Năm</span>' : '<span class="tag car">Trọn đời</span>');
-
       const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined
         ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫"
         : "—";
-
       const activeBadge = lic.active
         ? (lic.activation_count > 0 ? '<span class="tag on">Đã kích hoạt</span>' : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>')
         : '<span class="tag off">Đã thu hồi</span>';
-
       html += '<tr>' +
         '<td class="hint">' + esc(timeStr) + '</td>' +
         '<td>' +
@@ -7131,26 +7159,21 @@ async function openResellerLicensesModal(resellerId) {
         '<td style="text-align:center">' + activeBadge + '</td>' +
       '</tr>';
     });
-
     tbody.innerHTML = html;
   } catch (err) {
     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
   }
 }
-
 function closeResellerLicensesModal() {
   $("resellerLicensesMask").style.display = "none";
 }
-
 // Bàn giao tài khoản gửi Zalo
 function copyResellerHandoverMessage(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!r) return;
-
   const pin = r.pin_plain || "123456";
   const portalUrl = "https://ex2.toanmobile.com/reseller";
   const balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
-
   const msg =
 `🚗 THÔNG TIN TÀI KHOẢN CỔNG ĐẠI LÝ CẤP 1 — GEELY EX2
 ━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -7171,36 +7194,27 @@ function copyResellerHandoverMessage(resellerId) {
 2. Chọn gói bản quyền, nhập Tên & SĐT khách hàng rồi bấm "XUẤT MÃ BẢN QUYỀN".
 3. Nhập mã key 16 số vừa tạo lên màn hình xe Geely EX2 (hoặc gửi Zalo cho khách).
 ⚠️ Quý đại lý vui lòng bảo mật mã PIN. Chúc đại lý kinh doanh thuận lợi!`;
-
   copyToClipboard(msg, `Đã sao chép nội dung bàn giao tài khoản của ${r.reseller_code}! Bạn có thể dán ngay vào Zalo gửi cho thợ.`);
 }
-
 function copyResellerPin(pin) {
   copyToClipboard(pin, "Đã chép mã PIN: " + pin);
 }
-
 function unlockResellerAccount(resellerId) {
   return adminUnlockReseller(resellerId);
 }
-
 function viewResellerLicenses(resellerId) {
   return openResellerLicensesModal(resellerId);
 }
-
 // Modal Thêm / Sửa Đại lý
 function updateResellerModalProfitPreview() {
   const lifeDisc = parseInt($("resellerModalDiscLife").value, 10) || 35;
   const yearDisc = parseInt($("resellerModalDiscYear").value, 10) || 40;
-
   const lifeRetail = 2950000;
   const yearRetail = 1950000;
-
   const lifeWholesale = Math.round(lifeRetail * (100 - lifeDisc) / 100);
   const lifeProfit = lifeRetail - lifeWholesale;
-
   const yearWholesale = Math.round(yearRetail * (100 - yearDisc) / 100);
   const yearProfit = yearRetail - yearWholesale;
-
   const previewEl = $("resellerModalProfitPreview");
   if (previewEl) {
     previewEl.innerHTML =
@@ -7208,7 +7222,6 @@ function updateResellerModalProfitPreview() {
       `• <b>Gói 1 Năm (${yearRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${yearWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${yearProfit.toLocaleString("vi-VN")}₫/xe</b>`;
   }
 }
-
 function onResellerBankSelectChange(selectEl) {
   const val = selectEl.value;
   const binInput = $("resellerModalBankBin");
@@ -7221,7 +7234,6 @@ function onResellerBankSelectChange(selectEl) {
     binInput.value = val;
   }
 }
-
 function toggleModalPinVisibility() {
   const pinInput = $("resellerModalPin");
   const btn = $("btnToggleModalPin");
@@ -7234,14 +7246,12 @@ function toggleModalPinVisibility() {
     if (btn) btn.textContent = "👁️ Xem";
   }
 }
-
 function generateRandomModalPin() {
   const pin = Math.floor(100000 + Math.random() * 900000).toString();
   $("resellerModalPin").value = pin;
   $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
 }
-
 function openCreateResellerModal() {
   $("resellerModalTitle").textContent = "➕ Thêm Đại Lý Cấp 1 Mới";
   $("resellerEditId").value = "";
@@ -7258,22 +7268,18 @@ function openCreateResellerModal() {
   $("resellerModalCredit").value = "0";
   $("resellerModalDiscLife").value = "35";
   $("resellerModalDiscYear").value = "40";
-
   $("resellerModalBankSelect").value = "970436";
   $("resellerModalBankBin").value = "970436";
   $("resellerModalBankBin").style.display = "none";
   $("resellerModalBankAcc").value = "";
   $("resellerModalBankName").value = "";
   $("resellerModalNote").value = "";
-
   updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
-
 function openEditResellerModal(id) {
   const r = (window._resellersList || []).find(item => item.id === id);
   if (!r) return;
-
   $("resellerModalTitle").textContent = "✏️ Sửa Thông Tin Đại Lý: " + r.reseller_code;
   $("resellerEditId").value = r.id;
   $("resellerModalCode").value = r.reseller_code;
@@ -7289,7 +7295,6 @@ function openEditResellerModal(id) {
   $("resellerModalCredit").value = r.credit_limit || 0;
   $("resellerModalDiscLife").value = r.discount_rate_lifetime || 35;
   $("resellerModalDiscYear").value = r.discount_rate_yearly || 40;
-
   const bin = r.bank_bin || "970436";
   const select = $("resellerModalBankSelect");
   let foundOption = false;
@@ -7308,25 +7313,20 @@ function openEditResellerModal(id) {
     $("resellerModalBankBin").style.display = "none";
     $("resellerModalBankBin").value = bin;
   }
-
   $("resellerModalBankAcc").value = r.bank_account || "";
   $("resellerModalBankName").value = r.bank_account_name || "";
   $("resellerModalNote").value = r.note || "";
-
   updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
-
 function closeResellerModal() {
   $("resellerModalMask").style.display = "none";
 }
-
 async function saveReseller() {
   const isEdit = !!$("resellerEditId").value;
   const btn = $("btnSaveReseller");
   btn.disabled = true;
   btn.textContent = "Đang lưu...";
-
   try {
     const pinVal = $("resellerModalPin").value.trim();
     if (pinVal && !/^\d{6}$/.test(pinVal)) {
@@ -7335,7 +7335,6 @@ async function saveReseller() {
       btn.textContent = "Lưu thông tin";
       return;
     }
-
     if (isEdit) {
       const payload = {
         p_id: $("resellerEditId").value,
@@ -7352,14 +7351,12 @@ async function saveReseller() {
         p_bank_account_name: $("resellerModalBankName").value.trim(),
         p_note: $("resellerModalNote").value.trim()
       };
-
       const res = await api("/rest/v1/rpc/admin_update_reseller", {
         method: "POST",
         body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể cập nhật đại lý");
-
       alert("✅ Đã cập nhật thông tin đại lý thành công!");
     } else {
       const payload = {
@@ -7377,24 +7374,20 @@ async function saveReseller() {
         p_bank_account_name: $("resellerModalBankName").value.trim(),
         p_note: $("resellerModalNote").value.trim()
       };
-
       if (!payload.p_code || !payload.p_phone || !payload.p_name || !payload.p_garage_name) {
         alert("❌ Vui lòng điền đủ: Mã đại lý, SĐT, Tên chủ và Tên Gara.");
         btn.disabled = false;
         btn.textContent = "Lưu thông tin";
         return;
       }
-
       const res = await api("/rest/v1/rpc/admin_create_reseller", {
         method: "POST",
         body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể tạo đại lý");
-
       alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + (payload.p_pin || '123456') + ")!");
     }
-
     closeResellerModal();
     loadResellersData();
   } catch (err) {
@@ -7404,11 +7397,9 @@ async function saveReseller() {
     btn.textContent = "Lưu thông tin";
   }
 }
-
 function openTopupModal(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!r) return;
-
   $("topupResellerId").value = r.id;
   $("topupResellerTitle").textContent = r.reseller_code + " — " + r.garage_name + " (" + r.owner_name + ")";
   $("topupResellerCurrentBalance").textContent = "Số dư hiện tại: " + (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
@@ -7416,25 +7407,20 @@ function openTopupModal(resellerId) {
   $("topupNote").value = "";
   $("resellerTopupMask").style.display = "flex";
 }
-
 function closeTopupModal() {
   $("resellerTopupMask").style.display = "none";
 }
-
 async function submitTopup() {
   const resellerId = $("topupResellerId").value;
   const amount = parseInt($("topupAmount").value, 10);
   const note = $("topupNote").value.trim();
-
   if (!amount || amount <= 0) {
     alert("❌ Vui lòng nhập số tiền nạp hợp lệ (> 0 VND)");
     return;
   }
-
   const btn = $("btnSubmitTopup");
   btn.disabled = true;
   btn.textContent = "Đang nạp...";
-
   try {
     const res = await api("/rest/v1/rpc/admin_topup_reseller", {
       method: "POST",
@@ -7446,7 +7432,6 @@ async function submitTopup() {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Không thể nạp tiền ví");
-
     alert("🎉 Đã nạp thành công +" + amount.toLocaleString("vi-VN") + " ₫ vào ví đại lý!");
     closeTopupModal();
     loadResellersData();
@@ -7457,14 +7442,12 @@ async function submitTopup() {
     btn.textContent = "Xác nhận nạp tiền";
   }
 }
-
 async function toggleResellerStatus(resellerId, newStatus) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   const actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN" : "MỞ HOẠT ĐỘNG LẠI";
   if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) {
     return;
   }
-
   try {
     const res = await api("/rest/v1/rpc/admin_toggle_reseller_status", {
       method: "POST",
@@ -7475,7 +7458,6 @@ async function toggleResellerStatus(resellerId, newStatus) {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi thay đổi trạng thái");
-
     alert("✅ Đã cập nhật trạng thái đại lý thành công!");
     loadResellersData();
   } catch (err) {
@@ -7485,4 +7467,3 @@ async function toggleResellerStatus(resellerId, newStatus) {
 </script>
 </body>
 </html>
-
