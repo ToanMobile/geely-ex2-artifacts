@@ -61,13 +61,26 @@
   label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none; cursor: pointer; white-space: nowrap; }
   label.chk input { width: auto; }
   input:disabled, select:disabled, textarea:disabled { background: var(--bg) !important; color: var(--muted) !important; border: 1px dashed var(--border) !important; cursor: not-allowed !important; opacity: .75; }
-  .license-type-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 4px 0 8px; }
-  @media (max-width: 680px) { .license-type-selector { grid-template-columns: 1fr; } }
-  .type-card { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; }
-  .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); } .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); } .type-card.trial-active { border-color: #2563eb; background: rgba(37,99,235,.08); box-shadow: 0 0 0 1px #2563eb; }
-  .type-card input[type=radio] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; } .type-card.trial-active input[type=radio] { accent-color: #2563eb; }
-  .type-card-icon { font-size: 24px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; } .type-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; } .type-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
-  .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; } .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); } .type-card-badge.trial { background: #dbeafe; color: #1e40af; } body.dark .type-card-badge.trial { background: #1e3a8a; color: #93c5fd; } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; }
+  .license-type-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 4px 0 8px; }
+  @media (max-width: 960px) { .license-type-selector { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .license-type-selector { grid-template-columns: 1fr; } }
+  .type-card { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; }
+  .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); }
+  .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); }
+  .type-card.lifetime-active { border-color: #10b981; background: rgba(16,185,129,.08); box-shadow: 0 0 0 1px #10b981; } .type-card.yearly-active { border-color: #0284c7; background: rgba(2,132,199,.08); box-shadow: 0 0 0 1px #0284c7; }
+  .type-card.quarter-active { border-color: #9333ea; background: rgba(147,51,234,.08); box-shadow: 0 0 0 1px #9333ea; } .type-card.trial-active { border-color: #d97706; background: rgba(217,119,6,.08); box-shadow: 0 0 0 1px #d97706; }
+  .type-card input[type=radio] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
+  .type-card.lifetime-active input[type=radio] { accent-color: #10b981; } .type-card.yearly-active input[type=radio] { accent-color: #0284c7; } .type-card.quarter-active input[type=radio] { accent-color: #9333ea; } .type-card.trial-active input[type=radio] { accent-color: #d97706; }
+  .type-card-icon { font-size: 22px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; }
+  .type-card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+  .type-card-title { font-size: 13px; font-weight: 700; color: var(--text); } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+  .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; } .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); }
+  .type-card-badge.lifetime { background: #dcfce7; color: #15803d; border: 1px solid #86efac; } body.dark .type-card-badge.lifetime { background: #064e3b; color: #86efac; border-color: #059669; }
+  .type-card-badge.yearly { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; } body.dark .type-card-badge.yearly { background: #0c4a6e; color: #7dd3fc; border-color: #0284c7; }
+  .type-card-badge.quarter { background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; } body.dark .type-card-badge.quarter { background: #581c87; color: #d8b4fe; border-color: #9333ea; }
+  .type-card-badge.trial { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; } body.dark .type-card-badge.trial { background: #451a03; color: #fcd34d; border-color: #d97706; }
+  .btn-pkg-pill { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all .15s; font-weight: 600; }
+  .btn-pkg-pill:hover { border-color: var(--accent); color: var(--accent); } .btn-pkg-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
   .field-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; transition: all .2s; }
   .field-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
   .field-card-label { font-size: 12px; font-weight: 600; color: var(--text); }
@@ -248,28 +261,43 @@
             <label style="font-size:13px; font-weight:700; color:var(--text); margin:0;">Loại mã cấp *</label>
             <span style="font-size:11px; color:var(--muted);">Chọn chế độ cấp quyền phù hợp</span>
           </div>
+          <!-- 4 GÓI BẢN QUYỀN CHIA RÕ RÀNG TRỰC QUAN -->
           <div class="license-type-selector">
-            <div class="type-card active" id="cardOfficial" onclick="selectLicenseType('official')">
-              <input type="radio" name="licenseType" id="typeOfficial" value="official" checked onchange="syncTrialUI()">
+            <div class="type-card lifetime-active active" id="cardLifetime" onclick="selectLicensePackage('lifetime')">
+              <input type="radio" name="licensePackage" id="pkgLifetime" value="lifetime" checked>
               <div class="type-card-icon">👑</div>
-              <div class="type-card-body">
-                <div class="type-card-head">
-                  <span class="type-card-title">Bản Chính Thức</span>
-                  <span class="type-card-badge official">Tiêu chuẩn</span>
-                </div>
-                <div class="type-card-desc">Cấp dài hạn (vĩnh viễn / năm), mở 100% tính năng xe & máy tính.</div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Gói Vĩnh Viễn</span><span class="type-card-badge lifetime">2.950.000 ₫</span></div><div class="type-card-desc">Cấp vĩnh viễn trọn đời, mở 100% tính năng xe & PC, không thời hạn.</div></div>
+            </div>
+            <div class="type-card" id="cardYearly" onclick="selectLicensePackage('yearly')">
+              <input type="radio" name="licensePackage" id="pkgYearly" value="yearly">
+              <div class="type-card-icon">📅</div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Gói 1 Năm</span><span class="type-card-badge yearly">1.170.000 ₫</span></div><div class="type-card-desc">Thời hạn 12 tháng (365 ngày), khóa giá ưu đãi khi gia hạn 5 năm.</div></div>
+            </div>
+            <div class="type-card" id="cardQuarter" onclick="selectLicensePackage('quarter')">
+              <input type="radio" name="licensePackage" id="pkgQuarter" value="quarter">
+              <div class="type-card-icon">⚡</div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Gói 3 Tháng</span><span class="type-card-badge quarter">⚡ 495.000 ₫</span></div><div class="type-card-desc">Thời hạn 90 ngày với giá 495k, mở 100% tính năng xe & PCConnect.</div></div>
+            </div>
+            <div class="type-card" id="cardTrial" onclick="selectLicensePackage('trial')">
+              <input type="radio" name="licensePackage" id="pkgTrial" value="trial">
+              <div class="type-card-icon">⏱️</div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Dùng Thử</span><span class="type-card-badge trial">0 ₫ Miễn phí</span></div><div class="type-card-desc">Dùng thử 1–14 ngày (chuẩn 3 ngày), 1 Xe (0 PC), tự hoàn nguyên.</div></div>
+            </div>
+          </div>
+          <!-- Hidden inputs for backward compatibility -->
+          <input type="radio" name="licenseType" id="typeOfficial" value="official" checked style="display:none">
+          <input type="radio" name="licenseType" id="typeTrial" value="trial" style="display:none">
+          <!-- Package Summary Banner -->
+          <div id="pkgSummaryBanner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:linear-gradient(135deg, rgba(16,185,129,0.06), rgba(37,99,235,0.06)); border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; margin:2px 0 10px;">
+            <div>
+              <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--muted); letter-spacing:0.5px">Gói bản quyền đang thiết lập:</div>
+              <div style="font-size:15px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; margin-top:2px;">
+                <span id="pkgSummaryIcon" style="font-size:18px;">👑</span><span id="pkgSummaryTitle">Gói Vĩnh Viễn (Lifetime)</span><span class="type-card-badge lifetime" id="pkgSummaryBadge">2.950.000 ₫</span>
               </div>
             </div>
-            <div class="type-card" id="cardTrial" onclick="selectLicenseType('trial')">
-              <input type="radio" name="licenseType" id="typeTrial" value="trial" onchange="syncTrialUI()">
-              <div class="type-card-icon">⏱️</div>
-              <div class="type-card-body">
-                <div class="type-card-head">
-                  <span class="type-card-title">Mã Dùng Thử (Trial)</span>
-                  <span class="type-card-badge trial">Trải nghiệm</span>
-                </div>
-                <div class="type-card-desc">Dùng thử 1–14 ngày, khóa Cài nhanh, giới hạn 1 Xe (0 PC), tự hoàn nguyên.</div>
-              </div>
+            <div style="text-align:right">
+              <div style="font-size:11px; color:var(--muted)">Thời hạn hiệu lực:</div>
+              <div id="pkgSummaryExpiry" style="font-size:13px; font-weight:800; color:var(--accent)">👑 Vĩnh viễn (Không thời hạn)</div>
             </div>
           </div>
         </div>
@@ -346,11 +374,16 @@
         </div>
         <div class="field-card" id="fcExpires">
           <div class="field-card-head"><label class="field-card-label">Hạn dùng</label><span id="badgeExpires"></span></div>
-          <div style="display:flex; gap:8px; align-items:center;">
+          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
             <input id="expiresAt" type="date" oninput="markExpiryTouched()" style="flex:1;">
-            <label class="chk" style="margin:0;"><input type="checkbox" id="expiresForever" onchange="markExpiryTouched()"> Vĩnh viễn</label>
+            <label class="chk" style="margin:0;"><input type="checkbox" id="expiresForever" onchange="onExpiresForeverChange()"> Vĩnh viễn</label>
           </div>
-          <div class="hint" id="expiryHint"></div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
+            <button type="button" class="btn-pkg-pill" id="pillPkgQuarter" onclick="setExpiryPreset('quarter')">⚡ 3 Tháng (495k)</button>
+            <button type="button" class="btn-pkg-pill" id="pillPkgYearly" onclick="setExpiryPreset('yearly')">📅 1 Năm (12 tháng)</button>
+            <button type="button" class="btn-pkg-pill active" id="pillPkgLifetime" onclick="setExpiryPreset('lifetime')">👑 Vĩnh viễn</button>
+          </div>
+          <div class="hint" id="expiryHint" style="margin-top:4px;"></div>
         </div>
       </div>
       <div style="margin-top:14px">
@@ -369,6 +402,9 @@
         </div>
         <div class="filters">
           <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button>
+          <button class="ghost small" data-filter="lifetime" onclick="setFilter('lifetime', this)">👑 Vĩnh viễn</button>
+          <button class="ghost small" data-filter="yearly" onclick="setFilter('yearly', this)">📅 1 Năm</button>
+          <button class="ghost small" data-filter="quarter" onclick="setFilter('quarter', this)">⚡ 3 Tháng</button>
           <button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button>
           <button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button>
           <button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button>
@@ -382,18 +418,7 @@
       <div id="listMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="mainTable">
-          <thead><tr>
-            <th>Mã</th>
-            <th>Chủ mã</th>
-            <th>SĐT (Zalo)</th>
-            <th>Quyền</th>
-            <th>Thiết bị đang dùng</th>
-            <th>Lượt kích hoạt</th>
-            <th>Ghi chú</th>
-            <th>Hạn dùng</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
-          </tr></thead>
+          <thead><tr><th>Mã</th><th>Chủ mã</th><th>SĐT (Zalo)</th><th>Quyền</th><th>Thiết bị đang dùng</th><th>Lượt kích hoạt</th><th>Ghi chú</th><th>Hạn dùng</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -435,16 +460,7 @@
       <div id="qiStatusMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:12px">
         <table id="qiTable">
-          <thead><tr>
-            <th style="width:28px" title="Kéo-thả để đổi vị trí"></th>
-            <th style="width:64px; text-align:center" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th>
-            <th>Tên hiển thị</th>
-            <th>Package Name (ID)</th>
-            <th>Link tải APK</th>
-            <th>Cài trước (Prereq)</th>
-            <th>Thiết bị (Targets)</th>
-            <th style="text-align:right">Thao tác</th>
-          </tr></thead>
+          <thead><tr><th style="width:28px" title="Kéo-thả để đổi vị trí"></th><th style="width:64px; text-align:center" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th><th>Tên hiển thị</th><th>Package Name (ID)</th><th>Link tải APK</th><th>Cài trước (Prereq)</th><th>Thiết bị (Targets)</th><th style="text-align:right">Thao tác</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -468,6 +484,11 @@
           <div>
             <label>Giá Gốc Gói Theo Năm (VND) *</label>
             <input id="salesYearlyPrice" type="number" step="10000" placeholder="1950000" oninput="updateSalesPricePreview()">
+          </div>
+          <div>
+            <label>Giá Gói 3 Tháng (VND) *</label>
+            <input id="salesThreeMonthsPrice" type="number" step="10000" placeholder="495000" value="495000">
+            <div class="hint" style="color:var(--ok); font-weight:600">→ Gói 3 Tháng: 495.000 ₫</div>
           </div>
           <div>
             <label>% Giảm Khuyến Mãi Năm *</label>
@@ -495,6 +516,14 @@
               <option value="lower">Lấy mức thấp hơn (Khách luôn có lợi nhất)</option>
             </select>
             <div class="hint">Quy định số tiền khách cũ phải trả khi gia hạn nếu sau này tăng giá gốc.</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:12px;">
+          <b style="color:var(--text);">📋 Tóm tắt 3 Gói Bán hàng:</b>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;">
+            <span>👑 <b>Vĩnh viễn:</b> 2.950.000 ₫</span>
+            <span>📅 <b>1 Năm:</b> 1.170.000 ₫ (giá gốc 1.950k)</span>
+            <span>⚡ <b>3 Tháng:</b> 495.000 ₫</span>
           </div>
         </div>
         <div style="margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap">
@@ -619,17 +648,7 @@
       <div id="salesOrdersMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="salesOrdersTable">
-          <thead><tr>
-            <th>Mã đơn</th>
-            <th>Thời gian</th>
-            <th>Khách hàng</th>
-            <th>SĐT (Zalo)</th>
-            <th>Gói</th>
-            <th style="text-align:right">Số tiền</th>
-            <th>Trạng thái</th>
-            <th>Mã License đã cấp</th>
-            <th style="text-align:right">Thao tác</th>
-          </tr></thead>
+          <thead><tr><th>Mã đơn</th><th>Thời gian</th><th>Khách hàng</th><th>SĐT (Zalo)</th><th>Gói</th><th style="text-align:right">Số tiền</th><th>Trạng thái</th><th>Mã License đã cấp</th><th style="text-align:right">Thao tác</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -642,14 +661,7 @@
         <div class="hint">Khách hàng được hưởng giá ưu đãi khi gia hạn trong vòng 5 năm.</div>
         <div style="overflow-x:auto; margin-top:10px">
           <table id="priceLocksTable" style="min-width:650px">
-            <thead><tr>
-              <th>SĐT</th>
-              <th>Tên khách</th>
-              <th>Mức đã khoá</th>
-              <th>Ngày đăng ký đầu</th>
-              <th>Hạn khoá giá</th>
-              <th>Trạng thái</th>
-            </tr></thead>
+            <thead><tr><th>SĐT</th><th>Tên khách</th><th>Mức đã khoá</th><th>Ngày đăng ký đầu</th><th>Hạn khoá giá</th><th>Trạng thái</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -660,12 +672,7 @@
         <div class="hint">Ghi nhận toàn bộ thao tác thay đổi giá, duyệt đơn, huỷ đơn và hoàn tiền.</div>
         <div style="overflow-x:auto; margin-top:10px">
           <table id="salesLogsTable" style="min-width:750px">
-            <thead><tr>
-              <th style="width:140px">Thời gian</th>
-              <th style="width:140px">Người thực hiện</th>
-              <th style="width:170px">Hành động</th>
-              <th style="min-width:300px">Ghi chú</th>
-            </tr></thead>
+            <thead><tr><th style="width:140px">Thời gian</th><th style="width:140px">Người thực hiện</th><th style="width:170px">Hành động</th><th style="min-width:300px">Ghi chú</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -862,17 +869,7 @@
           <!-- Bảng danh sách chi phí -->
           <div style="overflow-x:auto">
             <table style="width:100%; margin-top:0">
-              <thead>
-                <tr>
-                  <th style="text-align:left">Khoản chi</th>
-                  <th style="text-align:left">Ghi chú</th>
-                  <th style="text-align:center; width:110px">Nghiệm thu / Bill</th>
-                  <th style="text-align:right">Số tiền (₫)</th>
-                  <th style="text-align:center; width:130px">Trạng thái</th>
-                  <th style="text-align:center; width:120px">Ngày ghi nhận</th>
-                  <th style="text-align:right; width:50px">Xoá</th>
-                </tr>
-              </thead>
+              <thead><tr><th style="text-align:left">Khoản chi</th><th style="text-align:left">Ghi chú</th><th style="text-align:center; width:110px">Nghiệm thu / Bill</th><th style="text-align:right">Số tiền (₫)</th><th style="text-align:center; width:130px">Trạng thái</th><th style="text-align:center; width:120px">Ngày ghi nhận</th><th style="text-align:right; width:50px">Xoá</th></tr></thead>
               <tbody id="psExpenseTableBody">
                 <tr><td colspan="7" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
               </tbody>
@@ -986,14 +983,7 @@
         <div class="hint">Danh sách khách cần CSKH liên hệ nhắc gia hạn để giữ quyền lợi khoá giá 5 năm.</div>
         <div style="overflow-x:auto; margin-top:10px">
           <table id="anExpiringTable">
-            <thead><tr>
-              <th>Khách hàng</th>
-              <th>SĐT Zalo</th>
-              <th>Gói</th>
-              <th>Hết hạn</th>
-              <th>Còn lại</th>
-              <th style="text-align:right">Liên hệ</th>
-            </tr></thead>
+            <thead><tr><th>Khách hàng</th><th>SĐT Zalo</th><th>Gói</th><th>Hết hạn</th><th>Còn lại</th><th style="text-align:right">Liên hệ</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -1132,15 +1122,7 @@
             <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình RPC máy chủ; các bản cũ là phiên bản <b>đội xe đang chạy thật</b>. Bấm <b>⚡ Ép</b> để chặn bản đó và buộc lên bản đích <span id="car_targetHint" class="mono"></span>.</div>
             <div style="overflow-x:auto">
               <table>
-                <thead>
-                  <tr>
-                    <th style="width:170px">Phiên bản</th>
-                    <th style="width:90px; text-align:center">Mã build</th>
-                    <th style="width:160px">Thiết bị đang chạy</th>
-                    <th style="width:180px">Trạng thái hiện tại</th>
-                    <th style="text-align:right; min-width:195px">Thao tác</th>
-                  </tr>
-                </thead>
+                <thead><tr><th style="width:170px">Phiên bản</th><th style="width:90px; text-align:center">Mã build</th><th style="width:160px">Thiết bị đang chạy</th><th style="width:180px">Trạng thái hiện tại</th><th style="text-align:right; min-width:195px">Thao tác</th></tr></thead>
                 <tbody id="car_knownVersionsBody">
                   <tr><td colspan="5" class="hint">Đang tải cấu hình từ máy chủ…</td></tr>
                 </tbody>
@@ -1174,14 +1156,7 @@
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="car_rulesTable">
-                <thead><tr>
-                  <th style="width:40px; text-align:center">#</th>
-                  <th style="width:140px">Bản cũ bị ép (Điều kiện)</th>
-                  <th style="width:160px">Phiên bản đích cần ép lên</th>
-                  <th>Thông điệp ép hiển thị</th>
-                  <th style="width:170px">Link APK đích</th>
-                  <th style="text-align:right; width:120px">Thao tác</th>
-                </tr></thead>
+                <thead><tr><th style="width:40px; text-align:center">#</th><th style="width:140px">Bản cũ bị ép (Điều kiện)</th><th style="width:160px">Phiên bản đích cần ép lên</th><th>Thông điệp ép hiển thị</th><th style="width:170px">Link APK đích</th><th style="text-align:right; width:120px">Thao tác</th></tr></thead>
                 <tbody></tbody>
               </table>
             </div>
@@ -1211,15 +1186,7 @@
             <div class="hint" style="margin:0 0 10px">Bản đích lấy từ cấu hình trên máy chủ. Bấm <b>⚡ Ép</b> để buộc lên <span id="phone_targetHint" class="mono"></span>.</div>
             <div style="overflow-x:auto">
               <table>
-                <thead>
-                  <tr>
-                    <th style="width:170px">Phiên bản</th>
-                    <th style="width:90px; text-align:center">Mã build</th>
-                    <th style="width:160px">Thiết bị đang chạy</th>
-                    <th style="width:180px">Trạng thái hiện tại</th>
-                    <th style="text-align:right; min-width:195px">Thao tác</th>
-                  </tr>
-                </thead>
+                <thead><tr><th style="width:170px">Phiên bản</th><th style="width:90px; text-align:center">Mã build</th><th style="width:160px">Thiết bị đang chạy</th><th style="width:180px">Trạng thái hiện tại</th><th style="text-align:right; min-width:195px">Thao tác</th></tr></thead>
                 <tbody id="phone_knownVersionsBody">
                   <tr><td colspan="5" class="hint">Đang tải cấu hình từ máy chủ…</td></tr>
                 </tbody>
@@ -1253,14 +1220,7 @@
             <!-- Bảng các rule linh hoạt -->
             <div style="overflow-x:auto">
               <table id="phone_rulesTable">
-                <thead><tr>
-                  <th style="width:40px; text-align:center">#</th>
-                  <th style="width:140px">Bản cũ bị ép (Điều kiện)</th>
-                  <th style="width:160px">Phiên bản đích cần ép lên</th>
-                  <th>Thông điệp ép hiển thị</th>
-                  <th style="width:170px">Link APK đích</th>
-                  <th style="text-align:right; width:120px">Thao tác</th>
-                </tr></thead>
+                <thead><tr><th style="width:40px; text-align:center">#</th><th style="width:140px">Bản cũ bị ép (Điều kiện)</th><th style="width:160px">Phiên bản đích cần ép lên</th><th>Thông điệp ép hiển thị</th><th style="width:170px">Link APK đích</th><th style="text-align:right; width:120px">Thao tác</th></tr></thead>
                 <tbody></tbody>
               </table>
             </div>
@@ -1290,15 +1250,7 @@
             <div class="hint" style="margin:0 0 10px">Bản đích lấy từ App Store / cấu hình máy chủ. Bấm <b>⚡ Ép</b> để buộc lên <span id="ios_targetHint" class="mono"></span>.</div>
             <div style="overflow-x:auto">
               <table>
-                <thead>
-                  <tr>
-                    <th style="width:170px">Phiên bản</th>
-                    <th style="width:90px; text-align:center">Mã build</th>
-                    <th style="width:160px">Thiết bị đang chạy</th>
-                    <th style="width:180px">Trạng thái hiện tại</th>
-                    <th style="text-align:right; min-width:195px">Thao tác</th>
-                  </tr>
-                </thead>
+                <thead><tr><th style="width:170px">Phiên bản</th><th style="width:90px; text-align:center">Mã build</th><th style="width:160px">Thiết bị đang chạy</th><th style="width:180px">Trạng thái hiện tại</th><th style="text-align:right; min-width:195px">Thao tác</th></tr></thead>
                 <tbody id="ios_knownVersionsBody">
                   <tr><td colspan="5" class="hint">Đang tải cấu hình từ máy chủ…</td></tr>
                 </tbody>
@@ -1380,19 +1332,7 @@
       </div>
       <div style="overflow-x:auto">
         <table id="resellersTable">
-          <thead>
-            <tr>
-              <th style="width:110px">Mã ĐL</th>
-              <th style="min-width:200px">Đại lý / Gara</th>
-              <th style="width:130px">Số điện thoại</th>
-              <th style="width:140px; text-align:center">Mã PIN (6 số)</th>
-              <th style="width:140px">Chiết khấu (%)</th>
-              <th style="width:160px">Số dư ví / Hạn mức</th>
-              <th style="width:110px; text-align:center">Key đã cấp</th>
-              <th style="width:120px; text-align:center">Trạng thái</th>
-              <th style="width:240px; text-align:right">Thao tác</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:110px">Mã ĐL</th><th style="min-width:200px">Đại lý / Gara</th><th style="width:130px">Số điện thoại</th><th style="width:140px; text-align:center">Mã PIN (6 số)</th><th style="width:140px">Chiết khấu (%)</th><th style="width:160px">Số dư ví / Hạn mức</th><th style="width:110px; text-align:center">Key đã cấp</th><th style="width:120px; text-align:center">Trạng thái</th><th style="width:240px; text-align:right">Thao tác</th></tr></thead>
           <tbody id="resellersTableBody">
             <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">Đang tải dữ liệu đại lý...</td></tr>
           </tbody>
@@ -1404,17 +1344,7 @@
       <h2 style="font-size:15px; margin-bottom:10px; color:var(--text)">📜 Lịch sử Biến động Ví & Giao dịch Đại lý Gần đây</h2>
       <div style="overflow-x:auto">
         <table id="resellerTransTable">
-          <thead>
-            <tr>
-              <th style="width:150px">Thời gian</th>
-              <th style="width:120px">Đại lý</th>
-              <th style="width:140px">Loại GD</th>
-              <th style="width:140px; text-align:right">Biến động</th>
-              <th style="width:140px; text-align:right">Số dư sau</th>
-              <th style="width:150px">Tham chiếu</th>
-              <th>Ghi chú</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:150px">Thời gian</th><th style="width:120px">Đại lý</th><th style="width:140px">Loại GD</th><th style="width:140px; text-align:right">Biến động</th><th style="width:140px; text-align:right">Số dư sau</th><th style="width:150px">Tham chiếu</th><th>Ghi chú</th></tr></thead>
           <tbody id="resellerTransTableBody">
             <tr><td colspan="7" style="text-align:center; color:var(--muted); padding:20px">Chưa có giao dịch</td></tr>
           </tbody>
@@ -1573,16 +1503,7 @@
     <div id="devSummary" class="msg" style="margin-top:8px"></div>
     <div style="overflow-x:auto; margin-top:10px">
       <table id="devTable">
-        <thead><tr>
-          <th>Loại</th>
-          <th>Mã máy (machine_id)</th>
-          <th>Tên máy / Hệ điều hành</th>
-          <th>SĐT / IP lúc kích hoạt</th>
-          <th>Số lần mở</th>
-          <th>Lần đầu / Gần nhất</th>
-          <th>Trạng thái</th>
-          <th>Thao tác</th>
-        </tr></thead>
+        <thead><tr><th>Loại</th><th>Mã máy (machine_id)</th><th>Tên máy / Hệ điều hành</th><th>SĐT / IP lúc kích hoạt</th><th>Số lần mở</th><th>Lần đầu / Gần nhất</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -1593,15 +1514,7 @@
     </div>
     <div style="overflow-x:auto; margin-top:10px">
       <table id="actLogTable">
-        <thead><tr>
-          <th>#</th>
-          <th>Thời điểm</th>
-          <th>Kết quả</th>
-          <th>Loại</th>
-          <th>Tên máy / Hệ điều hành</th>
-          <th>Mã máy</th>
-          <th>SĐT / IP</th>
-        </tr></thead>
+        <thead><tr><th>#</th><th>Thời điểm</th><th>Kết quả</th><th>Loại</th><th>Tên máy / Hệ điều hành</th><th>Mã máy</th><th>SĐT / IP</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -1881,16 +1794,7 @@
       <div class="hint" id="resellerLicensesSubtitle">Danh sách tất cả bản quyền xe do đại lý xuất</div>
       <div style="overflow-x:auto; margin-top:14px; max-height:420px; overflow-y:auto">
         <table>
-          <thead>
-            <tr>
-              <th style="width:130px">Thời gian</th>
-              <th>Mã License Key</th>
-              <th>Khách hàng / SĐT</th>
-              <th style="width:110px">Gói</th>
-              <th style="text-align:right; width:120px">Giá sỉ trừ ví</th>
-              <th style="text-align:center; width:90px">Kích hoạt</th>
-            </tr>
-          </thead>
+          <thead><tr><th style="width:130px">Thời gian</th><th>Mã License Key</th><th>Khách hàng / SĐT</th><th style="width:110px">Gói</th><th style="text-align:right; width:120px">Giá sỉ trừ ví</th><th style="text-align:center; width:90px">Kích hoạt</th></tr></thead>
           <tbody id="resellerLicensesTableBody">
             <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px">Đang tải danh sách key...</td></tr>
           </tbody>
@@ -2418,18 +2322,55 @@ function defaultExpiry() {
 }
 function syncCreateExpiryUI() { $("expiresAt").disabled = $("expiresForever").checked; }
 function syncEditExpiryUI() { $("edExpires").disabled = $("edExpiresForever").checked; }
-function selectLicenseType(type) {
-  if (type === "official") { $("typeOfficial").checked = true; }
-  else { $("typeTrial").checked = true; }
+
+let currentPackageSelected = "lifetime"; // 'lifetime', 'yearly', 'quarter', 'trial'
+
+function selectLicensePackage(pkg) {
+  currentPackageSelected = pkg;
+  const isTrial = (pkg === "trial");
+  if ($("typeOfficial")) $("typeOfficial").checked = !isTrial;
+  if ($("typeTrial")) $("typeTrial").checked = isTrial;
+  const pkgMap = { lifetime: $("cardLifetime"), yearly: $("cardYearly"), quarter: $("cardQuarter"), trial: $("cardTrial") };
+  Object.keys(pkgMap).forEach(k => {
+    const el = pkgMap[k]; if (!el) return;
+    el.classList.remove("active", "lifetime-active", "yearly-active", "quarter-active", "trial-active");
+    const radio = el.querySelector("input[type=radio]"); if (radio) radio.checked = (k === pkg);
+    if (k === pkg) el.classList.add("active", k + "-active");
+  });
+  const pillMap = { lifetime: $("pillPkgLifetime"), yearly: $("pillPkgYearly"), quarter: $("pillPkgQuarter") };
+  Object.keys(pillMap).forEach(k => { if (pillMap[k]) pillMap[k].classList.toggle("active", k === pkg); });
+  const sIcon = $("pkgSummaryIcon"), sTitle = $("pkgSummaryTitle"), sBadge = $("pkgSummaryBadge"), sExp = $("pkgSummaryExpiry");
+  if (pkg === "lifetime") {
+    $("expiresForever").checked = true; $("expiresForever").disabled = false; $("expiresAt").disabled = true;
+    if (sIcon) sIcon.textContent = "👑"; if (sTitle) sTitle.textContent = "Gói Vĩnh Viễn (Lifetime)";
+    if (sBadge) { sBadge.textContent = "2.950.000 ₫"; sBadge.className = "type-card-badge lifetime"; }
+    if (sExp) sExp.textContent = "👑 Vĩnh viễn (Không thời hạn)";
+  } else if (pkg === "yearly") {
+    $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
+    const d = new Date(); d.setFullYear(d.getFullYear() + 1); $("expiresAt").value = toDateInput(d);
+    if (sIcon) sIcon.textContent = "📅"; if (sTitle) sTitle.textContent = "Gói 1 Năm (12 Tháng)";
+    if (sBadge) { sBadge.textContent = "1.170.000 ₫"; sBadge.className = "type-card-badge yearly"; }
+    if (sExp) sExp.textContent = "📅 Hết hạn: " + toDateInput(d) + " (365 ngày)";
+  } else if (pkg === "quarter") {
+    $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
+    const d = new Date(); d.setDate(d.getDate() + 90); $("expiresAt").value = toDateInput(d);
+    if (sIcon) sIcon.textContent = "⚡"; if (sTitle) sTitle.textContent = "Gói 3 Tháng (Quý)";
+    if (sBadge) { sBadge.textContent = "⚡ 495.000 ₫"; sBadge.className = "type-card-badge quarter"; }
+    if (sExp) sExp.textContent = "⚡ Hết hạn: " + toDateInput(d) + " (90 ngày)";
+  } else if (pkg === "trial") {
+    $("expiresForever").checked = false;
+    if (sIcon) sIcon.textContent = "⏱️"; if (sTitle) sTitle.textContent = "Mã Dùng Thử (Trial)";
+    if (sBadge) { sBadge.textContent = "0 ₫ Miễn phí"; sBadge.className = "type-card-badge trial"; }
+    updateTrialExpiryPreview();
+  }
   syncTrialUI();
 }
+function setExpiryPreset(pkg) { selectLicensePackage(pkg); }
+function onExpiresForeverChange() { markExpiryTouched(); selectLicensePackage($("expiresForever").checked ? "lifetime" : "yearly"); }
+function selectLicenseType(type) { selectLicensePackage(type === "trial" ? "trial" : "lifetime"); }
+
 function syncTrialUI() {
   const isTrial = $("typeTrial").checked;
-  const cardOff = $("cardOfficial"), cardTr = $("cardTrial");
-  if (cardOff && cardTr) {
-    if (isTrial) { cardOff.classList.remove("active"); cardTr.classList.add("active", "trial-active"); }
-    else { cardOff.classList.add("active"); cardTr.classList.remove("active", "trial-active"); }
-  }
   const trialBox = $("trialConfigSection");
   if (trialBox) trialBox.style.display = isTrial ? "block" : "none";
   const fcRole = $("fcRole"), fcMaxAct = $("fcMaxActivations"), fcMaxPc = $("fcMaxPcDevices"), fcExp = $("fcExpires");
@@ -2498,6 +2439,10 @@ function updateTrialExpiryPreview() {
   const preview = $("trialExpiryPreview");
   if (preview) {
     preview.textContent = "📅 Hết hạn: " + toDateInput(d) + " (23:59:59)";
+  }
+  const sExp = $("pkgSummaryExpiry");
+  if (sExp && currentPackageSelected === "trial") {
+    sExp.textContent = "⏱️ Hết hạn: " + toDateInput(d) + " (" + days + " ngày)";
   }
 }
 let createKeyBusy = false;
@@ -2641,20 +2586,68 @@ function formatActivations(r) {
     (used >= max ? ' <span class="tag off">Hết lượt</span>' : '') +
     '<div class="hint">Gần nhất: ' + esc(last) + '</div>';
 }
+function getLicensePackageInfo(r) {
+  if (r.is_trial || (r.role || "").toLowerCase() === "trial") {
+    const isExp = r.expires_at && new Date(r.expires_at) < new Date();
+    const daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / (86400 * 1000))) : 0;
+    return {
+      id: "trial",
+      name: "Dùng thử",
+      badge: isExp
+        ? '<span class="tag off">⛔ Trial hết hạn</span>'
+        : '<span class="tag on" style="background:#d97706; color:#fff;">⏱️ Trial (' + daysLeft + 'd)</span>'
+    };
+  }
+  if (!r.expires_at) {
+    return {
+      id: "lifetime",
+      name: "Vĩnh viễn",
+      badge: '<span class="tag on" style="background:#059669; color:#fff; font-weight:700">👑 Vĩnh viễn</span>'
+    };
+  }
+  const note = (r.note || "").toLowerCase();
+  const created = r.created_at ? new Date(r.created_at) : new Date();
+  const expires = new Date(r.expires_at);
+  const diffDays = Math.round((expires - created) / (86400 * 1000));
+  const isExp = expires < new Date();
+
+  if (note.includes("3 tháng") || note.includes("3 thang") || note.includes("495k") || note.includes("quarter") || (diffDays >= 70 && diffDays <= 120)) {
+    return {
+      id: "quarter",
+      name: "3 Tháng (495k)",
+      badge: isExp
+        ? '<span class="tag off">⛔ 3 Tháng hết hạn</span>'
+        : '<span class="tag" style="background:#7e22ce; color:#fff; font-weight:700">⚡ 3 Tháng (495k)</span>'
+    };
+  }
+  if (note.includes("1 năm") || note.includes("1 nam") || note.includes("12 tháng") || note.includes("12 thang") || note.includes("yearly") || diffDays > 120) {
+    return {
+      id: "yearly",
+      name: "1 Năm",
+      badge: isExp
+        ? '<span class="tag off">⛔ 1 Năm hết hạn</span>'
+        : '<span class="tag on" style="background:#0284c7; color:#fff; font-weight:700">📅 1 Năm</span>'
+    };
+  }
+  return {
+    id: "custom",
+    name: "Có thời hạn",
+    badge: isExp
+      ? '<span class="tag off">⛔ Hết hạn</span>'
+      : '<span class="tag" style="background:#64748b; color:#fff">⏳ Có hạn</span>'
+  };
+}
+
 function rowHtml(r) {
   const adminTag = isAdminPhone(r.owner_phone)
     ? ' <span class="tag admin">👑 Quản trị</span>' : '';
+  const pkgInfo = getLicensePackageInfo(r);
   let expiryHtml = '';
-  if (r.is_trial) {
-    const isExp = r.expires_at && new Date(r.expires_at) < new Date();
-    if (isExp) {
-      expiryHtml = '<span class="tag off">⛔ Trial hết hạn</span><div class="hint">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "") + '</div>';
-    } else {
-      const daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / (86400 * 1000))) : 0;
-      expiryHtml = '<span class="tag on" style="background:#1d4ed8; color:#fff;">⏱️ Còn ' + daysLeft + ' ngày</span><div class="hint">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "") + '</div>';
-    }
+  if (pkgInfo.id === "lifetime") {
+    expiryHtml = pkgInfo.badge;
   } else {
-    expiryHtml = (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "Vĩnh viễn");
+    const expDateStr = r.expires_at ? esc(r.expires_at.slice(0, 10)) : "";
+    expiryHtml = pkgInfo.badge + '<div class="hint mono" style="margin-top:2px;">' + expDateStr + '</div>';
   }
   const trialExtendBtns = r.is_trial
     ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button>' +
@@ -2682,7 +2675,10 @@ function renderTable() {
   const tbody = $("mainTable").querySelector("tbody");
   tbody.innerHTML = "";
   let filtered = window._allRows.slice();
-  if (currentFilter === "trial") filtered = filtered.filter(r => r.is_trial);
+  if (currentFilter === "trial") filtered = filtered.filter(r => getLicensePackageInfo(r).id === "trial");
+  else if (currentFilter === "lifetime") filtered = filtered.filter(r => getLicensePackageInfo(r).id === "lifetime");
+  else if (currentFilter === "yearly") filtered = filtered.filter(r => getLicensePackageInfo(r).id === "yearly");
+  else if (currentFilter === "quarter") filtered = filtered.filter(r => getLicensePackageInfo(r).id === "quarter");
   else if (currentFilter === "car") filtered = filtered.filter(r => (r.role || "car") === "car");
   else if (currentFilter === "pc") filtered = filtered.filter(r => r.role === "pc");
   else if (currentFilter === "admin") filtered = filtered.filter(r => r.role === "admin");
@@ -4692,6 +4688,7 @@ async function loadSalesData() {
     const s = data.settings || {};
     $("salesLifetimePrice").value = s.lifetime_price || 2950000;
     $("salesYearlyPrice").value = s.yearly_price || 1950000;
+    $("salesThreeMonthsPrice").value = s.three_months_price || s.quarter_price || 495000;
     $("salesYearlyDiscount").value = s.yearly_discount_percent !== undefined ? s.yearly_discount_percent : 40;
     updateSalesPricePreview();
     if (s.promo_end_date) {
@@ -4871,12 +4868,14 @@ function openSavePricesConfirmModal() {
   const cur = (window._salesData && window._salesData.settings) || {};
   const newLifetime = parseInt($("salesLifetimePrice").value) || 0;
   const newYearly = parseInt($("salesYearlyPrice").value) || 0;
+  const newQuarter = parseInt($("salesThreeMonthsPrice").value) || 495000;
   const newDisc = parseInt($("salesYearlyDiscount").value) || 0;
   const newYears = parseInt($("salesPriceLockYears").value) || 5;
   const newRule = $("salesPriceLockRule").value;
   let diffHtml = '<table style="width:100%">';
   diffHtml += '<tr><td><b>Gói Trọn Đời:</b></td><td>' + formatVndNumber(cur.lifetime_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newLifetime) + '</b></td></tr>';
   diffHtml += '<tr><td><b>Giá Gốc Năm:</b></td><td>' + formatVndNumber(cur.yearly_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newYearly) + '</b></td></tr>';
+  diffHtml += '<tr><td><b>Gói 3 Tháng (495k):</b></td><td>' + formatVndNumber(cur.three_months_price || 495000) + ' → <b style="color:var(--ok)">' + formatVndNumber(newQuarter) + '</b></td></tr>';
   diffHtml += '<tr><td><b>% Khuyến Mãi Năm:</b></td><td>' + (cur.yearly_discount_percent || 0) + '% → <b style="color:var(--ok)">' + newDisc + '%</b></td></tr>';
   diffHtml += '<tr><td><b>Luật Khoá Giá:</b></td><td>' + (cur.price_lock_rule || 'percent') + ' → <b>' + newRule + '</b></td></tr>';
   diffHtml += '</table>';
@@ -4897,6 +4896,7 @@ async function executeSaveSalesPrices() {
     const settingsPayload = {
       lifetime_price: parseInt($("salesLifetimePrice").value) || 2950000,
       yearly_price: parseInt($("salesYearlyPrice").value) || 1950000,
+      three_months_price: parseInt($("salesThreeMonthsPrice").value) || 495000,
       yearly_discount_percent: parseInt($("salesYearlyDiscount").value) || 40,
       promo_end_date: forever ? null : expDate ? expDate + "T23:59:59+07:00" : null,
       price_lock_years: parseInt($("salesPriceLockYears").value) || 5,
