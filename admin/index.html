@@ -9,41 +9,24 @@
 <title>Admin Dashboard — Geely EX2</title>
 <style>
   :root {
-    --bg: #eef2f7; --panel: #ffffff; --panel2: #e9eef5;
-    --border: #d3dce6; --text: #1d2633; --muted: #5f6f82;
-    --accent: #1f8a4d; --accent2: #166c3d; --danger: #c0392b;
-    --warn: #96680f; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --warn-bg: #fdf3dc; --warn-border: #e6d39f;
-    --keybox-bg: #f2faf5; --keybox-text: #14532d;
-    --tag-on-bg: #dff3e6; --tag-on-text: #166c3d;
-    --tag-off-bg: #fbe4e4; --tag-off-text: #b03a3a;
-    --tag-car-bg: #dcfce7; --tag-car-text: #166534;
-    --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985;
-    --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8;
-    --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e;
-    --tag-prereq-bg: #fee2e2; --tag-prereq-text: #991b1b;
-    --tag-hidden-bg: #f1f5f9; --tag-hidden-text: #64748b;
-    --ok: #166c3d; --err: #b03a3a;
-    --admin-row-bg: #fff8e1; --admin-row-bg2: #fff3cd; --admin-row-line: #e6c86a;
+    --bg: #eef2f7; --panel: #ffffff; --panel2: #e9eef5; --border: #d3dce6; --text: #1d2633; --muted: #5f6f82;
+    --accent: #1f8a4d; --accent2: #166c3d; --danger: #c0392b; --warn: #96680f; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --warn-bg: #fdf3dc; --warn-border: #e6d39f; --keybox-bg: #f2faf5; --keybox-text: #14532d;
+    --tag-on-bg: #dff3e6; --tag-on-text: #166c3d; --tag-off-bg: #fbe4e4; --tag-off-text: #b03a3a;
+    --tag-car-bg: #dcfce7; --tag-car-text: #166534; --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985;
+    --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8; --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e;
+    --tag-prereq-bg: #fee2e2; --tag-prereq-text: #991b1b; --tag-hidden-bg: #f1f5f9; --tag-hidden-text: #64748b;
+    --ok: #166c3d; --err: #b03a3a; --admin-row-bg: #fff8e1; --admin-row-bg2: #fff3cd; --admin-row-line: #e6c86a;
   }
   body.dark {
-    --bg: #0f1419; --panel: #1a2129; --panel2: #222c37;
-    --border: #2e3a47; --text: #dce3ea; --muted: #8a97a5;
-    --accent: #2f9e63; --accent2: #1f7a4c; --danger: #c94f4f;
-    --warn: #d9a53f;
-    --warn-bg: #2a2315; --warn-border: #4a3d1f;
-    --keybox-bg: #10181f; --keybox-text: #7fd9a5;
-    --tag-on-bg: #14351f; --tag-on-text: #57c47e;
-    --tag-off-bg: #3a1a1a; --tag-off-text: #e08a8a;
-    --tag-car-bg: #143823; --tag-car-text: #86efac;
-    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc;
-    --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe;
-    --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a;
-    --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
-    --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5;
-    --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8;
-    --ok: #57c47e; --err: #e08a8a;
-    --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
+    --bg: #0f1419; --panel: #1a2129; --panel2: #222c37; --border: #2e3a47; --text: #dce3ea; --muted: #8a97a5;
+    --accent: #2f9e63; --accent2: #1f7a4c; --danger: #c94f4f; --warn: #d9a53f; --warn-bg: #2a2315; --warn-border: #4a3d1f;
+    --keybox-bg: #10181f; --keybox-text: #7fd9a5; --tag-on-bg: #14351f; --tag-on-text: #57c47e;
+    --tag-off-bg: #3a1a1a; --tag-off-text: #e08a8a; --tag-car-bg: #143823; --tag-car-text: #86efac;
+    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc; --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe;
+    --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a; --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
+    --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5; --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8;
+    --ok: #57c47e; --err: #e08a8a; --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text);
@@ -81,20 +64,10 @@
   .license-type-selector { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 4px 0 8px; }
   @media (max-width: 680px) { .license-type-selector { grid-template-columns: 1fr; } }
   .type-card { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; }
-  .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); }
-  .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); }
-  .type-card.trial-active { border-color: #2563eb; background: rgba(37,99,235,.08); box-shadow: 0 0 0 1px #2563eb; }
-  .type-card input[type=radio] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
-  .type-card.trial-active input[type=radio] { accent-color: #2563eb; }
-  .type-card-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
-  .type-card-body { flex: 1; min-width: 0; }
-  .type-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-  .type-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
-  .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; }
-  .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); }
-  .type-card-badge.trial { background: #dbeafe; color: #1e40af; }
-  body.dark .type-card-badge.trial { background: #1e3a8a; color: #93c5fd; }
-  .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; }
+  .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); } .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); } .type-card.trial-active { border-color: #2563eb; background: rgba(37,99,235,.08); box-shadow: 0 0 0 1px #2563eb; }
+  .type-card input[type=radio] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; } .type-card.trial-active input[type=radio] { accent-color: #2563eb; }
+  .type-card-icon { font-size: 24px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; } .type-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; } .type-card-title { font-size: 14px; font-weight: 700; color: var(--text); }
+  .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; } .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); } .type-card-badge.trial { background: #dbeafe; color: #1e40af; } body.dark .type-card-badge.trial { background: #1e3a8a; color: #93c5fd; } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; }
   .field-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; transition: all .2s; }
   .field-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
   .field-card-label { font-size: 12px; font-weight: 600; color: var(--text); }
@@ -137,24 +110,17 @@
   /* Dòng của tài khoản quản trị: nền riêng + vạch vàng bên trái, luôn nằm trên cùng. */
   tr.admin-row > td { background: var(--admin-row-bg); } tr.admin-row:hover > td { background: var(--admin-row-bg2); }
   tr.admin-row > td:first-child { box-shadow: inset 3px 0 0 var(--admin-row-line); }
-  .msg { margin-top: 10px; font-size: 13px; }
-  .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
-  .actions { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
-  .actions button { white-space: nowrap; }
-  .nowrap { white-space: nowrap; }
+  .msg { margin-top: 10px; font-size: 13px; } .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
+  .actions { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; } .actions button { white-space: nowrap; } .nowrap { white-space: nowrap; }
   .note-cell { min-width: 140px; max-width: 220px; word-break: break-word; line-height: 1.35; font-size: 12px; }
   /* Danh mục Cài nhanh: đổi vị trí nhanh (15/09/2026) — ô số vị trí + tay cầm kéo-thả */
   input.qi-pos { width: 52px; padding: 3px 4px; font-family: var(--mono); font-size: 12px; text-align: center; }
   .qi-drag { cursor: grab; color: var(--muted); user-select: none; font-size: 16px; padding: 0 4px; }
   tr.qi-dragging { opacity: .4; } tr.qi-drop-before td { border-top: 2px solid var(--accent); } tr.qi-drop-after td { border-bottom: 2px solid var(--accent); }
   .hint { color: var(--muted); font-size: 12px; margin-top: 5px; }
-  .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; }
-  .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; }
-  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; } .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; } .filters { display: flex; gap: 6px; flex-wrap: wrap; }
   .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
-  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-  .modal h3 { font-size: 16px; margin-bottom: 8px; }
-  .modal .grid { margin-top: 14px; }
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); } .modal h3 { font-size: 16px; margin-bottom: 8px; } .modal .grid { margin-top: 14px; }
   .modal .hint { margin-top: 10px; }
   .modal .actions { margin-top: 18px; justify-content: flex-end; }
   .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
@@ -1123,9 +1089,9 @@
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; background:var(--panel); padding:8px 12px; border-radius:8px; border:1px dashed var(--accent)">
             <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
-              <button type="button" class="small" style="background:var(--danger); color:#fff; font-weight:700" onclick="quickForceAllOldVersions()" title="Ép mọi thiết bị chạy bản cũ hơn bản mới nhất phải nâng cấp">🚨 Ép toàn bộ bản cũ (Car + Phone)</button>
+              <button type="button" class="small" style="background:linear-gradient(135deg,#e11d48,#be123c); color:#fff; font-weight:700; box-shadow:0 2px 6px rgba(190,18,60,.35)" onclick="oneClickAutoSyncAndForceAll()" title="1-Click: Tự động lấy bản mới nhất từ GitHub (Car/Phone) + Apple Store (iOS), bật ép toàn bộ và lưu ngay lên Supabase">🚀 1-Click: Tự động nạp GitHub + Apple & Ép tất cả</button>
               <button type="button" class="small ghost" onclick="quickDisableForceAll()" title="Cho phép cập nhật tự nguyện (minVersionCode = 0)">⚪ Tắt ép (Về tự nguyện)</button>
-              <button type="button" class="small ghost" onclick="fetchLatestFromGitHubArtifacts()" title="Tự động lấy Version, Link APK, SHA-256 từ repo GitHub geely-ex2-artifacts">🐙 Nạp bản mới từ GitHub</button>
+              <button type="button" class="small ghost" onclick="fetchLatestFromGitHubArtifacts()" title="Tự động lấy Version, Link APK, SHA-256 từ repo GitHub geely-ex2-artifacts">🐙 Chỉ nạp từ GitHub</button>
             </div>
             <div style="display:flex; align-items:center; gap:6px">
               <button type="button" class="small" style="background:var(--accent); color:#fff; font-weight:700; box-shadow:0 2px 6px rgba(31,138,77,.35)" onclick="saveAppUpdateConfig()">💾 Lưu Supabase ngay</button>
@@ -2092,35 +2058,23 @@ function setSession(s) {
   if (!s) return;
   const now = Date.now();
   s.login_timestamp = s.login_timestamp || now;
-  s.last_active_timestamp = now; // Lưu thời điểm hoạt động để tính hạn 3 ngày (rolling)
+  s.last_active_timestamp = now;
   currentSession = s;
-  try {
-    localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-  } catch (e) {}
-  try {
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
-  } catch (e) {}
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
+  try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
 }
 function touchClientSession() {
   const s = getSession();
   if (s) {
     s.last_active_timestamp = Date.now();
-    try {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-    } catch (e) {}
-    try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(s));
-    } catch (e) {}
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
   }
 }
 function clearSession() {
   currentSession = null;
-  try {
-    localStorage.removeItem(SESSION_KEY);
-  } catch (e) {}
-  try {
-    sessionStorage.removeItem(SESSION_KEY);
-  } catch (e) {}
+  try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+  try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
 }
 // Dashboard đọc phiên qua localStorage cùng origin; mở khác origin (file:// vs http://127.0.0.1) thì không thấy
 // ⇒ nút này chép JSON phiên để dán tay vào modal "Kết nối Supabase" của telemetry-dashboard.html (14/09/2026).
@@ -3840,8 +3794,8 @@ function openSyncDriveModal() {
 function closeSyncDriveModal() {
   $("syncDriveModalMask").style.display = "none";
 }
-const GEELY_EX2_PRESET_LINKS = "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link (Google Map)\nhttps://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link (Waze)\nhttps://drive.google.com/file/d/1z5tMw0XgDJOKCAPH6foSeHGhe0p410Ko/view?usp=drive_link (Waze Mod)\n" +
-  "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube RVX)\nhttps://drive.google.com/file/d/1FHTQP0EGwPR5Zm9zNJGLJdqFTEa6D1LH/view?usp=drive_link (YouTube Music RVX)\nhttps://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drive_link (Spotify)\n" +
+const GEELY_EX2_PRESET_LINKS = "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link (Google Map)\nhttps://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link (Waze)\nhttps://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link (Equalizer Geely)\n" +
+  "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube RVX)\nhttps://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link (YouTube Music RVX)\nhttps://drive.google.com/file/d/1mGa9rrfie-vjzaEfV2a1sKiUpXge0jk1/view?usp=drive_link (Spotify)\n" +
   "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link (Google Chrome)\nhttps://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link (Cốc Cốc)\nhttps://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=drive_link (VietMap Live)\n" +
   "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drive_link (AuresEyes)\nhttps://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link (TikTok)\nhttps://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=drive_link (VTV Go)\n" +
   "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drive_link (GOFA)\nhttps://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link (Speed Display)\nhttps://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link (MicroG)";
@@ -3898,6 +3852,7 @@ function applyDriveLinksBatch() {
         else if (an.includes("waze") && lineContext.includes("waze")) isMatch = true;
         else if (an.includes("speed display") && (lineContext.includes("speeddisplay") || lineContext.includes("speed display"))) isMatch = true;
         else if (an.includes("microg") && (lineContext.includes("microg") || lineContext.includes("revanced.android.gms") || lineContext.includes("gmscore"))) isMatch = true;
+        else if (an.includes("equalizer") && lineContext.includes("equalizer")) isMatch = true;
         else if (an.includes("downloader") && lineContext.includes("downloader")) isMatch = true;
       }
       if (isMatch) {
@@ -6593,56 +6548,101 @@ function quickForceAllOldVersions() {
 }
 function quickDisableForceAll() {
   syncFormToConfig();
-  const car = fuNode("car"), phone = fuNode("phone");
+  const car = fuNode("car"), phone = fuNode("phone"), ios = fuNode("ios");
   car.minVersionCode = 0; if ($("car_minVersionCode")) $("car_minVersionCode").value = 0; updateKnownVersionsStatus("car");
   phone.minVersionCode = 0; if ($("phone_minVersionCode")) $("phone_minVersionCode").value = 0; updateKnownVersionsStatus("phone");
+  ios.minVersionCode = 0; if ($("ios_minVersionCode")) $("ios_minVersionCode").value = 0; updateKnownVersionsStatus("ios");
   updateQuickCockpit();
   showStickySaveBar();
-  showMsg($("fuStatusMsg"), "ok", "⚪ ĐÃ TẮT ÉP TOÀN BỘ (1-Click): Đầu xe & Điện thoại được phép cập nhật tự nguyện. Nhớ bấm '💾 Lưu lên Supabase' để áp dụng.");
+  showMsg($("fuStatusMsg"), "ok", "⚪ ĐÃ TẮT ÉP TOÀN BỘ (1-Click): Đầu xe, Điện thoại & iPhone được phép cập nhật tự nguyện. Bấm '💾 Lưu lên Supabase' để áp dụng.");
 }
-async function fetchLatestFromGitHubArtifacts() {
+async function syncLatestReleases(forceAll) {
   const msg = $("fuStatusMsg");
-  showMsg(msg, "", "⏳ Đang kết nối GitHub lấy thông tin bản phát hành mới nhất...");
+  showMsg(msg, "", forceAll ? "⏳ 1-Click: Đang kết nối GitHub & Apple Store lấy bản mới nhất và đặt ngưỡng ép..." : "⏳ Đang kết nối GitHub lấy thông tin bản phát hành mới nhất...");
   try {
     const res = await fetch("https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/apps.json");
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    if (!res.ok) throw new Error("GitHub HTTP " + res.status);
     const data = await res.json();
-    let updatedCount = 0;
     const isDev = window._fuEnv === "dev";
     const carData = isDev ? (data.carDev || data.car) : (data.car || data);
+    const phoneData = isDev ? (data.phoneDev || data.phone) : (data.phone || data);
+    const iosData = isDev ? (data.phoneIosDev || data.phoneIos) : data.phoneIos;
+
+    let carCode = 0, phoneCode = 0;
     if (carData) {
       if ($("car_latestVersionName")) $("car_latestVersionName").value = carData.latestVersionName || carData.versionName || "";
-      if ($("car_versionCode")) $("car_versionCode").value = carData.versionCode || "";
+      carCode = parseInt(carData.versionCode, 10) || 0;
+      if ($("car_versionCode")) $("car_versionCode").value = carCode || "";
+      if (forceAll && $("car_minVersionCode")) $("car_minVersionCode").value = carCode || 0;
       if ($("car_downloadUrl")) $("car_downloadUrl").value = carData.downloadUrl || carData.url || "";
       if ($("car_sha256")) $("car_sha256").value = carData.sha256 || "";
       if ($("car_releaseNotes")) $("car_releaseNotes").value = carData.releaseNotes || "";
-      updatedCount++;
     }
-    const phoneData = isDev ? (data.phoneDev || data.phone) : (data.phone || data);
     if (phoneData) {
       if ($("phone_latestVersionName")) $("phone_latestVersionName").value = phoneData.latestVersionName || phoneData.versionName || "";
-      if ($("phone_versionCode")) $("phone_versionCode").value = phoneData.versionCode || "";
+      phoneCode = parseInt(phoneData.versionCode, 10) || 0;
+      if ($("phone_versionCode")) $("phone_versionCode").value = phoneCode || "";
+      if (forceAll && $("phone_minVersionCode")) $("phone_minVersionCode").value = phoneCode || 0;
       if ($("phone_downloadUrl")) $("phone_downloadUrl").value = phoneData.downloadUrl || phoneData.url || "";
       if ($("phone_sha256")) $("phone_sha256").value = phoneData.sha256 || "";
       if ($("phone_releaseNotes")) $("phone_releaseNotes").value = phoneData.releaseNotes || "";
-      updatedCount++;
     }
-    const iosData = isDev ? (data.phoneIosDev || data.phoneIos) : data.phoneIos;
-    if (iosData && $("ios_latestVersionName") && !$("ios_latestVersionName").value) {
-      if ($("ios_latestVersionName")) $("ios_latestVersionName").value = iosData.latestVersionName || "";
-      if ($("ios_versionCode")) $("ios_versionCode").value = iosData.versionCode || "";
-      if ($("ios_releaseNotes")) $("ios_releaseNotes").value = iosData.releaseNotes || "";
+
+    let iosVer = "", iosCode = 0, iosUrl = "";
+    if (forceAll) {
+      try {
+        const appleRes = await fetch("https://itunes.apple.com/lookup?bundleId=com.techlead.app.geely.phone.ios&country=vn");
+        if (appleRes.ok) {
+          const appleJson = await appleRes.json();
+          if (appleJson.resultCount > 0 && appleJson.results && appleJson.results[0]) {
+            const r = appleJson.results[0];
+            iosVer = r.version || "";
+            iosUrl = r.trackViewUrl || IOS_APP_STORE_URL;
+            iosCode = versionCodeFromName(iosVer) || 0;
+            if (r.releaseNotes && $("ios_releaseNotes")) $("ios_releaseNotes").value = r.releaseNotes;
+          }
+        }
+      } catch (_) {}
     }
+    if (!iosVer && iosData) {
+      iosVer = iosData.latestVersionName || "";
+      iosCode = parseInt(iosData.versionCode, 10) || versionCodeFromName(iosVer) || 0;
+      iosUrl = iosData.downloadUrl || IOS_APP_STORE_URL;
+      if (iosData.releaseNotes && $("ios_releaseNotes") && !$("ios_releaseNotes").value) $("ios_releaseNotes").value = iosData.releaseNotes;
+    }
+    if (iosVer && $("ios_latestVersionName")) {
+      $("ios_latestVersionName").value = iosVer;
+      if ($("ios_versionCode")) $("ios_versionCode").value = iosCode || "";
+      if (forceAll && $("ios_minVersionCode")) $("ios_minVersionCode").value = iosCode || 0;
+      if ($("ios_downloadUrl")) $("ios_downloadUrl").value = iosUrl || IOS_APP_STORE_URL;
+      kiemNguongIos();
+    }
+
     syncFormToConfig();
+    if (forceAll) {
+      const carNode = fuNode("car"), phoneNode = fuNode("phone"), iosNode = fuNode("ios");
+      if (carCode) carNode.minVersionCode = carCode;
+      if (phoneCode) phoneNode.minVersionCode = phoneCode;
+      if (iosCode) iosNode.minVersionCode = iosCode;
+    }
     updateKnownVersionsStatus("car");
     updateKnownVersionsStatus("phone");
+    updateKnownVersionsStatus("ios");
     updateQuickCockpit();
     showStickySaveBar();
-    showMsg(msg, "ok", "🎉 ĐÃ NẠP BẢN MỚI TỪ GITHUB (1-Click): Đã tự động điền Tên version, Mã build, Link tải và SHA-256 chuẩn cho " + updatedCount + " ứng dụng! Kiểm tra rồi bấm '💾 Lưu lên Supabase'.");
+
+    if (forceAll) {
+      showMsg(msg, "ok", "🚀 ĐÃ NẠP BẢN MỚI TỪ GITHUB + APPLE & ĐẶT NGƯỠNG ÉP! Đang mở hộp thoại xác nhận lưu...");
+      await saveAppUpdateConfig();
+    } else {
+      showMsg(msg, "ok", "🎉 ĐÃ NẠP BẢN MỚI TỪ GITHUB (1-Click): Đã tự động điền Tên version, Mã build, Link tải và SHA-256 chuẩn! Kiểm tra rồi bấm '💾 Lưu lên Supabase'.");
+    }
   } catch (e) {
-    showMsg(msg, "err", "Lỗi lấy dữ liệu từ GitHub: " + e.message);
+    showMsg(msg, "err", "Lỗi nạp dữ liệu: " + (e.message || e));
   }
 }
+async function fetchLatestFromGitHubArtifacts() { return syncLatestReleases(false); }
+async function oneClickAutoSyncAndForceAll() { return syncLatestReleases(true); }
 function quickSyncCarToPhone() {
   const name = ($("car_latestVersionName").value || "").trim();
   const code = ($("car_versionCode").value || "").trim();
