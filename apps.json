@@ -1,0 +1,98 @@
+{
+  "type": "update_check",
+  "latestVersionName": "1.2.0",
+  "versionCode": 1200,
+  "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
+  "sha256": "9e8989f82af0709c3f12a18cb8b1d7315511a64d44ef4006dccc7fe0928643f8",
+  "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện \"Hi Geely\": Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+  "channel": "stable",
+  "car": {
+    "type": "update_check",
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
+    "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
+    "sha256": "9e8989f82af0709c3f12a18cb8b1d7315511a64d44ef4006dccc7fe0928643f8",
+    "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện \"Hi Geely\": Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+    "channel": "stable",
+    "minVersionCode": 1100,
+    "forceRules": []
+  },
+  "phone": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect",
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
+    "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
+    "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
+    "minVersionCode": 0,
+    "forceRules": []
+  },
+  "carDev": {
+    "type": "update_check",
+    "latestVersionName": "1.2.2",
+    "versionCode": 1202,
+    "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
+    "sha256": "50969bd82ce03319cae5d6b4c706dccc8a10a1b88d72be41dc608bb9500c18c1",
+    "releaseNotes": "- Cơ chế cập nhật OTA an toàn (Two-Stage Pipeline): Bảo vệ hệ thống xe bằng điều kiện an toàn nghiêm ngặt — bản cập nhật tải ngầm tự động nhưng chỉ được phép cài đặt khi xe đang đỗ (về số P hoặc vận tốc 0 km/h), ngăn chặn hoàn toàn nguy cơ gián đoạn khi đang lái xe.\n- Tối ưu hóa trợ lý giọng nói (Voice Assistant): Nâng cấp bộ lọc tiếng ồn cabin, chống nuốt từ khẩu lệnh, đồng thời hoàn thiện phản hồi lệnh điều khiển điều hòa, giải trí và dẫn đường chính xác, tự nhiên.\n- Tự động bảo toàn phiên chia đôi màn hình (Split-Screen & PIP): Giữ vững bố cục chia đôi màn hình khi ứng dụng mở chế độ Picture-in-Picture hoặc khi khởi chạy ứng dụng thứ ba.\n- Ổn định kết nối và điều phối phím vô lăng: Khắc phục hiện tượng nhảy bài hoặc mất bắt phím trên vô lăng cho YouTube, Spotify và Zing MP3.",
+    "channel": "develop",
+    "minVersionCode": 0,
+    "forceRules": []
+  },
+  "phoneDev": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect",
+    "latestVersionName": "1.2.2",
+    "versionCode": 1202,
+    "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
+    "sha256": "dbe14d6d99e2d066da3c3ee49bd9fd27df5c38f70072c84c893ca0045e94a210",
+    "releaseNotes": "- Tách biệt và tối ưu kênh cập nhật iOS: Hỗ trợ phiên bản riêng cho iPhone qua App Store & TestFlight, đảm bảo đồng bộ hoàn hảo với hệ sinh thái xe mà không bị lệch nhịp phê duyệt kho ứng dụng.\n- Tăng tốc phản hồi lệnh điều khiển từ xa: Giảm thiểu độ trễ kết nối TCP :44700 và Bluetooth SPP khi gửi lệnh điều hòa, mở cốp và kiểm tra thông tin xe.\n- Bảo toàn trạng thái đa nhiệm & giao diện: Đồng bộ 100% logic hiển thị và giao diện người dùng theo chuẩn CarConnect v1.2.2 trên xe.\n- Two-Stage Safe OTA Integration (EN): Coordinated safe update checks ensuring in-car installation only triggers when parked.\n- iOS Independent Channel & Stability (EN): Dedicated release track for iOS TestFlight / App Store with optimized remote command responsiveness.",
+    "minVersionCode": 0,
+    "forceRules": []
+  },
+  "apps": [
+    {
+      "packageName": "com.techlead.app.geely.car",
+      "name": "CarConnect",
+      "latestVersionName": "1.2.0",
+      "versionCode": 1200,
+      "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
+      "sha256": "9e8989f82af0709c3f12a18cb8b1d7315511a64d44ef4006dccc7fe0928643f8",
+      "releaseNotes": "- Khắc phục triệt để lỗi trợ lý giọng nói tự kích hoạt khi đàm thoại & tối ưu nhận diện \"Hi Geely\": Nâng cấp thuật toán lọc từ khoá KWS tầng 2, loại bỏ hoàn toàn hiện tượng xe tự động bật \"Đang nghe...\" khi người ngồi trong xe nói chuyện đời thường, đồng thời hỗ trợ đầy đủ các biến âm lướt nhẹ khi người lái nói ở âm lượng đàm thoại bình thường mà không cần hét lớn.\n- Cải tiến trợ lý giọng nói chuyển chế độ lái Eco linh hoạt: Mở rộng nhận diện tự nhiên hàng loạt biến thể khẩu lệnh chuyển sang chế độ tiết kiệm năng lượng (\"đổi sang eco\", \"thay đổi sang chế độ eco\", \"chuyển sang lái tiết kiệm\", \"đổi chế độ tiết kiệm\"...), phản hồi tức thì và chính xác.\n- Nâng cấp kho ứng dụng Cài nhanh: Cập nhật nguồn tải tốc độ cao và ổn định cho Waze Mod và YouTube Morphe phiên bản mới nhất, tự động nhận diện gói ứng dụng tương đương và kiểm tra điều kiện cài đặt MicroG thông minh.\n- Tối ưu hóa độ ổn định toàn hệ thống: Hoàn thiện cơ chế cấp phép dùng thử và tinh chỉnh hiệu năng đa nhiệm trên màn hình xe.",
+      "minVersionCode": 1100
+    },
+    {
+      "packageName": "com.techlead.app.geely.phone",
+      "name": "PhoneConnect",
+      "latestVersionName": "1.2.0",
+      "versionCode": 1200,
+      "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
+      "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
+      "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
+    }
+  ],
+  "minVersionCode": 1100,
+  "forceRules": [],
+  "phoneIosDev": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect iOS",
+    "minVersionCode": 0,
+    "forceRules": [],
+    "latestVersionName": "1.2.1",
+    "versionCode": 1201,
+    "downloadUrl": "itms-beta://",
+    "sha256": "",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.1 với màn hình xe: Nâng cấp đồng bộ các bản vá điều khiển đa nhiệm và hỗ trợ kết nối điều khiển media từ xa ổn định."
+  },
+  "phoneIos": {
+    "packageName": "com.techlead.app.geely.phone",
+    "name": "PhoneConnect iOS",
+    "minVersionCode": 0,
+    "forceRules": [],
+    "latestVersionName": "1.2.0",
+    "versionCode": 1200,
+    "downloadUrl": "https://apps.apple.com/app/id6813109149",
+    "sha256": "",
+    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
+  }
+}
