@@ -20,11 +20,11 @@
   "phone": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.0",
-    "versionCode": 1200,
+    "latestVersionName": "1.2.4",
+    "versionCode": 1204,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-    "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
-    "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác.",
+    "sha256": "4ff4e2a20a5110cc5794572c0be7a8f53daf58ec3f638a26f94cdc0257c116ad",
+    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa.\n- 🔥 Tiện ích giải trí & dẫn đường rảnh tay: Phối hợp hỗ trợ dẫn đường (Google Maps, Waze, Vietmap Live) và phát nhạc (YouTube Music, YouTube, Spotify), giảm thiểu thao tác bấm trên màn hình khi lái xe.",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -64,11 +64,11 @@
     {
       "packageName": "com.techlead.app.geely.phone",
       "name": "PhoneConnect",
-      "latestVersionName": "1.2.0",
-      "versionCode": 1200,
+      "latestVersionName": "1.2.4",
+      "versionCode": 1204,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk",
-      "sha256": "9a6d0ffb649266d1ce481f4e6a7e6a61458c1f11a04d10c521a0903f8f888587",
-      "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
+      "sha256": "4ff4e2a20a5110cc5794572c0be7a8f53daf58ec3f638a26f94cdc0257c116ad",
+      "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa.\n- 🔥 Tiện ích giải trí & dẫn đường rảnh tay: Phối hợp hỗ trợ dẫn đường (Google Maps, Waze, Vietmap Live) và phát nhạc (YouTube Music, YouTube, Spotify), giảm thiểu thao tác bấm trên màn hình khi lái xe."
     }
   ],
   "minVersionCode": 1100,
@@ -94,5 +94,12 @@
     "downloadUrl": "https://apps.apple.com/app/id6813109149",
     "sha256": "",
     "releaseNotes": "- Đồng bộ phiên bản 1.2.0 với xe: Đồng bộ toàn diện hệ thống điều khiển và danh mục ứng dụng cài nhanh mới nhất với màn hình xe.\n- Cải thiện kết nối và trải nghiệm người dùng: Tối ưu hóa phản hồi lệnh điều khiển từ xa và nâng cao độ mượt mà khi tương tác."
+  },
+  "phoneIosPending": {
+    "latestVersionName": "1.2.4",
+    "versionCode": 1204,
+    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa.\n- 🔥 Tiện ích giải trí & dẫn đường rảnh tay: Phối hợp hỗ trợ dẫn đường (Google Maps, Waze, Vietmap Live) và phát nhạc (YouTube Music, YouTube, Spotify), giảm thiểu thao tác bấm trên màn hình khi lái xe.",
+    "testflight": "ok",
+    "builtAt": "2026-09-28T08:03:39Z"
   }
 }
