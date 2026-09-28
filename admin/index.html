@@ -4803,9 +4803,6 @@ function renderSalesOrdersTable() {
       actionsHtml = 
         '<button class="small" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="confirmOrder(this.dataset.orderId, this.dataset.orderCode, this)">✅ Xác nhận</button> ' +
         '<button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="cancelOrder(this.dataset.orderId, this.dataset.orderCode, this)">❌ Huỷ</button>';
-    } else if (o.status === "paid") {
-      actionsHtml = 
-        '<button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" data-lic-key="' + esc(o.license_key || '') + '" onclick="refundOrder(this.dataset.orderId, this.dataset.orderCode, this.dataset.licKey, this)">🔄 Hoàn tiền</button>';
     } else {
       actionsHtml = '<span style="color:var(--muted)">-</span>';
     }
