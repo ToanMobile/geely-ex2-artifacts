@@ -9,24 +9,16 @@
 <title>Admin Dashboard — Geely EX2</title>
 <style>
   :root {
-    --bg: #eef2f7; --panel: #ffffff; --panel2: #e9eef5; --border: #d3dce6; --text: #1d2633; --muted: #5f6f82;
-    --accent: #1f8a4d; --accent2: #166c3d; --danger: #c0392b; --warn: #96680f; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --warn-bg: #fdf3dc; --warn-border: #e6d39f; --keybox-bg: #f2faf5; --keybox-text: #14532d;
-    --tag-on-bg: #dff3e6; --tag-on-text: #166c3d; --tag-off-bg: #fbe4e4; --tag-off-text: #b03a3a;
-    --tag-car-bg: #dcfce7; --tag-car-text: #166534; --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985;
-    --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8; --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e;
-    --tag-prereq-bg: #fee2e2; --tag-prereq-text: #991b1b; --tag-hidden-bg: #f1f5f9; --tag-hidden-text: #64748b;
-    --ok: #166c3d; --err: #b03a3a; --admin-row-bg: #fff8e1; --admin-row-bg2: #fff3cd; --admin-row-line: #e6c86a;
+    --bg: #eef2f7; --panel: #ffffff; --panel2: #e9eef5; --border: #d3dce6; --text: #1d2633; --muted: #5f6f82; --accent: #1f8a4d; --accent2: #166c3d; --danger: #c0392b; --warn: #96680f; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --warn-bg: #fdf3dc; --warn-border: #e6d39f; --keybox-bg: #f2faf5; --keybox-text: #14532d; --tag-on-bg: #dff3e6; --tag-on-text: #166c3d; --tag-off-bg: #fbe4e4; --tag-off-text: #b03a3a;
+    --tag-car-bg: #dcfce7; --tag-car-text: #166534; --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985; --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8; --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e;
+    --tag-prereq-bg: #fee2e2; --tag-prereq-text: #991b1b; --tag-hidden-bg: #f1f5f9; --tag-hidden-text: #64748b; --ok: #166c3d; --err: #b03a3a; --admin-row-bg: #fff8e1; --admin-row-bg2: #fff3cd; --admin-row-line: #e6c86a;
   }
   body.dark {
-    --bg: #0f1419; --panel: #1a2129; --panel2: #222c37; --border: #2e3a47; --text: #dce3ea; --muted: #8a97a5;
-    --accent: #2f9e63; --accent2: #1f7a4c; --danger: #c94f4f; --warn: #d9a53f; --warn-bg: #2a2315; --warn-border: #4a3d1f;
-    --keybox-bg: #10181f; --keybox-text: #7fd9a5; --tag-on-bg: #14351f; --tag-on-text: #57c47e;
-    --tag-off-bg: #3a1a1a; --tag-off-text: #e08a8a; --tag-car-bg: #143823; --tag-car-text: #86efac;
-    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc; --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe;
-    --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a; --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
-    --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5; --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8;
-    --ok: #57c47e; --err: #e08a8a; --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
+    --bg: #0f1419; --panel: #1a2129; --panel2: #222c37; --border: #2e3a47; --text: #dce3ea; --muted: #8a97a5; --accent: #2f9e63; --accent2: #1f7a4c; --danger: #c94f4f; --warn: #d9a53f; --warn-bg: #2a2315; --warn-border: #4a3d1f;
+    --keybox-bg: #10181f; --keybox-text: #7fd9a5; --tag-on-bg: #14351f; --tag-on-text: #57c47e; --tag-off-bg: #3a1a1a; --tag-off-text: #e08a8a; --tag-car-bg: #143823; --tag-car-text: #86efac;
+    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc; --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe; --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a; --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
+    --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5; --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8; --ok: #57c47e; --err: #e08a8a; --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text);
@@ -2212,6 +2204,10 @@ function applyUrlQueryParams() {
         { id: "demo_2", title: "Server Cloud & Thiết bị", note: "Đạt chi từ quỹ doanh thu", amount: 2000000, paid_by: "dat", is_paid: true, created_at: new Date().toISOString() } ]};
       window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000;
       try { localStorage.setItem("geely_profit_sharing", JSON.stringify(demoPs)); } catch(e) {}
+      window._salesData = { settings: {}, orders: [
+        { id: "demo_1", order_code: "EX2-DEMO1", owner_name: "Toàn (Demo)", owner_phone: "0333332093", plan_id: "lifetime", final_amount: 2950000, status: "paid", created_at: new Date().toISOString() },
+        { id: "demo_2", order_code: "EX2-DEMO2", owner_name: "Khách Demo", owner_phone: "0901234567", plan_id: "yearly", final_amount: 1170000, status: "pending", created_at: new Date().toISOString() }
+      ], price_locks: [], logs: [] };
     }
   }
   const midParam = (urlParams.get("machine_id") || urlParams.get("device_id") || "").trim();
@@ -2222,11 +2218,12 @@ function applyUrlQueryParams() {
   }
   const tabParam = urlParams.get("tab") || (window.location.hash || "").replace("#", "");
   if (tabParam && ["licenses", "sales", "analytics", "quickInstall", "forceUpdate", "resellers"].includes(tabParam)) {
-    setTimeout(() => { switchTab(tabParam); if (isDemo && tabParam === "analytics") renderProfitSharingUI(20000000); }, 50);
+    setTimeout(() => { switchTab(tabParam); if (isDemo && tabParam === "analytics") renderProfitSharingUI(20000000); if (isDemo && tabParam === "sales") renderSalesOrdersTable(); }, 50);
   }
 }
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
+  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) return { ok: true, status: 200, json: async () => ({}) };
   const url = CONFIG.supabaseUrl;
   const isAuth = path.includes("admin_request_login_otp") || path.includes("admin_verify_login_otp");
   if (!isAuth && !getSession()) {
@@ -4678,6 +4675,9 @@ async function saveProfitSharingConfig(isSilent = false) {
 }
 async function loadSalesData() {
   const orderMsg = $("salesOrdersMsg");
+  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) {
+    renderSalesOrdersTable(); renderPriceLocksTable(); renderSalesLogsTable(); showMsg(orderMsg, "", ""); return;
+  }
   showMsg(orderMsg, "", "⏳ Đang tải dữ liệu bán hàng & đơn hàng từ Supabase...");
   try {
     const res = await api("/rest/v1/rpc/admin_get_sales_data", {
