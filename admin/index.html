@@ -787,7 +787,7 @@
               <span class="tag" style="background:#e0f2fe; color:#0369a1; font-weight:700">60% Net Profit</span>
             </div>
             <div class="val" id="psToanShare" style="font-size:20px; color:#0369a1; margin-top:6px">0 ₫</div>
-            <div class="hint" style="margin-top:4px">Toàn nhận 60% lợi nhuận sau khi trừ chi phí</div>
+            <div class="hint" id="psToanShareHint" style="margin-top:4px">Toàn nhận 60% lợi nhuận sau khi trừ chi phí</div>
           </div>
           <div class="kpi-box" style="border:1px solid #86efac; background:rgba(22,163,74,0.05)">
             <div style="display:flex; justify-content:space-between; align-items:center">
@@ -795,7 +795,7 @@
               <span class="tag" style="background:#dcfce7; color:#15803d; font-weight:700">40% Net Profit</span>
             </div>
             <div class="val" id="psDatShare" style="font-size:20px; color:#15803d; margin-top:6px">0 ₫</div>
-            <div class="hint" style="margin-top:4px">Đạt nhận 40% lợi nhuận sau khi trừ chi phí</div>
+            <div class="hint" id="psDatShareHint" style="margin-top:4px">Đạt nhận 40% lợi nhuận sau khi trừ chi phí</div>
           </div>
         </div>
         <!-- Khối Đối soát Dòng tiền Thực tế Toàn & Đạt -->
@@ -804,7 +804,7 @@
             <span>⚖️ Đối soát Thực tế Dòng tiền (Toàn nhận từ Đạt)</span>
           </div>
           <div class="hint" style="margin-bottom:10px">
-            Vì doanh thu thực tế khách thanh toán chuyển vào tài khoản của Đạt, Toàn nhập số tiền Đạt đã chuyển cho Toàn vào ô bên dưới để hệ thống tính số tiền Đạt còn thiếu (hoặc Toàn đang nhận dư):
+            Doanh thu thực tế khách thanh toán chuyển khoản vào tài khoản của Đạt (thủ quỹ). Nếu Toàn tự chi khoản nào, Đạt sẽ hoàn lại khoản đó cộng với 60% lợi nhuận ròng. Toàn nhập số tiền Đạt đã chuyển thực tế vào ô bên dưới để đối soát:
           </div>
           <div style="display:grid; grid-template-columns: minmax(240px, 320px) 1fr; gap:12px; align-items:center">
             <div>
@@ -826,68 +826,40 @@
             <span class="hint" id="psExpenseCount">0 khoản chi</span>
           </div>
           <div class="hint" style="margin-bottom:10px">
-            Các khoản chi tiêu đã đánh dấu <b>Đã thanh toán</b> sẽ được trừ trực tiếp khỏi tổng doanh thu trước khi chia 6:4. Các khoản chưa thanh toán sẽ lưu dưới dạng ghi chú kế hoạch chi.
+            Ghi nhận các khoản chi phí vận hành. Khoản nào chưa tích <b>[Đã thanh toán]</b> mà do <b>Toàn trả</b> thì hệ thống sẽ tự động cộng hoàn trả vào số tiền Toàn cần nhận.
           </div>
           <!-- Form thêm chi phí -->
-          <div style="display:grid; grid-template-columns: 1.1fr 1.3fr 0.9fr auto auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
-            <div>
-              <label style="font-size:11px">Khoản chi *</label>
-              <input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI, Thiết bị test, TK Apple..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
-            </div>
-            <div>
-              <label style="font-size:11px">Ghi chú (Note)</label>
-              <input id="psNewExpenseNote" type="text" placeholder="Ví dụ: Groq/Gemini API, Hoá đơn số #12, TK Đạt mua..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
-            </div>
-            <div>
-              <label style="font-size:11px">Số tiền chi (₫) *</label>
-              <input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)" onkeydown="if(event.key==='Enter') addProfitSharingExpense()">
-            </div>
-            <div>
-              <label style="font-size:11px">Chứng từ / Nghiệm thu</label>
-              <div style="display:flex; align-items:center; gap:6px; min-height:34px">
-                <input type="file" id="psNewExpenseReceiptFile" accept="image/*" style="display:none" onchange="handleExpenseReceiptFile(event)">
-                <button type="button" class="small ghost" id="btnUploadReceipt" onclick="$('psNewExpenseReceiptFile').click()" ondragover="event.preventDefault(); this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleReceiptDrop(event)" style="display:inline-flex; align-items:center; gap:4px; height:34px; padding:0 8px; white-space:nowrap; border:1px dashed var(--border); font-size:11px" title="Tải ảnh biên bản nghiệm thu, hoá đơn API hoặc bill chuyển khoản (Kéo thả, chọn ảnh hoặc dán Ctrl+V)">
-                  📷 Kèm ảnh bill/NT
-                </button>
-                <div id="psNewExpenseReceiptPreview" style="display:none; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:2px 8px 2px 4px; border-radius:6px; height:34px">
-                  <img id="psNewExpenseReceiptThumb" src="" style="width:26px; height:26px; object-fit:cover; border-radius:4px; border:1px solid var(--border); cursor:pointer" onclick="previewImageDirect(window._newExpenseReceipt?.dataUrl, window._newExpenseReceipt?.name || 'Ảnh nghiệm thu')" title="Bấm xem phóng to">
-                  <span id="psNewExpenseReceiptLabel" class="hint" style="font-size:11px; max-width:85px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap"></span>
-                  <span style="cursor:pointer; color:var(--danger); font-size:13px; font-weight:bold; margin-left:2px" onclick="clearNewExpenseReceipt()" title="Gỡ ảnh">✕</span>
-                </div>
-              </div>
-            </div>
-            <div style="padding-bottom:8px">
-              <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; white-space:nowrap" title="Đánh dấu nếu khoản tiền này đã được thanh toán thực tế (sẽ trừ vào doanh thu để tính chia lãi)">
-                <input id="psNewExpenseIsPaid" type="checkbox" style="width:16px; height:16px; margin:0; cursor:pointer">
-                <span>Đã thanh toán</span>
-              </label>
-            </div>
-            <div>
-              <button class="small" onclick="addProfitSharingExpense()" style="height:34px">➕ Thêm Chi Phí</button>
-            </div>
+          <div style="display:grid; grid-template-columns: 1.1fr 1.2fr 0.9fr 1.1fr auto auto auto; gap:8px; align-items:flex-end; margin-bottom:12px">
+            <div><label style="font-size:11px">Khoản chi *</label><input id="psNewExpenseTitle" type="text" placeholder="Ví dụ: Model AI, Thiết bị test, TK Apple..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()"></div>
+            <div><label style="font-size:11px">Ghi chú (Note)</label><input id="psNewExpenseNote" type="text" placeholder="Ví dụ: Groq/Gemini API, Hoá đơn số #12, TK Đạt mua..." onkeydown="if(event.key==='Enter') addProfitSharingExpense()"></div>
+            <div><label style="font-size:11px">Số tiền chi (₫) *</label><input id="psNewExpenseAmount" type="text" placeholder="Ví dụ: 1,500,000" class="mono" oninput="formatNumberInput(this)" onkeydown="if(event.key==='Enter') addProfitSharingExpense()"></div>
+            <div><label style="font-size:11px">Người chi trả *</label><select id="psNewExpensePaidBy" style="height:34px; font-size:12px; font-weight:600; padding:0 6px"><option value="dat">💼 Đạt trả</option><option value="toan">👑 Toàn trả</option></select></div>
+            <div><label style="font-size:11px">Chứng từ / Nghiệm thu</label><div style="display:flex; align-items:center; gap:6px; min-height:34px"><input type="file" id="psNewExpenseReceiptFile" accept="image/*" style="display:none" onchange="handleExpenseReceiptFile(event)"><button type="button" class="small ghost" id="btnUploadReceipt" onclick="$('psNewExpenseReceiptFile').click()" ondragover="event.preventDefault(); this.style.borderColor='var(--accent)';" ondragleave="this.style.borderColor='var(--border)';" ondrop="handleReceiptDrop(event)" style="display:inline-flex; align-items:center; gap:4px; height:34px; padding:0 8px; white-space:nowrap; border:1px dashed var(--border); font-size:11px" title="Tải ảnh biên bản nghiệm thu, hoá đơn API hoặc bill chuyển khoản (Kéo thả, chọn ảnh hoặc dán Ctrl+V)">📷 Kèm ảnh bill/NT</button><div id="psNewExpenseReceiptPreview" style="display:none; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:2px 8px 2px 4px; border-radius:6px; height:34px"><img id="psNewExpenseReceiptThumb" src="" style="width:26px; height:26px; object-fit:cover; border-radius:4px; border:1px solid var(--border); cursor:pointer" onclick="previewImageDirect(window._newExpenseReceipt ? window._newExpenseReceipt.dataUrl : '', (window._newExpenseReceipt && window._newExpenseReceipt.name) || 'Ảnh nghiệm thu')" title="Bấm xem phóng to"><span id="psNewExpenseReceiptLabel" class="hint" style="font-size:11px; max-width:85px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap"></span><span style="cursor:pointer; color:var(--danger); font-size:13px; font-weight:bold; margin-left:2px" onclick="clearNewExpenseReceipt()" title="Gỡ ảnh">✕</span></div></div></div>
+            <div style="padding-bottom:8px"><label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; font-weight:600; white-space:nowrap" title="Tích vào khi khoản chi đã thanh toán xong"><input id="psNewExpenseIsPaid" type="checkbox" style="width:16px; height:16px; margin:0; cursor:pointer"><span>Đã thanh toán</span></label></div>
+            <div><button class="small" onclick="addProfitSharingExpense()" style="height:34px">➕ Thêm Chi Phí</button></div>
           </div>
           <!-- Input ẩn để upload ảnh cho từng dòng chi phí đã có -->
           <input type="file" id="psRowReceiptFileInput" accept="image/*" style="display:none" onchange="handleRowReceiptFile(event)">
           <!-- Bảng danh sách chi phí -->
           <div style="overflow-x:auto">
             <table style="width:100%; margin-top:0">
-              <thead><tr><th style="text-align:left">Khoản chi</th><th style="text-align:left">Ghi chú</th><th style="text-align:center; width:110px">Nghiệm thu / Bill</th><th style="text-align:right">Số tiền (₫)</th><th style="text-align:center; width:130px">Trạng thái</th><th style="text-align:center; width:120px">Ngày ghi nhận</th><th style="text-align:right; width:50px">Xoá</th></tr></thead>
+              <thead><tr><th style="text-align:left">Khoản chi</th><th style="text-align:left">Ghi chú</th><th style="text-align:center; width:135px">Người chi trả</th><th style="text-align:center; width:110px">Nghiệm thu / Bill</th><th style="text-align:right">Số tiền (₫)</th><th style="text-align:center; width:130px">Trạng thái</th><th style="text-align:center; width:120px">Ngày ghi nhận</th><th style="text-align:right; width:50px">Xoá</th></tr></thead>
               <tbody id="psExpenseTableBody">
-                <tr><td colspan="7" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
+                <tr><td colspan="8" class="hint" style="text-align:center; padding:10px">Chưa có khoản chi phí nào được khai báo.</td></tr>
               </tbody>
               <tfoot>
                 <tr style="font-weight:700; border-top:2px solid var(--border)">
-                  <td colspan="3">ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
+                  <td colspan="4">ĐÃ THANH TOÁN (Trừ vào lợi nhuận chia)</td>
                   <td class="mono" style="text-align:right; color:var(--danger)" id="psExpenseTablePaidTotal">0 ₫</td>
-                  <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Tính vào phân chia 60:40</td>
+                  <td colspan="3" class="hint" style="font-size:11px; padding-left:10px" id="psExpenseTablePaidBreakdown">Tính vào phân chia 60:40</td>
                 </tr>
                 <tr style="font-size:12px; color:var(--muted)">
-                  <td colspan="3">Chờ thanh toán (Ghi chú chưa chi)</td>
+                  <td colspan="4">Chờ thanh toán (Ghi chú chưa chi)</td>
                   <td class="mono" style="text-align:right; color:#d97706" id="psExpenseTablePendingTotal">0 ₫</td>
                   <td colspan="3" class="hint" style="font-size:11px; padding-left:10px">Chưa trừ vào lợi nhuận chia</td>
                 </tr>
                 <tr style="font-weight:600; border-top:1px dashed var(--border); font-size:12px">
-                  <td colspan="3">TỔNG CHI PHÍ DỰ KIẾN</td>
+                  <td colspan="4">TỔNG CHI PHÍ DỰ KIẾN</td>
                   <td class="mono" style="text-align:right" id="psExpenseTableTotal">0 ₫</td>
                   <td colspan="3"></td>
                 </tr>
@@ -1892,6 +1864,7 @@ const SESSION_MAX_AGE_MS = 3 * 24 * 60 * 60 * 1000; // 3 days (tự động gia 
 let currentSession = null;
 let otpCountdownInterval = null;
 function getSession() {
+  if (currentSession && currentSession.session_token) return currentSession;
   try {
     let raw = localStorage.getItem(SESSION_KEY);
     if (!raw) raw = sessionStorage.getItem(SESSION_KEY);
@@ -2221,35 +2194,35 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }, 10 * 60 * 1000);
   }
-renderAppUpdateConfigUI();
+  renderAppUpdateConfigUI(); applyUrlQueryParams();
   if (checkAuthUI()) {
-    syncTrialUI();
-    setCreateRoleDefaults();
-    loadKeys();
-    loadSalesData();
-    renderQuickInstallTable();
-    loadQuickInstallCatalog();
-    loadAppUpdateConfig();
-    applyUrlQueryParams();
+    syncTrialUI(); setCreateRoleDefaults(); loadKeys(); loadSalesData();
+    renderQuickInstallTable(); loadQuickInstallCatalog(); loadAppUpdateConfig();
   }
 });
 function applyUrlQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
+  const isDemo = Boolean(urlParams.get("demo")), sessionParam = urlParams.get("session") || (isDemo ? "demo_token" : null);
+  if (sessionParam) {
+    currentSession = { session_token: sessionParam, admin_name: "Toàn (Admin)", admin_phone: "0333332093", login_timestamp: Date.now() };
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); } catch(e) {}
+    if (isDemo) {
+      const demoPs = { toan_received: 5000000, general_note: "Đợt 1 chốt đối soát mẫu", expenses: [
+        { id: "demo_1", title: "Model AI (Gemini/Groq API)", note: "Toàn tự quẹt thẻ cá nhân", amount: 1500000, paid_by: "toan", is_paid: false, created_at: new Date().toISOString() },
+        { id: "demo_2", title: "Server Cloud & Thiết bị", note: "Đạt chi từ quỹ doanh thu", amount: 2000000, paid_by: "dat", is_paid: true, created_at: new Date().toISOString() } ]};
+      window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000;
+      try { localStorage.setItem("geely_profit_sharing", JSON.stringify(demoPs)); } catch(e) {}
+    }
+  }
   const midParam = (urlParams.get("machine_id") || urlParams.get("device_id") || "").trim();
   if (midParam) {
-    const noteEl = $("note");
-    if (noteEl && !noteEl.value) {
-      noteEl.value = "Xe EX2 (Máy: " + midParam + ")";
-    }
-    const searchEl = $("searchInput");
-    if (searchEl) {
-      searchEl.value = midParam;
-      searchKeyword = midParam;
-    }
-    const ownerNameEl = $("ownerName");
-    if (ownerNameEl) {
-      setTimeout(() => ownerNameEl.focus(), 150);
-    }
+    const noteEl = $("note"); if (noteEl && !noteEl.value) noteEl.value = "Xe EX2 (Máy: " + midParam + ")";
+    const searchEl = $("searchInput"); if (searchEl) { searchEl.value = midParam; searchKeyword = midParam; }
+    const ownerNameEl = $("ownerName"); if (ownerNameEl) setTimeout(() => ownerNameEl.focus(), 150);
+  }
+  const tabParam = urlParams.get("tab") || (window.location.hash || "").replace("#", "");
+  if (tabParam && ["licenses", "sales", "analytics", "quickInstall", "forceUpdate", "resellers"].includes(tabParam)) {
+    setTimeout(() => { switchTab(tabParam); if (isDemo && tabParam === "analytics") renderProfitSharingUI(20000000); }, 50);
   }
 }
 // ==================== SUPABASE API ====================
@@ -2592,52 +2565,20 @@ function getLicensePackageInfo(r) {
   if (r.is_trial || (r.role || "").toLowerCase() === "trial") {
     const isExp = r.expires_at && new Date(r.expires_at) < new Date();
     const daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / (86400 * 1000))) : 0;
-    return {
-      id: "trial",
-      name: "Dùng thử",
-      badge: isExp
-        ? '<span class="tag off">⛔ Trial hết hạn</span>'
-        : '<span class="tag on" style="background:#d97706; color:#fff;">⏱️ Trial (' + daysLeft + 'd)</span>'
-    };
+    return { id: "trial", name: "Dùng thử", badge: isExp ? '<span class="tag off">⛔ Trial hết hạn</span>' : '<span class="tag on" style="background:#d97706; color:#fff;">⏱️ Trial (' + daysLeft + 'd)</span>' };
   }
   if (!r.expires_at) {
-    return {
-      id: "lifetime",
-      name: "Vĩnh viễn",
-      badge: '<span class="tag on" style="background:#059669; color:#fff; font-weight:700">👑 Vĩnh viễn</span>'
-    };
+    return { id: "lifetime", name: "Vĩnh viễn", badge: '<span class="tag on" style="background:#059669; color:#fff; font-weight:700">👑 Vĩnh viễn</span>' };
   }
-  const note = (r.note || "").toLowerCase();
-  const created = r.created_at ? new Date(r.created_at) : new Date();
-  const expires = new Date(r.expires_at);
-  const diffDays = Math.round((expires - created) / (86400 * 1000));
-  const isExp = expires < new Date();
-
+  const note = (r.note || "").toLowerCase(), created = r.created_at ? new Date(r.created_at) : new Date(), expires = new Date(r.expires_at);
+  const diffDays = Math.round((expires - created) / (86400 * 1000)), isExp = expires < new Date();
   if (note.includes("3 tháng") || note.includes("3 thang") || note.includes("495k") || note.includes("quarter") || (diffDays >= 70 && diffDays <= 120)) {
-    return {
-      id: "quarter",
-      name: "3 Tháng (495k)",
-      badge: isExp
-        ? '<span class="tag off">⛔ 3 Tháng hết hạn</span>'
-        : '<span class="tag" style="background:#7e22ce; color:#fff; font-weight:700">⚡ 3 Tháng (495k)</span>'
-    };
+    return { id: "quarter", name: "3 Tháng (495k)", badge: isExp ? '<span class="tag off">⛔ 3 Tháng hết hạn</span>' : '<span class="tag" style="background:#7e22ce; color:#fff; font-weight:700">⚡ 3 Tháng (495k)</span>' };
   }
   if (note.includes("1 năm") || note.includes("1 nam") || note.includes("12 tháng") || note.includes("12 thang") || note.includes("yearly") || diffDays > 120) {
-    return {
-      id: "yearly",
-      name: "1 Năm",
-      badge: isExp
-        ? '<span class="tag off">⛔ 1 Năm hết hạn</span>'
-        : '<span class="tag on" style="background:#0284c7; color:#fff; font-weight:700">📅 1 Năm</span>'
-    };
+    return { id: "yearly", name: "1 Năm", badge: isExp ? '<span class="tag off">⛔ 1 Năm hết hạn</span>' : '<span class="tag on" style="background:#0284c7; color:#fff; font-weight:700">📅 1 Năm</span>' };
   }
-  return {
-    id: "custom",
-    name: "Có thời hạn",
-    badge: isExp
-      ? '<span class="tag off">⛔ Hết hạn</span>'
-      : '<span class="tag" style="background:#64748b; color:#fff">⏳ Có hạn</span>'
-  };
+  return { id: "custom", name: "Có thời hạn", badge: isExp ? '<span class="tag off">⛔ Hết hạn</span>' : '<span class="tag" style="background:#64748b; color:#fff">⏳ Có hạn</span>' };
 }
 
 function rowHtml(r) {
@@ -3541,7 +3482,7 @@ async function handleQiApkFileSelect(file) {
       $("qiName").value = suggested.trim();
     }
     if (statusEl) {
-      statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc(info.versionCode ?? "?")}) • ${mb} MB</span>`;
+      statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc((info.versionCode !== undefined && info.versionCode !== null) ? info.versionCode : "?")}) • ${mb} MB</span>`;
     }
     toast(`Đã tự động điền: ${info.package} (v${info.versionName || '?'})`);
   } catch (err) {
@@ -3858,61 +3799,23 @@ function formatVndNumber(n) {
   const num = Number(n) || 0;
   return num.toLocaleString("vi-VN") + " ₫";
 }
-function parseVndNumber(val) {
-  if (typeof val === "number") return Math.round(val);
-  return parseInt(String(val || "").replace(/\D/g, ""), 10) || 0;
-}
-function formatVndDots(val) {
-  const num = parseVndNumber(val);
-  return num ? num.toLocaleString("vi-VN") : "";
-}
-function onPriceInputChange(input) {
-  const raw = input.value;
-  const num = parseVndNumber(raw);
-  if (!num) {
-    input.value = "";
-    return;
-  }
-  input.value = num.toLocaleString("vi-VN");
-}
-function formatIsoTime(iso) {
-  if (!iso) return "-";
-  try {
-    const d = new Date(iso);
-    return d.toLocaleString("vi-VN", { hour12: false });
-  } catch (e) {
-    return iso;
-  }
-}
+function parseVndNumber(val) { if (typeof val === "number") return Math.round(val); return parseInt(String(val || "").replace(/\D/g, ""), 10) || 0; }
+function formatVndDots(val) { const num = parseVndNumber(val); return num ? num.toLocaleString("vi-VN") : ""; }
+function onPriceInputChange(input) { const num = parseVndNumber(input.value); input.value = num ? num.toLocaleString("vi-VN") : ""; }
+function formatIsoTime(iso) { if (!iso) return "-"; try { return new Date(iso).toLocaleString("vi-VN", { hour12: false }); } catch (e) { return iso; } }
 function updateSalesPricePreview() {
   const life = parseVndNumber($("salesLifetimePrice") ? $("salesLifetimePrice").value : 2950000);
   const orig = parseVndNumber($("salesYearlyPrice") ? $("salesYearlyPrice").value : 1950000);
   const quarter = parseVndNumber($("salesThreeMonthsPrice") ? $("salesThreeMonthsPrice").value : 495000);
   const disc = parseInt($("salesYearlyDiscount") ? $("salesYearlyDiscount").value : 40, 10) || 0;
-  const after = Math.round(orig * (100 - disc) / 100);
-  const saveAmt = orig - after;
-
-  if ($("salesLifetimePricePreview")) {
-    $("salesLifetimePricePreview").textContent = "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
-  }
-  if ($("salesYearlyPricePreview")) {
-    $("salesYearlyPricePreview").textContent = "→ Giá gốc 1 Năm: " + formatVndNumber(orig);
-  }
-  if ($("salesThreeMonthsPreview")) {
-    $("salesThreeMonthsPreview").textContent = "→ Gói 3 Tháng: " + formatVndNumber(quarter);
-  }
-  if ($("salesDiscountPreview")) {
-    $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after) + (saveAmt > 0 ? " (Tiết kiệm " + formatVndNumber(saveAmt) + ")" : "");
-  }
-  if ($("summaryLifetimePreview")) {
-    $("summaryLifetimePreview").textContent = formatVndNumber(life);
-  }
-  if ($("summaryYearlyPreview")) {
-    $("summaryYearlyPreview").textContent = formatVndNumber(after) + " (giá gốc " + formatVndNumber(orig) + ")";
-  }
-  if ($("summaryQuarterPreview")) {
-    $("summaryQuarterPreview").textContent = formatVndNumber(quarter);
-  }
+  const after = Math.round(orig * (100 - disc) / 100), saveAmt = orig - after;
+  if ($("salesLifetimePricePreview")) $("salesLifetimePricePreview").textContent = "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
+  if ($("salesYearlyPricePreview")) $("salesYearlyPricePreview").textContent = "→ Giá gốc 1 Năm: " + formatVndNumber(orig);
+  if ($("salesThreeMonthsPreview")) $("salesThreeMonthsPreview").textContent = "→ Gói 3 Tháng: " + formatVndNumber(quarter);
+  if ($("salesDiscountPreview")) $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after) + (saveAmt > 0 ? " (Tiết kiệm " + formatVndNumber(saveAmt) + ")" : "");
+  if ($("summaryLifetimePreview")) $("summaryLifetimePreview").textContent = formatVndNumber(life);
+  if ($("summaryYearlyPreview")) $("summaryYearlyPreview").textContent = formatVndNumber(after) + " (giá gốc " + formatVndNumber(orig) + ")";
+  if ($("summaryQuarterPreview")) $("summaryQuarterPreview").textContent = formatVndNumber(quarter);
 }
 function syncSalesPromoExpiryUI() {
   $("salesPromoEndDate").disabled = $("salesPromoForever").checked;
@@ -4201,7 +4104,7 @@ function renderAnalyticsUI(stats) {
     });
   }
   // Cập nhật phân hệ Phân chia Doanh thu & Quyết toán Lợi nhuận (Toàn 60% - Đạt 40%)
-  const totalRev = Number(s.total_revenue) || 0;
+  const totalRev = Number(s.total_revenue) || window._currentTotalRevenue || 0;
   window._currentTotalRevenue = totalRev;
   renderProfitSharingUI(totalRev);
 }
@@ -4230,55 +4133,85 @@ function renderProfitSharingUI(totalRevenue) {
     window._currentTotalRevenue = Number(totalRevenue) || 0;
   }
   const grossRev = window._currentTotalRevenue || 0;
-  // 1. Phân loại & tính tổng chi phí (Đã thanh toán vs Chờ thanh toán)
+  // 1. Phân loại & tính tổng chi phí (Đã thanh toán vs Chờ thanh toán, Đạt trả vs Toàn trả)
   const expenses = data.expenses || [];
-  let totalExpenses = 0;
-  let paidExpenses = 0;
-  let pendingExpenses = 0;
+  let totalExpenses = 0, paidExpenses = 0, pendingExpenses = 0;
+  let paidExpensesByDat = 0, paidExpensesByToan = 0, pendingExpensesByDat = 0, pendingExpensesByToan = 0;
   for (const exp of expenses) {
     const amt = Number(exp.amount) || 0;
+    const paidBy = exp.paid_by === 'toan' ? 'toan' : 'dat';
     totalExpenses += amt;
     if (exp.is_paid) {
       paidExpenses += amt;
+      if (paidBy === 'toan') paidExpensesByToan += amt; else paidExpensesByDat += amt;
     } else {
       pendingExpenses += amt;
+      if (paidBy === 'toan') pendingExpensesByToan += amt; else pendingExpensesByDat += amt;
     }
   }
-  // 2. Lợi nhuận ròng = Doanh thu - Chi phí ĐÃ THANH TOÁN
-  // (Khoản chưa thanh toán lưu dưới dạng ghi chú kế hoạch, chưa trừ vào dòng tiền chia thực tế)
-  const netProfit = grossRev - paidExpenses;
+  // 2. Lợi nhuận ròng = Doanh thu - Tổng chi phí thực tế phát sinh (Đạt đã chi + Toàn đã chi dù Đạt đã trả hay chưa)
+  const actualIncurredExpenses = paidExpensesByDat + paidExpensesByToan + pendingExpensesByToan;
+  const netProfit = grossRev - actualIncurredExpenses;
   // 3. Tỷ lệ 60% Toàn - 40% Đạt
   const toanShare = Math.round(netProfit * 0.6);
   const datShare = netProfit - toanShare;
-  // 4. Số tiền Toàn đã thực nhận từ Đạt
+  // 4. Quyết toán dòng tiền:
+  // "đã thanh toán là coi như xong rồi nào chưa tích vô thanh toán thì vd Toàn trả thì Đạt phải trả xong cho toàn mới tích vào đã thanh toán"
+  // Khoản đã thanh toán (paidExpensesByToan): Đạt đã trả xong cho Toàn coi như xong rồi.
+  // Khoản chưa tích (pendingExpensesByToan): Toàn tự chi tiền túi, Đạt PHẢI TRẢ XONG CHO TOÀN.
+  const toanEntitled = toanShare + pendingExpensesByToan;
   const toanReceived = Number(data.toan_received) || 0;
+
   // 5. Cập nhật thẻ KPI
   if ($("psGrossRevenue")) $("psGrossRevenue").textContent = formatVndNumber(grossRev);
-  if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(paidExpenses);
+  if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(actualIncurredExpenses);
   if ($("psTotalExpensesHint")) {
-    $("psTotalExpensesHint").innerHTML = pendingExpenses > 0
-      ? `Đã thanh toán: <b>${formatVndNumber(paidExpenses)}</b> &bull; Chờ chi: <b>${formatVndNumber(pendingExpenses)}</b>`
-      : (paidExpenses > 0 ? `100% đã thanh toán (${formatVndNumber(paidExpenses)})` : `Chưa phát sinh chi phí`);
+    const parts = [];
+    if (paidExpensesByDat > 0) parts.push(`Đạt đã chi: <b>${formatVndNumber(paidExpensesByDat)}</b>`);
+    if (paidExpensesByToan > 0) parts.push(`Toàn trả (Đã thanh toán): <b>${formatVndNumber(paidExpensesByToan)}</b>`);
+    if (pendingExpensesByToan > 0) parts.push(`Toàn trả (Chưa thanh toán): <b style="color:var(--danger)">${formatVndNumber(pendingExpensesByToan)}</b>`);
+    if (pendingExpensesByDat > 0) parts.push(`Chờ chi: <b>${formatVndNumber(pendingExpensesByDat)}</b>`);
+    $("psTotalExpensesHint").innerHTML = parts.length ? parts.join(" &bull; ") : (actualIncurredExpenses > 0 ? `100% đã phát sinh (${formatVndNumber(actualIncurredExpenses)})` : `Chưa phát sinh chi phí`);
   }
   if ($("psNetProfit")) $("psNetProfit").textContent = formatVndNumber(netProfit);
   if ($("psNetProfitHint")) {
-    $("psNetProfitHint").innerHTML = pendingExpenses > 0
-      ? `= Doanh thu trừ Chi phí đã TT (Dự kiến sau chi: ${formatVndNumber(grossRev - totalExpenses)})`
-      : `= Doanh thu trừ Chi phí đã thanh toán`;
+    $("psNetProfitHint").innerHTML = pendingExpensesByDat > 0
+      ? `= Doanh thu trừ Chi phí thực tế (Dự kiến sau chi: ${formatVndNumber(grossRev - totalExpenses)})`
+      : `= Doanh thu trừ Chi phí thực tế`;
   }
-  if ($("psToanShare")) $("psToanShare").textContent = formatVndNumber(toanShare);
+  if ($("psToanShare")) {
+    $("psToanShare").innerHTML = pendingExpensesByToan > 0
+      ? `${formatVndNumber(toanEntitled)} <div style="font-size:12px; font-weight:normal; opacity:0.85; margin-top:2px">(${formatVndNumber(toanShare)} LN + ${formatVndNumber(pendingExpensesByToan)} chi phí Toàn trả)</div>`
+      : formatVndNumber(toanShare);
+  }
+  if ($("psToanShareHint")) {
+    $("psToanShareHint").innerHTML = pendingExpensesByToan > 0
+      ? `Toàn nhận 60% LN (${formatVndNumber(toanShare)}) + hoàn chi phí Toàn trả chưa thanh toán (${formatVndNumber(pendingExpensesByToan)})`
+      : `Toàn nhận 60% lợi nhuận sau chi phí`;
+  }
   if ($("psDatShare")) $("psDatShare").textContent = formatVndNumber(datShare);
-  // 6. Cập nhật ô nhập Số tiền Toàn đã nhận nếu không đang gõ
+  if ($("psDatShareHint")) {
+    $("psDatShareHint").innerHTML = pendingExpensesByToan > 0
+      ? `Đạt giữ 40% LN (sau khi thanh toán chi phí Toàn trả ${formatVndNumber(pendingExpensesByToan)})`
+      : `Đạt nhận 40% lợi nhuận sau khi trừ chi phí`;
+  }
+
+  // 7. Cập nhật ô nhập Số tiền Toàn đã nhận nếu không đang gõ
   const toanReceivedInput = $("psToanReceivedInput");
   if (toanReceivedInput && document.activeElement !== toanReceivedInput) {
     toanReceivedInput.value = toanReceived > 0 ? toanReceived.toLocaleString("vi-VN") : "";
   }
-  // 7. Cập nhật trạng thái đối soát dòng tiền
-  const diff = toanReceived - toanShare; // Đã nhận - Được hưởng
+
+  // 8. Cập nhật trạng thái đối soát dòng tiền
+  const diff = toanReceived - toanEntitled; // Đã nhận - Cần nhận
   const statusBox = $("psSettlementStatusBox");
   const statusTitle = $("psSettlementStatusTitle");
   const statusDetail = $("psSettlementStatusDetail");
   if (statusBox && statusTitle && statusDetail) {
+    const toanEntitledDetailStr = pendingExpensesByToan > 0
+      ? `Toàn cần nhận: <b>${formatVndNumber(toanEntitled)}</b> (60% LN: ${formatVndNumber(toanShare)} + chi phí Toàn trả: ${formatVndNumber(pendingExpensesByToan)})`
+      : `Toàn được hưởng (60% LN): <b>${formatVndNumber(toanShare)}</b>`;
+
     if (diff < 0) {
       // Đạt còn thiếu Toàn
       const missing = Math.abs(diff);
@@ -4286,45 +4219,59 @@ function renderProfitSharingUI(totalRevenue) {
       statusBox.style.background = "rgba(245, 158, 11, 0.08)";
       statusTitle.style.color = "#d97706";
       statusTitle.innerHTML = `⚠️ <b>ĐẠT CÒN THIẾU TOÀN:</b> <span class="mono" style="font-size:16px; font-weight:800; color:#b45309">${formatVndNumber(missing)}</span>`;
-      statusDetail.innerHTML = `Toàn được hưởng (60%): <b>${formatVndNumber(toanShare)}</b> &bull; Toàn đã nhận: <b>${formatVndNumber(toanReceived)}</b> &bull; <i>Đạt cần chuyển thêm cho Toàn: ${formatVndNumber(missing)}</i>`;
+      statusDetail.innerHTML = `${toanEntitledDetailStr} &bull; Toàn đã nhận: <b>${formatVndNumber(toanReceived)}</b> &bull; <i>Đạt cần chuyển thêm cho Toàn: ${formatVndNumber(missing)}</i>`;
     } else if (diff > 0) {
       // Toàn đang nhận dư
       statusBox.style.borderColor = "#3b82f6";
       statusBox.style.background = "rgba(59, 130, 246, 0.08)";
       statusTitle.style.color = "#2563eb";
       statusTitle.innerHTML = `ℹ️ <b>TOÀN ĐANG NHẬN DƯ:</b> <span class="mono" style="font-size:16px; font-weight:800; color:#1d4ed8">${formatVndNumber(diff)}</span>`;
-      statusDetail.innerHTML = `Toàn được hưởng (60%): <b>${formatVndNumber(toanShare)}</b> &bull; Toàn đã nhận: <b>${formatVndNumber(toanReceived)}</b> &bull; <i>Dư thừa so với tỷ lệ: ${formatVndNumber(diff)}</i>`;
+      statusDetail.innerHTML = `${toanEntitledDetailStr} &bull; Toàn đã nhận: <b>${formatVndNumber(toanReceived)}</b> &bull; <i>Dư thừa so với tỷ lệ: ${formatVndNumber(diff)}</i>`;
     } else {
       // Cân bằng
       statusBox.style.borderColor = "#10b981";
       statusBox.style.background = "rgba(16, 185, 129, 0.08)";
       statusTitle.style.color = "#059669";
       statusTitle.innerHTML = `✅ <b>ĐÃ QUYẾT TOÁN CÂN BẰNG (0 ₫)</b>`;
-      statusDetail.innerHTML = `Toàn đã nhận đủ 100% phần 60% lợi nhuận ròng (${formatVndNumber(toanShare)}).`;
+      statusDetail.innerHTML = `Toàn đã nhận đủ 100% (${toanEntitledDetailStr}). Mọi khoản đã thanh toán coi như xong rồi.`;
     }
   }
-  // 8. Render bảng danh sách chi phí
+
+  // 9. Render bảng danh sách chi phí
   const paidCount = expenses.filter(e => e.is_paid).length;
   const pendingCount = expenses.length - paidCount;
   if ($("psExpenseCount")) {
     $("psExpenseCount").textContent = `${expenses.length} khoản chi (${paidCount} đã TT, ${pendingCount} chờ chi)`;
   }
-  if ($("psExpenseTablePaidTotal")) $("psExpenseTablePaidTotal").textContent = formatVndNumber(paidExpenses);
-  if ($("psExpenseTablePendingTotal")) $("psExpenseTablePendingTotal").textContent = formatVndNumber(pendingExpenses);
+  if ($("psExpenseTablePaidTotal")) $("psExpenseTablePaidTotal").textContent = formatVndNumber(actualIncurredExpenses);
+  if ($("psExpenseTablePaidBreakdown")) {
+    const parts = [];
+    if (paidExpensesByDat > 0) parts.push(`Đạt đã chi: ${formatVndNumber(paidExpensesByDat)}`);
+    if (paidExpensesByToan > 0) parts.push(`Toàn trả: ${formatVndNumber(paidExpensesByToan)}`);
+    if (pendingExpensesByToan > 0) parts.push(`Toàn trả (Chưa TT): <b style="color:var(--danger)">${formatVndNumber(pendingExpensesByToan)}</b>`);
+    $("psExpenseTablePaidBreakdown").innerHTML = parts.length ? parts.join(" &bull; ") : "Tính vào phân chia 60:40";
+  }
+  if ($("psExpenseTablePendingTotal")) $("psExpenseTablePendingTotal").textContent = formatVndNumber(pendingExpensesByDat);
   if ($("psExpenseTableTotal")) $("psExpenseTableTotal").textContent = formatVndNumber(totalExpenses);
   const tbody = $("psExpenseTableBody");
   if (tbody) {
     tbody.innerHTML = "";
     if (!expenses.length) {
-      tbody.innerHTML = '<tr><td colspan="7" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập khoản chi, ghi chú & số tiền phía trên để khai báo.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="hint" style="text-align:center; padding:12px">🎉 Chưa có khoản chi phí nào. Nhập khoản chi, ghi chú & số tiền phía trên để khai báo.</td></tr>';
     } else {
       expenses.forEach((exp, idx) => {
         const tr = document.createElement("tr");
         const expId = esc(exp.id || ("exp_" + idx));
         const isPaid = Boolean(exp.is_paid);
-        const statusHtml = isPaid
-          ? `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#16a34a; font-size:12px" title="Bấm để chuyển sang Chưa thanh toán"><input type="checkbox" checked onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>✅ Đã TT</span></label>`
-          : `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#d97706; font-size:12px" title="Bấm để đánh dấu Đã thanh toán"><input type="checkbox" onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>⏳ Chưa TT</span></label>`;
+        const isPaidByToan = (exp.paid_by === 'toan');
+        let payerHtml = '', statusHtml = '';
+        if (isPaidByToan) {
+          payerHtml = `<button type="button" class="tag admin" style="cursor:pointer; border:1px solid #7dd3fc; background:#e0f2fe; color:#0369a1; font-weight:700; padding:2px 7px; border-radius:4px" onclick="toggleProfitSharingExpensePayer('${expId}')" title="Bấm để đổi người chi trả">👑 Toàn trả</button>`;
+          statusHtml = isPaid ? `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#16a34a; font-size:12px" title="Đã thanh toán"><input type="checkbox" checked onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>✅ Đã thanh toán</span></label>` : `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:700; color:#dc2626; font-size:12px" title="Chưa thanh toán"><input type="checkbox" onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>⏳ Chưa thanh toán</span></label>`;
+        } else {
+          payerHtml = `<button type="button" class="tag" style="cursor:pointer; border:1px solid var(--border); background:var(--panel); color:var(--text); font-weight:600; padding:2px 7px; border-radius:4px" onclick="toggleProfitSharingExpensePayer('${expId}')" title="Bấm để đổi người chi trả">💼 Đạt trả</button>`;
+          statusHtml = isPaid ? `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#16a34a; font-size:12px" title="Đã thanh toán"><input type="checkbox" checked onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>✅ Đã thanh toán</span></label>` : `<label style="display:inline-flex; align-items:center; gap:5px; cursor:pointer; font-weight:600; color:#d97706; font-size:12px" title="Chưa thanh toán"><input type="checkbox" onchange="toggleProfitSharingExpensePaid('${expId}', this.checked)" style="cursor:pointer; width:15px; height:15px"> <span>⏳ Chưa thanh toán</span></label>`;
+        }
         const noteHtml = exp.note
           ? esc(exp.note)
           : '<span style="color:var(--muted)">—</span>';
@@ -4337,6 +4284,7 @@ function renderProfitSharingUI(totalRevenue) {
         tr.innerHTML =
           `<td><b>${esc(exp.title || "Chi phí")}</b></td>` +
           `<td class="note-cell" style="cursor:pointer" onclick="editProfitSharingExpenseNote('${expId}')" title="Bấm để sửa ghi chú (note)">${noteHtml} <span style="font-size:11px; opacity:0.4; margin-left:3px">✏️</span></td>` +
+          `<td style="text-align:center">${payerHtml}</td>` +
           `<td style="text-align:center">${receiptHtml}</td>` +
           `<td class="mono" style="text-align:right; font-weight:600; color:${isPaid ? 'var(--danger)' : '#d97706'}">${formatVndNumber(exp.amount || 0)}</td>` +
           `<td style="text-align:center">${statusHtml}</td>` +
@@ -4346,7 +4294,7 @@ function renderProfitSharingUI(totalRevenue) {
       });
     }
   }
-  // 9. Ghi chú chung
+  // 10. Ghi chú chung
   const generalNoteEl = $("psGeneralNote");
   if (generalNoteEl && document.activeElement !== generalNoteEl) {
     generalNoteEl.value = data.general_note || "";
@@ -4503,9 +4451,10 @@ function previewExpenseReceipt(id) {
   const imgEl = $("expenseReceiptModalImg");
   if (titleEl) titleEl.textContent = `🧾 Chứng từ: ${exp.title || 'Chi phí'}`;
   if (subtitleEl) {
-    const statusText = exp.is_paid ? "✅ Đã thanh toán" : "⏳ Chờ thanh toán";
+    const statusText = exp.is_paid ? "✅ Đã thanh toán" : "⏳ Chưa thanh toán";
+    const payerText = (exp.paid_by === 'toan') ? "👑 Toàn trả" : "💼 Đạt trả";
     const noteText = exp.note ? ` • Ghi chú: ${exp.note}` : "";
-    subtitleEl.textContent = `Số tiền: ${formatVndNumber(exp.amount || 0)} • ${statusText}${noteText}`;
+    subtitleEl.textContent = `Số tiền: ${formatVndNumber(exp.amount || 0)} • ${statusText} • ${payerText}${noteText}`;
   }
   if (imgEl) {
     imgEl.src = exp.receipt_img;
@@ -4587,10 +4536,12 @@ function addProfitSharingExpense() {
   const noteEl = $("psNewExpenseNote");
   const amtEl = $("psNewExpenseAmount");
   const isPaidEl = $("psNewExpenseIsPaid");
+  const paidByEl = $("psNewExpensePaidBy");
   const title = (titleEl.value || "").trim();
   const note = noteEl ? (noteEl.value || "").trim() : "";
   const amt = parseInt((amtEl.value || "").replace(/\D/g, ""), 10) || 0;
   const isPaid = isPaidEl ? isPaidEl.checked : false;
+  const paidBy = paidByEl ? paidByEl.value : "dat";
   if (!title) {
     alert("Vui lòng nhập tên khoản chi tiêu (ví dụ: Model AI, mua thiết bị...)");
     titleEl.focus();
@@ -4610,6 +4561,7 @@ function addProfitSharingExpense() {
     note: note,
     amount: amt,
     is_paid: isPaid,
+    paid_by: paidBy,
     created_at: new Date().toISOString()
   };
   if (receiptImg) {
@@ -4617,21 +4569,20 @@ function addProfitSharingExpense() {
     newExp.receipt_name = receiptName;
   }
   data.expenses.push(newExp);
-  titleEl.value = "";
-  if (noteEl) noteEl.value = "";
-  amtEl.value = "";
-  if (isPaidEl) isPaidEl.checked = false;
-  clearNewExpenseReceipt();
-  renderProfitSharingUI();
+  titleEl.value = ""; if (noteEl) noteEl.value = ""; amtEl.value = "";
+  if (isPaidEl) isPaidEl.checked = false; if (paidByEl) paidByEl.value = "dat";
+  clearNewExpenseReceipt(); renderProfitSharingUI();
   saveProfitSharingConfig(true);
 }
 // Hỗ trợ paste ảnh chụp màn hình bill / hoá đơn nghiệm thu (Ctrl+V / Cmd+V)
 document.addEventListener("paste", function(e) {
   const items = e.clipboardData && e.clipboardData.items;
   if (!items) return;
-  if (!$("tabBtnSales")?.classList.contains("active")) return;
+  const tabSales = $("tabBtnSales");
+  if (!tabSales || !tabSales.classList.contains("active")) return;
   const active = document.activeElement;
-  const container = $("psNewExpenseTitle")?.closest("div[style*='panel2']");
+  const titleEl = $("psNewExpenseTitle");
+  const container = titleEl ? titleEl.closest("div[style*='panel2']") : null;
   if (!container || !container.contains(active)) return;
   for (let i = 0; i < items.length; i++) {
     if (items[i].type && items[i].type.indexOf("image") !== -1) {
@@ -4674,6 +4625,14 @@ function toggleProfitSharingExpensePaid(id, isPaid) {
     renderProfitSharingUI();
     saveProfitSharingConfig(true);
   }
+}
+function toggleProfitSharingExpensePayer(id) {
+  const data = ensureProfitSharingData();
+  const exp = (data.expenses || []).find(e => e.id === id);
+  if (!exp) return;
+  exp.paid_by = (exp.paid_by === 'toan') ? 'dat' : 'toan';
+  renderProfitSharingUI();
+  saveProfitSharingConfig(true);
 }
 function deleteProfitSharingExpense(id) {
   if (!confirm("Bạn có chắc chắn muốn xoá khoản chi tiêu này?")) return;
@@ -5164,8 +5123,8 @@ async function fetchTelegramChatId() {
       return;
     }
     const lastUpdate = data.result[data.result.length - 1];
-    const msg = lastUpdate.message || lastUpdate.callback_query?.message;
-    const chat = msg?.chat || lastUpdate.callback_query?.from;
+    const msg = lastUpdate.message || (lastUpdate.callback_query && lastUpdate.callback_query.message);
+    const chat = (msg && msg.chat) || (lastUpdate.callback_query && lastUpdate.callback_query.from);
     if (chat && chat.id) {
       const newId = String(chat.id);
       const name = chat.first_name || chat.title || chat.username || "Admin";
@@ -5931,16 +5890,16 @@ function renderRulesTable(app) {
     if (!condHtml) condHtml = `<span class="hint" style="margin:0">Không có điều kiện</span>`;
     // Target
     let targetHtml = "";
+    const curAppCfg = window._appUpdateConfig ? window._appUpdateConfig[fuKey(app)] : null;
     if (rule.targetVersionCode && rule.targetVersionCode > 0) {
       const name = rule.targetVersionName ? `v${rule.targetVersionName}` : `Mã ${rule.targetVersionCode}`;
       targetHtml = `<span class="tag car mono" style="font-weight:bold">${name} (${rule.targetVersionCode})</span> <span class="tag admin" style="font-size:10px">Chỉ định</span>`;
     } else {
-      const latestCode = window._appUpdateConfig[fuKey(app)]?.versionCode || "--";
-      const latestName = window._appUpdateConfig[fuKey(app)]?.latestVersionName || "";
+      const latestCode = (curAppCfg && curAppCfg.versionCode) || "--", latestName = (curAppCfg && curAppCfg.latestVersionName) || "";
       targetHtml = `<span class="tag pc mono">Bản mới nhất (v${latestName} / ${latestCode})</span>`;
     }
     // APK URL
-    const url = rule.targetDownloadUrl || (window._appUpdateConfig[fuKey(app)]?.downloadUrl || "");
+    const url = rule.targetDownloadUrl || ((curAppCfg && curAppCfg.downloadUrl) || "");
     const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
     tr.innerHTML = `
       <td class="mono" style="text-align:center">${idx + 1}</td>

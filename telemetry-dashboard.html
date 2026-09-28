@@ -1468,6 +1468,7 @@ const EVENT_META = {
   pip_rescue:               { label: "Cứu kẹt PIP", cat: "app" },
   auto_window_triggered:    { label: "Tự hạ kính (mở cửa)", cat: "app" },
   auto_window_result:       { label: "Kết quả tự hạ kính", cat: "app" },
+  auto_window_recheck:      { label: "Kiểm lại kính sau hết ngân sách", cat: "app" },
   scene_changed:            { label: "Đổi scene (Nghỉ/Cắm trại)", cat: "app" },
   remote_start:             { label: "Đề nổ từ xa", cat: "app" },
   car_wake:                 { label: "Đánh thức hệ thống xe", cat: "app" },
@@ -1709,7 +1710,7 @@ function eventSummary(e) {
     case "split_drag_commit": return s(`Commit kéo: bounds đổi=${p.bounds_da_doi ? "✓" : "✕"} (thực=${p.thuc ?? "?"}, mong=${p.mong ?? "?"}, lệch=${p.lech_px ?? "?"}px)`);
     case "drive_restore_nhip": return s(`Nhịp chế độ lái: gave_up=${p.gave_up_mode ? "true" : "false"} · v=${p.toc_do_kmh ?? "?"}km/h · gỡ cờ=${p.vua_go_co ? "✓" : "✕"}`);
     case "vhal_ensure_connected_failed": return s(`⚠ Mất kết nối VHAL: ${p.ly_do || ""} (class=${p.car_class_ok ? "✓" : "✕"}, obj=${p.car_obj_ok ? "✓" : "✕"})`);
-    case "vhal_binder_timeout": return s(`⚠ Binder timeout (${p.timeout_ms ?? 800}ms, op=${p.op || ""}, prop=${p.prop ?? ""})`);
+    case "vhal_binder_timeout": return s(`⚠ Binder timeout (${p.timeout_ms != null ? p.timeout_ms + "ms, " : ""}op=${p.op || ""}, ${p.what || p.prop || ""}${p.area != null ? ", area=" + p.area : ""})`);
     case "vhal_create_car_failed": return s(`⚠ Khởi tạo VHAL thất bại: ${p.loi || ""}`);
     case "hardware_cmd_blocked": return s(`⚠ Chặn phần cứng: ${cmdLabel(p.command)} do ${p.reason || ""} (v=${p.speed_kmh ?? "?"}km/h, gear=${p.gear || ""})`);
     case "voice_speak_failed": return s(`hụt giọng đọc: “${p.text || ""}” (phát tiếng bíp)`);
@@ -3155,8 +3156,9 @@ async function loadHardwareHistory() {
       summary = `Lý do: <b>${esc(p.ly_do || "")}</b> (class=${p.car_class_ok ? "✓" : "✕"}, obj=${p.car_obj_ok ? "✓" : "✕"})`;
       resBadge = `<span class="badge error">✕ Mất VHAL</span>`;
     } else if (e.event === "vhal_binder_timeout") {
-      summary = `Thao tác: <b>${esc(p.op || "")}</b> · Prop: <code>${esc(p.prop || "")}</code>`;
-      resBadge = `<span class="badge error">✕ Timeout ${p.timeout_ms ?? 800}ms</span>`;
+      // App gửi op + what (+ area khi ghi); KHÔNG gửi timeout ⇒ không in số bịa (28/09, test-dashboard-vhal-binder-timeout.py).
+      summary = `Thao tác: <b>${esc(p.op || "")}</b> · <code>${esc(p.what || p.prop || "")}</code>${p.area != null ? ` · area <code>${esc(String(p.area))}</code>` : ""}`;
+      resBadge = `<span class="badge error">✕ Timeout${p.timeout_ms != null ? " " + p.timeout_ms + "ms" : ""}</span>`;
     } else if (e.event === "vhal_create_car_failed") {
       summary = `Lỗi: <b>${esc(p.loi || "")}</b>`;
       resBadge = `<span class="badge error">✕ Tạo Car lỗi</span>`;
