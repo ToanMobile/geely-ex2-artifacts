@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.3",
-    "versionCode": 1203,
+    "latestVersionName": "1.2.5",
+    "versionCode": 1205,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "6cab843a1b4c21599da74da6f75d081ffc1c967e13d54fd0041c816e36919422",
-    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa. - ---",
+    "sha256": "388cac73e1738cd3f32829f61ffa1166939c2723ca70251e96e82308db891808",
+    "releaseNotes": "- 🧳 Mở cốp sau hỏi xác nhận: Không còn báo \"đã gửi\" khi điện thoại đang mất kết nối với xe; các nút tác động lớn chống bấm đúp trong 1 giây.\n- 🔗 Kết nối bền hơn: Dòng dữ liệu rác không bị coi là dữ liệu xe, kết nối được đóng sạch khi mở lỗi.\n- 🗑️ Xoá chuyến đi: Danh sách luôn được làm mới sau mỗi lần xoá.\n- 📡 Tìm xe trong mạng nội bộ chạy nền: Sửa lỗi khiến việc tự tìm xe không hoạt động đúng.\n- 📤 Chia sẻ tệp: Sửa lỗi làm ứng dụng bị thoát khi chia sẻ.",
     "minVersionCode": 0,
     "forceRules": []
   },
