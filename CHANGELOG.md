@@ -22,6 +22,26 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.5
+
+- **🎙️ Hỏi và ra lệnh ESC / Auto Hold / hỗ trợ đổ đèo bằng giọng**: Xe trả lời trạng thái cân bằng điện tử, Auto Hold, hỗ trợ đổ đèo bằng giọng thu sẵn (19 câu mới cho cả hai giọng), và nghe lệnh bật/tắt cân bằng điện tử, hỗ trợ đổ đèo.
+- **❄️ "Làm mát nhanh" / "làm lạnh nhanh"**: Một câu là xe đặt nhiệt độ thấp nhất và quạt mạnh nhất.
+- **🌡️ Thẻ nhiệt độ và quạt trên tab Điều hoà theo đúng số của xe**: Không còn kẹt ở số vừa bấm khi xe không đổi giá trị.
+- **📷 "Mở / tắt camera 360"**: Mở và đóng đúng camera gốc của xe.
+- **🗺️ Dẫn đường Google Maps bằng giọng**: Chỉ báo thành công khi màn dẫn đường đã lên thật.
+- **🔄 Màn Cập nhật**: Bản thử nghiệm không còn hiện lại thông báo "có bản mới" trùng với bản đang dùng.
+- **🛋️ Cảnh nghỉ ngơi**: Từ chối bật khi xe đang chạy.
+- **🔒 Riêng tư**: Clip giọng bị loại không còn gửi tiếng trò chuyện trong cabin lên máy chủ.
+- **🛠️ Ổn định hơn**: Sửa các lỗi chia đôi màn hình, ghi nhận sự kiện xe không bị đăng ký hai lần, cầu nối điện thoại không mất tín hiệu kết thúc, trang Cài đặt gọn lại.
+
+## PhoneConnect 1.2.5
+
+- **🧳 Mở cốp sau hỏi xác nhận**: Không còn báo "đã gửi" khi điện thoại đang mất kết nối với xe; các nút tác động lớn chống bấm đúp trong 1 giây.
+- **🔗 Kết nối bền hơn**: Dòng dữ liệu rác không bị coi là dữ liệu xe, kết nối được đóng sạch khi mở lỗi.
+- **🗑️ Xoá chuyến đi**: Danh sách luôn được làm mới sau mỗi lần xoá.
+- **📡 Tìm xe trong mạng nội bộ chạy nền**: Sửa lỗi khiến việc tự tìm xe không hoạt động đúng.
+- **📤 Chia sẻ tệp**: Sửa lỗi làm ứng dụng bị thoát khi chia sẻ.
+
 ## CarConnect 1.2.4
 
 - **⚡ Trợ lý giọng nói phản hồi nhanh**: Rút ngắn thời gian phản hồi (lệnh điều hòa thực thi nhanh ~100ms); tự động nhận lệnh ngay khi người lái dứt lời và giảm độ trễ xử lý.
