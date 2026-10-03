@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.5",
-    "versionCode": 1205,
+    "latestVersionName": "1.2.6",
+    "versionCode": 1206,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "388cac73e1738cd3f32829f61ffa1166939c2723ca70251e96e82308db891808",
-    "releaseNotes": "- 🧳 Mở cốp sau hỏi xác nhận: Không còn báo \"đã gửi\" khi điện thoại đang mất kết nối với xe; các nút tác động lớn chống bấm đúp trong 1 giây.\n- 🔗 Kết nối bền hơn: Dòng dữ liệu rác không bị coi là dữ liệu xe, kết nối được đóng sạch khi mở lỗi.\n- 🗑️ Xoá chuyến đi: Danh sách luôn được làm mới sau mỗi lần xoá.\n- 📡 Tìm xe trong mạng nội bộ chạy nền: Sửa lỗi khiến việc tự tìm xe không hoạt động đúng.\n- 📤 Chia sẻ tệp: Sửa lỗi làm ứng dụng bị thoát khi chia sẻ.",
+    "sha256": "3bae47a9ea139d2695fafeda197067cb95bf535de3621026448f4bc7d73cb39d",
+    "releaseNotes": "- Cùng số phiên bản với CarConnect, không có thay đổi mới cho điện thoại.",
     "minVersionCode": 0,
     "forceRules": []
   },
