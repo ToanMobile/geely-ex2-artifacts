@@ -22,6 +22,15 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.6
+
+- **🎙️ Xe nói đúng việc cần làm khi chia đôi màn hình chờ khởi động lại**: Đã bật chia đôi nhưng chưa khởi động lại đầu xe thì xe nói "Chia đôi màn hình chờ khởi động lại xe", không còn nói "chưa bật chia đôi màn hình" khiến phải bấm kích hoạt lại vô ích.
+- **🛠️ Xe nói rõ khi đang ở chế độ bảo dưỡng**: Gọi một ứng dụng đang bị tạm ẩn vì chế độ bảo dưỡng, xe nói "Xe đang ở chế độ bảo dưỡng" thay vì "Đã bỏ qua".
+
+## PhoneConnect 1.2.6
+
+- Cùng số phiên bản với CarConnect, không có thay đổi mới cho điện thoại.
+
 ## CarConnect 1.2.5
 
 - **🎙️ Hỏi và ra lệnh ESC / Auto Hold / hỗ trợ đổ đèo bằng giọng**: Xe trả lời trạng thái cân bằng điện tử, Auto Hold, hỗ trợ đổ đèo bằng giọng thu sẵn (19 câu mới cho cả hai giọng), và nghe lệnh bật/tắt cân bằng điện tử, hỗ trợ đổ đèo.

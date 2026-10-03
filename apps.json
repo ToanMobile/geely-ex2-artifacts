@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.2.5",
-    "versionCode": 1205,
+    "latestVersionName": "1.2.6",
+    "versionCode": 1206,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "58659f4650d29ba1588fb1a1e81d53e64d8556d37ab8c42d8e4c4e9a3fcaffaf",
-    "releaseNotes": "- 🎙️ Hỏi và ra lệnh ESC / Auto Hold / hỗ trợ đổ đèo bằng giọng: Xe trả lời trạng thái cân bằng điện tử, Auto Hold, hỗ trợ đổ đèo bằng giọng thu sẵn (19 câu mới cho cả hai giọng), và nghe lệnh bật/tắt cân bằng điện tử, hỗ trợ đổ đèo.\n- ❄️ \"Làm mát nhanh\" / \"làm lạnh nhanh\": Một câu là xe đặt nhiệt độ thấp nhất và quạt mạnh nhất.\n- 🌡️ Thẻ nhiệt độ và quạt trên tab Điều hoà theo đúng số của xe: Không còn kẹt ở số vừa bấm khi xe không đổi giá trị.\n- 📷 \"Mở / tắt camera 360\": Mở và đóng đúng camera gốc của xe.\n- 🗺️ Dẫn đường Google Maps bằng giọng: Chỉ báo thành công khi màn dẫn đường đã lên thật.\n- 🔄 Màn Cập nhật: Bản thử nghiệm không còn hiện lại thông báo \"có bản mới\" trùng với bản đang dùng.\n- 🛋️ Cảnh nghỉ ngơi: Từ chối bật khi xe đang chạy.\n- 🔒 Riêng tư: Clip giọng bị loại không còn gửi tiếng trò chuyện trong cabin lên máy chủ.",
+    "sha256": "8093d8931aaf3be52061f61812b60b3d7b68f25f9e4a9dba695b8e2bf80a7163",
+    "releaseNotes": "- 🎙️ Xe nói đúng việc cần làm khi chia đôi màn hình chờ khởi động lại: Đã bật chia đôi nhưng chưa khởi động lại đầu xe thì xe nói \"Chia đôi màn hình chờ khởi động lại xe\", không còn nói \"chưa bật chia đôi màn hình\" khiến phải bấm kích hoạt lại vô ích.\n- 🛠️ Xe nói rõ khi đang ở chế độ bảo dưỡng: Gọi một ứng dụng đang bị tạm ẩn vì chế độ bảo dưỡng, xe nói \"Xe đang ở chế độ bảo dưỡng\" thay vì \"Đã bỏ qua\".",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
