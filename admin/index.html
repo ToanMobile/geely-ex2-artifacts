@@ -1492,40 +1492,14 @@
       <div class="hint">Ứng dụng sẽ xuất hiện trên màn Cài nhanh của xe, điện thoại và máy tính.</div>
       <div class="grid" style="grid-template-columns: 1fr 1fr">
         <div style="grid-column: 1 / -1; margin-bottom: 2px">
-          <div id="qiApkDropzone" style="border: 2px dashed var(--accent); border-radius: 8px; padding: 12px; text-align: center; background: var(--keybox-bg); cursor: pointer; transition: all 0.2s" onclick="$('qiApkFileInput').click()">
-            <input type="file" id="qiApkFileInput" accept=".apk" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])">
-            <div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px">
-              <span>⚡ Kéo thả file APK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span>
-            </div>
-            <div id="qiApkParseStatus" class="hint" style="margin-top: 3px; font-size: 12px">Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%</div>
-          </div>
+          <div id="qiApkDropzone" style="border: 2px dashed var(--accent); border-radius: 8px; padding: 12px; text-align: center; background: var(--keybox-bg); cursor: pointer; transition: all 0.2s" onclick="$('qiApkFileInput').click()"><input type="file" id="qiApkFileInput" accept=".apk,.xapk" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])"><div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px"><span>⚡ Kéo thả file APK / XAPK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span></div><div id="qiApkParseStatus" class="hint" style="margin-top: 3px; font-size: 12px">Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100% từ file APK / XAPK</div></div>
         </div>
-        <div style="grid-column: 1 / -1">
-          <label>Tên hiển thị trên menu *</label>
-          <input id="qiName" placeholder="VD: VietMap Live, YouTube Morphe...">
-        </div>
-        <div style="grid-column: 1 / -1">
-          <label>Link tải APK (URL trực tiếp hoặc Google Drive) *</label>
-          <input id="qiUrl" placeholder="https://drive.google.com/file/d/... hoặc https://.../app.apk">
-        </div>
-        <div>
-          <label>Package Name (Android ID) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
-          <input id="qiPackage" placeholder="Tự động điền khi kéo thả file APK ở trên">
-        </div>
-        <div>
-          <label>Cần cài trước (Requires First)</label>
-          <select id="qiRequiresFirst">
-            <option value="">-- Không yêu cầu (Mặc định) --</option>
-          </select>
-        </div>
-        <div>
-          <label>Version Name (Phiên bản) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
-          <input id="qiVersionName" placeholder="Tự động điền khi kéo thả file APK ở trên">
-        </div>
-        <div>
-          <label>Version Code (Mã build số) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
-          <input id="qiVersionCode" type="number" placeholder="Tự động điền khi kéo thả file APK ở trên">
-        </div>
+        <div style="grid-column: 1 / -1"><label>Tên hiển thị trên menu *</label><input id="qiName" placeholder="VD: VietMap Live, YouTube Morphe..."></div>
+        <div style="grid-column: 1 / -1"><label>Link tải APK / XAPK (URL trực tiếp hoặc Google Drive) *</label><input id="qiUrl" placeholder="https://drive.google.com/file/d/... hoặc https://.../app.apk hoặc .xapk"></div>
+        <div><label>Package Name (Android ID) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK / XAPK</span></label><input id="qiPackage" placeholder="Tự động điền khi kéo thả file APK / XAPK ở trên"></div>
+        <div><label>Cần cài trước (Requires First)</label><select id="qiRequiresFirst"><option value="">-- Không yêu cầu (Mặc định) --</option></select></div>
+        <div><label>Version Name (Phiên bản) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK / XAPK</span></label><input id="qiVersionName" placeholder="Tự động điền khi kéo thả file APK / XAPK ở trên"></div>
+        <div><label>Version Code (Mã build số) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK / XAPK</span></label><input id="qiVersionCode" type="number" placeholder="Tự động điền khi kéo thả file APK / XAPK ở trên"></div>
         <div style="grid-column: 1 / -1">
           <label>Phạm vi hiển thị (Targets)</label>
           <div style="display:flex; gap:16px; margin-top:6px; flex-wrap:wrap">
@@ -3357,50 +3331,64 @@ function updatePrereqDropdown(selectedPrereq, currentItemName) {
     sel.value = "";
   }
 }
-async function parseApkFile(file) {
-  if (typeof DecompressionStream === "undefined") throw new Error("Trình duyệt không hỗ trợ DecompressionStream. Vui lòng cập nhật Chrome/Safari mới nhất.");
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = new Uint8Array(arrayBuffer);
-  if (buffer.length < 22) throw new Error("Tệp không đúng định dạng APK / ZIP (kích thước quá nhỏ)");
-  const view = new DataView(arrayBuffer);
-  let eocdOffset = -1;
-  const maxSearch = Math.min(buffer.length, 65536);
+async function extractZipEntry(buffer, entry) {
+  const lhOffset = entry.localHeaderOffset, view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  if (lhOffset + 30 > buffer.length || view.getUint32(lhOffset, true) !== 0x04034b50) throw new Error("Local header của " + (entry.name || "tệp") + " không hợp lệ");
+  const lhNameLen = view.getUint16(lhOffset + 26, true), lhExtraLen = view.getUint16(lhOffset + 28, true);
+  const dataOffset = lhOffset + 30 + lhNameLen + lhExtraLen, rawData = buffer.subarray(dataOffset, dataOffset + entry.compSize);
+  if (entry.method === 0) return rawData;
+  if (entry.method === 8) {
+    const ds = new DecompressionStream("deflate-raw"), writer = ds.writable.getWriter();
+    writer.write(rawData); writer.close();
+    return new Uint8Array(await new Response(ds.readable).arrayBuffer());
+  }
+  throw new Error("Kiểu nén không được hỗ trợ: " + entry.method);
+}
+async function parseApkBuffer(buffer) {
+  if (buffer.length < 22) throw new Error("Tệp không đúng định dạng APK / XAPK / ZIP (kích thước quá nhỏ)");
+  const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  let eocdOffset = -1, maxSearch = Math.min(buffer.length, 65536);
   for (let i = buffer.length - 22; i >= buffer.length - maxSearch; i--) {
     if (view.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
   }
-  if (eocdOffset === -1) throw new Error("Tệp không đúng định dạng APK / ZIP");
-  const cdOffset = view.getUint32(eocdOffset + 16, true);
-  const cdCount = view.getUint16(eocdOffset + 10, true);
-  let offset = cdOffset;
-  let manifestEntry = null;
+  if (eocdOffset === -1) throw new Error("Tệp không đúng định dạng APK / XAPK / ZIP");
+  const cdOffset = view.getUint32(eocdOffset + 16, true), cdCount = view.getUint16(eocdOffset + 10, true);
+  let offset = cdOffset, manifestEntry = null, xapkManifestEntry = null, innerBaseApkEntry = null, anyInnerApkEntry = null;
   const decoder = new TextDecoder("utf-8");
   for (let i = 0; i < cdCount; i++) {
     if (offset + 46 > buffer.length || view.getUint32(offset, true) !== 0x02014b50) break;
     const method = view.getUint16(offset + 10, true), compSize = view.getUint32(offset + 20, true);
     const nameLen = view.getUint16(offset + 28, true), extraLen = view.getUint16(offset + 30, true), commentLen = view.getUint16(offset + 32, true);
     const localHeaderOffset = view.getUint32(offset + 42, true);
-    const name = decoder.decode(buffer.subarray(offset + 46, offset + 46 + nameLen));
-    if (name === "AndroidManifest.xml") { manifestEntry = { method, compSize, localHeaderOffset }; break; }
+    const entryName = decoder.decode(buffer.subarray(offset + 46, offset + 46 + nameLen)), cleanName = entryName.replace(/\\/g, "/"), baseName = cleanName.split("/").pop().toLowerCase();
+    if (cleanName === "AndroidManifest.xml") { manifestEntry = { method, compSize, localHeaderOffset, name: entryName }; break; }
+    if (baseName === "manifest.json") { xapkManifestEntry = { method, compSize, localHeaderOffset, name: entryName }; }
+    else if (baseName.endsWith(".apk")) {
+      if (baseName === "base.apk" || baseName.includes("base")) innerBaseApkEntry = { method, compSize, localHeaderOffset, name: entryName };
+      else if (!anyInnerApkEntry) anyInnerApkEntry = { method, compSize, localHeaderOffset, name: entryName };
+    }
     offset += 46 + nameLen + extraLen + commentLen;
   }
-  if (!manifestEntry) throw new Error("Không tìm thấy AndroidManifest.xml trong file APK");
-  const lhOffset = manifestEntry.localHeaderOffset;
-  if (lhOffset + 30 > buffer.length || view.getUint32(lhOffset, true) !== 0x04034b50) throw new Error("Local header của AndroidManifest.xml không hợp lệ");
-  const lhNameLen = view.getUint16(lhOffset + 26, true), lhExtraLen = view.getUint16(lhOffset + 28, true);
-  const dataOffset = lhOffset + 30 + lhNameLen + lhExtraLen;
-  const rawData = buffer.subarray(dataOffset, dataOffset + manifestEntry.compSize);
-  let xmlBytes;
-  if (manifestEntry.method === 0) {
-    xmlBytes = rawData;
-  } else if (manifestEntry.method === 8) {
-    const ds = new DecompressionStream("deflate-raw");
-    const writer = ds.writable.getWriter();
-    writer.write(rawData); writer.close();
-    xmlBytes = new Uint8Array(await new Response(ds.readable).arrayBuffer());
-  } else {
-    throw new Error("Kiểu nén không được hỗ trợ: " + manifestEntry.method);
+  if (manifestEntry) return parseAxmlData(await extractZipEntry(buffer, manifestEntry));
+  if (xapkManifestEntry) {
+    const jsonBytes = await extractZipEntry(buffer, xapkManifestEntry), jsonText = new TextDecoder("utf-8").decode(jsonBytes);
+    let xapk;
+    try { xapk = JSON.parse(jsonText); } catch (e) { throw new Error("Lỗi đọc cấu trúc manifest.json của file XAPK: " + e.message); }
+    const pkg = xapk.package_name || xapk.packageName || xapk.package;
+    if (pkg) {
+      const verName = xapk.version_name || xapk.versionName || xapk.version || "", verCodeRaw = xapk.version_code !== undefined ? xapk.version_code : xapk.versionCode;
+      const verCode = (verCodeRaw !== undefined && verCodeRaw !== null && String(verCodeRaw).trim() !== "") ? (parseInt(verCodeRaw, 10) || 0) : 0;
+      return { package: pkg, versionName: verName, versionCode: verCode, appName: xapk.name || xapk.label || xapk.app_name || "" };
+    }
   }
-  return parseAxmlData(xmlBytes);
+  const targetApkEntry = innerBaseApkEntry || anyInnerApkEntry;
+  if (targetApkEntry) return parseApkBuffer(await extractZipEntry(buffer, targetApkEntry));
+  throw new Error("Không tìm thấy AndroidManifest.xml hoặc manifest.json trong file APK / XAPK");
+}
+async function parseApkFile(file) {
+  if (typeof DecompressionStream === "undefined") throw new Error("Trình duyệt không hỗ trợ DecompressionStream. Vui lòng cập nhật Chrome/Safari mới nhất.");
+  const arrayBuffer = await file.arrayBuffer();
+  return parseApkBuffer(new Uint8Array(arrayBuffer));
 }
 function parseAxmlData(buf) {
   if (buf.length < 8) throw new Error("Dữ liệu AndroidManifest.xml quá ngắn");
@@ -3466,26 +3454,28 @@ async function handleQiApkFileSelect(file) {
   if (!file) return;
   const statusEl = $("qiApkParseStatus");
   const mb = (file.size / (1024 * 1024)).toFixed(1);
+  const isXapk = /\.(xapk|apks|apkm)$/i.test(file.name);
+  const typeLabel = isXapk ? "XAPK" : "APK";
   if (statusEl) statusEl.innerHTML = `<span style="color:var(--accent)">⏳ Đang giải nén và phân tích ${esc(file.name)} (${mb} MB)...</span>`;
   try {
     const info = await parseApkFile(file);
-    if (!info || !info.package) throw new Error("Không tìm thấy Package Name trong file APK này.");
+    if (!info || !info.package) throw new Error("Không tìm thấy Package Name trong file " + typeLabel + " này.");
     if ($("qiPackage")) $("qiPackage").value = info.package || "";
     if ($("qiVersionName")) $("qiVersionName").value = info.versionName || "";
     if ($("qiVersionCode")) $("qiVersionCode").value = (info.versionCode !== undefined && info.versionCode !== null) ? String(info.versionCode) : "";
     if ($("qiName") && !$("qiName").value.trim()) {
-      let suggested = file.name.replace(/\.apk$/i, "").replace(/[-_]/g, " ").replace(/\s+v?\d+(\.\d+)+.*$/i, "");
+      let suggested = info.appName || file.name.replace(/\.(apk|xapk|apks|apkm)$/i, "").replace(/[-_]/g, " ").replace(/\s+v?\d+(\.\d+)+.*$/i, "");
       suggested = suggested.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/\bYoutube\b/g, "YouTube");
       $("qiName").value = suggested.trim();
     }
     if (statusEl) {
-      statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc((info.versionCode !== undefined && info.versionCode !== null) ? info.versionCode : "?")}) • ${mb} MB</span>`;
+      statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện [${typeLabel}]: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc((info.versionCode !== undefined && info.versionCode !== null) ? info.versionCode : "?")}) • ${mb} MB</span>`;
     }
     toast(`Đã tự động điền: ${info.package} (v${info.versionName || '?'})`);
   } catch (err) {
-    console.error("Lỗi đọc APK:", err);
-    if (statusEl) statusEl.innerHTML = `<span style="color:var(--err)">❌ Lỗi đọc APK: ${esc(err.message)}</span>`;
-    toast("Không thể đọc thông tin APK: " + err.message, "err");
+    console.error("Lỗi đọc " + typeLabel + ":", err);
+    if (statusEl) statusEl.innerHTML = `<span style="color:var(--err)">❌ Lỗi đọc ${typeLabel}: ${esc(err.message)}</span>`;
+    toast("Không thể đọc thông tin " + typeLabel + ": " + err.message, "err");
   } finally {
     if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   }
