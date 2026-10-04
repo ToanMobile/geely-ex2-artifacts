@@ -3471,11 +3471,9 @@ async function handleQiApkFileSelect(file) {
     if (statusEl) {
       statusEl.innerHTML = `<span style="color:var(--ok); font-weight:600">✅ Đã nhận diện [${typeLabel}]: <b>${esc(info.package)}</b> (v${esc(info.versionName || "?")} - code ${esc((info.versionCode !== undefined && info.versionCode !== null) ? info.versionCode : "?")}) • ${mb} MB</span>`;
     }
-    toast(`Đã tự động điền: ${info.package} (v${info.versionName || '?'})`);
   } catch (err) {
     console.error("Lỗi đọc " + typeLabel + ":", err);
     if (statusEl) statusEl.innerHTML = `<span style="color:var(--err)">❌ Lỗi đọc ${typeLabel}: ${esc(err.message)}</span>`;
-    toast("Không thể đọc thông tin " + typeLabel + ": " + err.message, "err");
   } finally {
     if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   }
