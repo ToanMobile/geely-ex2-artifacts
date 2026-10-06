@@ -277,7 +277,22 @@
             <div class="type-card" id="cardDiscountIcar" onclick="selectLicensePackage('icar_discount')">
               <input type="radio" name="licensePackage" id="pkgDiscountIcar" value="icar_discount">
               <div class="type-card-icon">💎</div>
-              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Mua Connect — Giảm 20% Gói ICAR 3.9Tr</span><span class="type-card-badge icar-discount">Giảm 20% ICAR 3.9Tr</span></div><div class="type-card-desc">Mua Car Connect đúng giá niêm yết (1.170k/năm), tặng ưu đãi giảm 20% khi mua gói 4G ICAR 3.9Tr (tiết kiệm 780k còn 3.120k).</div></div>
+              <div class="type-card-body">
+                <div class="type-card-head"><span class="type-card-title">Mua Connect — Giảm 20% Gói ICAR 3.9Tr</span><span class="type-card-badge icar-discount">Tiết kiệm 780k</span></div>
+                <div style="background:rgba(5,150,105,0.08); border:1px solid rgba(5,150,105,0.25); border-radius:8px; padding:6px 10px; margin:5px 0;">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                    <span style="font-size:11px; font-weight:700; color:var(--text)">📅 Kèm 1 Năm:</span>
+                    <span style="font-size:15px; font-weight:900; color:#059669; font-family:var(--mono)">4.290.000 ₫</span>
+                  </div>
+                  <div style="font-size:10px; color:var(--muted); margin-bottom:4px;">(Connect 1.170k + Gói 4G ICAR 3.120k sau giảm 20%)</div>
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.2); padding-top:4px;">
+                    <span style="font-size:11px; font-weight:700; color:var(--text)">👑 Kèm Vĩnh Viễn:</span>
+                    <span style="font-size:15px; font-weight:900; color:#059669; font-family:var(--mono)">6.070.000 ₫</span>
+                  </div>
+                  <div style="font-size:10px; color:var(--muted);">(Connect 2.950k + Gói 4G ICAR 3.120k sau giảm 20%)</div>
+                </div>
+                <div class="type-card-desc">Mua Car Connect đúng giá niêm yết, tặng ưu đãi giảm 20% khi mua gói 4G ICAR 3.9Tr (tiết kiệm 780k còn 3.120k).</div>
+              </div>
             </div>
             <div class="type-card" id="cardTrial" onclick="selectLicensePackage('trial')">
               <input type="radio" name="licensePackage" id="pkgTrial" value="trial">
@@ -336,43 +351,56 @@
           <div class="field-card-head"><label class="field-card-label">Ghi chú</label><span class="badge-field-opt">Tuỳ chọn</span></div>
           <input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345">
         </div>
-        <div style="grid-column: 1 / -1; margin-top:8px;">
-          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;"><span>⚙️ Phần 2: Thiết lập Kỹ thuật & Hạn mức</span>
-            <span id="techModeBadge" class="badge-sec-editable">✏️ Tuỳ chỉnh tự do</span>
-          </div></div>
-        <div class="field-card" id="fcRole">
-          <div class="field-card-head"><label class="field-card-label">Quyền sử dụng (Role)</label><span id="badgeRole"></span></div>
-          <select id="role">
-            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option>
-            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option>
-            <option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
-            <option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
-          </select>
-          <div class="hint" id="roleHint">Khách mua xe dùng 1 đầu xe + nhiều PC trên laptop cá nhân.</div>
-        </div>
-        <div class="field-card" id="fcMaxActivations">
-          <div class="field-card-head"><label class="field-card-label">Số lần kích hoạt tối đa</label><span id="badgeMaxAct"></span></div>
-          <input id="maxActivations" type="number" min="1" placeholder="Để trống = không giới hạn">
-          <div class="hint" id="maxActHint">Đếm số lần mã kích hoạt trên máy mới — không giảm khi xoá thiết bị.</div>
-        </div>
-        <div class="field-card" id="fcMaxPcDevices">
-          <div class="field-card-head"><label class="field-card-label">Số máy tính (PC) tối đa</label><span id="badgeMaxPc"></span></div>
-          <input id="maxPcDevices" type="number" min="1" value="2" placeholder="Để trống = không giới hạn">
-          <div class="hint" id="maxPcHint">Số máy tính giữ chỗ cùng lúc (xe đếm riêng). Để trống = không giới hạn.</div>
-        </div>
-        <div class="field-card" id="fcExpires">
-          <div class="field-card-head"><label class="field-card-label">Hạn dùng</label><span id="badgeExpires"></span></div>
-          <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;"><input id="expiresAt" type="date" oninput="markExpiryTouched()" style="flex:1;">
-            <label class="chk" style="margin:0;"><input type="checkbox" id="expiresForever" onchange="onExpiresForeverChange()"> Vĩnh viễn</label>
+        <!-- PHẦN 2: THIẾT LẬP KỸ THUẬT & HẠN MỨC (REFINED UI) -->
+        <div style="grid-column: 1 / -1; margin-top:10px; background:var(--panel2); border:1.5px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:16px;">⚙️</span>
+              <div><span style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--text); letter-spacing:0.5px;">Phần 2: Thiết lập Kỹ thuật & Hạn mức</span>
+                <div style="font-size:11px; color:var(--muted); font-weight:normal;">Quy định quyền truy cập, trần thiết bị giữ chỗ và thời hạn bản quyền</div>
+              </div></div>
+            <span id="techModeBadge" class="badge-sec-editable" style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;">✏️ Tuỳ chỉnh tự do</span>
           </div>
-          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
-            <button type="button" class="btn-pkg-pill" id="pillPkgQuarter" onclick="setExpiryPreset('quarter')">⚡ 3 Tháng (495k)</button>
-            <button type="button" class="btn-pkg-pill" id="pillPkgYearly" onclick="setExpiryPreset('yearly')">📅 1 Năm (12 tháng)</button>
-            <button type="button" class="btn-pkg-pill" id="pillPkgComboIcar" onclick="setExpiryPreset('combo_icar')">📦 Combo 4G ICAR (3.9Tr)</button>
-            <button type="button" class="btn-pkg-pill" id="pillPkgDiscountIcar" onclick="setExpiryPreset('icar_discount')">💎 Mua Connect (-20% ICAR 3.9Tr)</button>
-            <button type="button" class="btn-pkg-pill active" id="pillPkgLifetime" onclick="setExpiryPreset('lifetime')">👑 Vĩnh viễn</button>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:12px;">
+            <!-- Cột 1: Quyền & Hạn mức thiết bị -->
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div class="field-card" id="fcRole" style="background:var(--panel);">
+                <div class="field-card-head"><label class="field-card-label">Quyền sử dụng (Role)</label><span id="badgeRole"></span></div>
+                <select id="role" style="font-weight:600;"><option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option><option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option><option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option><option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option></select>
+                <div class="hint" id="roleHint">Khách mua xe dùng 1 đầu xe + nhiều PC trên laptop cá nhân.</div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div class="field-card" id="fcMaxActivations" style="background:var(--panel);">
+                  <div class="field-card-head"><label class="field-card-label">Kích hoạt tối đa</label><span id="badgeMaxAct"></span></div>
+                  <input id="maxActivations" type="number" min="1" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;">
+                  <div class="hint" id="maxActHint">Lần kích hoạt máy mới.</div>
+                </div>
+                <div class="field-card" id="fcMaxPcDevices" style="background:var(--panel);">
+                  <div class="field-card-head"><label class="field-card-label">PC tối đa</label><span id="badgeMaxPc"></span></div>
+                  <input id="maxPcDevices" type="number" min="1" value="2" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;">
+                  <div class="hint" id="maxPcHint">PC giữ chỗ cùng lúc.</div>
+                </div>
+              </div>
+            </div>
+            <!-- Cột 2: Thời hạn bản quyền & Presets -->
+            <div class="field-card" id="fcExpires" style="background:var(--panel); display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div class="field-card-head"><label class="field-card-label">Thời hạn bản quyền</label><span id="badgeExpires"></span></div>
+                <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                  <input id="expiresAt" type="date" oninput="markExpiryTouched()" style="flex:1; font-weight:600;">
+                  <label class="chk" style="margin:0; background:var(--panel2); padding:6px 10px; border-radius:6px; border:1px solid var(--border); font-size:12px; font-weight:600;"><input type="checkbox" id="expiresForever" onchange="onExpiresForeverChange()"> 👑 Vĩnh viễn</label>
+                </div>
+                <div style="font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:600;">Gói thời hạn mẫu:</div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
+                  <button type="button" class="btn-pkg-pill" id="pillPkgQuarter" onclick="setExpiryPreset('quarter')">⚡ 3 Tháng</button>
+                  <button type="button" class="btn-pkg-pill" id="pillPkgYearly" onclick="setExpiryPreset('yearly')">📅 1 Năm</button>
+                  <button type="button" class="btn-pkg-pill" id="pillPkgComboIcar" onclick="setExpiryPreset('combo_icar')">📦 Combo 4G ICAR</button>
+                  <button type="button" class="btn-pkg-pill" id="pillPkgDiscountIcar" onclick="setExpiryPreset('icar_discount')">💎 Mua Connect (-20% ICAR)</button>
+                  <button type="button" class="btn-pkg-pill active" id="pillPkgLifetime" onclick="setExpiryPreset('lifetime')">👑 Vĩnh viễn</button>
+                </div>
+              </div>
+              <div class="hint" id="expiryHint" style="margin-top:6px; font-weight:600;"></div>
+            </div>
           </div>
-          <div class="hint" id="expiryHint" style="margin-top:4px;"></div>
         </div></div>
       <div style="margin-top:14px">
         <button id="btnCreateKey" onclick="createKey()">Tạo mã kích hoạt</button>
@@ -654,6 +682,19 @@
                 <span style="font-size:13px; font-weight:800; color:#059669">Tiết kiệm 780.000 ₫</span>
               </div>
               <h4 style="margin:4px 0 6px; font-size:14px; color:var(--text)">Mua Connect Giữ Giá — Giảm 20% Gói ICAR 3.9Tr</h4>
+              <div style="background:rgba(5,150,105,0.08); border:1.5px solid rgba(5,150,105,0.3); border-radius:8px; padding:8px 10px; margin:6px 0 8px;">
+                <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:#059669; letter-spacing:0.5px; margin-bottom:4px;">💰 TỔNG GIÁ TRỌN BỘ COMBO (TIẾT KIỆM 780.000 ₫):</div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                  <span style="font-size:12px; font-weight:700; color:var(--text);">📅 Kèm Connect 1 Năm:</span>
+                  <span style="font-size:16px; font-weight:900; color:#059669; font-family:var(--mono);">4.290.000 ₫</span>
+                </div>
+                <div style="font-size:11px; color:var(--muted); margin-bottom:4px;">(Connect 1.170k + Thiết bị 4G ICAR 3.120k sau giảm 20%)</div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.25); padding-top:4px;">
+                  <span style="font-size:12px; font-weight:700; color:var(--text);">👑 Kèm Connect Vĩnh Viễn:</span>
+                  <span style="font-size:16px; font-weight:900; color:#059669; font-family:var(--mono);">6.070.000 ₫</span>
+                </div>
+                <div style="font-size:11px; color:var(--muted);">(Connect 2.950k + Thiết bị 4G ICAR 3.120k sau giảm 20%)</div>
+              </div>
               <div style="font-size:12px; color:var(--muted); line-height:1.4">
                 • <b>Phần mềm Connect:</b> Giữ nguyên đúng giá niêm yết (1.170k/năm hoặc 2.950k trọn đời)<br>
                 • <b>Đặc quyền tặng kèm:</b> Giảm 20% gói thiết bị 4G ICAR SLIM 3.900.000 ₫ (chỉ còn 3.120.000 ₫)<br>
@@ -2207,10 +2248,10 @@ function selectLicensePackage(pkg) {
     $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
     const d = new Date(); d.setFullYear(d.getFullYear() + 1); $("expiresAt").value = toDateInput(d);
     if (sIcon) sIcon.textContent = "💎"; if (sTitle) sTitle.textContent = "Mua Connect Giữ Giá — Giảm 20% Gói ICAR 3.9Tr";
-    if (sBadge) { sBadge.textContent = "Giảm 20% ICAR 3.9Tr"; sBadge.className = "type-card-badge icar-discount"; }
-    if (sExp) sExp.textContent = "📅 Hết hạn: " + toDateInput(d) + " (1 Năm) • Tặng ưu đãi giảm 20% gói ICAR 3.9Tr";
+    if (sBadge) { sBadge.textContent = "Tiết kiệm 780k • Tổng: 4.290.000 ₫ (1 Năm) / 6.070.000 ₫ (Vĩnh viễn)"; sBadge.className = "type-card-badge icar-discount"; }
+    if (sExp) sExp.textContent = "📅 Hết hạn PM: " + toDateInput(d) + " (1 Năm) • Thiết bị 4G ICAR còn 3.120.000 ₫ (BH 12T)";
     if ($("note") && (!$("note").value || $("note").value.startsWith("Combo ") || $("note").value.startsWith("Ưu đãi ") || $("note").value.startsWith("Mua Connect "))) {
-      $("note").value = "Mua Connect giữ giá - Tặng giảm 20% gói ICAR 3.9Tr (tiết kiệm 780k còn 3.120k)";
+      $("note").value = "Mua Connect giữ giá - Giảm 20% Gói ICAR 3.9Tr (Tổng 4.290.000đ kèm 1N hoặc 6.070.000đ trọn đời)";
     }
   } else if (pkg === "trial") {
     $("expiresForever").checked = false;
