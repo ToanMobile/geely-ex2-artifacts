@@ -2150,8 +2150,7 @@ async function api(path, opts = {}) {
     let detail = "";
     try { detail = (await res.json()).message || ""; } catch (e) {}
     if (res.status === 401 || res.status === 403 || detail.includes("admin_session_required")) {
-      clearSession();
-      showConfigMissingWarning();
+      clearSession(); checkAuthUI(); showConfigMissingWarning();
       throw new Error("Phiên đăng nhập không hợp lệ hoặc đã hết hạn (HTTP 401). Vui lòng đăng nhập lại.");
     }
     throw new Error("HTTP " + res.status + (detail ? ": " + detail : ""));
