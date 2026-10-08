@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.6",
-    "versionCode": 1206,
+    "latestVersionName": "1.2.7",
+    "versionCode": 1207,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "3bae47a9ea139d2695fafeda197067cb95bf535de3621026448f4bc7d73cb39d",
-    "releaseNotes": "- Cùng số phiên bản với CarConnect, không có thay đổi mới cho điện thoại.",
+    "sha256": "8cc613f5d4cfbe5fec5641114d1889f394a5e9c24e617ad194061f71a711890d",
+    "releaseNotes": "- 🔗 Thoát app vẫn giữ kết nối với xe: Dùng 4G (Cloud), Wi-Fi hay Bluetooth đều giữ kết nối khi bạn ra khỏi app; điện thoại hiện một thông báo thường trực. Nếu xe im lặng quá 10 phút thì tự dừng. Có thể tắt ở công tắc \"Tự động kết nối chạy nền\" trong Cài đặt.\n- 📶 Ghi lại lúc mất kết nối để tìm nguyên nhân 4G bị rớt.",
     "minVersionCode": 0,
     "forceRules": []
   },
