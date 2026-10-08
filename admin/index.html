@@ -2137,10 +2137,10 @@ async function api(path, opts = {}) {
     showConfigMissingWarning();
     throw new Error("Chưa có phiên đăng nhập. Vui lòng đăng nhập qua mã OTP.");
   }
-  const extraHeaders = opts.body ? { "Content-Type": "application/json" } : {};
+  const headers = sbHeaders({ ...(opts.body ? { "Content-Type": "application/json" } : {}), ...(opts.headers || {}) });
   let res;
   try { res = await fetch(url + path, { ...opts, headers }); } catch (fetchErr) {
-    if ((fetchErr.message || "").includes("ISO-8859-1") || (fetchErr.message || "").includes("headers")) {
+    if ((fetchErr.message || "").includes("ISO-8859-1") || ((fetchErr.message || "").includes("headers") && (fetchErr.message || "").includes("code point"))) {
       clearSession(); showConfigMissingWarning();
       throw new Error("Phiên đăng nhập chứa ký tự không hợp lệ đã được xóa. Vui lòng đăng nhập lại qua mã OTP.");
     }
