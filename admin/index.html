@@ -3267,24 +3267,17 @@ function renderQuickInstallTable() {
     const prereqBadge = app.requiresFirst 
       ? '<span class="tag prereq">🔗 Cần ' + esc(app.requiresFirst) + ' trước</span>' 
       : '<span style="color:var(--muted)">-</span>';
-    const verBadge = app.versionName 
-      ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>'
-      : '';
-    tr.innerHTML = 
-      '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
-      '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" ' +
-        'onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
+    const verBadge = app.versionName ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>' : '';
+    let tagLink = "";
+    const ghMatch = (app.url || "").match(/github\.com\/([^/]+\/[^/]+)\/releases\/download\/([^/]+)\//);
+    if (ghMatch) tagLink = '<a href="https://github.com/' + ghMatch[1] + '/releases/tag/' + ghMatch[2] + '" target="_blank" draggable="false" style="color:#58a6ff; font-size:11px; font-weight:600; text-decoration:none; margin-right:6px" title="Mở trang GitHub Release Tag">🐙 Tag ' + ghMatch[2] + '</a>';
+    tr.innerHTML = '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
+      '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
       '<td class="nowrap"><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
       '<td class="mono nowrap">' + esc(app.packageName) + '</td>' +
-      '<td class="url-cell" title="' + esc(app.url) + '"><a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
-      '<td class="nowrap">' + prereqBadge + '</td>' +
-      '<td>' + targetsBadge + '</td>' +
-      '<td style="text-align:right; min-width:130px">' +
-        '<div class="actions" style="justify-content:flex-end">' +
-          '<button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button>' +
-          '<button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button>' +
-        '</div>' +
-      '</td>';
+      '<td class="url-cell" title="' + esc(app.url) + '">' + tagLink + '<a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
+      '<td class="nowrap">' + prereqBadge + '</td><td>' + targetsBadge + '</td>' +
+      '<td style="text-align:right; min-width:130px"><div class="actions" style="justify-content:flex-end"><button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button><button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button></div></td>';
     tbody.appendChild(tr);
   });
 }
@@ -3599,22 +3592,19 @@ function closeQiModal() {
 }
 function saveQiItem() {
   const name = $("qiName").value.trim();
-  const url = $("qiUrl").value.trim();
-  const pkg = $("qiPackage").value.trim();
-  const verName = $("qiVersionName").value.trim();
+  let url = $("qiUrl").value.trim(), pkg = $("qiPackage").value.trim(), verName = $("qiVersionName").value.trim();
   const verCodeRaw = $("qiVersionCode").value.trim();
-  const verCode = verCodeRaw ? parseInt(verCodeRaw, 10) : 0;
-  const prereq = $("qiRequiresFirst").value.trim();
-  const forceLandscape = $("qiForceLandscape").checked;
-  const hidden = $("qiHidden").checked;
-  if (!name || !url) {
-    alert("Vui lòng nhập Tên ứng dụng và Link tải APK.");
-    return;
+  let verCode = verCodeRaw ? parseInt(verCodeRaw, 10) : 0;
+  if (url.includes("github.com/MorpheApp/MicroG-RE/releases/tag/")) {
+    const tag = url.split("/releases/tag/")[1].replace(/\/.*$/, "").trim();
+    url = "https://github.com/MorpheApp/MicroG-RE/releases/download/" + tag + "/microg-" + tag.replace(/^v/, "") + "-noicon-arm64-v8a.apk";
+    if (!pkg) pkg = "app.revanced.android.gms";
+    if (!verName) verName = tag.replace(/^v/, "");
+    if (!verCode) verCode = 255070218;
   }
-  if (!/^https?:\/\//i.test(url)) {
-    alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://");
-    return;
-  }
+  const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked;
+  if (!name || !url) { alert("Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
+  if (!/^https?:\/\//i.test(url)) { alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
   const targets = [];
   if ($("qiTargetCar").checked) targets.push("car");
   if ($("qiTargetPc").checked) targets.push("pc");
@@ -3724,9 +3714,10 @@ async function checkQiUpstreamReleases() {
         const app = (window._qiCatalog.apps || []).find(a => a.packageName === item.matchPkg || a.name === item.name);
         if (app) {
           const curVer = app.versionName || "";
-          if (curVer !== cleanVer && curVer !== tag && !curVer.startsWith(cleanVer)) {
+          const urlMismatch = app.url !== asset.browser_download_url;
+          if ((curVer !== cleanVer && curVer !== tag && !curVer.startsWith(cleanVer)) || urlMismatch) {
             updateFound++;
-            const doUpdate = confirm("🐙 Tìm thấy bản mới cho " + item.name + " từ GitHub:\n- Hiện tại: v" + curVer + "\n- Mới nhất: v" + cleanVer + " (" + tag + ")\n\nCập nhật link tải và phiên bản cho app này không?");
+            const doUpdate = confirm("🐙 Tìm thấy bản mới cho " + item.name + " từ GitHub:\n- Hiện tại: v" + curVer + (urlMismatch ? " (Link cũ)" : "") + "\n- Mới nhất: v" + cleanVer + " (" + tag + ")\n\nCập nhật link tải và phiên bản cho app này không?");
             if (doUpdate) {
               app.versionName = cleanVer;
               app.packageName = item.matchPkg;
@@ -3821,7 +3812,6 @@ function applyDriveLinksBatch() {
         else if (an.includes("tiktok") && lineContext.includes("tiktok")) isMatch = true;
         else if (an.includes("waze") && lineContext.includes("waze")) isMatch = true;
         else if (an.includes("speed display") && (lineContext.includes("speeddisplay") || lineContext.includes("speed display"))) isMatch = true;
-        else if (an.includes("microg") && (lineContext.includes("microg") || lineContext.includes("revanced.android.gms") || lineContext.includes("gmscore"))) isMatch = true;
         else if (an.includes("equalizer") && lineContext.includes("equalizer")) isMatch = true;
         else if (an.includes("downloader") && lineContext.includes("downloader")) isMatch = true;
       }
