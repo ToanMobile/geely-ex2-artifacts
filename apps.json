@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.2.7",
-    "versionCode": 1207,
+    "latestVersionName": "1.2.8",
+    "versionCode": 1208,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "e03b94c70719dcbf99ad2ab64ec5feaf2c0d358620350817220a9bdae2676ea7",
-    "releaseNotes": "- 📦 YouTube và YouTube Music trong Cài nhanh dùng bản Morphe: Cài xong, xe tự gỡ bản Anddea cũ để khỏi trùng biểu tượng (dữ liệu của bản cũ sẽ mất). Không còn báo \"Cần cập nhật\" giả cho hai ứng dụng này.\n- 📥 Tải ứng dụng bị đứt giữa chừng thì tải lại: Không còn cài nhầm file tải thiếu.\n- 🔑 MicroG chuyển sang bản mới 7.2.1 trong Cài nhanh.\n- 🎵 Phím Phát/Tạm dừng trên vô lăng mở YouTube Morphe trước khi nhạc chưa phát.\n- 📶 Điều khiển từ xa qua 4G: Khi xe không nối được, xe ghi lại lý do để dễ tìm nguyên nhân.\n- 📡 Điều khiển từ xa qua 4G tự bật: Xe có bản quyền là sẵn sàng điều khiển từ xa, không phải vào Cài đặt bật tay; mỗi xe có khoá bí mật riêng, điện thoại vẫn quét mã QR một lần. Không dùng thì tắt ở Cài đặt → Kết nối → \"Điều khiển từ xa qua 4G\" — xe nhớ lựa chọn này.",
+    "sha256": "08602dfb547b415e5bd729db9859192a21d8f26f501c83efa5557345dc3ffaa4",
+    "releaseNotes": "- 🗺️ Google Maps trống bản đồ thì xe chỉ cách sửa: Mở Google Maps từ mục Ứng dụng khi microG chưa đăng nhập tài khoản Google, xe hỏi \"Đăng nhập Google\" và mở thẳng màn đăng nhập. Chọn \"Để sau\" rồi bấm mở lần nữa nếu vẫn muốn vào Maps.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []

@@ -22,6 +22,10 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.8
+
+- **🗺️ Google Maps trống bản đồ thì xe chỉ cách sửa**: Mở Google Maps từ mục Ứng dụng khi microG chưa đăng nhập tài khoản Google, xe hỏi "Đăng nhập Google" và mở thẳng màn đăng nhập. Chọn "Để sau" rồi bấm mở lần nữa nếu vẫn muốn vào Maps.
+
 ## CarConnect 1.2.7
 
 - **📦 YouTube và YouTube Music trong Cài nhanh dùng bản Morphe**: Cài xong, xe tự gỡ bản Anddea cũ để khỏi trùng biểu tượng (dữ liệu của bản cũ sẽ mất). Không còn báo "Cần cập nhật" giả cho hai ứng dụng này.
