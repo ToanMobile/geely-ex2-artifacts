@@ -1452,8 +1452,8 @@
       <div class="grid" style="grid-template-columns: 1fr 1fr">
         <div style="grid-column: 1 / -1; margin-bottom: 2px">
           <div id="qiApkDropzone" style="border: 2px dashed var(--accent); border-radius: 8px; padding: 12px; text-align: center; background: var(--keybox-bg); cursor: pointer; transition: all 0.2s" onclick="$('qiApkFileInput').click()">
-            <input type="file" id="qiApkFileInput" accept=".apk" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])">
-            <div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px"><span>⚡ Kéo thả file APK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span>
+            <input type="file" id="qiApkFileInput" accept=".apk,.xapk,.apks,.apkm,.aab,.zip" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])">
+            <div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px"><span>⚡ Kéo thả file APK / XAPK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span>
             </div>
             <div id="qiApkParseStatus" class="hint" style="margin-top: 3px; font-size: 12px">Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%</div>
           </div></div>
@@ -1494,7 +1494,7 @@
     <div class="modal" style="max-width:560px">
       <h3 style="margin:0 0 6px 0">📁 Đồng bộ link từ Google Drive</h3>
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px"><span style="font-size:12px; font-weight:600; color:var(--text)">Danh sách link Drive:</span>
-        <button type="button" class="small ghost" id="btnFillPresetDrive" onclick="fillDrivePresetFolder()" title="Điền sẵn 14 link file APK từ thư mục Geely_EX2">📂 Nạp nhanh từ kho Geely_EX2</button>
+        <button type="button" class="small ghost" id="btnFillPresetDrive" onclick="fillDrivePresetFolder()" title="Điền sẵn 12 link file APK từ thư mục Geely_EX2">📂 Nạp nhanh từ kho Geely_EX2</button>
       </div>
       <div style="display:flex; flex-direction:column; gap:10px">
         <textarea id="syncDriveInput" rows="7" style="width:100%; box-sizing:border-box; font-family:monospace; font-size:12px; padding:10px; border:1px solid var(--border); border-radius:6px; background:var(--keybox-bg); color:var(--text); resize:vertical" placeholder="Dán link file hoặc link folder Google Drive vào đây:&#10;https://drive.google.com/drive/folders/1BRhMJJ7267-UTHx7pGJvjB3P1kCuaKpR&#10;hoặc dán danh sách link file https://drive.google.com/file/d/..."></textarea>
@@ -1759,6 +1759,9 @@ function getSession() {
     if (!raw) return null;
     const s = JSON.parse(raw);
     if (!s || !s.session_token) return null;
+    for (let i = 0; i < s.session_token.length; i++) {
+      if (s.session_token.charCodeAt(i) > 255) { clearSession(); return null; }
+    }
     // Kiểm tra hết hạn phiên (3 ngày kể từ lần hoạt động gần nhất)
     const lastActive = s.last_active_timestamp || s.login_timestamp || (s.logged_in_at ? new Date(s.logged_in_at).getTime() : 0);
     if (lastActive > 0 && (Date.now() - lastActive > SESSION_MAX_AGE_MS)) {
@@ -1788,14 +1791,12 @@ function isSuperAdminToan() {
   return false;
 }
 function sbHeaders(extra = {}) {
-  const headers = {
-    "apikey": CONFIG.supabaseAnonKey,
-    "Authorization": "Bearer " + CONFIG.supabaseAnonKey,
-    ...extra
-  };
+  const headers = { "apikey": CONFIG.supabaseAnonKey, "Authorization": "Bearer " + CONFIG.supabaseAnonKey, ...extra };
   const session = getSession();
   if (session && session.session_token) {
-    headers["X-Admin-Session"] = session.session_token;
+    let tok = session.session_token, safe = true;
+    for (let i = 0; i < tok.length; i++) { if (tok.charCodeAt(i) > 255) { safe = false; break; } }
+    if (safe) headers["X-Admin-Session"] = tok; else clearSession();
   }
   return headers;
 }
@@ -2137,8 +2138,14 @@ async function api(path, opts = {}) {
     throw new Error("Chưa có phiên đăng nhập. Vui lòng đăng nhập qua mã OTP.");
   }
   const extraHeaders = opts.body ? { "Content-Type": "application/json" } : {};
-  const headers = sbHeaders(extraHeaders);
-  const res = await fetch(url + path, { ...opts, headers });
+  let res;
+  try { res = await fetch(url + path, { ...opts, headers }); } catch (fetchErr) {
+    if ((fetchErr.message || "").includes("ISO-8859-1") || (fetchErr.message || "").includes("headers")) {
+      clearSession(); showConfigMissingWarning();
+      throw new Error("Phiên đăng nhập chứa ký tự không hợp lệ đã được xóa. Vui lòng đăng nhập lại qua mã OTP.");
+    }
+    throw fetchErr;
+  }
   if (!res.ok) {
     let detail = "";
     try { detail = (await res.json()).message || ""; } catch (e) {}
@@ -3147,8 +3154,8 @@ const DEFAULT_QI_CATALOG = {
     { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "versionName": "1.2.0", "versionCode": 1200, "targets": ["pc"] },
     { "name": "Google Map", "url": "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link", "packageName": "app.morphe.android.apps.maps", "versionName": "26.35.04.969485213", "versionCode": 1068751348, "requiresFirst": "MicroG" },
     { "name": "Waze", "url": "https://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
-    { "name": "YouTube", "url": "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link", "packageName": "anddea.youtube", "versionName": "21.13.164", "versionCode": 1561063732, "requiresFirst": "MicroG" },
-    { "name": "YouTube Music", "url": "https://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link", "packageName": "anddea.youtube.music", "versionName": "9.15.51", "versionCode": 91551240, "requiresFirst": "MicroG" },
+    { "name": "YouTube", "url": "https://github.com/monsivamon/morpheapp-apk/releases/download/v1.46.0/youtube-morphe-v21.16.256.apk", "packageName": "app.morphe.android.youtube", "versionName": "21.16.256", "versionCode": 2147483647, "requiresFirst": "MicroG" },
+    { "name": "YouTube Music", "url": "https://github.com/monsivamon/morpheapp-apk/releases/download/v1.46.0/ytmusic-morphe-v9.20.53.apk", "packageName": "app.morphe.android.apps.youtube.music", "versionName": "9.20.53", "versionCode": 2147483647, "requiresFirst": "MicroG" },
     { "name": "Spotify", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/assets/apps/Spotify.apk", "packageName": "com.spotify.music", "versionName": "9.0.52.505", "versionCode": 128978383 },
     { "name": "Google Chrome", "url": "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link", "packageName": "com.android.chrome", "versionName": "138.0.7204.179", "versionCode": 720417921 },
     { "name": "Cốc Cốc", "url": "https://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link", "packageName": "com.coccoc.trinhduyet", "versionName": "143.0.204", "versionCode": 915120424 },
@@ -3162,7 +3169,7 @@ const DEFAULT_QI_CATALOG = {
     { "name": "Speed Display", "url": "https://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link", "packageName": "com.kay.speeddisplay", "versionName": "1.1", "versionCode": 2 },
     { "name": "File Manager (ES Explorer)", "url": "https://drive.google.com/file/d/1T6ygnjdwlJ6gPpCt-6zkzcQ_2jG8T174/view?usp=sharing", "packageName": "com.estrongs.android.pop", "versionName": "4.4.3.5", "versionCode": 10351, "hidden": true },
     { "name": "Downloader", "url": "https://drive.google.com/file/d/1TtmkTWIwRRsfsN_JqWObEgYKAYeES4WJ/view?usp=share_link", "packageName": "com.esaba.downloader", "versionName": "2.0.4-ForGoogleAndroidDevices", "versionCode": 75 },
-    { "name": "MicroG", "url": "https://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link", "packageName": "app.revanced.android.gms", "versionName": "0.3.13.2.250932-hw", "versionCode": 250932004 },
+    { "name": "MicroG", "url": "https://github.com/MorpheApp/MicroG-RE/releases/download/7.2.1/microg-7.2.1-noicon-arm64-v8a.apk", "packageName": "app.revanced.android.gms", "versionName": "7.2.1", "versionCode": 255070218 },
     { "name": "Equalizer Geely", "url": "https://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link", "packageName": "com.jazibkhan.equalizer", "versionName": "4.2.6", "versionCode": 83, "targets": [] }
   ],
   "removed": [
@@ -3373,50 +3380,65 @@ function updatePrereqDropdown(selectedPrereq, currentItemName) {
     sel.value = "";
   }
 }
-async function parseApkFile(file) {
-  if (typeof DecompressionStream === "undefined") throw new Error("Trình duyệt không hỗ trợ DecompressionStream. Vui lòng cập nhật Chrome/Safari mới nhất.");
-  const arrayBuffer = await file.arrayBuffer();
+async function extractZipEntry(buffer, entry) {
+  const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength), lhOffset = entry.localHeaderOffset;
+  if (lhOffset + 30 > buffer.length || view.getUint32(lhOffset, true) !== 0x04034b50) throw new Error("Local header của " + (entry.name || "tệp") + " không hợp lệ");
+  const dataOffset = lhOffset + 30 + view.getUint16(lhOffset + 26, true) + view.getUint16(lhOffset + 28, true);
+  if (dataOffset + entry.compSize > buffer.length) throw new Error("Dữ liệu " + (entry.name || "tệp") + " vượt quá kích thước tệp");
+  const rawData = buffer.subarray(dataOffset, dataOffset + entry.compSize);
+  if (entry.method === 0) return rawData;
+  if (entry.method === 8) {
+    const ds = new DecompressionStream("deflate-raw"), writer = ds.writable.getWriter();
+    writer.write(rawData); writer.close();
+    return new Uint8Array(await new Response(ds.readable).arrayBuffer());
+  }
+  throw new Error("Kiểu nén không được hỗ trợ (" + entry.method + ") cho " + (entry.name || "tệp"));
+}
+async function parseApkBuffer(arrayBuffer, depth = 0) {
+  if (depth > 2) throw new Error("Vượt quá độ sâu lồng tệp nén APK");
   const buffer = new Uint8Array(arrayBuffer);
   if (buffer.length < 22) throw new Error("Tệp không đúng định dạng APK / ZIP (kích thước quá nhỏ)");
   const view = new DataView(arrayBuffer);
   let eocdOffset = -1;
-  const maxSearch = Math.min(buffer.length, 65536);
+  const maxSearch = Math.min(buffer.length, 65536 + 22);
   for (let i = buffer.length - 22; i >= buffer.length - maxSearch; i--) {
-    if (view.getUint32(i, true) === 0x06054b50) { eocdOffset = i; break; }
+    if (view.getUint32(i, true) === 0x06054b50) {
+      if (i + 22 + view.getUint16(i + 20, true) === buffer.length) { eocdOffset = i; break; }
+      if (eocdOffset === -1) eocdOffset = i;
+    }
   }
   if (eocdOffset === -1) throw new Error("Tệp không đúng định dạng APK / ZIP");
-  const cdOffset = view.getUint32(eocdOffset + 16, true);
-  const cdCount = view.getUint16(eocdOffset + 10, true);
+  const cdOffset = view.getUint32(eocdOffset + 16, true), cdCount = view.getUint16(eocdOffset + 10, true);
   let offset = cdOffset;
-  let manifestEntry = null;
-  const decoder = new TextDecoder("utf-8");
+  const decoder = new TextDecoder("utf-8"), entries = [];
   for (let i = 0; i < cdCount; i++) {
     if (offset + 46 > buffer.length || view.getUint32(offset, true) !== 0x02014b50) break;
     const method = view.getUint16(offset + 10, true), compSize = view.getUint32(offset + 20, true);
     const nameLen = view.getUint16(offset + 28, true), extraLen = view.getUint16(offset + 30, true), commentLen = view.getUint16(offset + 32, true);
-    const localHeaderOffset = view.getUint32(offset + 42, true);
-    const name = decoder.decode(buffer.subarray(offset + 46, offset + 46 + nameLen));
-    if (name === "AndroidManifest.xml") { manifestEntry = { method, compSize, localHeaderOffset }; break; }
+    entries.push({ name: decoder.decode(buffer.subarray(offset + 46, offset + 46 + nameLen)), method, compSize, localHeaderOffset: view.getUint32(offset + 42, true) });
     offset += 46 + nameLen + extraLen + commentLen;
   }
-  if (!manifestEntry) throw new Error("Không tìm thấy AndroidManifest.xml trong file APK");
-  const lhOffset = manifestEntry.localHeaderOffset;
-  if (lhOffset + 30 > buffer.length || view.getUint32(lhOffset, true) !== 0x04034b50) throw new Error("Local header của AndroidManifest.xml không hợp lệ");
-  const lhNameLen = view.getUint16(lhOffset + 26, true), lhExtraLen = view.getUint16(lhOffset + 28, true);
-  const dataOffset = lhOffset + 30 + lhNameLen + lhExtraLen;
-  const rawData = buffer.subarray(dataOffset, dataOffset + manifestEntry.compSize);
-  let xmlBytes;
-  if (manifestEntry.method === 0) {
-    xmlBytes = rawData;
-  } else if (manifestEntry.method === 8) {
-    const ds = new DecompressionStream("deflate-raw");
-    const writer = ds.writable.getWriter();
-    writer.write(rawData); writer.close();
-    xmlBytes = new Uint8Array(await new Response(ds.readable).arrayBuffer());
-  } else {
-    throw new Error("Kiểu nén không được hỗ trợ: " + manifestEntry.method);
+  const mJsonEntry = entries.find(e => /(^|\/)manifest\.json$/i.test(e.name));
+  if (mJsonEntry) {
+    try {
+      const json = JSON.parse(decoder.decode(await extractZipEntry(buffer, mJsonEntry))), pkg = json.package_name || json.package || json.packageName;
+      if (pkg) return { package: pkg, versionName: json.version_name || json.versionName || "", versionCode: (json.version_code ?? json.versionCode ?? ""), name: json.name || json.appName || "" };
+    } catch (e) { console.warn("Lỗi đọc manifest.json XAPK:", e); }
   }
-  return parseAxmlData(xmlBytes);
+  const manifestEntry = entries.find(e => /(^|\/)AndroidManifest\.xml$/i.test(e.name));
+  if (manifestEntry) return parseAxmlData(await extractZipEntry(buffer, manifestEntry));
+  const apkEntries = entries.filter(e => /\.apk$/i.test(e.name)).sort((a, b) => ((/(^|\/)base\.apk$/i.test(b.name) ? 2 : !/(^|\/)(config|split_)/i.test(b.name) ? 1 : 0) - (/(^|\/)base\.apk$/i.test(a.name) ? 2 : !/(^|\/)(config|split_)/i.test(a.name) ? 1 : 0)));
+  for (const apkEntry of apkEntries) {
+    try {
+      const rawApk = await extractZipEntry(buffer, apkEntry), res = await parseApkBuffer(rawApk.buffer.slice(rawApk.byteOffset, rawApk.byteOffset + rawApk.byteLength), depth + 1);
+      if (res && res.package) return res;
+    } catch (e) {}
+  }
+  throw new Error("Không tìm thấy AndroidManifest.xml hoặc manifest.json trong file APK / XAPK");
+}
+async function parseApkFile(file) {
+  if (typeof DecompressionStream === "undefined") throw new Error("Trình duyệt không hỗ trợ DecompressionStream. Vui lòng cập nhật Chrome/Safari mới nhất.");
+  return parseApkBuffer(await file.arrayBuffer());
 }
 function parseAxmlData(buf) {
   if (buf.length < 8) throw new Error("Dữ liệu AndroidManifest.xml quá ngắn");
@@ -3490,8 +3512,7 @@ async function handleQiApkFileSelect(file) {
     if ($("qiVersionName")) $("qiVersionName").value = info.versionName || "";
     if ($("qiVersionCode")) $("qiVersionCode").value = (info.versionCode !== undefined && info.versionCode !== null) ? String(info.versionCode) : "";
     if ($("qiName") && !$("qiName").value.trim()) {
-      let suggested = file.name.replace(/\.apk$/i, "").replace(/[-_]/g, " ").replace(/\s+v?\d+(\.\d+)+.*$/i, "");
-      suggested = suggested.replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/\bYoutube\b/g, "YouTube");
+      const suggested = (info.name && info.name.trim()) || file.name.replace(/\.(apk|xapk|apks|apkm|aab|zip)$/i, "").replace(/[-_]/g, " ").replace(/\s+v?\d+(\.\d+)+.*$/i, "").replace(/\b[a-z]/g, c => c.toUpperCase()).replace(/\bYoutube\b/g, "YouTube");
       $("qiName").value = suggested.trim();
     }
     if (statusEl) {
@@ -3676,23 +3697,32 @@ async function checkQiUpstreamReleases() {
     return;
   }
   if (btn) btn.disabled = true;
-  showMsg(msg, "", "⏳ Đang kiểm tra bản phát hành mới từ GitHub (SmartTube, MicroG)...");
+  showMsg(msg, "", "⏳ Đang kiểm tra bản phát hành mới từ GitHub (SmartTube, MicroG, YouTube, YouTube Music)...");
   try {
     const repos = [
       { name: "SmartTube", repo: "Yuliskov/SmartTube", matchPkg: "org.smarttube.stable", assetRegex: /SmartTube_stable_.*arm64-v8a\.apk$/i },
-      { name: "MicroG", repo: "ReVanced/GmsCore", matchPkg: "app.revanced.android.gms", assetRegex: /app\.revanced\.android\.gms.*\.apk$/i }
+      { name: "MicroG", repo: "MorpheApp/MicroG-RE", matchPkg: "app.revanced.android.gms", assetRegex: /microg-.*noicon-arm64-v8a\.apk$/i, verRegex: /microg-(?:v)?([0-9.]+)-noicon-arm64-v8a\.apk$/i, versionCode: 255070218 },
+      { name: "YouTube", repo: "monsivamon/morpheapp-apk", matchPkg: "app.morphe.android.youtube", assetRegex: /youtube-morphe-.*\.apk$/i, verRegex: /youtube-morphe-(?:v)?([0-9.]+)(?:-arm64-v8a)?\.apk$/i },
+      { name: "YouTube Music", repo: "monsivamon/morpheapp-apk", matchPkg: "app.morphe.android.apps.youtube.music", assetRegex: /ytmusic-morphe-.*\.apk$/i, verRegex: /ytmusic-morphe-(?:v)?([0-9.]+)(?:-arm64-v8a)?\.apk$/i }
     ];
-    let updateFound = 0;
+    let updateFound = 0, rateLimited = false;
+    const repoCache = {};
     for (const item of repos) {
       try {
-        const resp = await fetch("https://api.github.com/repos/" + item.repo + "/releases/latest");
-        if (!resp.ok) continue;
-        const data = await resp.json();
+        let data = repoCache[item.repo];
+        if (!data) {
+          const resp = await fetch("https://api.github.com/repos/" + item.repo + "/releases/latest");
+          if (resp.status === 403) { rateLimited = true; continue; }
+          if (!resp.ok) continue;
+          data = await resp.json();
+          repoCache[item.repo] = data;
+        }
         const tag = (data.tag_name || "").replace(/^v/, "");
-        const cleanVer = tag.replace(/[^0-9.]/g, "");
         const asset = (data.assets || []).find(a => item.assetRegex.test(a.browser_download_url || ""));
         if (!asset) continue;
-        const app = (window._qiCatalog.apps || []).find(a => a.packageName === item.matchPkg || (a.name || "").includes(item.name));
+        const vm = item.verRegex ? item.verRegex.exec(asset.name || asset.browser_download_url || "") : null;
+        const cleanVer = vm ? vm[1] : tag.replace(/[^0-9.]/g, "");
+        const app = (window._qiCatalog.apps || []).find(a => a.packageName === item.matchPkg || a.name === item.name);
         if (app) {
           const curVer = app.versionName || "";
           if (curVer !== cleanVer && curVer !== tag && !curVer.startsWith(cleanVer)) {
@@ -3700,8 +3730,10 @@ async function checkQiUpstreamReleases() {
             const doUpdate = confirm("🐙 Tìm thấy bản mới cho " + item.name + " từ GitHub:\n- Hiện tại: v" + curVer + "\n- Mới nhất: v" + cleanVer + " (" + tag + ")\n\nCập nhật link tải và phiên bản cho app này không?");
             if (doUpdate) {
               app.versionName = cleanVer;
+              app.packageName = item.matchPkg;
               app.url = asset.browser_download_url;
               app.downloadUrl = asset.browser_download_url;
+              if (item.versionCode) app.versionCode = item.versionCode;
             }
           }
         }
@@ -3710,10 +3742,13 @@ async function checkQiUpstreamReleases() {
       }
     }
     renderQuickInstallTable();
-    if (updateFound > 0) {
+    if (rateLimited) {
+      showMsg(msg, "err", "⚠️ GitHub API bị giới hạn tần suất (Rate limit 60 req/h) — chưa kiểm hết các nguồn, thử lại sau."
+        + (updateFound > 0 ? " Đã cập nhật " + updateFound + " ứng dụng trong bảng: hãy bấm 'Lưu lên Supabase' trước khi rời trang, kẻo mất." : ""));
+    } else if (updateFound > 0) {
       showMsg(msg, "ok", "🎉 Đã cập nhật " + updateFound + " ứng dụng từ GitHub! Hãy bấm 'Lưu lên Supabase' để áp dụng.");
     } else {
-      showMsg(msg, "ok", "✅ Các ứng dụng từ nguồn GitHub (SmartTube, MicroG) đều đang ở phiên bản mới nhất.");
+      showMsg(msg, "ok", "✅ Các ứng dụng từ nguồn GitHub (SmartTube, MicroG, YouTube, YouTube Music) đều đang ở phiên bản mới nhất.");
     }
   } catch (err) {
     showMsg(msg, "err", "Lỗi kiểm tra GitHub: " + err.message);
@@ -3731,14 +3766,13 @@ function closeSyncDriveModal() {
   $("syncDriveModalMask").style.display = "none";
 }
 const GEELY_EX2_PRESET_LINKS = "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link (Google Map)\nhttps://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link (Waze)\nhttps://drive.google.com/file/d/1E9UKnrsnvigoAw7vSNAdJwKwwofKjxlV/view?usp=drive_link (Equalizer Geely)\n" +
-  "https://drive.google.com/file/d/1T2dwkm2jIyp3wki-n0fpjZrKb7SuWacP/view?usp=drive_link (YouTube)\nhttps://drive.google.com/file/d/1hnU2s5xkE92h2eOY8teZnexUXG0k0gzK/view?usp=drive_link (YouTube Music)\n" +
   "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link (Google Chrome)\nhttps://drive.google.com/file/d/14COouYBiYYJTQQRQSa9R23V1z4OQsBz4/view?usp=drive_link (Cốc Cốc)\nhttps://drive.google.com/file/d/1wATIuDmgNzVuTYiOMa03BHNm32ggtCNk/view?usp=drive_link (VietMap Live)\n" +
   "https://drive.google.com/file/d/1oqZSQSDj2HfrrZrvVALUoqhzje_4Wp1e/view?usp=drive_link (AuresEyes)\nhttps://drive.google.com/file/d/1QiUrMR3gvvSxENES-mrRcyVy6aFhdMjM/view?usp=drive_link (TikTok Lite)\nhttps://drive.google.com/file/d/1i8mKwgUW2z9wzIMuWZDAprzpQRBKlPBd/view?usp=drive_link (VTV Go)\n" +
-  "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drive_link (GOFA)\nhttps://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link (Speed Display)\nhttps://drive.google.com/file/d/1KB3Q5PgGM2-bI3kjBOPju0fknZ_raAok/view?usp=drive_link (MicroG)";
+  "https://drive.google.com/file/d/1la_mVzNBijNlXdKOeVQYFiV0CldnkZZV/view?usp=drive_link (GOFA)\nhttps://drive.google.com/file/d/1XkriOwBQmQYS3-6XFgPQfk286nbowTuv/view?usp=drive_link (Speed Display)";
 function fillDrivePresetFolder() {
   $("syncDriveInput").value = GEELY_EX2_PRESET_LINKS;
   const msg = $("syncDriveMsg");
-  if (msg) showMsg(msg, "ok", "Đã nạp 14 link file APK từ kho Geely_EX2. Hãy bấm nút 'Cập nhật' bên dưới!");
+  if (msg) showMsg(msg, "ok", "Đã nạp 11 link file APK từ kho Geely_EX2. Hãy bấm nút 'Cập nhật' bên dưới!");
 }
 function applyDriveLinksBatch() {
   let text = $("syncDriveInput").value.trim();

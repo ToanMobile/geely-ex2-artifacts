@@ -1232,10 +1232,31 @@
 const LS_URL = "telemetryDashUrl", LS_SESSION = "geely_admin_session", LS_HOURS = "telemetryDashHours", LS_THEME = "telemetryDashTheme";
 let supabaseUrl = localStorage.getItem(LS_URL) || "https://cjipuxusqujhqunvjuxc.supabase.co";
 let pastedSessionToken = ""; // phiên dán tay — giữ trong bộ nhớ tab khi localStorage bị chặn (file://)
+function isIso88591(str) {
+  if (!str) return true;
+  for (let i = 0; i < str.length; i++) {
+    if (str.charCodeAt(i) > 255) return false;
+  }
+  return true;
+}
 function sessionToken() {
-  if (pastedSessionToken) return pastedSessionToken;
-  try { const s = JSON.parse(localStorage.getItem(LS_SESSION) || "null"); return (s && s.session_token) || ""; }
-  catch (e) { return ""; }
+  let tok = pastedSessionToken;
+  if (!tok) {
+    try {
+      const s = JSON.parse(localStorage.getItem(LS_SESSION) || "null");
+      tok = (s && s.session_token) || "";
+    } catch (e) {
+      tok = "";
+    }
+  }
+  if (!tok) return "";
+  // Phòng ngừa token chứa ký tự ngoài ISO-8859-1 (như tiếng Việt do dán nhầm chuỗi) làm fetch() văng TypeError
+  if (!isIso88591(tok)) {
+    pastedSessionToken = "";
+    try { localStorage.removeItem(LS_SESSION); } catch (e) {}
+    return "";
+  }
+  return tok.trim();
 }
 let hours = +(localStorage.getItem(LS_HOURS) || 168);
 let crashRows = [];
@@ -2008,16 +2029,26 @@ async function api(path, opts = {}) {
     throw new Error("Chưa có phiên đăng nhập Admin. Đăng nhập OTP tại admin-keys.html (cùng trình duyệt) rồi tải lại trang này.");
   }
 
-  const res = await fetch(supabaseUrl.replace(/\/$/, "") + path, {
-    method: opts.method || "GET",
-    headers: {
-      "apikey": DEFAULT_ANON_KEY,
-      "Authorization": "Bearer " + DEFAULT_ANON_KEY,
-      "X-Admin-Session": tok,
-      ...(opts.body ? { "Content-Type": "application/json" } : {}),
-    },
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(supabaseUrl.replace(/\/$/, "") + path, {
+      method: opts.method || "GET",
+      headers: {
+        "apikey": DEFAULT_ANON_KEY,
+        "Authorization": "Bearer " + DEFAULT_ANON_KEY,
+        "X-Admin-Session": tok,
+        ...(opts.body ? { "Content-Type": "application/json" } : {}),
+      },
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+  } catch (fetchErr) {
+    if ((fetchErr.message || "").includes("ISO-8859-1") || (fetchErr.message || "").includes("headers")) {
+      pastedSessionToken = "";
+      try { localStorage.removeItem(LS_SESSION); } catch (_) {}
+      throw new Error("Phiên làm việc chứa ký tự không hợp lệ đã được xóa. Vui lòng tải lại trang hoặc đăng nhập lại.");
+    }
+    throw fetchErr;
+  }
   
   if (!res.ok) {
     let msg = res.statusText;
@@ -3640,17 +3671,27 @@ async function signVoiceUrl(url) {
     throw new Error("Chưa có phiên đăng nhập Admin. Đăng nhập OTP tại admin-keys.html rồi tải lại trang này.");
   }
 
-  const res = await fetch(supabaseUrl.replace(/\/$/, "") +
-      "/storage/v1/object/sign/voice-samples/" + path, {
-    method: "POST",
-    headers: {
-      "apikey": DEFAULT_ANON_KEY,
-      "Authorization": "Bearer " + DEFAULT_ANON_KEY,
-      "X-Admin-Session": tok,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ expiresIn: VOICE_SIGN_TTL })
-  });
+  let res;
+  try {
+    res = await fetch(supabaseUrl.replace(/\/$/, "") +
+        "/storage/v1/object/sign/voice-samples/" + path, {
+      method: "POST",
+      headers: {
+        "apikey": DEFAULT_ANON_KEY,
+        "Authorization": "Bearer " + DEFAULT_ANON_KEY,
+        "X-Admin-Session": tok,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ expiresIn: VOICE_SIGN_TTL })
+    });
+  } catch (fetchErr) {
+    if ((fetchErr.message || "").includes("ISO-8859-1") || (fetchErr.message || "").includes("headers")) {
+      pastedSessionToken = "";
+      try { localStorage.removeItem(LS_SESSION); } catch (_) {}
+      throw new Error("Phiên làm việc chứa ký tự không hợp lệ.");
+    }
+    throw fetchErr;
+  }
   if (!res.ok) {
     let detail = "";
     try {
@@ -4543,9 +4584,22 @@ $("btnSaveKey").onclick = () => {
   const pasted = ($("inpSession").value || "").trim();
   if (pasted) {
     try {
-      const obj = pasted.startsWith("{") ? JSON.parse(pasted) : { session_token: pasted, login_timestamp: Date.now() };
-      if (!obj.session_token) throw new Error("thiếu session_token");
-      pastedSessionToken = obj.session_token;
+      let token = "";
+      if (pasted.startsWith("{") || pasted.includes('"session_token"')) {
+        const m = pasted.match(/\{[\s\S]*\}/);
+        const obj = JSON.parse(m ? m[0] : pasted);
+        token = (obj && obj.session_token) || "";
+      } else {
+        const hex = pasted.match(/[0-9a-fA-F]{64}/);
+        token = hex ? hex[0] : pasted;
+      }
+      token = token.trim();
+      if (!token) throw new Error("thiếu session_token");
+      if (!isIso88591(token)) {
+        throw new Error("Token chứa ký tự tiếng Việt hoặc ký tự không hợp lệ. Vui lòng chỉ dán chuỗi token 64 ký tự hex hoặc JSON từ admin-keys.html.");
+      }
+      const obj = { session_token: token, login_timestamp: Date.now() };
+      pastedSessionToken = token;
       try { localStorage.setItem(LS_SESSION, JSON.stringify(obj)); } catch (e) { /* file:// bị chặn — giữ trong tab */ }
       $("inpSession").value = "";
     } catch (e) { alert("Phiên dán không hợp lệ: " + e.message); return; }
