@@ -22,6 +22,20 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.7
+
+- **📦 YouTube và YouTube Music trong Cài nhanh dùng bản Morphe**: Cài xong, xe tự gỡ bản Anddea cũ để khỏi trùng biểu tượng (dữ liệu của bản cũ sẽ mất). Không còn báo "Cần cập nhật" giả cho hai ứng dụng này.
+- **📥 Tải ứng dụng bị đứt giữa chừng thì tải lại**: Không còn cài nhầm file tải thiếu.
+- **🔑 MicroG chuyển sang bản mới 7.2.1** trong Cài nhanh.
+- **🎵 Phím Phát/Tạm dừng trên vô lăng** mở YouTube Morphe trước khi nhạc chưa phát.
+- **📶 Điều khiển từ xa qua 4G**: Khi xe không nối được, xe ghi lại lý do để dễ tìm nguyên nhân.
+- **📡 Điều khiển từ xa qua 4G tự bật**: Xe có bản quyền là sẵn sàng điều khiển từ xa, không phải vào Cài đặt bật tay; mỗi xe có khoá bí mật riêng, điện thoại vẫn quét mã QR một lần. Không dùng thì tắt ở Cài đặt → Kết nối → "Điều khiển từ xa qua 4G" — xe nhớ lựa chọn này.
+
+## PhoneConnect 1.2.7
+
+- **🔗 Thoát app vẫn giữ kết nối với xe**: Dùng 4G (Cloud), Wi-Fi hay Bluetooth đều giữ kết nối khi bạn ra khỏi app; điện thoại hiện một thông báo thường trực. Nếu xe im lặng quá 10 phút thì tự dừng. Có thể tắt ở công tắc "Tự động kết nối chạy nền" trong Cài đặt.
+- **📶 Ghi lại lúc mất kết nối** để tìm nguyên nhân 4G bị rớt.
+
 ## CarConnect 1.2.6
 
 - **🎙️ Xe nói đúng việc cần làm khi chia đôi màn hình chờ khởi động lại**: Đã bật chia đôi nhưng chưa khởi động lại đầu xe thì xe nói "Chia đôi màn hình chờ khởi động lại xe", không còn nói "chưa bật chia đôi màn hình" khiến phải bấm kích hoạt lại vô ích.
