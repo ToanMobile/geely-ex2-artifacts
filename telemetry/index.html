@@ -461,8 +461,10 @@
   <span id="connLabel"><span class="dot bad" id="connDot"></span> <span id="connText">chưa kết nối</span></span>
   <label class="filters" style="margin:0"><span style="font-size:12px;color:var(--text-muted)">Cửa sổ:</span>
     <select id="rangeSel">
-      <option value="24">24 giờ</option>
-      <option value="168" selected>7 ngày</option>
+      <option value="12">12 giờ</option>
+      <option value="24" selected>24 giờ (khuyên dùng)</option>
+      <option value="48">48 giờ</option>
+      <option value="168">7 ngày</option>
       <option value="720">30 ngày</option>
       <option value="8760">Tất cả (~1 năm)</option>
     </select>
@@ -502,6 +504,12 @@
 <div id="versionBanner" style="display:none;background:var(--surface-1);border:1px solid #10b981;border-radius:10px;padding:10px 16px;max-width:1560px;margin:12px auto 0;align-items:center;gap:12px;font-size:13px;box-shadow:var(--card-shadow);box-sizing:border-box">
   <span id="versionBannerText" style="flex:1;font-weight:600;color:var(--good)"></span>
   <button id="btnClearVersion" class="ghost small">✕ Xem tất cả phiên bản</button>
+</div>
+
+<div id="timeoutBanner" style="display:none;background:rgba(239,68,68,0.12);border:1px solid var(--critical);border-radius:10px;padding:10px 16px;max-width:1560px;margin:12px auto 0;align-items:center;gap:12px;font-size:13px;box-shadow:var(--card-shadow);box-sizing:border-box">
+  <span style="font-size:18px">⚠️</span>
+  <span id="timeoutBannerText" style="flex:1;font-weight:600;color:var(--critical);line-height:1.4"></span>
+  <button id="btnDismissTimeout" class="ghost small" onclick="$('timeoutBanner').style.display='none'">✕ Đóng</button>
 </div>
 
 <div id="fleetHealthBanner" style="display:none;max-width:1560px;margin:12px auto 0;border-radius:12px;padding:12px 18px;align-items:center;gap:14px;box-shadow:var(--card-shadow);box-sizing:border-box;font-size:13px;transition:all 0.3s ease">
@@ -1258,7 +1266,7 @@ function sessionToken() {
   }
   return tok.trim();
 }
-let hours = +(localStorage.getItem(LS_HOURS) || 168);
+let hours = +(localStorage.getItem(LS_HOURS) || 24);
 let crashRows = [];
 
 const $ = (id) => document.getElementById(id);
@@ -2070,13 +2078,43 @@ async function rpcOverview() {
     body.p_app_version = selectedVersion;
   }
   try {
-    return await api("/rest/v1/rpc/telemetry_overview", { method: "POST", body });
+    const data = await api("/rest/v1/rpc/telemetry_overview", { method: "POST", body });
+    const banner = $("timeoutBanner");
+    if (banner && banner.dataset.autoFallback !== "1") {
+      banner.style.display = "none";
+    }
+    return data;
   } catch (err) {
+    const isTimeout = /statement timeout|57014/i.test(err.message || "");
+    if (isTimeout && hours > 24) {
+      console.warn(`Query ${hours}h bị statement timeout trên Supabase. Tự động fallback về 24 giờ:`, err);
+      const oldHours = hours;
+      hours = 24;
+      try { localStorage.setItem(LS_HOURS, "24"); } catch (_) {}
+      const rEl = $("rangeSel");
+      if (rEl) rEl.value = "24";
+      const banner = $("timeoutBanner");
+      const bannerText = $("timeoutBannerText");
+      if (banner && bannerText) {
+        banner.dataset.autoFallback = "1";
+        bannerText.textContent = `Cửa sổ ${oldHours} giờ có hơn 50.000 sự kiện nên bị timeout (HTTP 500) trên Supabase. Đang tự động hiển thị dữ liệu 24 giờ gần nhất. Bạn có thể lọc theo từng thiết bị để xem được dữ liệu dài hơn.`;
+        banner.style.display = "flex";
+      }
+      return rpcOverview();
+    }
     // Nếu RPC trên máy chủ Supabase chưa chạy bản schema mới có tham số p_app_version,
     // tự động fallback gọi không có p_app_version để client-side tự lọc mà không bị lỗi mạng
     if (selectedVersion) {
       console.warn("RPC telemetry_overview chưa có tham số p_app_version trên DB, fallback gọi cơ bản và lọc client-side:", err);
       return api("/rest/v1/rpc/telemetry_overview", { method: "POST", body: { p_hours: hours, p_device_id: selectedDevice } });
+    }
+    if (isTimeout) {
+      const banner = $("timeoutBanner");
+      const bannerText = $("timeoutBannerText");
+      if (banner && bannerText) {
+        bannerText.textContent = `Truy vấn dữ liệu bị timeout trên máy chủ Supabase (HTTP 500). Vui lòng chọn cửa sổ thời gian ngắn hơn (12h/24h) hoặc chọn một thiết bị cụ thể để lọc.`;
+        banner.style.display = "flex";
+      }
     }
     throw err;
   }
@@ -4616,6 +4654,11 @@ $("fCategory").onchange = () => { $("fEvent").value = ""; loadEvents(); };
 $("rangeSel").onchange = (e) => {
   hours = +e.target.value;
   localStorage.setItem(LS_HOURS, String(hours));
+  const banner = $("timeoutBanner");
+  if (banner) {
+    banner.dataset.autoFallback = "0";
+    banner.style.display = "none";
+  }
   refreshAll();
 };
 let autoTimer = null;

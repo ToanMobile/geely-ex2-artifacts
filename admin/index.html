@@ -3270,7 +3270,7 @@ function renderQuickInstallTable() {
     const verBadge = app.versionName ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>' : '';
     let tagLink = "";
     const ghMatch = (app.url || "").match(/github\.com\/([^/]+\/[^/]+)\/releases\/download\/([^/]+)\//);
-    if (ghMatch) tagLink = '<a href="https://github.com/' + ghMatch[1] + '/releases/tag/' + ghMatch[2] + '" target="_blank" draggable="false" style="color:#58a6ff; font-size:11px; font-weight:600; text-decoration:none; margin-right:6px" title="Mở trang GitHub Release Tag">🐙 Tag ' + ghMatch[2] + '</a>';
+    if (ghMatch) tagLink = '<a href="https://github.com/' + esc(ghMatch[1]) + '/releases/tag/' + esc(ghMatch[2]) + '" target="_blank" draggable="false" style="color:#58a6ff; font-size:11px; font-weight:600; text-decoration:none; margin-right:6px" title="Mở trang GitHub Release Tag">🐙 Tag ' + esc(ghMatch[2]) + '</a>';
     tr.innerHTML = '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
       '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
       '<td class="nowrap"><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
@@ -3600,7 +3600,7 @@ function saveQiItem() {
     url = "https://github.com/MorpheApp/MicroG-RE/releases/download/" + tag + "/microg-" + tag.replace(/^v/, "") + "-noicon-arm64-v8a.apk";
     if (!pkg) pkg = "app.revanced.android.gms";
     if (!verName) verName = tag.replace(/^v/, "");
-    if (!verCode) verCode = 255070218;
+    if (!verCode && tag.replace(/^v/, "") === "7.2.1") verCode = 255070218;
   }
   const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked;
   if (!name || !url) { alert("Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
