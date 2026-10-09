@@ -5130,31 +5130,38 @@ async function saveTelegramBotConfig() {
 async function fetchTelegramChatId() {
   const token = await requireTelegramBotToken();
   if (!token) return;
+  const tokens = String(token).split(/[\s,;\n\r]+/).filter(Boolean);
+  if (tokens.length === 0) return;
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang quét tin nhắn mới nhất từ Bot...");
   try {
-    const res = await fetch("https://api.telegram.org/bot" + token + "/getUpdates?offset=-10&limit=10");
-    const data = await res.json();
-    if (!data.ok || !data.result || data.result.length === 0) {
-      alert("⚠️ Chưa tìm thấy tin nhắn mới nào!\n\nVui lòng mở ứng dụng Telegram, tìm bot @ToanAgent1993Bot (hoặc bấm link t.me/ToanAgent1993Bot), bấm START (hoặc gửi tin nhắn /start) rồi bấm lại nút này.");
-      showMsg($("salesTelegramSaveMsg"), "err", "Chưa có tin nhắn nào tới bot. Hãy mở bot và bấm Start.");
-      return;
+    let foundChat = null;
+    for (const t of tokens) {
+      try {
+        const res = await fetch("https://api.telegram.org/bot" + t + "/getUpdates?offset=-10&limit=10");
+        const data = await res.json();
+        if (data && data.ok && data.result && data.result.length > 0) {
+          const lastUpdate = data.result[data.result.length - 1];
+          const msg = lastUpdate.message || (lastUpdate.callback_query && lastUpdate.callback_query.message);
+          const chat = (msg && msg.chat) || (lastUpdate.callback_query && lastUpdate.callback_query.from);
+          if (chat && chat.id) {
+            foundChat = { id: String(chat.id), name: chat.first_name || chat.title || chat.username || "Admin" };
+            break;
+          }
+        }
+      } catch (inner) {}
     }
-    const lastUpdate = data.result[data.result.length - 1];
-    const msg = lastUpdate.message || (lastUpdate.callback_query && lastUpdate.callback_query.message);
-    const chat = (msg && msg.chat) || (lastUpdate.callback_query && lastUpdate.callback_query.from);
-    if (chat && chat.id) {
-      const newId = String(chat.id);
-      const name = chat.first_name || chat.title || chat.username || "Admin";
+    if (foundChat) {
       const currentItems = getTelegramChatItemsFromUI();
-      if (!currentItems.some(x => x.id === newId)) {
-        addTelegramChatRow(newId, name);
-        showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã thêm: " + name + " (" + newId + "). Hãy bấm [Lưu Cấu hình Telegram].");
-        alert("🎉 Đã thêm thành công!\nTên: " + name + "\nChat ID: " + newId + "\n\nHãy bấm [Lưu Cấu hình Telegram] để hoàn tất.");
+      if (!currentItems.some(x => x.id === foundChat.id)) {
+        addTelegramChatRow(foundChat.id, foundChat.name);
+        showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã thêm: " + foundChat.name + " (" + foundChat.id + "). Hãy bấm [Lưu Cấu hình Telegram].");
+        alert("🎉 Đã thêm thành công!\nTên: " + foundChat.name + "\nChat ID: " + foundChat.id + "\n\nHãy bấm [Lưu Cấu hình Telegram] để hoàn tất.");
       } else {
-        alert("ℹ️ Chat ID: " + newId + " (" + name + ") đã có sẵn trong danh sách.");
+        alert("ℹ️ Chat ID: " + foundChat.id + " (" + foundChat.name + ") đã có sẵn trong danh sách.");
       }
     } else {
-      alert("Không trích xuất được Chat ID từ bản tin Telegram.");
+      alert("⚠️ Chưa tìm thấy tin nhắn mới nào!\n\nVui lòng mở ứng dụng Telegram, tìm bot @ToanAgent1993Bot (hoặc bấm link t.me/ToanAgent1993Bot), bấm START (hoặc gửi tin nhắn /start) rồi bấm lại nút này.");
+      showMsg($("salesTelegramSaveMsg"), "err", "Chưa có tin nhắn nào tới bot. Hãy mở bot và bấm Start.");
     }
   } catch (err) {
     showMsg($("salesTelegramSaveMsg"), "err", "Lỗi kết nối Telegram: " + err.message);
@@ -5250,14 +5257,7 @@ async function registerTelegramWebhook() {
   const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseAnonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
   const webhookUrl = prompt("Nhập Webhook URL cho Telegram Bot (Mặc định gọi thẳng REST RPC Supabase 24/7):", defaultWebhook);
   if (!webhookUrl) return;
-  // 31/08/2026 — BẮT BUỘC GỬI KÈM secret_token.
-  //
-  // Từ bản schema 31/08, `handle_telegram_webhook` có cổng bí mật: gọi mà không kèm
-  // `X-Telegram-Bot-Api-Secret-Token` đúng thì trả `{"ok":false,"reason":"unauthorized"}`.
-  // Cái bẫy: đó vẫn là **HTTP 200**, nên Telegram coi như GIAO THÀNH CÔNG, không báo lỗi,
-  // không dồn hàng đợi. Đăng ký webhook thiếu bí mật = mọi lượt bấm Duyệt/Huỷ trên Telegram
-  // rơi vào hư không mà KHÔNG có dấu hiệu nào — đơn hàng không bao giờ được duyệt.
-  // Vì vậy ở đây fail-closed: chưa lấy được bí mật thì KHÔNG đăng ký.
+
   let webhookSecret = ((window._salesData || {}).settings || {}).telegram_webhook_secret || "";
   if (!webhookSecret) {
     try {
@@ -5265,36 +5265,46 @@ async function registerTelegramWebhook() {
       const cfgData = await cfgRes.json();
       window._salesData = cfgData;
       webhookSecret = ((cfgData || {}).settings || {}).telegram_webhook_secret || "";
-    } catch (e) {
-      // để rỗng — nhánh dưới sẽ dừng và nói rõ
-    }
+    } catch (e) {}
   }
   if (!webhookSecret) {
     showMsg($("salesTelegramSaveMsg"), "err", "Chưa có telegram_webhook_secret — không đăng ký webhook");
-    alert("❌ Chưa lấy được bí mật webhook (telegram_webhook_secret).\n\n" +
-          "Đăng ký khi thiếu bí mật sẽ tạo ra một webhook CHẾT IM LẶNG: Telegram vẫn nhận HTTP 200 " +
-          "nên tưởng gửi thành công, còn Supabase thì từ chối, và đơn hàng KHÔNG BAO GIỜ được duyệt.\n\n" +
-          "Hãy dán lại supabase/schema.sql (bản 31/08 trở đi) rồi bấm Tải lại dữ liệu bán hàng.");
+    alert("❌ Chưa lấy được bí mật webhook (telegram_webhook_secret).\n\nHãy dán lại supabase/schema.sql rồi bấm Tải lại dữ liệu bán hàng.");
     return;
   }
-  showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang đăng ký Webhook...");
-  try {
-    const res = await fetch("https://api.telegram.org/bot" + token + "/setWebhook", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: webhookUrl, secret_token: webhookSecret })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã đăng ký Webhook thành công: " + webhookUrl);
-      alert("🎉 Đã đăng ký Webhook thành công!\nURL: " + webhookUrl + "\n\nKhi bạn bấm Duyệt/Huỷ trên Telegram, Telegram sẽ tự động gọi tới Supabase để xử lý cấp mã tức thì 24/7.");
-    } else {
-      showMsg($("salesTelegramSaveMsg"), "err", "Lỗi đăng ký webhook: " + data.description);
-      alert("❌ Lỗi đăng ký webhook: " + data.description);
+
+  const tokens = String(token).split(/[\s,;\n\r]+/).filter(Boolean);
+  showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang đăng ký Webhook cho " + tokens.length + " bot...");
+  let successCount = 0;
+  let failCount = 0;
+  let lastErr = "";
+
+  for (const t of tokens) {
+    try {
+      const res = await fetch("https://api.telegram.org/bot" + t + "/setWebhook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: webhookUrl, secret_token: webhookSecret })
+      });
+      const data = await res.json();
+      if (data && data.ok) {
+        successCount++;
+      } else {
+        failCount++;
+        lastErr = (data && data.description) || "Lỗi bot";
+      }
+    } catch (err) {
+      failCount++;
+      lastErr = err.message;
     }
-  } catch (err) {
-    showMsg($("salesTelegramSaveMsg"), "err", "Lỗi: " + err.message);
-    alert("❌ Lỗi: " + err.message);
+  }
+
+  if (successCount > 0) {
+    showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã đăng ký Webhook thành công (" + successCount + "/" + tokens.length + " bot)!");
+    alert("🎉 Đã đăng ký Webhook thành công cho " + successCount + " bot!\nURL: " + webhookUrl + "\n\nKhi bạn bấm Duyệt/Huỷ trên Telegram, Telegram sẽ tự động gọi tới Supabase để xử lý cấp mã tức thì 24/7.");
+  } else {
+    showMsg($("salesTelegramSaveMsg"), "err", "Lỗi đăng ký webhook: " + lastErr);
+    alert("❌ Lỗi đăng ký webhook: " + lastErr + "\n\n💡 Lưu ý: Nếu mạng của bạn tại Việt Nam bị nhà mạng chặn kết nối api.telegram.org (Failed to fetch), hệ thống đã đăng ký sẵn từ máy chủ rồi, bạn không cần bấm lại nút này.");
   }
 }
 // ==================== ACTIONS: DUYỆT / HUỶ / HOÀN TIỀN ĐƠN ====================
