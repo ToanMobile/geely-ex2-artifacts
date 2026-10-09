@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.7",
-    "versionCode": 1207,
+    "latestVersionName": "1.2.8",
+    "versionCode": 1208,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "8cc613f5d4cfbe5fec5641114d1889f394a5e9c24e617ad194061f71a711890d",
-    "releaseNotes": "- 🔗 Thoát app vẫn giữ kết nối với xe: Dùng 4G (Cloud), Wi-Fi hay Bluetooth đều giữ kết nối khi bạn ra khỏi app; điện thoại hiện một thông báo thường trực. Nếu xe im lặng quá 10 phút thì tự dừng. Có thể tắt ở công tắc \"Tự động kết nối chạy nền\" trong Cài đặt.\n- 📶 Ghi lại lúc mất kết nối để tìm nguyên nhân 4G bị rớt.",
+    "sha256": "189fdbc07e42545c66c242ec38bf9d16d0ab0ab680d1de3aeadd116df2d1c75e",
+    "releaseNotes": "- 🔐 Đăng nhập iCar được cất an toàn hơn trên iPhone: Mã đăng nhập iCar và số điện thoại nay lưu trong Keychain, không còn nằm trong bản sao lưu iCloud. Bản cũ tự chuyển sang, không phải đăng nhập lại. Trên Android không có gì thay đổi.",
     "minVersionCode": 0,
     "forceRules": []
   },

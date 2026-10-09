@@ -26,6 +26,10 @@ Quy ước:
 
 - **🗺️ Google Maps trống bản đồ thì xe chỉ cách sửa**: Mở Google Maps từ mục Ứng dụng khi microG chưa đăng nhập tài khoản Google, xe hỏi "Đăng nhập Google" và mở thẳng màn đăng nhập. Chọn "Để sau" rồi bấm mở lần nữa nếu vẫn muốn vào Maps.
 
+## PhoneConnect 1.2.8
+
+- **🔐 Đăng nhập iCar được cất an toàn hơn trên iPhone**: Mã đăng nhập iCar và số điện thoại nay lưu trong Keychain, không còn nằm trong bản sao lưu iCloud. Bản cũ tự chuyển sang, không phải đăng nhập lại. Trên Android không có gì thay đổi.
+
 ## CarConnect 1.2.7
 
 - **📦 YouTube và YouTube Music trong Cài nhanh dùng bản Morphe**: Cài xong, xe tự gỡ bản Anddea cũ để khỏi trùng biểu tượng (dữ liệu của bản cũ sẽ mất). Không còn báo "Cần cập nhật" giả cho hai ứng dụng này.
