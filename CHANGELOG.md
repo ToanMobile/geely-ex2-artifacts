@@ -22,6 +22,12 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.0
+
+- **🎵 Ứng dụng nghe nhạc, bản đồ không còn bị xe dọn khi ra nền**: danh sách ứng dụng được xe giữ chạy nền nay lấy từ danh sách Cài nhanh và tự cập nhật theo từng bản CarConnect, nên mọi ứng dụng Cài nhanh (kể cả YouTube Music bản Morphe) không còn bị màn hình chính của xe dọn sau khoảng 30 giây. Sau khi cài bản này, màn hình chính của xe có thể tự khởi động lại một lần. Lưu ý: nếu YouTube Music tự đứng ở trạng thái đang tải giữa bài thì đó là lỗi tải nhạc của chính ứng dụng, bản này chưa sửa phần đó.
+- **❄️ "Làm lạnh nhanh" và "làm lạnh thoải mái" bật điều hoà đúng**: trước đây hai lệnh này có thể tắt điều hoà đang mở. Nay xe đọc trạng thái trước và chỉ bật khi điều hoà đang tắt; lệnh "bật điều hòa" khi đã bật cũng không còn làm tắt.
+- **🧭 Chỉ đường bằng giọng nói với Waze không còn chạm lung tung lên màn hình**: xe chỉ mở Waze tới địa điểm rồi để Waze tự dẫn đường, không còn bấm các điểm cố định trên màn hình; khi chưa tìm được toạ độ của địa điểm (ví dụ xe không có mạng), Waze chỉ mở ở màn tìm kiếm để bạn tự chọn kết quả. Hộp thoại "Chúc bạn chuyến đi an toàn" của Waze nay do bạn bấm OK.
+
 ## CarConnect 1.2.9
 
 - **🎙️ Chờ nghe "Hi Geely" nhẹ máy hơn**: Xe chờ bằng mic thô và chỉ bật bộ lọc ồn khi nghe thấy gọi, nên CPU lúc chờ giảm hơn một nửa trong lần đo trên xe. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại để chỉnh.
