@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.8",
-    "versionCode": 1208,
+    "latestVersionName": "1.2.9",
+    "versionCode": 1209,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "189fdbc07e42545c66c242ec38bf9d16d0ab0ab680d1de3aeadd116df2d1c75e",
-    "releaseNotes": "- 🔐 Đăng nhập iCar được cất an toàn hơn trên iPhone: Mã đăng nhập iCar và số điện thoại nay lưu trong Keychain, không còn nằm trong bản sao lưu iCloud. Bản cũ tự chuyển sang, không phải đăng nhập lại. Trên Android không có gì thay đổi.",
+    "sha256": "e9bf491d58ebf00daf308d5b78cba2de748a9ff6559beed5335c286d107d958f",
+    "releaseNotes": "- 🔄 Cập nhật cùng nhịp với CarConnect 1.2.9: không có thay đổi giao diện.",
     "minVersionCode": 0,
     "forceRules": []
   },
