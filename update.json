@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.2.8",
-    "versionCode": 1208,
+    "latestVersionName": "1.2.9",
+    "versionCode": 1209,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "08602dfb547b415e5bd729db9859192a21d8f26f501c83efa5557345dc3ffaa4",
-    "releaseNotes": "- 🗺️ Google Maps trống bản đồ thì xe chỉ cách sửa: Mở Google Maps từ mục Ứng dụng khi microG chưa đăng nhập tài khoản Google, xe hỏi \"Đăng nhập Google\" và mở thẳng màn đăng nhập. Chọn \"Để sau\" rồi bấm mở lần nữa nếu vẫn muốn vào Maps.",
+    "sha256": "6f0e9769846af6917d3c46d4d3c7323f3ba266ab24f3f2d2a84af8a63f783be7",
+    "releaseNotes": "- 🎙️ Chờ nghe \"Hi Geely\" nhẹ máy hơn: Xe chờ bằng mic thô và chỉ bật bộ lọc ồn khi nghe thấy gọi, nên CPU lúc chờ giảm hơn một nửa trong lần đo trên xe. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại để chỉnh.\n- 🎯 Bớt đánh thức nhầm: Câu \"Hi Geely\" bị nghe nhầm từ tiếng nói khác giảm khoảng một nửa trong thử nghiệm với kho âm thanh thật.\n- 🅿️ Bật/tắt \"chế độ chờ khi rời xe\" bằng giọng nói, xe đọc lại kết quả bằng giọng.\n- ⚖️ Nói \"tắc cân bằng điện tử\" hay \"hỗ trợ đổ đèo\" xe hiểu đúng; nói \"nhà riêng\" không còn bị hiểu thành lệnh kính.\n- ⏭️ Phím Next/Prev trên vô lăng chỉ chuyển đúng một bài, không nhảy ba bài như trước.\n- 📥 Gỡ ứng dụng từ điện thoại không còn làm các lệnh sau (nhiệt độ, kính…) phải chờ.\n- ⚡ Xe tự tối ưu ứng dụng sau mỗi lần cài để Maps, YouTube chạy mượt hơn; cài ứng dụng khi bản cũ ký khác thì xe tự gỡ bản cũ rồi cài.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []

@@ -22,6 +22,20 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.2.9
+
+- **🎙️ Chờ nghe "Hi Geely" nhẹ máy hơn**: Xe chờ bằng mic thô và chỉ bật bộ lọc ồn khi nghe thấy gọi, nên CPU lúc chờ giảm hơn một nửa trong lần đo trên xe. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại để chỉnh.
+- **🎯 Bớt đánh thức nhầm**: Câu "Hi Geely" bị nghe nhầm từ tiếng nói khác giảm khoảng một nửa trong thử nghiệm với kho âm thanh thật.
+- **🅿️ Bật/tắt "chế độ chờ khi rời xe" bằng giọng nói**, xe đọc lại kết quả bằng giọng.
+- **⚖️ Nói "tắc cân bằng điện tử" hay "hỗ trợ đổ đèo"** xe hiểu đúng; nói "nhà riêng" không còn bị hiểu thành lệnh kính.
+- **⏭️ Phím Next/Prev trên vô lăng** chỉ chuyển đúng một bài, không nhảy ba bài như trước.
+- **📥 Gỡ ứng dụng từ điện thoại** không còn làm các lệnh sau (nhiệt độ, kính…) phải chờ.
+- **⚡ Xe tự tối ưu ứng dụng sau mỗi lần cài** để Maps, YouTube chạy mượt hơn; cài ứng dụng khi bản cũ ký khác thì xe tự gỡ bản cũ rồi cài.
+
+## PhoneConnect 1.2.9
+
+- **🔄 Cập nhật cùng nhịp với CarConnect 1.2.9**: không có thay đổi giao diện.
+
 ## CarConnect 1.2.8
 
 - **🗺️ Google Maps trống bản đồ thì xe chỉ cách sửa**: Mở Google Maps từ mục Ứng dụng khi microG chưa đăng nhập tài khoản Google, xe hỏi "Đăng nhập Google" và mở thẳng màn đăng nhập. Chọn "Để sau" rồi bấm mở lần nữa nếu vẫn muốn vào Maps.
