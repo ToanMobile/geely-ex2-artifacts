@@ -21,55 +21,26 @@
     --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5; --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8; --ok: #57c47e; --err: #e08a8a; --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text);
-    font: 14px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px;
-    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  .wrap { max-width: none; margin: 0; }
-  h1 { font-size: 19px; margin-bottom: 4px; }
-  .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
-  /* Tabs */
+  body { background: var(--bg); color: var(--text); font: 14px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; padding: 24px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  .wrap { max-width: none; margin: 0; } h1 { font-size: 19px; margin-bottom: 4px; } .sub { color: var(--muted); margin-bottom: 16px; font-size: 13px; }
   .tab-nav { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 8px; flex-wrap: wrap; overflow-x: auto; }
-  .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-  .tab-btn:hover { background: var(--panel2); color: var(--text); }
-  .tab-btn.active { background: var(--accent); color: #fff; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-  .panel h2 { font-size: 14px; margin-bottom: 12px; color: var(--muted); }
+  .tab-btn { background: transparent; border: 0; color: var(--muted); font-weight: 600; font-size: 14px; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; } .tab-btn:hover { background: var(--panel2); color: var(--text); } .tab-btn.active { background: var(--accent); color: #fff; }
+  .tab-content { display: none; } .tab-content.active { display: block; }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; } .panel h2 { font-size: 14px; margin-bottom: 12px; color: var(--muted); }
   .warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  input, select, textarea { width: 100%; background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 14px; }
-  input:focus, select:focus, textarea:focus { outline: 1px solid var(--accent); }
-  input[type=password] { font-family: var(--mono); }
-  button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 9px 16px; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-  button:hover { background: var(--accent2); }
-  button.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-  button.ghost:hover { background: var(--panel2); }
-  button.ghost.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  button.danger { background: var(--danger); }
-  button.small { padding: 4px 10px; font-size: 12px; }
-  button:disabled { opacity: .55 !important; cursor: not-allowed !important; filter: grayscale(40%); }
-  label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none; cursor: pointer; white-space: nowrap; }
-  label.chk input { width: auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; } label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input, select, textarea { width: 100%; background: var(--panel2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 14px; } input:focus, select:focus, textarea:focus { outline: 1px solid var(--accent); } input[type=password] { font-family: var(--mono); }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 9px 16px; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; } button:hover { background: var(--accent2); }
+  button.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); } button.ghost:hover { background: var(--panel2); } button.ghost.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.danger { background: var(--danger); } button.small { padding: 4px 10px; font-size: 12px; } button:disabled { opacity: .55 !important; cursor: not-allowed !important; filter: grayscale(40%); }
+  label.chk { display: flex; align-items: center; gap: 6px; margin: 0; flex: none; cursor: pointer; white-space: nowrap; } label.chk input { width: auto; }
   input:disabled, select:disabled, textarea:disabled { background: var(--bg) !important; color: var(--muted) !important; border: 1px dashed var(--border) !important; cursor: not-allowed !important; opacity: .75; }
-  .license-type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 4px 0 8px; }
-  @media (max-width: 1100px) { .license-type-selector { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 600px) { .license-type-selector { grid-template-columns: 1fr; } }
-  .type-card { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; }
-  .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); }
-  .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); }
-  .type-card.lifetime-active { border-color: #10b981; background: rgba(16,185,129,.08); box-shadow: 0 0 0 1px #10b981; } .type-card.yearly-active { border-color: #0284c7; background: rgba(2,132,199,.08); box-shadow: 0 0 0 1px #0284c7; }
-  .type-card.quarter-active { border-color: #9333ea; background: rgba(147,51,234,.08); box-shadow: 0 0 0 1px #9333ea; }
-  .type-card.combo-icar-active { border-color: #ea580c; background: rgba(234,88,12,.08); box-shadow: 0 0 0 1px #ea580c; }
-  .type-card.icar-discount-active { border-color: #059669; background: rgba(5,150,105,.08); box-shadow: 0 0 0 1px #059669; }
-  .type-card.trial-active { border-color: #d97706; background: rgba(217,119,6,.08); box-shadow: 0 0 0 1px #d97706; }
+  .license-type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 4px 0 8px; } @media (max-width: 1100px) { .license-type-selector { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 600px) { .license-type-selector { grid-template-columns: 1fr; } }
+  .type-card { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; } .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); } .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); }
+  .type-card.lifetime-active { border-color: #10b981; background: rgba(16,185,129,.08); box-shadow: 0 0 0 1px #10b981; } .type-card.yearly-active { border-color: #0284c7; background: rgba(2,132,199,.08); box-shadow: 0 0 0 1px #0284c7; } .type-card.quarter-active { border-color: #9333ea; background: rgba(147,51,234,.08); box-shadow: 0 0 0 1px #9333ea; } .type-card.combo-icar-active { border-color: #ea580c; background: rgba(234,88,12,.08); box-shadow: 0 0 0 1px #ea580c; } .type-card.icar-discount-active { border-color: #059669; background: rgba(5,150,105,.08); box-shadow: 0 0 0 1px #059669; } .type-card.trial-active { border-color: #d97706; background: rgba(217,119,6,.08); box-shadow: 0 0 0 1px #d97706; }
   .type-card input[type=radio] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
-  .type-card.lifetime-active input[type=radio] { accent-color: #10b981; } .type-card.yearly-active input[type=radio] { accent-color: #0284c7; } .type-card.quarter-active input[type=radio] { accent-color: #9333ea; }
-  .type-card.combo-icar-active input[type=radio] { accent-color: #ea580c; } .type-card.icar-discount-active input[type=radio] { accent-color: #059669; } .type-card.trial-active input[type=radio] { accent-color: #d97706; }
-  .type-card-icon { font-size: 22px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; }
-  .type-card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
-  .type-card-title { font-size: 13px; font-weight: 700; color: var(--text); } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+  .type-card.lifetime-active input[type=radio] { accent-color: #10b981; } .type-card.yearly-active input[type=radio] { accent-color: #0284c7; } .type-card.quarter-active input[type=radio] { accent-color: #9333ea; } .type-card.combo-icar-active input[type=radio] { accent-color: #ea580c; } .type-card.icar-discount-active input[type=radio] { accent-color: #059669; } .type-card.trial-active input[type=radio] { accent-color: #d97706; }
+  .type-card-icon { font-size: 22px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; } .type-card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; } .type-card-title { font-size: 13px; font-weight: 700; color: var(--text); } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
   .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; } .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); }
   .type-card-badge.lifetime { background: #dcfce7; color: #15803d; border: 1px solid #86efac; } body.dark .type-card-badge.lifetime { background: #064e3b; color: #86efac; border-color: #059669; }
   .type-card-badge.yearly { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; } body.dark .type-card-badge.yearly { background: #0c4a6e; color: #7dd3fc; border-color: #0284c7; }
@@ -79,32 +50,15 @@
   .type-card-badge.trial { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; } body.dark .type-card-badge.trial { background: #451a03; color: #fcd34d; border-color: #d97706; }
   .btn-pkg-pill { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all .15s; font-weight: 600; }
   .btn-pkg-pill:hover { border-color: var(--accent); color: var(--accent); } .btn-pkg-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .field-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; transition: all .2s; }
-  .field-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-  .field-card-label { font-size: 12px; font-weight: 600; color: var(--text); }
-  .badge-field-req { font-size: 10px; font-weight: 600; color: var(--ok); background: var(--tag-on-bg); padding: 1px 6px; border-radius: 4px; }
-  .badge-field-opt { font-size: 10px; color: var(--muted); background: var(--bg); padding: 1px 6px; border-radius: 4px; }
-  .badge-field-locked { font-size: 10px; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; }
-  body.dark .badge-field-locked { color: #fca5a5; background: #450a0a; }
-  .badge-field-auto { font-size: 10px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; }
-  body.dark .badge-field-auto { color: #93c5fd; background: #1e3a8a; }
-  .badge-sec-editable { font-size: 10px; font-weight: 600; color: var(--ok); background: var(--tag-on-bg); padding: 2px 8px; border-radius: 4px; }
-  .badge-sec-locked { font-size: 10px; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 2px 8px; border-radius: 4px; }
-  body.dark .badge-sec-locked { color: #fca5a5; background: #450a0a; }
-  .field-card.is-locked { background: rgba(148,163,184,.08) !important; border: 1px dashed rgba(148,163,184,.4) !important; }
-  .field-card.is-locked .field-card-label { color: var(--muted) !important; }
-  .field-card.is-locked .hint { color: #dc2626 !important; font-size: 11px; font-weight: 500; }
-  body.dark .field-card.is-locked .hint { color: #fca5a5 !important; }
-  .btn-trial-pill { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; }
-  .btn-trial-pill:hover { border-color: #3b82f6; color: #3b82f6; }
-  .btn-trial-pill.active { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 600; }
-  .row { display: flex; gap: 8px; align-items: flex-end; }
-  .row > *:first-child { flex: 1; }
-  .result { margin-top: 12px; display: none; }
-  .result.show { display: block; }
-  .keybox { background: var(--keybox-bg); border: 1px dashed var(--accent); border-radius: 8px;
-    padding: 12px; font-family: var(--mono); font-size: 20px; letter-spacing: 2px;
-    color: var(--keybox-text); text-align: center; margin: 10px 0; }
+  .field-card { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; transition: all .2s; } .field-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; } .field-card-label { font-size: 12px; font-weight: 600; color: var(--text); }
+  .badge-field-req { font-size: 10px; font-weight: 600; color: var(--ok); background: var(--tag-on-bg); padding: 1px 6px; border-radius: 4px; } .badge-field-opt { font-size: 10px; color: var(--muted); background: var(--bg); padding: 1px 6px; border-radius: 4px; }
+  .badge-field-locked { font-size: 10px; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; } body.dark .badge-field-locked { color: #fca5a5; background: #450a0a; }
+  .badge-field-auto { font-size: 10px; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 1px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; } body.dark .badge-field-auto { color: #93c5fd; background: #1e3a8a; }
+  .badge-sec-editable { font-size: 10px; font-weight: 600; color: var(--ok); background: var(--tag-on-bg); padding: 2px 8px; border-radius: 4px; } .badge-sec-locked { font-size: 10px; font-weight: 700; color: #dc2626; background: #fee2e2; padding: 2px 8px; border-radius: 4px; } body.dark .badge-sec-locked { color: #fca5a5; background: #450a0a; }
+  .field-card.is-locked { background: rgba(148,163,184,.08) !important; border: 1px dashed rgba(148,163,184,.4) !important; } .field-card.is-locked .field-card-label { color: var(--muted) !important; } .field-card.is-locked .hint { color: #dc2626 !important; font-size: 11px; font-weight: 500; } body.dark .field-card.is-locked .hint { color: #fca5a5 !important; }
+  .btn-trial-pill { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all .15s; } .btn-trial-pill:hover { border-color: #3b82f6; color: #3b82f6; } .btn-trial-pill.active { background: #2563eb; border-color: #2563eb; color: #fff; font-weight: 600; }
+  .row { display: flex; gap: 8px; align-items: flex-end; } .row > *:first-child { flex: 1; } .result { margin-top: 12px; display: none; } .result.show { display: block; }
+  .keybox { background: var(--keybox-bg); border: 1px dashed var(--accent); border-radius: 8px; padding: 12px; font-family: var(--mono); font-size: 20px; letter-spacing: 2px; color: var(--keybox-text); text-align: center; margin: 10px 0; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
   th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   th { color: var(--muted); font-weight: 500; font-size: 12px; }
@@ -131,26 +85,15 @@
   .hint { color: var(--muted); font-size: 12px; margin-top: 5px; }
   .toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; } .search-box { flex: 1; min-width: 240px; max-width: 400px; position: relative; } .filters { display: flex; gap: 6px; flex-wrap: wrap; }
   .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
-  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); } .modal h3 { font-size: 16px; margin-bottom: 8px; } .modal .grid { margin-top: 14px; }
-  .modal .hint { margin-top: 10px; }
-  .modal .actions { margin-top: 18px; justify-content: flex-end; }
-  .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
-  .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  /* ================= Thống kê & Analytics KPI ================= */
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: min(640px, 94vw); max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); } .modal h3 { font-size: 16px; margin-bottom: 8px; } .modal .grid { margin-top: 14px; } .modal .hint { margin-top: 10px; } .modal .actions { margin-top: 18px; justify-content: flex-end; }
+  .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; } .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; } .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, box-shadow 0.15s ease; } .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
   .stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; } .stat-val { font-size: 20px; font-weight: 700; color: var(--text); margin: 4px 0 2px; font-family: var(--mono); } .stat-sub { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; } .stat-sub b { color: var(--text); } .stat-progress { height: 6px; background: var(--panel2); border-radius: 4px; overflow: hidden; margin: 6px 0 2px; display: flex; } .stat-progress-bar { height: 100%; transition: width 0.3s ease; }
-  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; } .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; } .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-  .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; }
-  .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
-  .ratio-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--panel2); }
-  .ratio-bar-segment { height: 100%; transition: width 0.4s ease; }
-  .login-screen { min-height: calc(100vh - 48px); display: flex; align-items: center; justify-content: center; padding: 20px 0; }
-  .login-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 440px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); position: relative; }
-  .login-header { text-align: center; margin-bottom: 22px; }
-  .login-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-  .login-header .sub { font-size: 13px; color: var(--muted); line-height: 1.4; margin-bottom: 0; }
-  .otp-field { font-size: 24px; letter-spacing: 8px; text-align: center; font-family: var(--mono); font-weight: 700; }
-  .login-btn { width: 100%; padding: 11px; font-size: 14px; font-weight: 600; margin-top: 14px; }
+  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; } .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; } .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; } .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; } .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
+  .ratio-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--panel2); } .ratio-bar-segment { height: 100%; transition: width 0.4s ease; }
+  .login-screen { min-height: calc(100vh - 48px); display: flex; align-items: center; justify-content: center; padding: 20px 0; } .login-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 440px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); position: relative; }
+  .login-header { text-align: center; margin-bottom: 22px; } .login-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; } .login-header .sub { font-size: 13px; color: var(--muted); line-height: 1.4; margin-bottom: 0; }
+  .otp-field { font-size: 24px; letter-spacing: 8px; text-align: center; font-family: var(--mono); font-weight: 700; } .login-btn { width: 100%; padding: 11px; font-size: 14px; font-weight: 600; margin-top: 14px; }
 </style>
 </head>
 <body>
@@ -170,15 +113,12 @@
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Số điện thoại Quản trị viên</label>
       <input id="loginPhoneInput" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại Quản trị viên (VD: 09xxxxxxxx)" style="font-size:15px; padding:10px 12px; margin-bottom:4px" onkeydown="if(event.key==='Enter')requestLoginOtp()">
       <div class="hint">Nhập số điện thoại đã được cấp quyền Quản trị để nhận mã OTP qua Telegram.</div>
-      <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">
-        📲 Gửi mã OTP xác thực (Telegram)
-      </button>
+      <button id="btnRequestOtp" class="login-btn" onclick="requestLoginOtp()">📲 Gửi mã OTP xác thực (Telegram)</button>
     </div>
     <!-- Bước 2: Nhập Mã OTP -->
     <div id="loginStepOtp" style="display:none">
       <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px">
-        <div>👤 Admin: <b id="loginAdminName">--</b></div>
-        <div>📱 SĐT: <b id="loginTargetPhone" class="mono">--</b></div>
+        <div>👤 Admin: <b id="loginAdminName">--</b></div><div>📱 SĐT: <b id="loginTargetPhone" class="mono">--</b></div>
         <div id="loginBotHint" class="hint" style="margin-top:4px; color:var(--ok)">✅ Đã gửi mã OTP về Telegram.</div>
       </div>
       <label style="font-size:13px; font-weight:600; margin-bottom:6px">Nhập mã OTP 6 chữ số *</label>
@@ -186,12 +126,9 @@
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px"><span id="loginTimerText" class="hint" style="margin:0">Mã có hiệu lực: <b id="loginCountdown" class="mono">05:00</b></span>
         <button id="btnResendOtp" class="ghost small" style="display:none" onclick="requestLoginOtp(true)">🔄 Gửi lại mã</button>
       </div>
-      <button id="btnVerifyOtp" class="login-btn" onclick="verifyLoginOtp()">
-        🚀 Xác thực & Đăng nhập
-      </button>
-      <div style="text-align:center; margin-top:12px">
-        <button type="button" class="ghost small" onclick="switchLoginStep('phone')">↩️ Đổi số điện thoại khác</button>
-      </div></div>
+      <button id="btnVerifyOtp" class="login-btn" onclick="verifyLoginOtp()">🚀 Xác thực & Đăng nhập</button>
+      <div style="text-align:center; margin-top:12px"><button type="button" class="ghost small" onclick="switchLoginStep('phone')">↩️ Đổi số điện thoại khác</button></div>
+    </div>
     <div id="loginMsg" class="msg" style="margin-top:14px; text-align:center"></div>
   </div></div>
 <!-- Nội dung Admin Dashboard (Chỉ hiện khi đã đăng nhập) -->
@@ -209,31 +146,12 @@
     </div></div>
   <!-- Top KPI Ribbon -->
   <div class="stat-ribbon" id="topStatRibbon">
-    <div class="stat-card" style="border-left: 3px solid var(--accent)">
-      <div class="stat-lbl">💰 Doanh Thu Thực Nhận</div>
-      <div class="stat-val" id="topRevTotal">--</div>
-      <div class="stat-sub">Hôm nay: <b id="topRevToday">--</b> • 7 ngày: <b id="topRev7d">--</b></div>
-    </div>
-    <div class="stat-card" style="border-left: 3px solid #0284c7">
-      <div class="stat-lbl">👥 Khách Đã Mua (VietQR)</div>
-      <div class="stat-val" id="topPaidCount">--</div>
-      <div class="stat-sub">Đơn trả tiền: <b id="topPaidOrders">--</b> • Khoá giá: <b id="topLocksCount">--</b></div>
-    </div>
-    <div class="stat-card" style="border-left: 3px solid #16a34a">
-      <div class="stat-lbl">🚗 Gói Xe (Car - Full)</div>
-      <div class="stat-val" id="topCarCount">--</div>
-      <div class="stat-sub">Đang dùng: <b id="topCarActive">--</b> • Vĩnh viễn: <b id="topCarLife">--</b></div>
-    </div>
-    <div class="stat-card" style="border-left: 3px solid #9333ea">
-      <div class="stat-lbl">💻 Gói Chỉ PCConnect</div>
-      <div class="stat-val" id="topPcCount">--</div>
-      <div class="stat-sub">Đang dùng: <b id="topPcActive">--</b> • Hết hạn: <b id="topPcExp">--</b></div>
-    </div>
-    <div class="stat-card" style="border-left: 3px solid #d97706">
-      <div class="stat-lbl">📱 Thiết Bị Hoạt Động</div>
-      <div class="stat-val" id="topDevCount">--</div>
-      <div class="stat-sub">Active 7d: <b id="topDev7d">--</b> (<span id="topDevBreakdown">--</span>)</div>
-    </div></div>
+    <div class="stat-card" style="border-left: 3px solid var(--accent)"><div class="stat-lbl">💰 Doanh Thu Thực Nhận</div><div class="stat-val" id="topRevTotal">--</div><div class="stat-sub">Hôm nay: <b id="topRevToday">--</b> • 7 ngày: <b id="topRev7d">--</b></div></div>
+    <div class="stat-card" style="border-left: 3px solid #0284c7"><div class="stat-lbl">👥 Khách Đã Mua (VietQR)</div><div class="stat-val" id="topPaidCount">--</div><div class="stat-sub">Đơn trả tiền: <b id="topPaidOrders">--</b> • Khoá giá: <b id="topLocksCount">--</b></div></div>
+    <div class="stat-card" style="border-left: 3px solid #16a34a"><div class="stat-lbl">🚗 Gói Xe (Car - Full)</div><div class="stat-val" id="topCarCount">--</div><div class="stat-sub">Đang dùng: <b id="topCarActive">--</b> • Vĩnh viễn: <b id="topCarLife">--</b></div></div>
+    <div class="stat-card" style="border-left: 3px solid #9333ea"><div class="stat-lbl">💻 Gói Chỉ PCConnect</div><div class="stat-val" id="topPcCount">--</div><div class="stat-sub">Đang dùng: <b id="topPcActive">--</b> • Hết hạn: <b id="topPcExp">--</b></div></div>
+    <div class="stat-card" style="border-left: 3px solid #d97706"><div class="stat-lbl">📱 Thiết Bị Hoạt Động</div><div class="stat-val" id="topDevCount">--</div><div class="stat-sub">Active 7d: <b id="topDev7d">--</b> (<span id="topDevBreakdown">--</span>)</div></div>
+  </div>
   <!-- Tab Navigation -->
   <div class="tab-nav">
     <button class="tab-btn active" id="tabBtnLicenses" onclick="switchTab('licenses')">🔑 Quản lý Mã kích hoạt</button>
@@ -323,28 +241,14 @@
               <button type="button" class="btn-trial-pill" id="pillDays14" onclick="setTrialDays(14)">14 ngày</button>
             </div></div>
           <div style="background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-radius:6px; padding:6px 10px; font-size:11px; line-height:1.5; color:var(--text);">
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:4px;">
-              <div>🔒 <b>Cài nhanh:</b> Bị khoá (Toast cảnh báo)</div>
-              <div>🚗 <b>Thiết bị:</b> Chỉ 1 Xe (0 PCConnect)</div>
-              <div>⏱️ <b>Offline:</b> Tối đa 24 giờ không mạng</div>
-              <div>♻️ <b>Hết hạn:</b> Tự hoàn nguyên hệ thống</div>
-            </div></div></div>
-        <div style="grid-column: 1 / -1; margin-top:4px;">
-          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px;">
-            📝 Phần 1: Thông tin khách hàng (Bắt buộc nhập)
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:4px;"><div>🔒 <b>Cài nhanh:</b> Bị khoá (Toast cảnh báo)</div><div>🚗 <b>Thiết bị:</b> Chỉ 1 Xe (0 PCConnect)</div><div>⏱️ <b>Offline:</b> Tối đa 24 giờ không mạng</div><div>♻️ <b>Hết hạn:</b> Tự hoàn nguyên hệ thống</div></div>
           </div></div>
-        <div class="field-card" id="fcOwnerName">
-          <div class="field-card-head"><label class="field-card-label">Tên chủ mã *</label><span class="badge-field-req">✏️ Cần nhập</span></div>
-          <input id="ownerName" placeholder="VD: Trần Đạt">
+        <div style="grid-column: 1 / -1; margin-top:4px;">
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px;">📝 Phần 1: Thông tin khách hàng (Bắt buộc nhập)</div>
         </div>
-        <div class="field-card" id="fcOwnerPhone">
-          <div class="field-card-head"><label class="field-card-label">Số điện thoại (Zalo) *</label><span class="badge-field-req">✏️ Cần nhập</span></div>
-          <input id="ownerPhone" placeholder="VD: 0988123456">
-        </div>
-        <div class="field-card" id="fcNote">
-          <div class="field-card-head"><label class="field-card-label">Ghi chú</label><span class="badge-field-opt">Tuỳ chọn</span></div>
-          <input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345">
-        </div>
+        <div class="field-card" id="fcOwnerName"><div class="field-card-head"><label class="field-card-label">Tên chủ mã *</label><span class="badge-field-req">✏️ Cần nhập</span></div><input id="ownerName" placeholder="VD: Trần Đạt"></div>
+        <div class="field-card" id="fcOwnerPhone"><div class="field-card-head"><label class="field-card-label">Số điện thoại (Zalo) *</label><span class="badge-field-req">✏️ Cần nhập</span></div><input id="ownerPhone" placeholder="VD: 0988123456"></div>
+        <div class="field-card" id="fcNote"><div class="field-card-head"><label class="field-card-label">Ghi chú</label><span class="badge-field-opt">Tuỳ chọn</span></div><input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345"></div>
         <!-- PHẦN 2: THIẾT LẬP KỸ THUẬT & HẠN MỨC (REFINED UI) -->
         <div style="grid-column: 1 / -1; margin-top:10px; background:var(--panel2); border:1.5px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px;">
@@ -407,26 +311,21 @@
           <h2 style="margin:0; font-size:15px; color:var(--text)">2. Danh sách khách hàng & mã <span id="totalCount" class="mono" style="color:var(--muted)"></span></h2>
         </div>
         <div class="search-box">
-          <input id="searchInput" placeholder="🔍 Tìm theo tên, SĐT, mã EX2, ghi chú..." oninput="onSearchChange()">
+          <input id="searchInput" placeholder="🔍 Tìm theo tên, SĐT, xe, ghi chú..." oninput="onSearchChange()">
+        </div>
+        <div class="search-box" style="max-width:220px">
+          <input id="filterCodeInput" placeholder="🔑 Lọc mã code (EX2-...)..." oninput="onCodeFilterChange()">
         </div>
         <div class="filters">
-          <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button>
-          <button class="ghost small" data-filter="lifetime" onclick="setFilter('lifetime', this)">👑 Vĩnh viễn</button>
-          <button class="ghost small" data-filter="yearly" onclick="setFilter('yearly', this)">📅 1 Năm</button>
-          <button class="ghost small" data-filter="quarter" onclick="setFilter('quarter', this)">⚡ 3 Tháng</button>
-          <button class="ghost small" data-filter="combo_icar" onclick="setFilter('combo_icar', this)">📦 Combo 4G ICAR</button>
-          <button class="ghost small" data-filter="icar_discount" onclick="setFilter('icar_discount', this)">💎 Ưu đãi ICAR</button>
-          <button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button>
-          <button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button>
-          <button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button>
-          <button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button>
-          <button class="ghost small" data-filter="dev" onclick="setFilter('dev', this)">🛠️ Dev</button>
-          <button class="ghost small" data-filter="active" onclick="setFilter('active', this)">🟢 Đang dùng</button>
-          <button class="ghost small" data-filter="revoked" onclick="setFilter('revoked', this)">🔴 Đã thu hồi</button>
-          <button class="ghost small danger" onclick="cleanupRevokedOrExpiredKeys()" title="Xoá vĩnh viễn các mã đã thu hồi hoặc dùng thử hết hạn">🧹 Dọn mã thu hồi</button>
-          <button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Đơn</button>
-          <button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
+          <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button><button class="ghost small" data-filter="lifetime" onclick="setFilter('lifetime', this)">👑 Vĩnh viễn</button><button class="ghost small" data-filter="yearly" onclick="setFilter('yearly', this)">📅 1 Năm</button><button class="ghost small" data-filter="quarter" onclick="setFilter('quarter', this)">⚡ 3 Tháng</button><button class="ghost small" data-filter="combo_icar" onclick="setFilter('combo_icar', this)">📦 Combo 4G ICAR</button><button class="ghost small" data-filter="icar_discount" onclick="setFilter('icar_discount', this)">💎 Ưu đãi ICAR</button><button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button><button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button><button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button><button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button><button class="ghost small" data-filter="dev" onclick="setFilter('dev', this)">🛠️ Dev</button><button class="ghost small" data-filter="active" onclick="setFilter('active', this)">🟢 Đang dùng</button><button class="ghost small" data-filter="revoked" onclick="setFilter('revoked', this)">🔴 Đã thu hồi</button><button class="ghost small danger" onclick="cleanupRevokedOrExpiredKeys()" title="Xoá vĩnh viễn các mã đã thu hồi hoặc dùng thử hết hạn">🧹 Dọn mã thu hồi</button><button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Đơn</button><button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
         </div></div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; background:var(--panel2); padding:8px 12px; border-radius:8px; border:1px solid var(--border)">
+        <span style="font-size:12px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:4px">🕒 Lọc ngày giờ:</span>
+        <select id="dateFilterTarget" onchange="renderTable()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-weight:600"><option value="created_at" selected>Ngày tạo mã</option><option value="expires_at">Hạn dùng</option></select>
+        <label style="font-size:11px; color:var(--muted); margin:0; display:flex; align-items:center; gap:4px">Từ: <input id="filterFromDate" type="datetime-local" onchange="onDateTimeFilterChange()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-family:var(--mono)"></label>
+        <label style="font-size:11px; color:var(--muted); margin:0; display:flex; align-items:center; gap:4px">Đến: <input id="filterToDate" type="datetime-local" onchange="onDateTimeFilterChange()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-family:var(--mono)"></label>
+        <div style="display:flex; gap:4px; flex-wrap:wrap"><button class="ghost small" type="button" onclick="setDateFilterPreset('today')">Hôm nay</button><button class="ghost small" type="button" onclick="setDateFilterPreset('yesterday')">Hôm qua</button><button class="ghost small" type="button" onclick="setDateFilterPreset('7d')">7 ngày</button><button class="ghost small" type="button" onclick="setDateFilterPreset('30d')">30 ngày</button><button class="ghost small" type="button" onclick="setDateFilterPreset('month')">Tháng này</button><button class="ghost small danger" type="button" onclick="clearDateTimeFilter()" title="Xoá lọc ngày">❌ Xoá lọc ngày</button></div>
+      </div>
       <div id="listMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="mainTable">
@@ -704,23 +603,21 @@
           <div class="hint">Đơn hàng được sinh khi khách chọn gói trên màn hình xe. Quét QR thanh toán sẽ tự động cấp mã.</div>
         </div>
         <div class="search-box">
-          <input id="salesOrderSearchInput" placeholder="🔍 Tìm theo mã đơn EX2, SĐT, tên..." oninput="onSalesOrderSearchChange()">
+          <input id="salesOrderSearchInput" placeholder="🔍 Tìm theo SĐT, tên, gói, ghi chú..." oninput="onSalesOrderSearchChange()">
+        </div>
+        <div class="search-box" style="max-width:220px">
+          <input id="salesOrderCodeInput" placeholder="🔑 Lọc mã đơn / mã code..." oninput="onSalesOrderCodeChange()">
         </div>
         <div class="filters">
-          <button class="ghost small active" data-orderfilter="all" onclick="setOrderFilter('all', this)">Tất cả</button>
-          <button class="ghost small" data-orderfilter="quarter" onclick="setOrderFilter('quarter', this)">⚡ 3 Tháng</button>
-          <button class="ghost small" data-orderfilter="yearly" onclick="setOrderFilter('yearly', this)">📅 12 Tháng</button>
-          <button class="ghost small" data-orderfilter="lifetime" onclick="setOrderFilter('lifetime', this)">👑 Trọn đời</button>
-          <button class="ghost small" data-orderfilter="combo_icar" onclick="setOrderFilter('combo_icar', this)">🎁 Combo ICAR</button>
-          <button class="ghost small" data-orderfilter="icar_discount" onclick="setOrderFilter('icar_discount', this)">🏷️ Giảm ICAR</button>
-          <button class="ghost small" data-orderfilter="pending" onclick="setOrderFilter('pending', this)">⏳ Chờ thanh toán</button>
-          <button class="ghost small" data-orderfilter="paid" onclick="setOrderFilter('paid', this)">🟢 Đã thanh toán</button>
-          <button class="ghost small" data-orderfilter="payment_mismatch" onclick="setOrderFilter('payment_mismatch', this)">⚠️ Lệch tiền</button>
-          <button class="ghost small" data-orderfilter="cancelled" onclick="setOrderFilter('cancelled', this)">⚪ Đã huỷ/Hết hạn</button>
-          <button class="ghost small" data-orderfilter="refunded" onclick="setOrderFilter('refunded', this)">🔴 Đã hoàn tiền</button>
-          <button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Khách Car</button>
-          <button class="ghost small" onclick="loadSalesData()">🔄 Tải lại</button>
+          <button class="ghost small active" data-orderfilter="all" onclick="setOrderFilter('all', this)">Tất cả</button><button class="ghost small" data-orderfilter="quarter" onclick="setOrderFilter('quarter', this)">⚡ 3 Tháng</button><button class="ghost small" data-orderfilter="yearly" onclick="setOrderFilter('yearly', this)">📅 12 Tháng</button><button class="ghost small" data-orderfilter="lifetime" onclick="setOrderFilter('lifetime', this)">👑 Trọn đời</button><button class="ghost small" data-orderfilter="combo_icar" onclick="setOrderFilter('combo_icar', this)">🎁 Combo ICAR</button><button class="ghost small" data-orderfilter="icar_discount" onclick="setOrderFilter('icar_discount', this)">🏷️ Giảm ICAR</button><button class="ghost small" data-orderfilter="pending" onclick="setOrderFilter('pending', this)">⏳ Chờ thanh toán</button><button class="ghost small" data-orderfilter="paid" onclick="setOrderFilter('paid', this)">🟢 Đã thanh toán</button><button class="ghost small" data-orderfilter="payment_mismatch" onclick="setOrderFilter('payment_mismatch', this)">⚠️ Lệch tiền</button><button class="ghost small" data-orderfilter="cancelled" onclick="setOrderFilter('cancelled', this)">⚪ Đã huỷ/Hết hạn</button><button class="ghost small" data-orderfilter="refunded" onclick="setOrderFilter('refunded', this)">🔴 Đã hoàn tiền</button><button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Khách Car</button><button class="ghost small" onclick="loadSalesData()">🔄 Tải lại</button>
         </div></div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; background:var(--panel2); padding:8px 12px; border-radius:8px; border:1px solid var(--border)">
+        <span style="font-size:12px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:4px">🕒 Lọc ngày giờ:</span>
+        <select id="salesOrderDateFilterTarget" onchange="renderSalesOrdersTable()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-weight:600"><option value="created_at" selected>Ngày tạo đơn</option><option value="paid_at">Ngày thanh toán</option></select>
+        <label style="font-size:11px; color:var(--muted); margin:0; display:flex; align-items:center; gap:4px">Từ: <input id="salesOrderFromDate" type="datetime-local" onchange="onSalesOrderDateTimeChange()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-family:var(--mono)"></label>
+        <label style="font-size:11px; color:var(--muted); margin:0; display:flex; align-items:center; gap:4px">Đến: <input id="salesOrderToDate" type="datetime-local" onchange="onSalesOrderDateTimeChange()" style="font-size:12px; padding:4px 6px; border-radius:6px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-family:var(--mono)"></label>
+        <div style="display:flex; gap:4px; flex-wrap:wrap"><button class="ghost small" type="button" onclick="setSalesOrderDatePreset('today')">Hôm nay</button><button class="ghost small" type="button" onclick="setSalesOrderDatePreset('yesterday')">Hôm qua</button><button class="ghost small" type="button" onclick="setSalesOrderDatePreset('7d')">7 ngày</button><button class="ghost small" type="button" onclick="setSalesOrderDatePreset('30d')">30 ngày</button><button class="ghost small" type="button" onclick="setSalesOrderDatePreset('month')">Tháng này</button><button class="ghost small danger" type="button" onclick="clearSalesOrderDateTimeFilter()" title="Xoá lọc ngày">❌ Xoá lọc ngày</button></div>
+      </div>
       <div id="salesOrdersMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:8px">
         <table id="salesOrdersTable">
@@ -2164,7 +2061,34 @@ async function api(path, opts = {}) {
 window._allRows = [];
 window._editData = {};
 let currentFilter = "all", selectedFilters = new Set(["all"]);
-let searchKeyword = "";
+let searchKeyword = "", filterCodeKeyword = "", filterFromTime = null, filterToTime = null;
+function onCodeFilterChange() { filterCodeKeyword = ($("filterCodeInput") ? $("filterCodeInput").value : "").trim().toLowerCase(); renderTable(); }
+function onDateTimeFilterChange() {
+  const fVal = $("filterFromDate") ? $("filterFromDate").value : "", tVal = $("filterToDate") ? $("filterToDate").value : "";
+  filterFromTime = fVal ? new Date(fVal).getTime() : null; filterToTime = tVal ? (new Date(tVal).getTime() + (tVal.length <= 16 ? 59999 : 0)) : null;
+  renderTable();
+}
+function toDatetimeLocalString(d) {
+  if (!d || isNaN(d.getTime())) return "";
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function setDateFilterPreset(preset) {
+  const now = new Date(); let start = null, end = null;
+  if (preset === 'today') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === 'yesterday') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59); }
+  else if (preset === '7d' || preset === '7days') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === '30d' || preset === '30days') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === 'month') { start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59); }
+  if ($("filterFromDate")) $("filterFromDate").value = toDatetimeLocalString(start);
+  if ($("filterToDate")) $("filterToDate").value = toDatetimeLocalString(end);
+  onDateTimeFilterChange();
+}
+function clearDateTimeFilter() {
+  if ($("filterFromDate")) $("filterFromDate").value = "";
+  if ($("filterToDate")) $("filterToDate").value = "";
+  filterFromTime = null; filterToTime = null; renderTable();
+}
 let expiryTouched = false;
 function markExpiryTouched() { expiryTouched = true; syncCreateExpiryUI(); }
 function setCreateRoleDefaults() {
@@ -2559,7 +2483,8 @@ function rowHtml(r) {
     ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button>' +
       '<button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>'
     : '';
-  return '<td class="mono nowrap"><b>' + esc(r.key) + '</b></td>' +
+  const createdStr = r.created_at ? '<div class="hint mono" style="font-size:11px; margin-top:2px;" title="Ngày tạo: ' + esc(r.created_at) + '">🕒 ' + formatIsoTime(r.created_at) + '</div>' : '';
+  return '<td class="mono nowrap"><b>' + esc(r.key) + '</b>' + createdStr + '</td>' +
     '<td><b>' + esc(r.owner_name) + '</b>' + adminTag + '</td>' +
     '<td class="mono nowrap">' + esc(r.owner_phone) + '</td>' +
     '<td class="nowrap">' + roleBadge(r.role, r.is_trial) + '</td>' +
@@ -2589,6 +2514,22 @@ function renderTable() {
       const matchPkg = selPkgs.length === 0 || selPkgs.includes(pkgId), matchRole = selRoles.length === 0 || selRoles.includes(role);
       const matchStatus = selStatuses.length === 0 || (selStatuses.includes("active") && r.active) || (selStatuses.includes("revoked") && !r.active);
       return matchPkg && matchRole && matchStatus;
+    });
+  }
+  if (filterCodeKeyword) {
+    const ckw = filterCodeKeyword;
+    filtered = filtered.filter(r => (r.key || "").toLowerCase().includes(ckw));
+  }
+  if (filterFromTime || filterToTime) {
+    const targetField = ($("dateFilterTarget") ? $("dateFilterTarget").value : "created_at");
+    filtered = filtered.filter(r => {
+      const raw = r[targetField];
+      if (!raw) return false;
+      const t = new Date(raw).getTime();
+      if (isNaN(t)) return false;
+      if (filterFromTime && t < filterFromTime) return false;
+      if (filterToTime && t > filterToTime) return false;
+      return true;
     });
   }
   if (searchKeyword) {
@@ -4737,9 +4678,35 @@ async function loadSalesData() {
     showMsg(orderMsg, "err", "Lỗi tải dữ liệu bán hàng: " + err.message);
   }
 }
+let salesOrderCodeKeyword = "", salesOrderFromTime = null, salesOrderToTime = null;
 function onSalesOrderSearchChange() {
   salesOrderSearchKeyword = $("salesOrderSearchInput").value.trim().toLowerCase();
   renderSalesOrdersTable();
+}
+function onSalesOrderCodeChange() {
+  salesOrderCodeKeyword = ($("salesOrderCodeInput") ? $("salesOrderCodeInput").value : "").trim().toLowerCase();
+  renderSalesOrdersTable();
+}
+function onSalesOrderDateTimeChange() {
+  const fVal = $("salesOrderFromDate") ? $("salesOrderFromDate").value : "", tVal = $("salesOrderToDate") ? $("salesOrderToDate").value : "";
+  salesOrderFromTime = fVal ? new Date(fVal).getTime() : null; salesOrderToTime = tVal ? (new Date(tVal).getTime() + (tVal.length <= 16 ? 59999 : 0)) : null;
+  renderSalesOrdersTable();
+}
+function setSalesOrderDatePreset(preset) {
+  const now = new Date(); let start = null, end = null;
+  if (preset === 'today') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === 'yesterday') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 23, 59, 59); }
+  else if (preset === '7d' || preset === '7days') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === '30d' || preset === '30days') { start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59); }
+  else if (preset === 'month') { start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0); end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59); }
+  if ($("salesOrderFromDate")) $("salesOrderFromDate").value = toDatetimeLocalString(start);
+  if ($("salesOrderToDate")) $("salesOrderToDate").value = toDatetimeLocalString(end);
+  onSalesOrderDateTimeChange();
+}
+function clearSalesOrderDateTimeFilter() {
+  if ($("salesOrderFromDate")) $("salesOrderFromDate").value = "";
+  if ($("salesOrderToDate")) $("salesOrderToDate").value = "";
+  salesOrderFromTime = null; salesOrderToTime = null; renderSalesOrdersTable();
 }
 function setOrderFilter(filter, btn) {
   salesCurrentOrderFilter = filter;
@@ -4770,6 +4737,25 @@ function renderSalesOrdersTable() {
     return o.plan_id === "lifetime" ? Infinity : (o.plan_id === "quarter" ? base + 90 * 86400000 : base + 365 * 86400000);
   };
   filtered.sort((a, b) => (getOrderTime(b) !== getOrderTime(a) ? getOrderTime(b) - getOrderTime(a) : (b.created_at ? new Date(b.created_at).getTime() : 0) - (a.created_at ? new Date(a.created_at).getTime() : 0)));
+  if (salesOrderCodeKeyword) {
+    const ckw = salesOrderCodeKeyword;
+    filtered = filtered.filter(o =>
+      (o.order_code || "").toLowerCase().includes(ckw) ||
+      (o.license_key || "").toLowerCase().includes(ckw)
+    );
+  }
+  if (salesOrderFromTime || salesOrderToTime) {
+    const targetField = ($("salesOrderDateFilterTarget") ? $("salesOrderDateFilterTarget").value : "created_at");
+    filtered = filtered.filter(o => {
+      const raw = o[targetField];
+      if (!raw) return false;
+      const t = new Date(raw).getTime();
+      if (isNaN(t)) return false;
+      if (salesOrderFromTime && t < salesOrderFromTime) return false;
+      if (salesOrderToTime && t > salesOrderToTime) return false;
+      return true;
+    });
+  }
   if (salesOrderSearchKeyword) {
     const kw = salesOrderSearchKeyword;
     filtered = filtered.filter(o =>
