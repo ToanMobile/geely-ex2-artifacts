@@ -3779,7 +3779,7 @@ function formatVndNumber(n) {
 function parseVndNumber(val) { if (typeof val === "number") return Math.round(val); return parseInt(String(val || "").replace(/\D/g, ""), 10) || 0; }
 function formatVndDots(val) { const num = parseVndNumber(val); return num ? num.toLocaleString("vi-VN") : ""; }
 function onPriceInputChange(input) { const num = parseVndNumber(input.value); input.value = num ? num.toLocaleString("vi-VN") : ""; }
-function formatIsoTime(iso) { if (!iso) return "-"; try { return new Date(iso).toLocaleString("vi-VN", { hour12: false }); } catch (e) { return iso; } }
+function formatIsoTime(iso) { if (!iso) return "-"; try { const d = new Date(iso); return isNaN(d.getTime()) ? esc(iso) : d.toLocaleString("vi-VN", { hour12: false }); } catch (e) { return esc(iso); } }
 function updateSalesPricePreview() {
   const life = parseVndNumber($("salesLifetimePrice") ? $("salesLifetimePrice").value : 2950000);
   const orig = parseVndNumber($("salesYearlyPrice") ? $("salesYearlyPrice").value : 1950000);
@@ -4629,7 +4629,8 @@ function bridgeCarUsersToOrders() {
       const pkg = getLicensePackageInfo(cu);
       const code = "EX2-" + (cu.key ? cu.key.replace(/[^A-Z0-9]/gi, "").slice(-6).toUpperCase() : "AUTO");
       const orderStatus = cu.active === false ? "cancelled" : "paid";
-      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6070000 : 4290000) : 2950000))), status: orderStatus, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
+      const orderPaidAt = orderStatus === "paid" ? (cu.created_at || new Date().toISOString()) : null;
+      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6070000 : 4290000) : 2950000))), status: orderStatus, paid_at: orderPaidAt, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
       existing.add(k);
     }
   });
