@@ -358,6 +358,8 @@
         </div>
         <div class="filters">
           <button class="ghost small active" data-qifilter="all" onclick="setQiFilter('all', this)">Tất cả</button>
+          <button class="ghost small" data-qifilter="apk" onclick="setQiFilter('apk', this)">📦 APK</button>
+          <button class="ghost small" data-qifilter="file" onclick="setQiFilter('file', this)">📁 Tệp tin</button>
           <button class="ghost small" data-qifilter="car" onclick="setQiFilter('car', this)">🚗 Xe</button>
           <button class="ghost small" data-qifilter="pc" onclick="setQiFilter('pc', this)">💻 PC</button>
           <button class="ghost small" data-qifilter="phone" onclick="setQiFilter('phone', this)">📱 Phone</button>
@@ -366,7 +368,7 @@
       <div id="qiStatusMsg" class="msg"></div>
       <div style="overflow-x:auto; margin-top:12px">
         <table id="qiTable">
-          <thead><tr><th style="width:28px" title="Kéo-thả để đổi vị trí"></th><th style="width:64px; text-align:center" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th><th>Tên hiển thị</th><th>Package Name (ID)</th><th>Link tải APK</th><th>Cài trước (Prereq)</th><th>Thiết bị (Targets)</th><th style="text-align:right">Thao tác</th></tr></thead>
+          <thead><tr><th style="width:28px" title="Kéo-thả để đổi vị trí"></th><th style="width:64px; text-align:center" title="Gõ số vị trí rồi Enter để nhảy tới đó">#</th><th>Tên hiển thị</th><th>Package Name (ID)</th><th>Link tải (APK / File)</th><th>Cài trước (Prereq)</th><th>Thiết bị (Targets)</th><th style="text-align:right">Thao tác</th></tr></thead>
           <tbody></tbody>
         </table></div></div></div>
   <!-- ================= TAB 3: BÁN HÀNG & GIÁ (VIETQR) ================= -->
@@ -1347,31 +1349,38 @@
       <h3 id="qiModalTitle">Thêm ứng dụng Cài Nhanh</h3>
       <div class="hint">Ứng dụng sẽ xuất hiện trên màn Cài nhanh của xe, điện thoại và máy tính.</div>
       <div class="grid" style="grid-template-columns: 1fr 1fr">
-        <div style="grid-column: 1 / -1; margin-bottom: 2px">
+        <div style="grid-column: 1 / -1; margin-bottom: 6px; padding: 10px 12px; background: var(--keybox-bg); border-radius: 8px; border: 1px solid var(--border)">
+          <label style="font-weight:600; margin-bottom:6px; display:block; color:var(--text)">Loại mục *</label>
+          <div style="display:flex; gap:24px; align-items:center; flex-wrap:wrap">
+            <label class="chk" style="font-weight:600; cursor:pointer"><input type="radio" name="qiType" id="qiTypeApk" value="apk" checked onchange="onQiTypeChange()"> 📦 Ứng dụng Android (APK / XAPK)</label>
+            <label class="chk" style="font-weight:600; cursor:pointer"><input type="radio" name="qiType" id="qiTypeFile" value="file" onchange="onQiTypeChange()"> 📁 Tệp dữ liệu / Media / File tải về</label>
+          </div>
+        </div>
+        <div id="qiApkDropzoneWrap" style="grid-column: 1 / -1; margin-bottom: 2px">
           <div id="qiApkDropzone" style="border: 2px dashed var(--accent); border-radius: 8px; padding: 12px; text-align: center; background: var(--keybox-bg); cursor: pointer; transition: all 0.2s" onclick="$('qiApkFileInput').click()">
             <input type="file" id="qiApkFileInput" accept=".apk,.xapk,.apks,.apkm,.aab,.zip" style="display:none" onchange="if(this.files[0])handleQiApkFileSelect(this.files[0])">
             <div style="font-weight: 600; font-size: 13px; color: var(--accent); display: flex; align-items: center; justify-content: center; gap: 6px"><span>⚡ Kéo thả file APK / XAPK vào đây hoặc Bấm để chọn file (Tự động điền Package & Version)</span>
             </div>
             <div id="qiApkParseStatus" class="hint" style="margin-top: 3px; font-size: 12px">Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%</div>
           </div></div>
-        <div style="grid-column: 1 / -1"><label>Tên hiển thị trên menu *</label>
+        <div style="grid-column: 1 / -1"><label id="qiNameLabel">Tên hiển thị trên menu *</label>
           <input id="qiName" placeholder="VD: VietMap Live, YouTube Morphe...">
         </div>
-        <div style="grid-column: 1 / -1"><label>Link tải APK (URL trực tiếp hoặc Google Drive) *</label>
+        <div style="grid-column: 1 / -1"><label id="qiUrlLabel">Link tải APK (URL trực tiếp hoặc Google Drive) *</label>
           <input id="qiUrl" placeholder="https://drive.google.com/file/d/... hoặc https://.../app.apk">
         </div>
-        <div><label>Package Name (Android ID) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+        <div id="qiPackageWrap"><label>Package Name (Android ID) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
           <input id="qiPackage" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
-        <div><label>Cần cài trước (Requires First)</label>
+        <div id="qiRequiresFirstWrap"><label>Cần cài trước (Requires First)</label>
           <select id="qiRequiresFirst">
             <option value="">-- Không yêu cầu (Mặc định) --</option>
           </select>
         </div>
-        <div><label>Version Name (Phiên bản) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+        <div id="qiVersionNameWrap"><label>Version Name (Phiên bản) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
           <input id="qiVersionName" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
-        <div><label>Version Code (Mã build số) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
+        <div id="qiVersionCodeWrap"><label>Version Code (Mã build số) <span class="hint" style="color:var(--accent); font-weight:normal">⚡ Tự điền từ APK</span></label>
           <input id="qiVersionCode" type="number" placeholder="Tự động điền khi kéo thả file APK ở trên">
         </div>
         <div style="grid-column: 1 / -1"><label>Phạm vi hiển thị (Targets)</label>
@@ -1379,7 +1388,8 @@
             <label class="chk"><input type="checkbox" id="qiTargetPc" checked> 💻 Máy tính (PCConnect)</label>
             <label class="chk"><input type="checkbox" id="qiTargetPhone" checked> 📱 Điện thoại (PhoneConnect)</label>
           </div></div>
-        <div style="grid-column: 1 / -1; display:flex; gap:20px; margin-top:6px; flex-wrap:wrap"><label class="chk"><input type="checkbox" id="qiForceLandscape"> 🔄 Khóa xoay ngang (forceLandscape - cho app dọc như TikTok)</label>
+        <div style="grid-column: 1 / -1; display:flex; gap:20px; margin-top:6px; flex-wrap:wrap">
+          <span id="qiForceLandscapeWrap"><label class="chk"><input type="checkbox" id="qiForceLandscape"> 🔄 Khóa xoay ngang (forceLandscape - cho app dọc như TikTok)</label></span>
           <label class="chk"><input type="checkbox" id="qiHidden"> 👁️ Tạm ẩn (hidden - không hiện trên menu nhưng giữ link)</label>
         </div></div>
       <div class="actions">
@@ -1487,9 +1497,8 @@
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px"><label style="margin:0">Mã PIN đăng nhập (6 số) *</label>
             <div style="display:flex; gap:6px; font-size:11px"><span style="color:#2563eb; cursor:pointer; user-select:none" onclick="toggleModalPinVisibility()" id="btnToggleModalPin">👁️ Xem</span>
               <span style="color:#10b981; cursor:pointer; user-select:none" onclick="generateRandomModalPin()">🎲 Ngẫu nhiên</span>
-              <span style="color:#64748b; cursor:pointer; user-select:none" onclick="$('resellerModalPin').value='123456'">🔁 123456</span>
             </div></div>
-          <input id="resellerModalPin" type="text" placeholder="Nhập mã PIN 6 số (VD: 123456)" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-weight:700; letter-spacing:2px">
+          <input id="resellerModalPin" type="text" placeholder="Để trống = hệ thống tự sinh PIN ngẫu nhiên" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-weight:700; letter-spacing:2px">
         </div>
         <div><label>Hạn mức tín dụng âm (Credit Limit VND)</label>
           <input id="resellerModalCredit" type="number" value="0" placeholder="0 (Không cho âm)">
@@ -1540,9 +1549,8 @@
       <div class="hint" id="resetPinResellerDesc">Cấp lại mã PIN mới cho thợ khi quên hoặc cần đổi bảo mật.</div>
       <input type="hidden" id="resetPinResellerId">
       <div style="margin:16px 0"><label>Mã PIN mới (chính xác 6 chữ số) *</label>
-        <div style="display:flex; gap:6px; align-items:center"><input id="resetPinNewValue" type="text" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-size:20px; font-weight:700; letter-spacing:4px; text-align:center" placeholder="123456" onkeydown="if(event.key==='Enter') submitResetPin()">
+        <div style="display:flex; gap:6px; align-items:center"><input id="resetPinNewValue" type="text" maxlength="6" inputmode="numeric" pattern="[0-9]*" class="mono" style="font-size:20px; font-weight:700; letter-spacing:4px; text-align:center" placeholder="6 chữ số" onkeydown="if(event.key==='Enter') submitResetPin()">
           <button type="button" class="small ghost" onclick="generateRandomResetPin()" title="Sinh mã PIN ngẫu nhiên">🎲 Ngẫu nhiên</button>
-          <button type="button" class="small ghost" onclick="$('resetPinNewValue').value='123456'" title="Đặt về 123456">🔁 123456</button>
         </div></div>
       <div class="hint" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:8px 10px; color:#1e40af; font-size:12px; margin-bottom:14px">
         ℹ️ Đặt lại PIN sẽ đồng thời xóa mọi cảnh báo thử sai (failed attempts) và mở khóa nếu tài khoản đang bị tạm khóa 15 phút.
@@ -3161,7 +3169,11 @@ function renderQuickInstallTable() {
   $("qiTotalCount").textContent = "(" + apps.length + " ứng dụng)";
   let filteredIndices = apps.map((app, idx) => ({ app, idx }));
   // 1. Lọc theo filter
-  if (qiCurrentFilter === "car") {
+  if (qiCurrentFilter === "apk") {
+    filteredIndices = filteredIndices.filter(item => !item.app.type || item.app.type === "apk");
+  } else if (qiCurrentFilter === "file") {
+    filteredIndices = filteredIndices.filter(item => item.app.type === "file");
+  } else if (qiCurrentFilter === "car") {
     filteredIndices = filteredIndices.filter(item => !item.app.targets || !item.app.targets.length || item.app.targets.includes("car"));
   } else if (qiCurrentFilter === "pc") {
     filteredIndices = filteredIndices.filter(item => !item.app.targets || !item.app.targets.length || item.app.targets.includes("pc"));
@@ -3186,6 +3198,10 @@ function renderQuickInstallTable() {
   filteredIndices.forEach(({ app, idx }) => {
     const tr = document.createElement("tr");
     tr.dataset.index = idx;
+    const isFile = app.type === "file";
+    const typeBadge = isFile
+      ? '<span class="tag file" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px; font-weight:600; margin-right:4px">📁 Tệp</span>'
+      : '<span class="tag apk" style="font-size:11px; padding:1px 5px; background:rgba(76,175,80,0.15); color:#4caf50; border-radius:4px; font-weight:600; margin-right:4px">📦 APK</span>';
     // Targets badge
     let targetsBadge = "";
     const targets = app.targets || [];
@@ -3212,10 +3228,13 @@ function renderQuickInstallTable() {
     let tagLink = "";
     const ghMatch = (app.url || "").match(/github\.com\/([^/]+\/[^/]+)\/releases\/download\/([^/]+)\//);
     if (ghMatch) tagLink = '<a href="https://github.com/' + esc(ghMatch[1]) + '/releases/tag/' + esc(ghMatch[2]) + '" target="_blank" draggable="false" style="color:#58a6ff; font-size:11px; font-weight:600; text-decoration:none; margin-right:6px" title="Mở trang GitHub Release Tag">🐙 Tag ' + esc(ghMatch[2]) + '</a>';
+    const pkgDisplay = isFile
+      ? (app.packageName ? esc(app.packageName) : '<span style="color:var(--muted); font-style:italic">-</span>')
+      : esc(app.packageName || '-');
     tr.innerHTML = '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
       '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
-      '<td class="nowrap"><b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
-      '<td class="mono nowrap">' + esc(app.packageName) + '</td>' +
+      '<td class="nowrap">' + typeBadge + '<b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
+      '<td class="mono nowrap">' + pkgDisplay + '</td>' +
       '<td class="url-cell" title="' + esc(app.url) + '">' + tagLink + '<a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
       '<td class="nowrap">' + prereqBadge + '</td><td>' + targetsBadge + '</td>' +
       '<td style="text-align:right; min-width:130px"><div class="actions" style="justify-content:flex-end"><button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button><button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button></div></td>';
@@ -3481,14 +3500,28 @@ function setupQiApkDropzone() {
     if (dt && dt.files && dt.files[0]) handleQiApkFileSelect(dt.files[0]);
   }, false);
 }
+function onQiTypeChange() {
+  const isFile = $("qiTypeFile") && $("qiTypeFile").checked;
+  if ($("qiApkDropzoneWrap")) $("qiApkDropzoneWrap").style.display = isFile ? "none" : "";
+  if ($("qiPackageWrap")) $("qiPackageWrap").style.display = isFile ? "none" : "";
+  if ($("qiRequiresFirstWrap")) $("qiRequiresFirstWrap").style.display = isFile ? "none" : "";
+  if ($("qiVersionNameWrap")) $("qiVersionNameWrap").style.display = isFile ? "none" : "";
+  if ($("qiVersionCodeWrap")) $("qiVersionCodeWrap").style.display = isFile ? "none" : "";
+  if ($("qiForceLandscapeWrap")) $("qiForceLandscapeWrap").style.display = isFile ? "none" : "";
+  if ($("qiUrlLabel")) $("qiUrlLabel").textContent = isFile ? "Link tải tệp tin (URL trực tiếp hoặc Google Drive) *" : "Link tải APK (URL trực tiếp hoặc Google Drive) *";
+  if ($("qiNameLabel")) $("qiNameLabel").textContent = isFile ? "Tên hiển thị tệp tin *" : "Tên hiển thị trên menu *";
+}
 function openAddQuickInstallModal() {
   window._qiEditingIndex = -1;
-  $("qiModalTitle").textContent = "Thêm ứng dụng Cài Nhanh mới";
+  $("qiModalTitle").textContent = "Thêm ứng dụng / tệp tin Cài Nhanh mới";
   $("qiName").value = "";
   $("qiUrl").value = "";
   $("qiPackage").value = "";
   $("qiVersionName").value = "";
   $("qiVersionCode").value = "";
+  if ($("qiTypeApk")) $("qiTypeApk").checked = true;
+  if ($("qiTypeFile")) $("qiTypeFile").checked = false;
+  onQiTypeChange();
   $("qiTargetCar").checked = true;
   $("qiTargetPc").checked = true;
   $("qiTargetPhone").checked = true;
@@ -3503,12 +3536,16 @@ function openAddQuickInstallModal() {
 function openEditQuickInstallModal(index) {
   window._qiEditingIndex = index;
   const item = window._qiCatalog.apps[index];
-  $("qiModalTitle").textContent = "Sửa ứng dụng: " + item.name;
+  const isFile = item.type === "file";
+  $("qiModalTitle").textContent = (isFile ? "Sửa tệp tin: " : "Sửa ứng dụng: ") + item.name;
   $("qiName").value = item.name || "";
   $("qiUrl").value = item.url || "";
   $("qiPackage").value = item.packageName || "";
   $("qiVersionName").value = item.versionName || "";
   $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
+  if ($("qiTypeFile")) $("qiTypeFile").checked = isFile;
+  if ($("qiTypeApk")) $("qiTypeApk").checked = !isFile;
+  onQiTypeChange();
   $("qiForceLandscape").checked = Boolean(item.forceLandscape);
   $("qiHidden").checked = Boolean(item.hidden);
   if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
@@ -3543,22 +3580,33 @@ function saveQiItem() {
     if (!verName) verName = tag.replace(/^v/, "");
     if (!verCode && tag.replace(/^v/, "") === "7.2.1") verCode = 255070218;
   }
+  const isFile = $("qiTypeFile") && $("qiTypeFile").checked;
   const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked;
-  if (!name || !url) { alert("Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
-  if (!/^https?:\/\//i.test(url)) { alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
+  if (isFile) {
+    if (!name || !url) { alert("Vui lòng nhập Tên tệp tin và Link tải."); return; }
+    if (!/^https?:\/\//i.test(url)) { alert("Link tải tệp tin không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
+  } else {
+    if (!name || !url) { alert("Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
+    if (!/^https?:\/\//i.test(url)) { alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
+  }
   const targets = [];
   if ($("qiTargetCar").checked) targets.push("car");
   if ($("qiTargetPc").checked) targets.push("pc");
   if ($("qiTargetPhone").checked) targets.push("phone");
   const newItem = {
     name: name,
-    url: url,
-    packageName: pkg
+    url: url
   };
-  if (verName) newItem.versionName = verName;
-  if (verCode > 0) newItem.versionCode = verCode;
-  if (prereq) newItem.requiresFirst = prereq;
-  if (forceLandscape) newItem.forceLandscape = true;
+  if (isFile) {
+    newItem.type = "file";
+    if (pkg) newItem.packageName = pkg;
+  } else {
+    newItem.packageName = pkg;
+    if (verName) newItem.versionName = verName;
+    if (verCode > 0) newItem.versionCode = verCode;
+    if (prereq) newItem.requiresFirst = prereq;
+    if (forceLandscape) newItem.forceLandscape = true;
+  }
   if (hidden) newItem.hidden = true;
   if (targets.length > 0 && targets.length < 3) {
     newItem.targets = targets;
@@ -3831,8 +3879,10 @@ function computeClientSideStats() {
   for (const o of orders) {
     const d = o.paid_at ? new Date(o.paid_at) : new Date(o.created_at);
     if (o.status === "paid") {
-      paidOrders++;
       const rawAmt = Number(o.amount || o.final_amount) || 0;
+      const isAppleOutlay = (rawAmt === 2400000 || rawAmt === 2299000 || (o.note && o.note.toLowerCase().includes("apple"))) && ((d >= new Date("2026-09-11") && d <= new Date("2026-09-14")) || (o.note && o.note.toLowerCase().includes("apple")));
+      if (isAppleOutlay || o.exclude_from_revenue) continue;
+      paidOrders++;
       const amt = (o.plan_id === "combo_icar" || o.plan_id === "icar_discount") ? Math.max(0, rawAmt - 2730000) : rawAmt;
       totalRev += amt;
       if (d >= todayStart) revToday += amt;
@@ -4057,6 +4107,8 @@ function ensureProfitSharingData() {
   if (!Array.isArray(window._profitSharingData.expenses)) {
     window._profitSharingData.expenses = [];
   }
+  const hasAppleExp = window._profitSharingData.expenses.some(e => (e.title && e.title.toLowerCase().includes("apple")) || (e.id && String(e.id).includes("apple_dev")));
+  if (!hasAppleExp) { window._profitSharingData.expenses.unshift({ id: "exp_apple_dev_2026", title: "Tài khoản Apple Developer (PhoneConnect iOS)", note: "Toàn ứng trước tiền túi mua tài khoản Apple, Đạt có nghĩa vụ hoàn trả", amount: 2400000, paid_by: "toan", is_paid: false, created_at: "2026-09-12T08:00:00.000Z" }); }
   return window._profitSharingData;
 }
 function renderProfitSharingUI(totalRevenue) {
@@ -4775,14 +4827,13 @@ function renderSalesOrdersTable() {
   }
   filtered.forEach((o, idx) => {
     const tr = document.createElement("tr");
-    let statusBadge = o.status === "pending" ? '<span class="tag admin">⏳ Chờ thanh toán</span>' : (o.status === "paid" ? '<span class="tag on">🟢 Đã thanh toán</span>' : (o.status === "payment_mismatch" ? '<span class="tag prereq">⚠️ Lệch tiền</span>' : (o.status === "expired" ? '<span class="tag hidden">⚪ Hết hạn</span>' : (o.status === "refunded" ? '<span class="tag off">🔴 Đã hoàn tiền</span>' : '<span class="tag off">⚪ Đã huỷ</span>'))));
+    const displayAmount = Number(o.amount || o.final_amount) || 0, d = o.paid_at ? new Date(o.paid_at) : new Date(o.created_at);
+    const isAppleOutlay = (displayAmount === 2400000 || displayAmount === 2299000 || (o.note && o.note.toLowerCase().includes("apple"))) && ((d >= new Date("2026-09-11") && d <= new Date("2026-09-14")) || (o.note && o.note.toLowerCase().includes("apple")));
+    let statusBadge = isAppleOutlay ? '<span class="tag admin" style="background:#fef3c7; color:#92400e; font-weight:700">🧾 Toàn ứng Apple (Đã chuyển Chi phí)</span>' : (o.status === "pending" ? '<span class="tag admin">⏳ Chờ thanh toán</span>' : (o.status === "paid" ? '<span class="tag on">🟢 Đã thanh toán</span>' : (o.status === "payment_mismatch" ? '<span class="tag prereq">⚠️ Lệch tiền</span>' : (o.status === "expired" ? '<span class="tag hidden">⚪ Hết hạn</span>' : (o.status === "refunded" ? '<span class="tag off">🔴 Đã hoàn tiền</span>' : '<span class="tag off">⚪ Đã huỷ</span>')))));
     const planBadge = o.plan_id === "quarter" ? '<span class="tag" style="background:rgba(168,85,247,0.15);color:#a855f7;border:1px solid rgba(168,85,247,0.3)">⚡ 3 Tháng</span>' : (o.plan_id === "yearly" ? '<span class="tag phone">12 Tháng</span>' : (o.plan_id === "combo_icar" ? '<span class="tag" style="background:rgba(245,158,11,0.15);color:#d97706;border:1px solid rgba(245,158,11,0.3)">🎁 Combo ICAR</span>' : (o.plan_id === "icar_discount" ? '<span class="tag" style="background:rgba(16,185,129,0.15);color:#059669;border:1px solid rgba(16,185,129,0.3)">🏷️ Giảm ICAR</span>' : '<span class="tag car">Trọn đời</span>')));
-    let actionsHtml = (o.status === "pending" || o.status === "payment_mismatch")
-      ? '<button class="small" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="confirmOrder(this.dataset.orderId, this.dataset.orderCode, this)">✅ Duyệt</button> <button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="cancelOrder(this.dataset.orderId, this.dataset.orderCode, this)">❌ Huỷ</button>'
-      : '<span style="color:var(--muted)">-</span>';
+    let actionsHtml = (o.status === "pending" || o.status === "payment_mismatch") ? '<button class="small" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="confirmOrder(this.dataset.orderId, this.dataset.orderCode, this)">✅ Duyệt</button> <button class="ghost small danger" data-order-id="' + esc(o.id) + '" data-order-code="' + esc(o.order_code) + '" onclick="cancelOrder(this.dataset.orderId, this.dataset.orderCode, this)">❌ Huỷ</button>' : '<span style="color:var(--muted)">-</span>';
     const delBtn = isSuperAdminToan() ? '<button class="ghost small danger" onclick="deleteSalesOrder(\'' + esc(o.id) + '\', \'' + esc(o.order_code || '') + '\', \'' + esc(o.license_key || '') + '\')" title="Xoá đơn hàng khỏi bảng">🗑️ Xoá</button>' : '';
     if (delBtn) actionsHtml = actionsHtml === '<span style="color:var(--muted)">-</span>' ? delBtn : actionsHtml + ' ' + delBtn;
-    const displayAmount = Number(o.amount || o.final_amount) || 0;
     const mismatchNotice = (o.status === "payment_mismatch" && o.metadata && o.metadata.actual_amount) ? '<div class="hint mono" style="color:var(--warn); font-size:11px">Nhận: ' + formatVndNumber(o.metadata.actual_amount) + '</div>' : '';
     const orderCodeDisp = esc(o.order_code || (o.license_key ? "EX2-" + o.license_key.replace(/[^A-Z0-9]/gi, "").slice(-6).toUpperCase() : "EX2-AUTO"));
     const custName = esc(o.owner_name || o.customer_name || "Khách Car"), custNote = o.note || (o.metadata && o.metadata.note) || "";
@@ -4798,11 +4849,14 @@ function renderSalesOrdersTable() {
       primaryAmount = Math.max(0, displayAmount - ICAR_UNIT_COST);
       costBreakdownHtml = '<div class="hint mono" style="font-size:10px; color:var(--muted)">Thu khách: ' + formatVndNumber(displayAmount) + ' · Vốn ICAR: -' + formatVndNumber(ICAR_UNIT_COST) + '</div>';
     }
+    const amountCellHtml = isAppleOutlay
+      ? '<span class="mono" style="text-decoration:line-through; color:var(--muted)">' + formatVndNumber(displayAmount) + '</span><div class="hint" style="color:#d97706; font-size:10px">Toàn ứng · Trừ khỏi DT</div>'
+      : formatVndNumber(primaryAmount) + mismatchNotice + costBreakdownHtml;
     tr.innerHTML = '<td class="mono nowrap" style="color:var(--muted); text-align:center; font-weight:600">' + (idx + 1) + '</td>' +
       '<td class="mono nowrap"><b>' + orderCodeDisp + '</b></td>' +
       '<td class="nowrap" style="font-size:12px; color:var(--muted)">' + formatIsoTime(o.created_at) + (o.paid_at ? '<div class="hint" style="font-size:10px">Trả: ' + formatIsoTime(o.paid_at) + '</div>' : '') + '</td>' +
       '<td class="nowrap"><b>' + custName + '</b>' + noteHtml + '</td><td class="mono nowrap">' + custPhone + '</td><td class="nowrap">' + planBadge + '</td>' +
-      '<td class="mono nowrap" style="font-weight:600; text-align:right">' + formatVndNumber(primaryAmount) + mismatchNotice + costBreakdownHtml + '</td>' +
+      '<td class="mono nowrap" style="font-weight:600; text-align:right">' + amountCellHtml + '</td>' +
       '<td class="nowrap">' + statusBadge + '</td><td class="mono nowrap">' + licHtml + '</td>' +
       '<td style="text-align:right; min-width:140px"><div class="actions" style="justify-content:flex-end">' + actionsHtml + '</div></td>';
     tbody.appendChild(tr);
@@ -6948,7 +7002,7 @@ function renderResellersTable(list) {
     const discYearly = (r.discount_rate_yearly || 40) + "%";
     const commRenewal = (r.renewal_commission_percent || 25) + "%";
     // PIN Display
-    const pin = r.pin_plain || "123456";
+    const pin = r.pin_plain || "";
     const isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
     const pinDisplay = isRevealed
       ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>`
@@ -7067,15 +7121,20 @@ function openResetPinModal(resellerId) {
   if (!r) return;
   $("resetPinResellerId").value = r.id;
   $("resetPinResellerDesc").textContent = `Đại lý: ${r.reseller_code} — ${r.garage_name} (${r.owner_name} • ${r.phone})`;
-  $("resetPinNewValue").value = r.pin_plain || "123456";
+  $("resetPinNewValue").value = r.pin_plain || "";
   $("resellerResetPinMask").style.display = "flex";
 }
 function closeResetPinModal() {
   $("resellerResetPinMask").style.display = "none";
 }
+// PIN 6 số ngẫu nhiên bằng CSPRNG (audit 12/10/2026: không dùng Math.random cho mã đăng nhập).
+function randomPin6() {
+  const u = new Uint32Array(1);
+  crypto.getRandomValues(u);
+  return String(u[0] % 1000000).padStart(6, "0");
+}
 function generateRandomResetPin() {
-  const pin = Math.floor(100000 + Math.random() * 900000).toString();
-  $("resetPinNewValue").value = pin;
+  $("resetPinNewValue").value = randomPin6();
 }
 async function submitResetPin() {
   const resellerId = $("resetPinResellerId").value;
@@ -7186,7 +7245,7 @@ function closeResellerLicensesModal() {
 function copyResellerHandoverMessage(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!r) return;
-  const pin = r.pin_plain || "123456";
+  const pin = r.pin_plain || "";
   const portalUrl = "https://ex2.toanmobile.com/reseller";
   const balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
   const msg =
@@ -7262,8 +7321,7 @@ function toggleModalPinVisibility() {
   }
 }
 function generateRandomModalPin() {
-  const pin = Math.floor(100000 + Math.random() * 900000).toString();
-  $("resellerModalPin").value = pin;
+  $("resellerModalPin").value = randomPin6();
   $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
 }
@@ -7277,7 +7335,7 @@ function openCreateResellerModal() {
   $("resellerModalName").value = "";
   $("resellerModalGarage").value = "";
   $("resellerModalAddress").value = "";
-  $("resellerModalPin").value = "123456";
+  $("resellerModalPin").value = "";
   $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
   $("resellerModalCredit").value = "0";
@@ -7304,7 +7362,7 @@ function openEditResellerModal(id) {
   $("resellerModalName").value = r.owner_name || "";
   $("resellerModalGarage").value = r.garage_name || "";
   $("resellerModalAddress").value = r.address || "";
-  $("resellerModalPin").value = r.pin_plain || "123456";
+  $("resellerModalPin").value = r.pin_plain || "";
   $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
   $("resellerModalCredit").value = r.credit_limit || 0;
@@ -7380,7 +7438,7 @@ async function saveReseller() {
         p_phone: $("resellerModalPhone").value.trim(),
         p_garage_name: $("resellerModalGarage").value.trim(),
         p_address: $("resellerModalAddress").value.trim(),
-        p_pin: pinVal || "123456",
+        p_pin: pinVal || "",
         p_discount_lifetime: parseInt($("resellerModalDiscLife").value, 10) || 35,
         p_discount_yearly: parseInt($("resellerModalDiscYear").value, 10) || 40,
         p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
@@ -7401,7 +7459,7 @@ async function saveReseller() {
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể tạo đại lý");
-      alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + (payload.p_pin || '123456') + ")!");
+      alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + (data.pin || payload.p_pin || "?") + ")!");
     }
     closeResellerModal();
     loadResellersData();

@@ -2909,9 +2909,9 @@ async function loadSplitHistory() {
     const p2 = p.pkg2 ? (PACKAGE_META[p.pkg2] || p.pkg2) : "";
     let apps = (p1 || p2) ? `<b>${esc(p1)}</b> + <b>${esc(p2)}</b>` : (p.package ? esc(PACKAGE_META[p.package] || p.package) : (p.params?.string_value ? esc(p.params.string_value) : `<span class="muted">—</span>`));
     if (e.event === "split_drag_chon_stack") {
-      apps = `Stack1: <b>${p.stack1 ?? "?"}</b> · Stack2: <b>${p.stack2 ?? "?"}</b>`;
+      apps = `Stack1: <b>${esc(p.stack1 ?? "?")}</b> · Stack2: <b>${esc(p.stack2 ?? "?")}</b>`;
     } else if (e.event === "split_drag_commit") {
-      apps = `Tỷ lệ: thực <b>${p.thuc ?? "?"}</b> / mong <b>${p.mong ?? "?"}</b>`;
+      apps = `Tỷ lệ: thực <b>${esc(p.thuc ?? "?")}</b> / mong <b>${esc(p.mong ?? "?")}</b>`;
     }
 
     const path = p.path ? `<span class="badge info">${esc(p.path)}</span>` : `<span class="muted">—</span>`;
@@ -2925,7 +2925,7 @@ async function loadSplitHistory() {
     } else if (e.event === "pip_rescue") {
       note = p.state === "hidden" ? "Đã giải phóng màn hình" : "Đang xử lý giải cứu";
     } else if (e.event === "split_drag_commit") {
-      note = p.lech_px != null ? `Lệch: ${p.lech_px}px` : "";
+      note = p.lech_px != null ? `Lệch: ${esc(p.lech_px)}px` : "";
     } else if (e.event === "split_drag_chon_stack") {
       note = p.docked ? "Docked: true" : "Docked: false";
     } else {
