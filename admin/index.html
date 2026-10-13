@@ -441,22 +441,22 @@
       <div class="panel" style="margin-bottom:0">
         <h2 style="color:var(--text); font-size:15px; display:flex; justify-content:space-between; align-items:center">
           <span>2. Tài khoản Nhận tiền & Webhook Đối soát</span>
-          <button class="ghost small" onclick="fillDefaultBankInfo()">⚡ Nạp TK VPBank</button>
+          <button class="ghost small" onclick="fillDefaultBankInfo()">⚡ Nạp TK SHB</button>
         </h2>
         <div class="hint">Thông tin dùng để máy chủ tự động dựng chuỗi VietQR chuẩn EMVCo cho xe.</div>
         <div class="grid" style="margin-top:12px">
           <div><label>Ngân hàng nhận (Mã BIN Napas) *</label>
-            <input id="salesBankBin" placeholder="970432">
-            <div class="hint">VPBank: 970432 • Vietcombank: 970436 • Techcombank: 970407</div>
+            <input id="salesBankBin" placeholder="970443">
+            <div class="hint">SHB: 970443 • VPBank: 970432 • Vietcombank: 970436 • Techcombank: 970407</div>
           </div>
           <div><label>Tên Ngân hàng *</label>
-            <input id="salesBankName" placeholder="VPBank">
+            <input id="salesBankName" placeholder="SHB">
           </div>
           <div><label>Số Tài khoản *</label>
-            <input id="salesBankAccount" placeholder="0333332093">
+            <input id="salesBankAccount" placeholder="2797927979">
           </div>
           <div><label>Tên Chủ Tài khoản *</label>
-            <input id="salesBankAccountName" placeholder="HUYNH VAN TOAN">
+            <input id="salesBankAccountName" placeholder="TRAN QUOC DAT">
           </div>
           <div><label>Chế độ Đối soát Thanh toán</label>
             <select id="salesReconMode">
@@ -3502,31 +3502,19 @@ function setupQiApkDropzone() {
 }
 function onQiTypeChange() {
   const isFile = $("qiTypeFile") && $("qiTypeFile").checked;
-  if ($("qiApkDropzoneWrap")) $("qiApkDropzoneWrap").style.display = isFile ? "none" : "";
-  if ($("qiPackageWrap")) $("qiPackageWrap").style.display = isFile ? "none" : "";
-  if ($("qiRequiresFirstWrap")) $("qiRequiresFirstWrap").style.display = isFile ? "none" : "";
-  if ($("qiVersionNameWrap")) $("qiVersionNameWrap").style.display = isFile ? "none" : "";
-  if ($("qiVersionCodeWrap")) $("qiVersionCodeWrap").style.display = isFile ? "none" : "";
-  if ($("qiForceLandscapeWrap")) $("qiForceLandscapeWrap").style.display = isFile ? "none" : "";
+  ["qiApkDropzoneWrap","qiPackageWrap","qiRequiresFirstWrap","qiVersionNameWrap","qiVersionCodeWrap","qiForceLandscapeWrap"].forEach(id => { if ($(id)) $(id).style.display = isFile ? "none" : ""; });
   if ($("qiUrlLabel")) $("qiUrlLabel").textContent = isFile ? "Link tải tệp tin (URL trực tiếp hoặc Google Drive) *" : "Link tải APK (URL trực tiếp hoặc Google Drive) *";
   if ($("qiNameLabel")) $("qiNameLabel").textContent = isFile ? "Tên hiển thị tệp tin *" : "Tên hiển thị trên menu *";
 }
 function openAddQuickInstallModal() {
   window._qiEditingIndex = -1;
   $("qiModalTitle").textContent = "Thêm ứng dụng / tệp tin Cài Nhanh mới";
-  $("qiName").value = "";
-  $("qiUrl").value = "";
-  $("qiPackage").value = "";
-  $("qiVersionName").value = "";
-  $("qiVersionCode").value = "";
+  $("qiName").value = $("qiUrl").value = $("qiPackage").value = $("qiVersionName").value = $("qiVersionCode").value = "";
   if ($("qiTypeApk")) $("qiTypeApk").checked = true;
   if ($("qiTypeFile")) $("qiTypeFile").checked = false;
   onQiTypeChange();
-  $("qiTargetCar").checked = true;
-  $("qiTargetPc").checked = true;
-  $("qiTargetPhone").checked = true;
-  $("qiForceLandscape").checked = false;
-  $("qiHidden").checked = false;
+  $("qiTargetCar").checked = $("qiTargetPc").checked = $("qiTargetPhone").checked = true;
+  $("qiForceLandscape").checked = $("qiHidden").checked = false;
   if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
   setupQiApkDropzone();
@@ -3535,41 +3523,27 @@ function openAddQuickInstallModal() {
 }
 function openEditQuickInstallModal(index) {
   window._qiEditingIndex = index;
-  const item = window._qiCatalog.apps[index];
-  const isFile = item.type === "file";
+  const item = window._qiCatalog.apps[index], isFile = item.type === "file";
   $("qiModalTitle").textContent = (isFile ? "Sửa tệp tin: " : "Sửa ứng dụng: ") + item.name;
-  $("qiName").value = item.name || "";
-  $("qiUrl").value = item.url || "";
-  $("qiPackage").value = item.packageName || "";
-  $("qiVersionName").value = item.versionName || "";
-  $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
+  $("qiName").value = item.name || ""; $("qiUrl").value = item.url || ""; $("qiPackage").value = item.packageName || "";
+  $("qiVersionName").value = item.versionName || ""; $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
   if ($("qiTypeFile")) $("qiTypeFile").checked = isFile;
   if ($("qiTypeApk")) $("qiTypeApk").checked = !isFile;
   onQiTypeChange();
-  $("qiForceLandscape").checked = Boolean(item.forceLandscape);
-  $("qiHidden").checked = Boolean(item.hidden);
+  $("qiForceLandscape").checked = Boolean(item.forceLandscape); $("qiHidden").checked = Boolean(item.hidden);
   if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
   setupQiApkDropzone();
-  const targets = item.targets || [];
-  if (!targets.length) {
-    $("qiTargetCar").checked = true;
-    $("qiTargetPc").checked = true;
-    $("qiTargetPhone").checked = true;
-  } else {
-    $("qiTargetCar").checked = targets.includes("car");
-    $("qiTargetPc").checked = targets.includes("pc");
-    $("qiTargetPhone").checked = targets.includes("phone");
-  }
+  const targets = item.targets || [], allT = !targets.length;
+  $("qiTargetCar").checked = allT || targets.includes("car");
+  $("qiTargetPc").checked = allT || targets.includes("pc");
+  $("qiTargetPhone").checked = allT || targets.includes("phone");
   updatePrereqDropdown(item.requiresFirst || "", item.name || "");
   $("qiModalMask").style.display = "flex";
 }
-function closeQiModal() {
-  $("qiModalMask").style.display = "none";
-  window._qiEditingIndex = -1;
-}
+function closeQiModal() { $("qiModalMask").style.display = "none"; window._qiEditingIndex = -1; }
 function saveQiItem() {
-  const name = $("qiName").value.trim();
+  const name = $("qiName").value.trim(), isFile = $("qiTypeFile") && $("qiTypeFile").checked;
   let url = $("qiUrl").value.trim(), pkg = $("qiPackage").value.trim(), verName = $("qiVersionName").value.trim();
   const verCodeRaw = $("qiVersionCode").value.trim();
   let verCode = verCodeRaw ? parseInt(verCodeRaw, 10) : 0;
@@ -3580,23 +3554,14 @@ function saveQiItem() {
     if (!verName) verName = tag.replace(/^v/, "");
     if (!verCode && tag.replace(/^v/, "") === "7.2.1") verCode = 255070218;
   }
-  const isFile = $("qiTypeFile") && $("qiTypeFile").checked;
   const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked;
-  if (isFile) {
-    if (!name || !url) { alert("Vui lòng nhập Tên tệp tin và Link tải."); return; }
-    if (!/^https?:\/\//i.test(url)) { alert("Link tải tệp tin không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
-  } else {
-    if (!name || !url) { alert("Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
-    if (!/^https?:\/\//i.test(url)) { alert("Link tải APK không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
-  }
+  if (!name || !url) { alert(isFile ? "Vui lòng nhập Tên tệp tin và Link tải." : "Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
+  if (!/^https?:\/\//i.test(url)) { alert((isFile ? "Link tải tệp tin" : "Link tải APK") + " không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
   const targets = [];
   if ($("qiTargetCar").checked) targets.push("car");
   if ($("qiTargetPc").checked) targets.push("pc");
   if ($("qiTargetPhone").checked) targets.push("phone");
-  const newItem = {
-    name: name,
-    url: url
-  };
+  const newItem = { name: name, url: url };
   if (isFile) {
     newItem.type = "file";
     if (pkg) newItem.packageName = pkg;
@@ -3608,13 +3573,8 @@ function saveQiItem() {
     if (forceLandscape) newItem.forceLandscape = true;
   }
   if (hidden) newItem.hidden = true;
-  if (targets.length > 0 && targets.length < 3) {
-    newItem.targets = targets;
-  }
-  // Nếu app từng nằm trong danh sách removed thì gỡ ra
-  if (window._qiCatalog.removed) {
-    window._qiCatalog.removed = window._qiCatalog.removed.filter(n => n !== name);
-  }
+  if (targets.length > 0 && targets.length < 3) newItem.targets = targets;
+  if (window._qiCatalog.removed) window._qiCatalog.removed = window._qiCatalog.removed.filter(n => n !== name);
   if (window._qiEditingIndex >= 0) {
     window._qiCatalog.apps[window._qiEditingIndex] = newItem;
     showMsg($("qiStatusMsg"), "ok", 'Đã sửa "' + name + '" (chưa lưu lên Supabase — bấm "Lưu lên Supabase" khi hoàn tất).');
@@ -3854,11 +3814,11 @@ function syncSalesPromoExpiryUI() {
   $("salesPromoEndDate").disabled = $("salesPromoForever").checked;
 }
 function fillDefaultBankInfo() {
-  $("salesBankBin").value = "970432";
-  $("salesBankName").value = "VPBank";
-  $("salesBankAccount").value = "0333332093";
-  $("salesBankAccountName").value = "HUYNH VAN TOAN";
-  showMsg($("salesBankSaveMsg"), "ok", "Đã điền thông tin tài khoản VPBank mặc định (bấm Lưu để áp dụng).");
+  $("salesBankBin").value = "970443";
+  $("salesBankName").value = "SHB";
+  $("salesBankAccount").value = "2797927979";
+  $("salesBankAccountName").value = "TRAN QUOC DAT";
+  showMsg($("salesBankSaveMsg"), "ok", "Đã điền tài khoản SHB mặc định (bấm Lưu để áp dụng).");
 }
 // ==================== TAB 3: THỐNG KÊ & BÁO CÁO TOÀN DIỆN ====================
 window._analyticsData = null;
@@ -4716,8 +4676,9 @@ async function loadSalesData() {
     if (s.promo_end_date) { $("salesPromoForever").checked = false; $("salesPromoEndDate").value = toDateInput(new Date(s.promo_end_date)); } else { $("salesPromoForever").checked = true; $("salesPromoEndDate").value = ""; }
     syncSalesPromoExpiryUI();
     $("salesPriceLockYears").value = s.price_lock_years || 5; $("salesPriceLockRule").value = s.price_lock_rule || "percent";
-    $("salesBankBin").value = s.bank_bin || "970432"; $("salesBankName").value = s.bank_name || "VPBank";
-    $("salesBankAccount").value = s.bank_account || "0333332093"; $("salesBankAccountName").value = s.bank_account_name || "HUYNH VAN TOAN";
+    // Ô trống để trống: tự điền tài khoản mặc định ở đây thì lần Lưu sau ghi đè tài khoản thật trên máy chủ.
+    $("salesBankBin").value = s.bank_bin || ""; $("salesBankName").value = s.bank_name || "";
+    $("salesBankAccount").value = s.bank_account || ""; $("salesBankAccountName").value = s.bank_account_name || "";
     $("salesReconMode").value = s.reconciliation_mode || "both"; $("salesWebhookProvider").value = s.webhook_provider || "sepay";
     setTelegramChatIdsToUI(s.telegram_chat_id || "5218387973, 1641294365");
     $("salesTelegramNotiEnabled").checked = (s.telegram_noti_enabled !== false); $("salesTelegramBotToken").value = "";
@@ -4981,11 +4942,19 @@ async function saveSalesBankInfo() {
   const btn = $("btnSaveSalesBank");
   btn.disabled = true;
   try {
+    const bank = {
+      bank_bin: $("salesBankBin").value.trim(),
+      bank_name: $("salesBankName").value.trim(),
+      bank_account: $("salesBankAccount").value.trim(),
+      bank_account_name: $("salesBankAccountName").value.trim().toUpperCase(),
+    };
+    // QR của mọi đơn hàng lấy tài khoản từ đây: thiếu ô nào thì không lưu, không tự điền giá trị đoán.
+    if (Object.values(bank).some(v => !v)) {
+      showMsg($("salesBankSaveMsg"), "err", "Điền đủ mã BIN, tên ngân hàng, số tài khoản và tên chủ tài khoản trước khi lưu.");
+      return;
+    }
     const settingsPayload = {
-      bank_bin: $("salesBankBin").value.trim() || "970432",
-      bank_name: $("salesBankName").value.trim() || "VPBank",
-      bank_account: $("salesBankAccount").value.trim() || "0333332093",
-      bank_account_name: $("salesBankAccountName").value.trim().toUpperCase() || "HUYNH VAN TOAN",
+      ...bank,
       reconciliation_mode: $("salesReconMode").value,
       webhook_provider: $("salesWebhookProvider").value,
       admin_note: "Cập nhật tài khoản nhận tiền / đối soát"
@@ -7480,62 +7449,36 @@ function openTopupModal(resellerId) {
   $("topupNote").value = "";
   $("resellerTopupMask").style.display = "flex";
 }
-function closeTopupModal() {
-  $("resellerTopupMask").style.display = "none";
-}
+function closeTopupModal() { $("resellerTopupMask").style.display = "none"; }
 async function submitTopup() {
-  const resellerId = $("topupResellerId").value;
-  const amount = parseVndNumber($("topupAmount").value);
-  const note = $("topupNote").value.trim();
-  if (!amount || amount <= 0) {
-    alert("❌ Vui lòng nhập số tiền nạp hợp lệ (> 0 VND)");
-    return;
-  }
-  const btn = $("btnSubmitTopup");
-  btn.disabled = true;
-  btn.textContent = "Đang nạp...";
+  const resellerId = $("topupResellerId").value, amount = parseVndNumber($("topupAmount").value), note = $("topupNote").value.trim();
+  if (!amount || amount <= 0) { alert("❌ Vui lòng nhập số tiền nạp hợp lệ (> 0 VND)"); return; }
+  const btn = $("btnSubmitTopup"); btn.disabled = true; btn.textContent = "Đang nạp...";
   try {
     const res = await api("/rest/v1/rpc/admin_topup_reseller", {
       method: "POST",
-      body: JSON.stringify({
-        p_reseller_id: resellerId,
-        p_amount: amount,
-        p_note: note || "Nạp tiền ví đại lý"
-      })
+      body: JSON.stringify({ p_reseller_id: resellerId, p_amount: amount, p_note: note || "Nạp tiền ví đại lý" })
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Không thể nạp tiền ví");
     alert("🎉 Đã nạp thành công +" + amount.toLocaleString("vi-VN") + " ₫ vào ví đại lý!");
-    closeTopupModal();
-    loadResellersData();
-  } catch (err) {
-    alert("❌ Lỗi: " + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Xác nhận nạp tiền";
-  }
+    closeTopupModal(); loadResellersData();
+  } catch (err) { alert("❌ Lỗi: " + err.message); } finally { btn.disabled = false; btn.textContent = "Xác nhận nạp tiền"; }
 }
 async function toggleResellerStatus(resellerId, newStatus) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   const actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN" : "MỞ HOẠT ĐỘNG LẠI";
-  if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) {
-    return;
-  }
+  if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) return;
   try {
     const res = await api("/rest/v1/rpc/admin_toggle_reseller_status", {
       method: "POST",
-      body: JSON.stringify({
-        p_reseller_id: resellerId,
-        p_status: newStatus
-      })
+      body: JSON.stringify({ p_reseller_id: resellerId, p_status: newStatus })
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi thay đổi trạng thái");
     alert("✅ Đã cập nhật trạng thái đại lý thành công!");
     loadResellersData();
-  } catch (err) {
-    alert("❌ Lỗi: " + err.message);
-  }
+  } catch (err) { alert("❌ Lỗi: " + err.message); }
 }
 </script>
 </body>
