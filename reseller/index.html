@@ -406,11 +406,12 @@
             <div class="hint">Sổ cái minh bạch đối soát từng giao dịch nạp sỉ, xuất mã và hoa hồng gia hạn</div>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap">
-            <select id="fltResellerTxType" style="width:175px" onchange="filterResellerTxTable()">
+            <select id="fltResellerTxType" style="width:190px" onchange="filterResellerTxTable()">
               <option value="all">📋 Tất cả giao dịch</option>
               <option value="topup">💰 Nạp ví</option>
               <option value="key_issue">🔑 Xuất mã</option>
               <option value="commission">🎁 Hoa hồng / Tái tục</option>
+              <option value="adjust">⚖️ Điều chỉnh / Hoàn tiền</option>
             </select>
             <input id="fltResellerTxSearch" placeholder="🔍 Tìm mã key, ghi chú..." style="width:200px" oninput="filterResellerTxTable()">
           </div>
@@ -688,10 +689,10 @@ function validateLoginInput(phoneOrCode, pin) {
   const cleanPhoneOrCode = sanitizeInput(phoneOrCode);
   const normPhone = normalizeVietnamesePhone(cleanPhoneOrCode);
   const isPhone = /^0\d{9}$/.test(normPhone);
-  const isCode = /^[a-zA-Z0-9_-]{3,12}$/.test(cleanPhoneOrCode);
+  const isCode = /^[a-zA-Z0-9_-]{2,20}$/.test(cleanPhoneOrCode);
 
   if (!isPhone && !isCode) {
-    return { valid: false, message: "Số điện thoại phải có 10 chữ số (VD: 0912345678) hoặc Mã đại lý từ 3-12 ký tự." };
+    return { valid: false, message: "Số điện thoại phải có 10 chữ số (VD: 0912345678) hoặc Mã đại lý từ 2-20 ký tự." };
   }
 
   const cleanPin = String(pin || "").trim();
@@ -1197,7 +1198,7 @@ function renderWallet() {
   const real = Number(currentReseller.wallet_balance || 0);
   const credit = Number(currentReseller.credit_limit || 0);
   const trialRem = currentReseller.trial_remaining ?? 0;
-  const totalSales = currentReseller.total_sales ?? 0;
+  const totalSales = currentReseller.total_sales_count ?? currentReseller.total_sales ?? 0;
 
   $("walletAvailableBalance").textContent = avail.toLocaleString("vi-VN") + " ₫";
   $("walletRealBalance").textContent = real.toLocaleString("vi-VN") + " ₫";
@@ -1642,6 +1643,8 @@ function filterResellerTxTable() {
     if (typeVal !== "all") {
       if (typeVal === "commission") {
         if (t.type !== "affiliate_commission" && t.type !== "renewal_commission") return false;
+      } else if (typeVal === "adjust") {
+        if (t.type !== "credit_adjust" && t.type !== "refund" && t.type !== "bonus" && t.type !== "deduct" && t.type !== "adjustment") return false;
       } else if (t.type !== typeVal) {
         return false;
       }
@@ -1682,8 +1685,9 @@ function renderTransactionsTable(list) {
     else if (t.type === "key_issue") typeStr = "🔑 Xuất mã";
     else if (t.type === "affiliate_commission") typeStr = "🎁 Hoa hồng online";
     else if (t.type === "renewal_commission") typeStr = "🔄 Tái tục";
-    else if (t.type === "bonus") typeStr = "🎁 Thưởng đại lý";
-    else if (t.type === "deduct" || t.type === "adjustment") typeStr = "⚖️ Điều chỉnh ví";
+    else if (t.type === "bonus" || (t.type === "credit_adjust" && isPositive)) typeStr = "🎁 Thưởng đại lý";
+    else if (t.type === "refund") typeStr = "↩️ Hoàn tiền";
+    else if (t.type === "deduct" || t.type === "adjustment" || t.type === "credit_adjust") typeStr = "⚖️ Điều chỉnh ví";
 
     html += '<tr>' +
       '<td class="hint">' + esc(timeStr) + '</td>' +

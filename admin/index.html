@@ -6866,7 +6866,7 @@ function filterResellerTransactions() {
     if (resellerCode !== "all" && t.reseller_code !== resellerCode) return false;
     if (typeFilter !== "all") {
       if (typeFilter === "commission") { if (t.type !== "affiliate_commission" && t.type !== "renewal_commission") return false; }
-      else if (typeFilter === "adjustment") { if (t.type !== "bonus" && t.type !== "deduct" && t.type !== "adjustment") return false; }
+      else if (typeFilter === "adjustment") { if (t.type !== "bonus" && t.type !== "deduct" && t.type !== "adjustment" && t.type !== "credit_adjust" && t.type !== "refund") return false; }
       else if (t.type !== typeFilter) return false;
     }
     if (q && !`${t.reseller_code || ""} ${t.garage_name || ""} ${t.reference_id || ""} ${t.note || ""}`.toLowerCase().includes(q)) return false;
@@ -6968,8 +6968,9 @@ function renderResellerTransactionsTable(transList) {
     else if (t.type === "key_issue") typeBadge = '<span class="tag car">🔑 Xuất mã</span>';
     else if (t.type === "affiliate_commission") typeBadge = '<span class="tag on" style="background:#15803d; color:#fff">🎁 Hoa hồng</span>';
     else if (t.type === "renewal_commission") typeBadge = '<span class="tag on" style="background:#0369a1; color:#fff">🔄 Tái tục</span>';
-    else if (t.type === "bonus") typeBadge = '<span class="tag on" style="background:#7c3aed; color:#fff">🎁 Cộng thưởng</span>';
-    else if (t.type === "deduct" || t.type === "adjustment") typeBadge = '<span class="tag off" style="background:#fef3c7; color:#b45309">⚖️ Điều chỉnh ví</span>';
+    else if (t.type === "bonus" || (t.type === "credit_adjust" && isPositive)) typeBadge = '<span class="tag on" style="background:#7c3aed; color:#fff">🎁 Cộng thưởng</span>';
+    else if (t.type === "refund") typeBadge = '<span class="tag on" style="background:#0284c7; color:#fff">↩️ Hoàn tiền</span>';
+    else if (t.type === "deduct" || t.type === "adjustment" || t.type === "credit_adjust") typeBadge = '<span class="tag off" style="background:#fef3c7; color:#b45309">⚖️ Điều chỉnh ví</span>';
     const timeStr = t.created_at ? new Date(t.created_at).toLocaleString("vi-VN") : "—";
     html += '<tr><td class="hint">' + esc(timeStr) + '</td><td><b>' + esc(t.reseller_code || "") + '</b><div class="hint">' + esc(t.garage_name || "") + '</div></td><td>' + typeBadge + '</td><td style="text-align:right; font-weight:700; color:' + amtColor + '">' + amtStr + '</td><td style="text-align:right">' + balTransitionHtml + '</td><td><span class="mono">' + esc(t.reference_id || "—") + '</span></td><td>' + esc(t.note || "—") + '</td></tr>';
   });
