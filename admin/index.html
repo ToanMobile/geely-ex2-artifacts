@@ -796,8 +796,8 @@
     <!-- Hàng 2: Thống Kê Phân Bổ Bản Quyền Theo Gói (License Roles & Subscriptions) -->
     <div class="panel">
       <h2 style="font-size:15px; color:var(--text)">2. Phân bổ Bản quyền & Số lượng Đăng ký theo Gói</h2>
-      <div class="hint">Thống kê chi tiết người dùng sở hữu Gói Xe (Car) vs Gói Chỉ PC (PC Only) vs Gói Quản trị (Admin).</div>
-      <div class="metric-grid-3" style="margin-top:14px">
+      <div class="hint">Thống kê chi tiết người dùng sở hữu Gói Xe (Car) vs Gói Chỉ PC (PC Only) vs Gói Sale (0 ₫) vs Gói Quản trị (Admin).</div>
+      <div class="metric-grid-4" style="margin-top:14px">
         <!-- Card Gói Xe -->
         <div class="kpi-box" style="border:1px solid #86efac">
           <div style="display:flex; justify-content:space-between; align-items:center"><span class="tag car" style="font-size:12px; font-weight:700">🚗 Gói Xe (Car - Full Option)</span>
@@ -823,6 +823,18 @@
             <tr><td>Gói Năm (12 tháng):</td><td class="mono" style="text-align:right; font-weight:600" id="anRolePcYear">0</td></tr>
             <tr><td>Đã hết hạn:</td><td class="mono" style="text-align:right; color:var(--muted)" id="anRolePcExp">0</td></tr>
             <tr><td>Đã thu hồi:</td><td class="mono" style="text-align:right; color:var(--err)" id="anRolePcRev">0</td></tr>
+          </table></div>
+        <!-- Card Gói Sale -->
+        <div class="kpi-box" style="border:1px solid #c084fc">
+          <div style="display:flex; justify-content:space-between; align-items:center"><span class="tag sale" style="font-size:12px; font-weight:700">🤝 Gói Sale (3 Tháng Free)</span>
+            <span id="anRoleSaleTotal" class="mono" style="font-size:18px; font-weight:700; color:#7e22ce">0</span>
+          </div>
+          <div class="hint" style="margin:6px 0 8px">1 Đầu xe + 2 PC · 0 ₫ (Không tính doanh thu)</div>
+          <table style="font-size:12px">
+            <tr><td>Đang hoạt động (Active):</td><td class="mono" style="text-align:right; font-weight:700; color:var(--ok)" id="anRoleSaleActive">0</td></tr>
+            <tr><td>Thời hạn mặc định:</td><td class="mono" style="text-align:right; font-weight:600">90 ngày (0 ₫)</td></tr>
+            <tr><td>Đã hết hạn:</td><td class="mono" style="text-align:right; color:var(--muted)" id="anRoleSaleExp">0</td></tr>
+            <tr><td>Đã thu hồi:</td><td class="mono" style="text-align:right; color:var(--err)" id="anRoleSaleRev">0</td></tr>
           </table></div>
         <!-- Card Gói Admin -->
         <div class="kpi-box" style="border:1px solid #fde68a">
@@ -2570,11 +2582,11 @@ async function loadKeys() {
       renderKnownVersions("ios");
     }
     renderTable();
-    loadAnalytics();
     if (window._salesData && typeof bridgeCarUsersToOrders === "function") {
       bridgeCarUsersToOrders();
       if (typeof renderSalesOrdersTable === "function") renderSalesOrdersTable();
     }
+    loadAnalytics();
   } catch (e) {
     const err = "Lỗi tải danh sách: " + e.message;
     showMsg(msg, "err", err);
@@ -2856,6 +2868,10 @@ $("edRole").addEventListener("change", () => {
     $("edExpiresForever").checked = false;
     const d = new Date(); d.setDate(d.getDate() + 90); $("edExpires").value = toDateInput(d);
     if ($("edMaxPcDevices").value === "0" || $("edMaxPcDevices").value === "") $("edMaxPcDevices").value = "2";
+    const curNote = ($("edNote").value || "").trim();
+    if (!curNote || curNote.startsWith("Đơn EX2-")) {
+      $("edNote").value = "Tài khoản Sale (3 tháng miễn phí - Không tính doanh thu)";
+    }
     syncEditExpiryUI();
   }
 });
@@ -2905,7 +2921,7 @@ async function saveEdit() {
   }
   const btn = $("btnSaveEdit");
   btn.disabled = true;
-  const selectedRole = $("edRole").value, prevRow = (window._editData && window._editData[key]) || {};
+  const selectedRole = $("edRole").value;
   const patchBody = {
     owner_name: name, owner_phone: phone, note: $("edNote").value.trim() || null,
     max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
@@ -2924,8 +2940,6 @@ async function saveEdit() {
       if (window._salesData && Array.isArray(window._salesData.orders)) {
         window._salesData.orders = window._salesData.orders.filter(o => (o.license_key || "").toUpperCase() !== key.toUpperCase());
       }
-    } else if (prevRow.role === "sale" && selectedRole === "car") {
-      try { await api("/rest/v1/rpc/admin_sync_car_users_with_orders", { method: "POST", body: "{}" }); } catch (_) {}
     }
     closeEdit();
     loadKeys();
@@ -3924,6 +3938,10 @@ function renderAnalyticsUI(stats) {
   if ($("anRolePcYear")) $("anRolePcYear").textContent = (lic.pc_yearly || 0);
   if ($("anRolePcExp")) $("anRolePcExp").textContent = (lic.pc_expired || 0);
   if ($("anRolePcRev")) $("anRolePcRev").textContent = (lic.pc_revoked || 0);
+  if ($("anRoleSaleTotal")) $("anRoleSaleTotal").textContent = (lic.sale_total || 0);
+  if ($("anRoleSaleActive")) $("anRoleSaleActive").textContent = (lic.sale_active || 0);
+  if ($("anRoleSaleExp")) $("anRoleSaleExp").textContent = (lic.sale_expired || 0);
+  if ($("anRoleSaleRev")) $("anRoleSaleRev").textContent = (lic.sale_revoked || 0);
   if ($("anRoleAdminTotal")) $("anRoleAdminTotal").textContent = (lic.admin_total || 0);
   if ($("anRoleAdminActive")) $("anRoleAdminActive").textContent = (lic.admin_active || 0);
   // Tỷ trọng người dùng Car vs PC
