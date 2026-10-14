@@ -2920,7 +2920,7 @@ async function saveEdit() {
   try {
     await api("/rest/v1/licenses?key=eq." + encodeURIComponent(key), { method: "PATCH", body: JSON.stringify(patchBody) });
     if (selectedRole === "sale") {
-      try { await api("/rest/v1/orders?license_key=eq." + encodeURIComponent(key) + "&qr_payload=in.(ADMIN-CREATE,ADMIN-SYNC)", { method: "DELETE" }); } catch (_) {}
+      try { await api("/rest/v1/orders?license_key=eq." + encodeURIComponent(key), { method: "DELETE" }); } catch (_) {}
       if (window._salesData && Array.isArray(window._salesData.orders)) {
         window._salesData.orders = window._salesData.orders.filter(o => (o.license_key || "").toUpperCase() !== key.toUpperCase());
       }
