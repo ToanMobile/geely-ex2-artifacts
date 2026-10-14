@@ -4421,7 +4421,7 @@ $("btnCloseEventModal").onclick = () => $("eventModal").classList.remove("open")
 $("eventModal").onclick = (ev) => { if (ev.target === $("eventModal")) $("eventModal").classList.remove("open"); };
 
 /* ================= Chi tiết user (license) ================= */
-const ROLE_LABEL = { car: "Xe + Phone + PCConnect", pc: "Chỉ PCConnect" };
+const ROLE_LABEL = { car: "Xe + Phone + PCConnect", sale: "Sale (Xe + Phone + PCConnect · 0đ)", pc: "Chỉ PCConnect", admin: "Admin (Prod & Dev)", dev: "Dev (Prod & Dev)" };
 window.openUserDetail = async function (deviceId, highlightedPhoneId = null) {
   $("userKv").innerHTML = `<b>Đang tải…</b><span></span>`;
   $("userDeviceTable").querySelector("tbody").innerHTML = "";

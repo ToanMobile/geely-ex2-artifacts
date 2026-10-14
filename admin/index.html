@@ -11,13 +11,13 @@
   :root {
     --bg: #eef2f7; --panel: #ffffff; --panel2: #e9eef5; --border: #d3dce6; --text: #1d2633; --muted: #5f6f82; --accent: #1f8a4d; --accent2: #166c3d; --danger: #c0392b; --warn: #96680f; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     --warn-bg: #fdf3dc; --warn-border: #e6d39f; --keybox-bg: #f2faf5; --keybox-text: #14532d; --tag-on-bg: #dff3e6; --tag-on-text: #166c3d; --tag-off-bg: #fbe4e4; --tag-off-text: #b03a3a;
-    --tag-car-bg: #dcfce7; --tag-car-text: #166534; --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985; --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8; --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e;
+    --tag-car-bg: #dcfce7; --tag-car-text: #166534; --tag-pc-bg: #e0f2fe; --tag-pc-text: #075985; --tag-phone-bg: #f3e8ff; --tag-phone-text: #6b21a8; --tag-admin-bg: #fef3c7; --tag-admin-text: #92400e; --tag-sale-bg: #fce7f3; --tag-sale-text: #9d174d;
     --tag-prereq-bg: #fee2e2; --tag-prereq-text: #991b1b; --tag-hidden-bg: #f1f5f9; --tag-hidden-text: #64748b; --ok: #166c3d; --err: #b03a3a; --admin-row-bg: #fff8e1; --admin-row-bg2: #fff3cd; --admin-row-line: #e6c86a;
   }
   body.dark {
     --bg: #0f1419; --panel: #1a2129; --panel2: #222c37; --border: #2e3a47; --text: #dce3ea; --muted: #8a97a5; --accent: #2f9e63; --accent2: #1f7a4c; --danger: #c94f4f; --warn: #d9a53f; --warn-bg: #2a2315; --warn-border: #4a3d1f;
     --keybox-bg: #10181f; --keybox-text: #7fd9a5; --tag-on-bg: #14351f; --tag-on-text: #57c47e; --tag-off-bg: #3a1a1a; --tag-off-text: #e08a8a; --tag-car-bg: #143823; --tag-car-text: #86efac;
-    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc; --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe; --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a; --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd;
+    --tag-pc-bg: #16364a; --tag-pc-text: #7dd3fc; --tag-phone-bg: #3b185f; --tag-phone-text: #d8b4fe; --tag-admin-bg: #3b2d13; --tag-admin-text: #fde68a; --tag-dev-bg: #1e3a5f; --tag-dev-text: #93c5fd; --tag-sale-bg: #500724; --tag-sale-text: #f9a8d4;
     --tag-prereq-bg: #3f1a1a; --tag-prereq-text: #fca5a5; --tag-hidden-bg: #1e293b; --tag-hidden-text: #94a3b8; --ok: #57c47e; --err: #e08a8a; --admin-row-bg: #2b2413; --admin-row-bg2: #352c17; --admin-row-line: #6b551f;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,9 +37,9 @@
   input:disabled, select:disabled, textarea:disabled { background: var(--bg) !important; color: var(--muted) !important; border: 1px dashed var(--border) !important; cursor: not-allowed !important; opacity: .75; }
   .license-type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 4px 0 8px; } @media (max-width: 1100px) { .license-type-selector { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 600px) { .license-type-selector { grid-template-columns: 1fr; } }
   .type-card { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--panel2); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; transition: all .2s; user-select: none; } .type-card:hover { border-color: var(--accent); background: rgba(31,138,77,.04); } .type-card.active { border-color: var(--accent); background: rgba(31,138,77,.08); box-shadow: 0 0 0 1px var(--accent); }
-  .type-card.lifetime-active { border-color: #10b981; background: rgba(16,185,129,.08); box-shadow: 0 0 0 1px #10b981; } .type-card.yearly-active { border-color: #0284c7; background: rgba(2,132,199,.08); box-shadow: 0 0 0 1px #0284c7; } .type-card.quarter-active { border-color: #9333ea; background: rgba(147,51,234,.08); box-shadow: 0 0 0 1px #9333ea; } .type-card.combo-icar-active { border-color: #ea580c; background: rgba(234,88,12,.08); box-shadow: 0 0 0 1px #ea580c; } .type-card.icar-discount-active { border-color: #059669; background: rgba(5,150,105,.08); box-shadow: 0 0 0 1px #059669; } .type-card.trial-active { border-color: #d97706; background: rgba(217,119,6,.08); box-shadow: 0 0 0 1px #d97706; }
+  .type-card.lifetime-active { border-color: #10b981; background: rgba(16,185,129,.08); box-shadow: 0 0 0 1px #10b981; } .type-card.yearly-active { border-color: #0284c7; background: rgba(2,132,199,.08); box-shadow: 0 0 0 1px #0284c7; } .type-card.quarter-active { border-color: #9333ea; background: rgba(147,51,234,.08); box-shadow: 0 0 0 1px #9333ea; } .type-card.combo-icar-active { border-color: #ea580c; background: rgba(234,88,12,.08); box-shadow: 0 0 0 1px #ea580c; } .type-card.icar-discount-active { border-color: #059669; background: rgba(5,150,105,.08); box-shadow: 0 0 0 1px #059669; } .type-card.sale-active { border-color: #db2777; background: rgba(219,39,119,.08); box-shadow: 0 0 0 1px #db2777; } .type-card.trial-active { border-color: #d97706; background: rgba(217,119,6,.08); box-shadow: 0 0 0 1px #d97706; }
   .type-card input[type=radio] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--accent); flex-shrink: 0; }
-  .type-card.lifetime-active input[type=radio] { accent-color: #10b981; } .type-card.yearly-active input[type=radio] { accent-color: #0284c7; } .type-card.quarter-active input[type=radio] { accent-color: #9333ea; } .type-card.combo-icar-active input[type=radio] { accent-color: #ea580c; } .type-card.icar-discount-active input[type=radio] { accent-color: #059669; } .type-card.trial-active input[type=radio] { accent-color: #d97706; }
+  .type-card.lifetime-active input[type=radio] { accent-color: #10b981; } .type-card.yearly-active input[type=radio] { accent-color: #0284c7; } .type-card.quarter-active input[type=radio] { accent-color: #9333ea; } .type-card.combo-icar-active input[type=radio] { accent-color: #ea580c; } .type-card.icar-discount-active input[type=radio] { accent-color: #059669; } .type-card.sale-active input[type=radio] { accent-color: #db2777; } .type-card.trial-active input[type=radio] { accent-color: #d97706; }
   .type-card-icon { font-size: 22px; line-height: 1; flex-shrink: 0; } .type-card-body { flex: 1; min-width: 0; } .type-card-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; } .type-card-title { font-size: 13px; font-weight: 700; color: var(--text); } .type-card-desc { font-size: 11px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
   .type-card-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; text-transform: uppercase; white-space: nowrap; } .type-card-badge.official { background: var(--tag-car-bg); color: var(--tag-car-text); }
   .type-card-badge.lifetime { background: #dcfce7; color: #15803d; border: 1px solid #86efac; } body.dark .type-card-badge.lifetime { background: #064e3b; color: #86efac; border-color: #059669; }
@@ -47,6 +47,7 @@
   .type-card-badge.quarter { background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; } body.dark .type-card-badge.quarter { background: #581c87; color: #d8b4fe; border-color: #9333ea; }
   .type-card-badge.combo-icar { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; } body.dark .type-card-badge.combo-icar { background: #7c2d12; color: #fed7aa; border-color: #ea580c; }
   .type-card-badge.icar-discount { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; } body.dark .type-card-badge.icar-discount { background: #064e3b; color: #a7f3d0; border-color: #059669; }
+  .type-card-badge.sale { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; } body.dark .type-card-badge.sale { background: #500724; color: #f9a8d4; border-color: #db2777; }
   .type-card-badge.trial { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; } body.dark .type-card-badge.trial { background: #451a03; color: #fcd34d; border-color: #d97706; }
   .btn-pkg-pill { background: var(--panel2); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: all .15s; font-weight: 600; }
   .btn-pkg-pill:hover { border-color: var(--accent); color: var(--accent); } .btn-pkg-pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
@@ -70,7 +71,7 @@
   .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 500; white-space: nowrap; }
   .tag.on { background: var(--tag-on-bg); color: var(--tag-on-text); } .tag.off { background: var(--tag-off-bg); color: var(--tag-off-text); }
   .tag.car, .tag.dev-car { background: var(--tag-car-bg); color: var(--tag-car-text); } .tag.pc, .tag.dev-pc { background: var(--tag-pc-bg); color: var(--tag-pc-text); }
-  .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); } .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); }
+  .tag.phone { background: var(--tag-phone-bg); color: var(--tag-phone-text); } .tag.admin { background: var(--tag-admin-bg); color: var(--tag-admin-text); } .tag.sale { background: var(--tag-sale-bg); color: var(--tag-sale-text); }
   .tag.dev { background: var(--tag-dev-bg); color: var(--tag-dev-text); } .tag.prereq { background: var(--tag-prereq-bg); color: var(--tag-prereq-text); } .tag.hidden { background: var(--tag-hidden-bg); color: var(--tag-hidden-text); }
   /* Dòng của tài khoản quản trị: nền riêng + vạch vàng bên trái, luôn nằm trên cùng. */
   tr.admin-row > td { background: var(--admin-row-bg); } tr.admin-row:hover > td { background: var(--admin-row-bg2); }
@@ -159,7 +160,7 @@
     <button class="tab-btn" id="tabBtnAnalytics" onclick="switchTab('analytics')">📊 Thống kê & Báo cáo</button>
     <button class="tab-btn" id="tabBtnQuickInstall" onclick="switchTab('quickInstall')">📦 Danh mục Cài nhanh</button>
     <button class="tab-btn" id="tabBtnForceUpdate" onclick="switchTab('forceUpdate')">🚀 Ép Cập nhật (OTA)</button>
-    <button class="tab-btn" id="tabBtnResellers" onclick="switchTab('resellers')">🏢 Đại lý Cấp 1</button>
+    <button class="tab-btn" id="tabBtnResellers" onclick="switchTab('resellers')">🏢 Đại lý</button>
   </div>
   <!-- ================= TAB 1: MÃ KÍCH HOẠT (SUPABASE) ================= -->
   <div id="tabContentLicenses" class="tab-content active">
@@ -175,7 +176,7 @@
             <div class="type-card lifetime-active active" id="cardLifetime" onclick="selectLicensePackage('lifetime')">
               <input type="radio" name="licensePackage" id="pkgLifetime" value="lifetime" checked>
               <div class="type-card-icon">👑</div>
-              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Gói Vĩnh Viễn</span><span class="type-card-badge lifetime">2.950.000 ₫</span></div><div class="type-card-desc">Cấp vĩnh viễn trọn đời, mở 100% tính năng xe & PC, không thời hạn.</div></div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Gói Vĩnh Viễn</span><span class="type-card-badge lifetime">2.960.000 ₫ (-25%)</span></div><div class="type-card-desc">Giá gốc <s style="color:var(--muted)">3.950.000 ₫</s> giảm 25% còn <b>2.960.000 ₫</b> trọn đời, mở 100% tính năng xe & PC.</div></div>
             </div>
             <div class="type-card" id="cardYearly" onclick="selectLicensePackage('yearly')">
               <input type="radio" name="licensePackage" id="pkgYearly" value="yearly">
@@ -193,22 +194,23 @@
               <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Combo 4G ICAR SLIM</span><span class="type-card-badge combo-icar">3.900.000 ₫</span></div><div class="type-card-desc">Thiết bị 4G ICAR SLIM + Tặng 1 năm Car & Phone Connect (1.170.000 ₫), BH 12T.</div></div>
             </div>
             <div class="type-card" id="cardDiscountIcar" onclick="selectLicensePackage('icar_discount')">
-              <input type="radio" name="licensePackage" id="pkgDiscountIcar" value="icar_discount">
-              <div class="type-card-icon">💎</div>
+              <input type="radio" name="licensePackage" id="pkgDiscountIcar" value="icar_discount"><div class="type-card-icon">💎</div>
               <div class="type-card-body">
                 <div class="type-card-head"><span class="type-card-title">Mua Connect — Giảm 20% Gói ICAR 3.9Tr</span><span class="type-card-badge icar-discount">Tiết kiệm 780k</span></div>
                 <div style="background:rgba(5,150,105,0.08); border:1px solid rgba(5,150,105,0.25); border-radius:8px; padding:6px 10px; margin:5px 0;">
                   <div style="display:flex; justify-content:space-between; align-items:baseline;"><span style="font-size:11px; font-weight:700; color:var(--text)">📅 Kèm 1 Năm:</span><span style="font-size:15px; font-weight:900; color:#059669; font-family:var(--mono)">4.290.000 ₫</span></div>
                   <div style="font-size:10px; color:var(--muted); margin-bottom:4px;">(Connect 1.170k + Gói 4G ICAR 3.120k sau giảm 20%)</div>
-                  <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.2); padding-top:4px;"><span style="font-size:11px; font-weight:700; color:var(--text)">👑 Kèm Vĩnh Viễn:</span><span style="font-size:15px; font-weight:900; color:#059669; font-family:var(--mono)">6.070.000 ₫</span></div>
-                  <div style="font-size:10px; color:var(--muted);">(Connect 2.950k + Gói 4G ICAR 3.120k sau giảm 20%)</div>
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.2); padding-top:4px;"><span style="font-size:11px; font-weight:700; color:var(--text)">👑 Kèm Vĩnh Viễn:</span><span style="font-size:15px; font-weight:900; color:#059669; font-family:var(--mono)">6.080.000 ₫</span></div>
+                  <div style="font-size:10px; color:var(--muted);">(Connect 2.960k + Gói 4G ICAR 3.120k sau giảm 20%)</div>
                 </div>
                 <div class="type-card-desc">Mua Car Connect đúng giá niêm yết, tặng ưu đãi giảm 20% khi mua gói 4G ICAR 3.9Tr (tiết kiệm 780k còn 3.120k).</div>
-              </div>
+              </div></div>
+            <div class="type-card" id="cardSale" onclick="selectLicensePackage('sale')">
+              <input type="radio" name="licensePackage" id="pkgSale" value="sale"><div class="type-card-icon">🤝</div>
+              <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Tài Khoản Sale (3 Tháng)</span><span class="type-card-badge sale">0 ₫ (Không tính DT)</span></div><div class="type-card-desc">Cấp cho nhân viên Sale: miễn phí 3 tháng (90 ngày), 1 Xe + 2 PC, không ghi nhận vào doanh thu bán hàng.</div></div>
             </div>
             <div class="type-card" id="cardTrial" onclick="selectLicensePackage('trial')">
-              <input type="radio" name="licensePackage" id="pkgTrial" value="trial">
-              <div class="type-card-icon">⏱️</div>
+              <input type="radio" name="licensePackage" id="pkgTrial" value="trial"><div class="type-card-icon">⏱️</div>
               <div class="type-card-body"><div class="type-card-head"><span class="type-card-title">Dùng Thử</span><span class="type-card-badge trial">0 ₫ Miễn phí</span></div><div class="type-card-desc">Dùng thử 1–14 ngày (chuẩn 3 ngày), 1 Xe (0 PC), tự hoàn nguyên.</div></div>
             </div></div>
           <!-- Hidden inputs for backward compatibility -->
@@ -218,22 +220,19 @@
           <div id="pkgSummaryBanner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; background:linear-gradient(135deg, rgba(16,185,129,0.06), rgba(37,99,235,0.06)); border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; margin:2px 0 10px;">
             <div>
               <div style="font-size:11px; text-transform:uppercase; font-weight:700; color:var(--muted); letter-spacing:0.5px">Gói bản quyền đang thiết lập:</div>
-              <div style="font-size:15px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; margin-top:2px;"><span id="pkgSummaryIcon" style="font-size:18px;">👑</span><span id="pkgSummaryTitle">Gói Vĩnh Viễn (Lifetime)</span><span class="type-card-badge lifetime" id="pkgSummaryBadge">2.950.000 ₫</span>
-              </div></div>
+              <div style="font-size:15px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; margin-top:2px;"><span id="pkgSummaryIcon" style="font-size:18px;">👑</span><span id="pkgSummaryTitle">Gói Vĩnh Viễn (Lifetime)</span><span class="type-card-badge lifetime" id="pkgSummaryBadge">2.960.000 ₫ (Gốc 3.950.000 ₫ -25%)</span></div>
+            </div>
             <div style="text-align:right">
               <div style="font-size:11px; color:var(--muted)">Thời hạn hiệu lực:</div>
               <div id="pkgSummaryExpiry" style="font-size:13px; font-weight:800; color:var(--accent)">👑 Vĩnh viễn (Không thời hạn)</div>
             </div></div></div>
         <div id="trialConfigSection" style="display:none; grid-column: 1 / -1; background:rgba(59,130,246,0.08); border:1.5px solid rgba(59,130,246,0.4); border-radius:10px; padding:12px 14px; margin-bottom:4px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-            <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#3b82f6; font-size:13px;"><span>⏱️ Cấu hình Thời hạn Dùng thử</span>
-              <span style="font-size:11px; font-weight:normal; color:var(--muted);">(Tối đa 90 ngày)</span>
-            </div>
+            <div style="display:flex; align-items:center; gap:6px; font-weight:700; color:#3b82f6; font-size:13px;"><span>⏱️ Cấu hình Thời hạn Dùng thử</span><span style="font-size:11px; font-weight:normal; color:var(--muted);">(Tối đa 90 ngày)</span></div>
             <div id="trialExpiryPreview" style="font-size:12px; font-weight:600; color:#2563eb; background:#dbeafe; padding:2px 10px; border-radius:999px;"></div>
           </div>
           <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;"><span style="font-size:13px; font-weight:500;">Thời hạn:</span>
-            <input id="trialDays" type="number" min="1" max="90" value="3" style="width:64px; text-align:center; font-weight:700; border-color:#3b82f6; padding:4px 6px;" oninput="onTrialDaysInput()">
-            <span style="font-size:13px;">ngày</span>
+            <input id="trialDays" type="number" min="1" max="90" value="3" style="width:64px; text-align:center; font-weight:700; border-color:#3b82f6; padding:4px 6px;" oninput="onTrialDaysInput()"><span style="font-size:13px;">ngày</span>
             <div style="display:flex; gap:6px; margin-left:4px;">
               <button type="button" class="btn-trial-pill" id="pillDays1" onclick="setTrialDays(1)">1 ngày</button>
               <button type="button" class="btn-trial-pill active" id="pillDays3" onclick="setTrialDays(3)">3 ngày (chuẩn)</button>
@@ -243,43 +242,28 @@
           <div style="background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.2); border-radius:6px; padding:6px 10px; font-size:11px; line-height:1.5; color:var(--text);">
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:4px;"><div>🔒 <b>Cài nhanh:</b> Bị khoá (Toast cảnh báo)</div><div>🚗 <b>Thiết bị:</b> Chỉ 1 Xe (0 PCConnect)</div><div>⏱️ <b>Offline:</b> Tối đa 24 giờ không mạng</div><div>♻️ <b>Hết hạn:</b> Tự hoàn nguyên hệ thống</div></div>
           </div></div>
-        <div style="grid-column: 1 / -1; margin-top:4px;">
-          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px;">📝 Phần 1: Thông tin khách hàng (Bắt buộc nhập)</div>
-        </div>
+        <div style="grid-column: 1 / -1; margin-top:4px;"><div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); letter-spacing:0.5px; border-bottom:1px solid var(--border); padding-bottom:3px; margin-bottom:8px;">📝 Phần 1: Thông tin khách hàng (Bắt buộc nhập)</div></div>
         <div class="field-card" id="fcOwnerName"><div class="field-card-head"><label class="field-card-label">Tên chủ mã *</label><span class="badge-field-req">✏️ Cần nhập</span></div><input id="ownerName" placeholder="VD: Trần Đạt"></div>
         <div class="field-card" id="fcOwnerPhone"><div class="field-card-head"><label class="field-card-label">Số điện thoại (Zalo) *</label><span class="badge-field-req">✏️ Cần nhập</span></div><input id="ownerPhone" placeholder="VD: 0988123456"></div>
         <div class="field-card" id="fcNote"><div class="field-card-head"><label class="field-card-label">Ghi chú</label><span class="badge-field-opt">Tuỳ chọn</span></div><input id="note" placeholder="VD: xe Geely EX2 biển 30A-12345"></div>
         <!-- PHẦN 2: THIẾT LẬP KỸ THUẬT & HẠN MỨC (REFINED UI) -->
         <div style="grid-column: 1 / -1; margin-top:10px; background:var(--panel2); border:1.5px solid var(--border); border-radius:12px; padding:14px 16px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:16px;">⚙️</span>
-              <div><span style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--text); letter-spacing:0.5px;">Phần 2: Thiết lập Kỹ thuật & Hạn mức</span>
-                <div style="font-size:11px; color:var(--muted); font-weight:normal;">Quy định quyền truy cập, trần thiết bị giữ chỗ và thời hạn bản quyền</div>
-              </div></div>
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:16px;">⚙️</span><div><span style="font-size:12px; font-weight:800; text-transform:uppercase; color:var(--text); letter-spacing:0.5px;">Phần 2: Thiết lập Kỹ thuật & Hạn mức</span><div style="font-size:11px; color:var(--muted); font-weight:normal;">Quy định quyền truy cập, trần thiết bị giữ chỗ và thời hạn bản quyền</div></div></div>
             <span id="techModeBadge" class="badge-sec-editable" style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;">✏️ Tuỳ chỉnh tự do</span>
           </div>
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:12px;">
-            <!-- Cột 1: Quyền & Hạn mức thiết bị -->
             <div style="display:flex; flex-direction:column; gap:10px;">
               <div class="field-card" id="fcRole" style="background:var(--panel);">
                 <div class="field-card-head"><label class="field-card-label">Quyền sử dụng (Role)</label><span id="badgeRole"></span></div>
-                <select id="role" style="font-weight:600;"><option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option><option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option><option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option><option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option></select>
+                <select id="role" style="font-weight:600;"><option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option><option value="sale">🤝 Nhân viên Sale (3 tháng Free 0đ — Không tính doanh thu)</option><option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option><option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option><option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option></select>
                 <div class="hint" id="roleHint">Khách mua xe dùng 1 đầu xe + nhiều PC trên laptop cá nhân.</div>
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <div class="field-card" id="fcMaxActivations" style="background:var(--panel);">
-                  <div class="field-card-head"><label class="field-card-label">Kích hoạt tối đa</label><span id="badgeMaxAct"></span></div>
-                  <input id="maxActivations" type="number" min="1" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;">
-                  <div class="hint" id="maxActHint">Lần kích hoạt máy mới.</div>
-                </div>
-                <div class="field-card" id="fcMaxPcDevices" style="background:var(--panel);">
-                  <div class="field-card-head"><label class="field-card-label">PC tối đa</label><span id="badgeMaxPc"></span></div>
-                  <input id="maxPcDevices" type="number" min="1" value="2" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;">
-                  <div class="hint" id="maxPcHint">PC giữ chỗ cùng lúc.</div>
-                </div>
+                <div class="field-card" id="fcMaxActivations" style="background:var(--panel);"><div class="field-card-head"><label class="field-card-label">Kích hoạt tối đa</label><span id="badgeMaxAct"></span></div><input id="maxActivations" type="number" min="1" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;"><div class="hint" id="maxActHint">Lần kích hoạt máy mới.</div></div>
+                <div class="field-card" id="fcMaxPcDevices" style="background:var(--panel);"><div class="field-card-head"><label class="field-card-label">PC tối đa</label><span id="badgeMaxPc"></span></div><input id="maxPcDevices" type="number" min="1" value="2" placeholder="Không giới hạn" style="font-family:var(--mono); font-weight:600;"><div class="hint" id="maxPcHint">PC giữ chỗ cùng lúc.</div></div>
               </div>
             </div>
-            <!-- Cột 2: Thời hạn bản quyền & Presets -->
             <div class="field-card" id="fcExpires" style="background:var(--panel); display:flex; flex-direction:column; justify-content:space-between;">
               <div>
                 <div class="field-card-head"><label class="field-card-label">Thời hạn bản quyền</label><span id="badgeExpires"></span></div>
@@ -289,6 +273,7 @@
                 </div>
                 <div style="font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:600;">Gói thời hạn mẫu:</div>
                 <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px;">
+                  <button type="button" class="btn-pkg-pill" id="pillPkgSale" onclick="setExpiryPreset('sale')">🤝 Sale 3T (0đ)</button>
                   <button type="button" class="btn-pkg-pill" id="pillPkgQuarter" onclick="setExpiryPreset('quarter')">⚡ 3 Tháng</button>
                   <button type="button" class="btn-pkg-pill" id="pillPkgYearly" onclick="setExpiryPreset('yearly')">📅 1 Năm</button>
                   <button type="button" class="btn-pkg-pill" id="pillPkgComboIcar" onclick="setExpiryPreset('combo_icar')">📦 Combo 4G ICAR</button>
@@ -307,17 +292,11 @@
     <!-- Bảng quản lý mã -->
     <div class="panel">
       <div class="toolbar">
-        <div>
-          <h2 style="margin:0; font-size:15px; color:var(--text)">2. Danh sách khách hàng & mã <span id="totalCount" class="mono" style="color:var(--muted)"></span></h2>
-        </div>
-        <div class="search-box">
-          <input id="searchInput" placeholder="🔍 Tìm theo tên, SĐT, xe, ghi chú..." oninput="onSearchChange()">
-        </div>
-        <div class="search-box" style="max-width:220px">
-          <input id="filterCodeInput" placeholder="🔑 Lọc mã code (EX2-...)..." oninput="onCodeFilterChange()">
-        </div>
+        <div><h2 style="margin:0; font-size:15px; color:var(--text)">2. Danh sách khách hàng & mã <span id="totalCount" class="mono" style="color:var(--muted)"></span></h2></div>
+        <div class="search-box"><input id="searchInput" placeholder="🔍 Tìm theo tên, SĐT, xe, ghi chú..." oninput="onSearchChange()"></div>
+        <div class="search-box" style="max-width:220px"><input id="filterCodeInput" placeholder="🔑 Lọc mã code (EX2-...)..." oninput="onCodeFilterChange()"></div>
         <div class="filters">
-          <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button><button class="ghost small" data-filter="lifetime" onclick="setFilter('lifetime', this)">👑 Vĩnh viễn</button><button class="ghost small" data-filter="yearly" onclick="setFilter('yearly', this)">📅 1 Năm</button><button class="ghost small" data-filter="quarter" onclick="setFilter('quarter', this)">⚡ 3 Tháng</button><button class="ghost small" data-filter="combo_icar" onclick="setFilter('combo_icar', this)">📦 Combo 4G ICAR</button><button class="ghost small" data-filter="icar_discount" onclick="setFilter('icar_discount', this)">💎 Ưu đãi ICAR</button><button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button><button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button><button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button><button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button><button class="ghost small" data-filter="dev" onclick="setFilter('dev', this)">🛠️ Dev</button><button class="ghost small" data-filter="active" onclick="setFilter('active', this)">🟢 Đang dùng</button><button class="ghost small" data-filter="revoked" onclick="setFilter('revoked', this)">🔴 Đã thu hồi</button><button class="ghost small danger" onclick="cleanupRevokedOrExpiredKeys()" title="Xoá vĩnh viễn các mã đã thu hồi hoặc dùng thử hết hạn">🧹 Dọn mã thu hồi</button><button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Đơn</button><button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
+          <button class="ghost small active" data-filter="all" onclick="setFilter('all', this)">Tất cả</button><button class="ghost small" data-filter="lifetime" onclick="setFilter('lifetime', this)">👑 Vĩnh viễn</button><button class="ghost small" data-filter="yearly" onclick="setFilter('yearly', this)">📅 1 Năm</button><button class="ghost small" data-filter="quarter" onclick="setFilter('quarter', this)">⚡ 3 Tháng</button><button class="ghost small" data-filter="combo_icar" onclick="setFilter('combo_icar', this)">📦 Combo 4G ICAR</button><button class="ghost small" data-filter="icar_discount" onclick="setFilter('icar_discount', this)">💎 Ưu đãi ICAR</button><button class="ghost small" data-filter="sale" onclick="setFilter('sale', this)">🤝 Sale</button><button class="ghost small" data-filter="trial" onclick="setFilter('trial', this)">⏱️ Dùng thử</button><button class="ghost small" data-filter="car" onclick="setFilter('car', this)">🚗 Xe</button><button class="ghost small" data-filter="pc" onclick="setFilter('pc', this)">💻 Chỉ PC</button><button class="ghost small" data-filter="admin" onclick="setFilter('admin', this)">👑 Admin</button><button class="ghost small" data-filter="dev" onclick="setFilter('dev', this)">🛠️ Dev</button><button class="ghost small" data-filter="active" onclick="setFilter('active', this)">🟢 Đang dùng</button><button class="ghost small" data-filter="revoked" onclick="setFilter('revoked', this)">🔴 Đã thu hồi</button><button class="ghost small danger" onclick="cleanupRevokedOrExpiredKeys()" title="Xoá vĩnh viễn các mã đã thu hồi hoặc dùng thử hết hạn">🧹 Dọn mã thu hồi</button><button class="ghost small" onclick="syncCarUsersWithOrders(this)" title="Đồng bộ 100% khách Car với đơn hàng bán ra">⚡ Đồng bộ Đơn</button><button class="ghost small" onclick="loadKeys()">🔄 Tải lại</button>
         </div></div>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:10px; background:var(--panel2); padding:8px 12px; border-radius:8px; border:1px solid var(--border)">
         <span style="font-size:12px; font-weight:600; color:var(--text); display:flex; align-items:center; gap:4px">🕒 Lọc ngày giờ:</span>
@@ -382,9 +361,9 @@
         </h2>
         <div class="hint">Mọi thay đổi giá đều có hiệu lực ngay lập tức trên màn hình xe của khách hàng.</div>
         <div class="grid" style="margin-top:12px">
-          <div><label>Giá Gói Trọn Đời (VND) *</label>
-            <input id="salesLifetimePrice" type="text" inputmode="numeric" placeholder="2.950.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
-            <div class="hint" id="salesLifetimePricePreview" style="color:var(--ok); font-weight:700">→ Gói Vĩnh Viễn: 2.950.000 ₫</div>
+          <div><label>Giá Gói Vĩnh Viễn — Sau Giảm 25% từ 3.950.000 ₫ (VND) *</label>
+            <input id="salesLifetimePrice" type="text" inputmode="numeric" placeholder="2.960.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
+            <div class="hint" id="salesLifetimePricePreview" style="color:var(--ok); font-weight:700">→ Sau giảm 25%: 2.960.000 ₫ (Giá gốc 3.950.000 ₫ · Tiết kiệm 990.000 ₫)</div>
           </div>
           <div><label>Giá Gốc Gói Theo Năm (VND) *</label>
             <input id="salesYearlyPrice" type="text" inputmode="numeric" placeholder="1.950.000" oninput="onPriceInputChange(this); updateSalesPricePreview()">
@@ -427,7 +406,7 @@
           </div></div>
         <div style="margin-top:10px; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px; font-size:12px;">
           <b style="color:var(--text);">📋 Tóm tắt Các Gói Bán hàng & Ưu đãi Đối tác ICAR:</b>
-          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;"><span>👑 <b>Vĩnh viễn:</b> <span id="summaryLifetimePreview" style="color:var(--ok); font-weight:700">2.950.000 ₫</span></span>
+          <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;"><span>👑 <b>Vĩnh viễn:</b> <span id="summaryLifetimePreview" style="color:var(--ok); font-weight:700">2.960.000 ₫ (giảm 25% từ giá gốc 3.950.000 ₫)</span></span>
             <span>📅 <b>1 Năm:</b> <span id="summaryYearlyPreview" style="color:var(--ok); font-weight:700">1.170.000 ₫ (giá gốc 1.950.000 ₫)</span></span>
             <span>⚡ <b>3 Tháng:</b> <span id="summaryQuarterPreview" style="color:var(--ok); font-weight:700">495.000 ₫</span></span>
             <span>📦 <b>Combo 4G ICAR:</b> <span id="summaryComboIcarPreview" style="color:#ea580c; font-weight:700">3.900.000 ₫ (Tặng 1 năm Connect)</span></span>
@@ -540,7 +519,7 @@
               <h4 style="margin:4px 0 6px; font-size:14px; color:var(--text)">Bộ Đôi Car Connect & Phone Connect</h4>
               <div style="font-size:12px; color:var(--muted); line-height:1.4">
                 • <b>Gói 1 Năm:</b> 1.170.000 ₫ (Tiết kiệm 780.000 ₫ so với giá gốc 1.950.000 ₫)<br>
-                • <b>Gói Vĩnh Viễn:</b> 2.950.000 ₫ trọn đời<br>
+                • <b>Gói Vĩnh Viễn:</b> 2.960.000 ₫ trọn đời (Giảm 25% từ giá gốc 3.950.000 ₫)<br>
                 • <b>Gói 3 Tháng:</b> 495.000 ₫ (Trải nghiệm đầy đủ tính năng)
               </div></div>
             <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap">
@@ -584,11 +563,11 @@
                 <div style="font-size:10px; font-weight:700; text-transform:uppercase; color:#059669; letter-spacing:0.5px; margin-bottom:4px;">💰 TỔNG GIÁ TRỌN BỘ COMBO (TIẾT KIỆM 780.000 ₫):</div>
                 <div style="display:flex; justify-content:space-between; align-items:baseline;"><span style="font-size:12px; font-weight:700; color:var(--text);">📅 Kèm Connect 1 Năm:</span><span style="font-size:16px; font-weight:900; color:#059669; font-family:var(--mono);">4.290.000 ₫</span></div>
                 <div style="font-size:11px; color:var(--muted); margin-bottom:4px;">(Connect 1.170k + Thiết bị 4G ICAR 3.120k sau giảm 20%)</div>
-                <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.25); padding-top:4px;"><span style="font-size:12px; font-weight:700; color:var(--text);">👑 Kèm Connect Vĩnh Viễn:</span><span style="font-size:16px; font-weight:900; color:#059669; font-family:var(--mono);">6.070.000 ₫</span></div>
-                <div style="font-size:11px; color:var(--muted);">(Connect 2.950k + Thiết bị 4G ICAR 3.120k sau giảm 20%)</div>
+                <div style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px dashed rgba(5,150,105,0.25); padding-top:4px;"><span style="font-size:12px; font-weight:700; color:var(--text);">👑 Kèm Connect Vĩnh Viễn:</span><span style="font-size:16px; font-weight:900; color:#059669; font-family:var(--mono);">6.080.000 ₫</span></div>
+                <div style="font-size:11px; color:var(--muted);">(Connect 2.960k + Thiết bị 4G ICAR 3.120k sau giảm 20%)</div>
               </div>
               <div style="font-size:12px; color:var(--muted); line-height:1.4">
-                • <b>Phần mềm Connect:</b> Giữ nguyên đúng giá niêm yết (1.170k/năm hoặc 2.950k trọn đời)<br>
+                • <b>Phần mềm Connect:</b> Giữ nguyên đúng giá niêm yết (1.170k/năm hoặc 2.960k trọn đời — giảm 25% từ 3.950k)<br>
                 • <b>Đặc quyền tặng kèm:</b> Giảm 20% gói thiết bị 4G ICAR SLIM 3.900.000 ₫ (chỉ còn 3.120.000 ₫)<br>
                 • <b>Tối ưu chi phí:</b> Tiết kiệm ngay 780.000 ₫ khi sắm thiết bị phát 4G chuyên dụng cho xe
               </div></div>
@@ -1133,14 +1112,14 @@
           <button type="button" style="background:var(--accent); color:#fff; font-weight:700; padding:6px 14px; box-shadow:0 2px 8px rgba(31,138,77,.4)" onclick="saveAppUpdateConfig()">💾 Lưu lên Supabase ngay</button>
           <button type="button" class="small ghost" style="padding:4px 8px" onclick="dismissStickyBar()">✕</button>
         </div></div></div></div>
-  <!-- ================= TAB 6: ĐẠI LÝ CẤP 1 (RESELLERS) ================= -->
+  <!-- ================= TAB 6: ĐẠI LÝ (RESELLERS) ================= -->
   <div id="tabContentResellers" class="tab-content">
     <!-- Thẻ KPI Đại lý -->
     <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 16px;">
       <div class="panel" style="margin-bottom:0; background:linear-gradient(135deg, rgba(31,138,77,0.08), transparent); border-color:var(--accent)">
-        <div style="font-size:12px; color:var(--muted); font-weight:600">👥 TỔNG ĐẠI LÝ CẤP 1</div>
+        <div style="font-size:12px; color:var(--muted); font-weight:600">👥 TỔNG ĐẠI LÝ</div>
         <div id="resellerKpiCount" style="font-size:24px; font-weight:800; color:var(--accent); margin:4px 0">0</div>
-        <div class="hint">Gara, thợ lắp đặt & CTV</div>
+        <div class="hint">Gara, thợ lắp đặt & đối tác</div>
       </div>
       <div class="panel" style="margin-bottom:0; background:linear-gradient(135deg, rgba(37,99,235,0.08), transparent); border-color:#2563eb">
         <div style="font-size:12px; color:var(--muted); font-weight:600">💰 TỔNG TIỀN NẠP SỈ</div>
@@ -1162,15 +1141,16 @@
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px">
         <div>
           <h2 style="font-size:16px; margin:0; color:var(--text); display:flex; align-items:center; gap:8px">
-            🏢 Danh sách Đại lý Cấp 1 & Đối tác Phân phối
+            🏢 Danh sách Đại lý & Đối tác Phân phối
             <span class="tag car mono" id="resellerCountBadge">0 đại lý</span>
           </h2>
-          <div class="hint" style="margin-top:2px">Quản lý tài khoản thợ, mã PIN 6 số, hạn mức tín dụng, chiết khấu và nạp tiền ví</div>
+          <div class="hint" style="margin-top:2px">Quản lý tài khoản thợ, mã PIN 6 số, hạn mức tín dụng, chiết khấu và nạp tiền ví (tự động qua Webhook <code>NAP DL &lt;Mã_ĐL&gt;</code> hoặc nạp tay)</div>
         </div>
-        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap"><input id="resellerSearchInput" placeholder="🔍 Tìm theo mã, tên, SĐT, gara, PIN..." style="width:250px" oninput="filterResellersTable()">
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap"><input id="resellerSearchInput" placeholder="🔍 Tìm theo mã, tên, SĐT, gara, PIN..." style="width:240px" oninput="filterResellersTable()">
           <button type="button" class="small" onclick="openCreateResellerModal()">➕ Thêm Đại Lý Mới</button>
           <button type="button" class="small ghost" onclick="openResellerPortalLink()" title="Mở trang Cổng Đại Lý đăng nhập cho thợ">🌐 Mở Cổng ĐL</button>
           <button type="button" class="small ghost" onclick="copyResellerPortalUrl()" title="Sao chép link đăng nhập Cổng Đại Lý">📋 Copy Link ĐL</button>
+          <button type="button" class="small ghost" onclick="exportResellersCsv()" title="Xuất danh sách đại lý & số dư ví ra CSV">⬇️ Xuất CSV</button>
           <button type="button" class="small ghost" onclick="loadResellersData()">🔄 Làm mới</button>
         </div></div>
       <!-- Thanh bộ lọc trạng thái nhanh -->
@@ -1194,10 +1174,28 @@
         </table></div></div>
     <!-- Lịch sử Giao dịch Ví Đại Lý Gần Nhất -->
     <div class="panel" style="margin-top:16px">
-      <h2 style="font-size:15px; margin-bottom:10px; color:var(--text)">📜 Lịch sử Biến động Ví & Giao dịch Đại lý Gần đây</h2>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px">
+        <h2 style="font-size:15px; margin:0; color:var(--text); display:flex; align-items:center; gap:8px">
+          📜 Lịch sử Biến động Ví & Giao dịch Đại lý Gần đây
+          <span class="tag off mono" id="resellerTransCountBadge">0 GD</span>
+        </h2>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+          <select id="fltTransResellerSelect" style="width:180px" onchange="filterResellerTransactions()">
+            <option value="all">🏢 Tất cả đại lý</option>
+          </select>
+          <select id="fltTransTypeSelect" style="width:170px" onchange="filterResellerTransactions()">
+            <option value="all">📋 Tất cả loại GD</option>
+            <option value="topup">💰 Nạp tiền sỉ</option>
+            <option value="key_issue">🔑 Xuất mã bản quyền</option>
+            <option value="commission">🎁 Hoa hồng / Tái tục</option>
+            <option value="adjustment">⚖️ Thưởng / Điều chỉnh ví</option>
+          </select>
+          <input id="fltTransSearchInput" placeholder="🔍 Tìm mã key, ghi chú..." style="width:200px" oninput="filterResellerTransactions()">
+        </div>
+      </div>
       <div style="overflow-x:auto">
         <table id="resellerTransTable">
-          <thead><tr><th style="width:150px">Thời gian</th><th style="width:120px">Đại lý</th><th style="width:140px">Loại GD</th><th style="width:140px; text-align:right">Biến động</th><th style="width:140px; text-align:right">Số dư sau</th><th style="width:150px">Tham chiếu</th><th>Ghi chú</th></tr></thead>
+          <thead><tr><th style="width:150px">Thời gian</th><th style="width:130px">Đại lý</th><th style="width:140px">Loại GD</th><th style="width:140px; text-align:right">Biến động</th><th style="width:170px; text-align:right">Số dư (Trước → Sau)</th><th style="width:150px">Tham chiếu</th><th>Ghi chú</th></tr></thead>
           <tbody id="resellerTransTableBody">
             <tr><td colspan="7" style="text-align:center; color:var(--muted); padding:20px">Chưa có giao dịch</td></tr></tbody>
         </table></div></div></div>
@@ -1272,26 +1270,11 @@
         <div><label>Số điện thoại (Zalo) *</label><input id="edPhone"></div>
         <div><label>Ghi chú</label><input id="edNote" placeholder="VD: biển số 30A-12345"></div>
         <div><label>Quyền sử dụng (Role)</label>
-          <select id="edRole">
-            <option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option>
-            <option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option>
-            <option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
-            <option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option>
-          </select>
+          <select id="edRole"><option value="car">🚗 Xe (kèm PCConnect — 1 Đầu xe + PC theo trần, Prod)</option><option value="sale">🤝 Nhân viên Sale (3 tháng Free 0đ — Không tính doanh thu)</option><option value="pc">💻 Chỉ PCConnect (PC theo trần, chặn Xe, Prod)</option><option value="admin">👑 Quản trị tối cao (Nhiều Xe + Nhiều PC, Prod & Dev)</option><option value="dev">🛠️ Lập trình viên Dev (Nhiều Xe + Nhiều PC, Prod & Dev)</option></select>
         </div>
-        <div><label>Số lần kích hoạt tối đa</label>
-          <input id="edMaxActivations" type="number" min="1" placeholder="Để trống = không giới hạn">
-          <div class="hint" id="edActivationInfo"></div>
-        </div>
-        <div><label>Số máy tính (PC) tối đa</label>
-          <input id="edMaxPcDevices" type="number" min="1" placeholder="Để trống = không giới hạn">
-          <div class="hint" id="edPcInfo"></div>
-        </div>
-        <div><label>Hạn dùng</label>
-          <div class="row">
-            <input id="edExpires" type="date">
-            <label class="chk"><input type="checkbox" id="edExpiresForever" onchange="syncEditExpiryUI()"> Vĩnh viễn</label>
-          </div></div></div>
+        <div><label>Số lần kích hoạt tối đa</label><input id="edMaxActivations" type="number" min="1" placeholder="Để trống = không giới hạn"><div class="hint" id="edActivationInfo"></div></div>
+        <div><label>Số máy tính (PC) tối đa</label><input id="edMaxPcDevices" type="number" min="1" placeholder="Để trống = không giới hạn"><div class="hint" id="edPcInfo"></div></div>
+        <div><label>Hạn dùng</label><div class="row"><input id="edExpires" type="date"><label class="chk"><input type="checkbox" id="edExpiresForever" onchange="syncEditExpiryUI()"> Vĩnh viễn</label></div></div></div>
       <div id="edTrialBox" style="display:none; margin-top:10px; background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.3); border-radius:6px; padding:10px;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
           <div style="font-weight:600; color:#60a5fa; font-size:13px">⏱️ Mã Dùng thử (Trial)</div><label class="chk" style="font-size:12px; font-weight:600; color:#10b981; margin:0; cursor:pointer;">
@@ -1471,10 +1454,10 @@
         <button class="ghost" onclick="resetDefaultSettings()">Khôi phục mặc định</button>
         <button class="ghost" onclick="closeSettingsModal()">Đóng</button>
       </div></div></div>
-  <!-- Modal Thêm / Sửa Đại Lý Cấp 1 -->
+  <!-- Modal Thêm / Sửa Đại Lý -->
   <div class="modal-mask" id="resellerModalMask" style="display:none" onclick="if(event.target===this)closeResellerModal()">
-    <div class="modal" style="max-width:620px">
-      <h3 id="resellerModalTitle">➕ Thêm Đại Lý Cấp 1 Mới</h3>
+    <div class="modal" style="max-width:640px">
+      <h3 id="resellerModalTitle">➕ Thêm Đại Lý Mới</h3>
       <div class="hint">Cấp tài khoản cho Gara / Thợ cài đặt để họ chủ động xuất mã bản quyền.</div>
       <input type="hidden" id="resellerEditId">
       <div class="grid" style="grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px">
@@ -1506,12 +1489,32 @@
         <div><label>Chiết khấu Gói Trọn Đời (%)</label>
           <input id="resellerModalDiscLife" type="number" value="35" min="0" max="70" oninput="updateResellerModalProfitPreview()">
         </div>
-        <div><label>Chiết khấu Gói 1 Năm (%)</label>
+        <div><label>Chiết khấu Gói 1 Năm & 3 Tháng (%)</label>
           <input id="resellerModalDiscYear" type="number" value="40" min="0" max="70" oninput="updateResellerModalProfitPreview()">
+        </div>
+        <div><label>Hoa hồng Gia hạn / Tái tục (%)</label>
+          <input id="resellerModalRenewalComm" type="number" value="25" min="0" max="70" oninput="updateResellerModalProfitPreview()">
+        </div>
+        <div><label>Hạn ngạch Key Dùng thử / tháng</label>
+          <input id="resellerModalTrialQuota" type="number" value="15" min="0" max="500">
+        </div>
+        <div id="resellerModalEditExtraWrap" style="grid-column: 1 / -1; display:none; grid-template-columns: 1fr 1fr; gap:10px; align-items:center; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px">
+          <div><label style="margin-bottom:2px">Trạng thái tài khoản</label>
+            <select id="resellerModalStatus">
+              <option value="active">🟢 Đang hoạt động (Active)</option>
+              <option value="suspended">⛔ Tạm khoá (Suspended)</option>
+            </select>
+          </div>
+          <div style="padding-top:14px">
+            <label style="display:inline-flex; align-items:center; gap:6px; font-size:12px; cursor:pointer; color:var(--text); user-select:none; margin:0">
+              <input type="checkbox" id="resellerModalResetTrialUsed" style="width:15px; height:15px; margin:0; cursor:pointer">
+              <span>🔄 Đặt lại lượt Trial đã dùng tháng này về 0</span>
+            </label>
+          </div>
         </div>
         <div style="grid-column: 1 / -1; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:8px 12px">
           <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px">📊 Ước tính giá sỉ & lợi nhuận đại lý khi xuất mã:</div>
-          <div id="resellerModalProfitPreview" style="font-size:12px; color:var(--muted); line-height:1.4">--</div>
+          <div id="resellerModalProfitPreview" style="font-size:12px; color:var(--muted); line-height:1.5">--</div>
         </div>
         <div><label>Chọn Ngân hàng đại lý</label>
           <select id="resellerModalBankSelect" onchange="onResellerBankSelectChange(this)">
@@ -1553,7 +1556,7 @@
           <button type="button" class="small ghost" onclick="generateRandomResetPin()" title="Sinh mã PIN ngẫu nhiên">🎲 Ngẫu nhiên</button>
         </div></div>
       <div class="hint" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; padding:8px 10px; color:#1e40af; font-size:12px; margin-bottom:14px">
-        ℹ️ Đặt lại PIN sẽ đồng thời xóa mọi cảnh báo thử sai (failed attempts) và mở khóa nếu tài khoản đang bị tạm khóa 15 phút.
+        ℹ️ Đặt lại PIN sẽ đồng thời xóa mọi cảnh báo thử sai, thu hồi các phiên đăng nhập cũ và mở khóa nếu tài khoản đang bị tạm khóa.
       </div>
       <div class="actions">
         <button type="button" id="btnConfirmResetPin" class="primary" onclick="submitResetPin()">Xác nhận đổi PIN</button>
@@ -1561,45 +1564,59 @@
       </div></div></div>
   <!-- Modal Danh Sách Key Đại Lý Đã Cấp -->
   <div class="modal-mask" id="resellerLicensesMask" style="display:none" onclick="if(event.target===this)closeResellerLicensesModal()">
-    <div class="modal" style="max-width:760px">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px">
-        <h3 id="resellerLicensesTitle" style="margin:0">🔑 Danh Sách Key Đã Cấp</h3>
-        <button type="button" class="small ghost" onclick="closeResellerLicensesModal()">✕ Đóng</button>
+    <div class="modal" style="max-width:820px">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:10px; flex-wrap:wrap">
+        <div>
+          <h3 id="resellerLicensesTitle" style="margin:0">🔑 Danh Sách Key Đã Cấp</h3>
+          <div class="hint" id="resellerLicensesSubtitle" style="margin-top:2px">Danh sách tất cả bản quyền xe do đại lý xuất</div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <input id="resellerLicensesSearch" placeholder="🔍 Tìm key, tên, SĐT khách..." style="width:210px" oninput="filterResellerLicensesModalTable()">
+          <button type="button" class="small ghost" onclick="closeResellerLicensesModal()">✕ Đóng</button>
+        </div>
       </div>
-      <div class="hint" id="resellerLicensesSubtitle">Danh sách tất cả bản quyền xe do đại lý xuất</div>
-      <div style="overflow-x:auto; margin-top:14px; max-height:420px; overflow-y:auto">
+      <div style="overflow-x:auto; margin-top:10px; max-height:430px; overflow-y:auto">
         <table>
-          <thead><tr><th style="width:130px">Thời gian</th><th>Mã License Key</th><th>Khách hàng / SĐT</th><th style="width:110px">Gói</th><th style="text-align:right; width:120px">Giá sỉ trừ ví</th><th style="text-align:center; width:90px">Kích hoạt</th></tr></thead>
+          <thead><tr><th style="width:130px">Thời gian</th><th>Mã License Key</th><th>Khách hàng / SĐT</th><th style="width:125px">Gói & Hạn</th><th style="text-align:right; width:115px">Giá sỉ trừ ví</th><th style="text-align:center; width:110px">Kích hoạt</th></tr></thead>
           <tbody id="resellerLicensesTableBody">
             <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px">Đang tải danh sách key...</td></tr></tbody>
         </table></div>
       <div class="actions" style="margin-top:16px; justify-content:flex-end">
         <button type="button" class="ghost" onclick="closeResellerLicensesModal()">Đóng</button>
       </div></div></div>
-  <!-- Modal Nạp Tiền Ví Đại Lý -->
+  <!-- Modal Nạp Tiền / Điều Chỉnh Ví Đại Lý -->
   <div class="modal-mask" id="resellerTopupMask" style="display:none" onclick="if(event.target===this)closeTopupModal()">
-    <div class="modal" style="max-width:480px">
-      <h3>💰 Nạp Tiền Số Dư Ví Đại Lý</h3>
-      <div class="hint">Nạp tiền vào ví sau khi nhận được chuyển khoản từ đại lý. Số dư dùng để trừ sỉ khi thợ xuất mã.</div>
+    <div class="modal" style="max-width:500px">
+      <h3 id="topupModalHeading">💰 Nạp Tiền & Điều Chỉnh Ví Đại Lý</h3>
+      <div class="hint">Nạp tiền sỉ vào ví đại lý, cộng thưởng khuyến mãi hoặc điều chỉnh giảm nếu nạp nhầm.</div>
       <input type="hidden" id="topupResellerId">
-      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin:14px 0">
+      <div style="background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:12px; margin:12px 0">
         <div style="font-size:12px; color:var(--muted)">Đại lý thụ hưởng:</div>
         <div id="topupResellerTitle" style="font-size:16px; font-weight:700; color:var(--text); margin:2px 0"></div>
         <div id="topupResellerCurrentBalance" style="font-size:13px; color:var(--accent); font-weight:600"></div>
+        <div id="topupAfterBalancePreview" style="font-size:12px; color:var(--muted); margin-top:4px; font-weight:600"></div>
       </div>
-      <div style="margin-bottom:12px"><label>Số tiền nạp (VND) *</label>
-        <input id="topupAmount" type="text" inputmode="numeric" placeholder="VD: 5.000.000" style="font-size:16px; font-weight:700" oninput="onPriceInputChange(this)">
+      <div style="margin-bottom:12px"><label>Loại giao dịch ví *</label>
+        <select id="topupActionType" onchange="updateTopupPreviewUI()">
+          <option value="topup">💰 Nạp tiền sỉ (Cộng ví & tính vào Tổng tiền nạp sỉ)</option>
+          <option value="bonus">🎁 Cộng thưởng / Khuyến mãi (Cộng ví, không tính doanh thu nạp)</option>
+          <option value="deduct">➖ Trừ tiền / Điều chỉnh giảm (Khi nhập nhầm hoặc hoàn quỹ)</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px"><label id="topupAmountLabel">Số tiền giao dịch (VND) *</label>
+        <input id="topupAmount" type="text" inputmode="numeric" placeholder="VD: 5.000.000" style="font-size:16px; font-weight:700" oninput="onPriceInputChange(this); updateTopupPreviewUI()">
         <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap">
-          <button type="button" class="small ghost" onclick="$('topupAmount').value='2.000.000'">+2.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value='5.000.000'">+5.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value='10.000.000'">+10.000.000 ₫</button>
-          <button type="button" class="small ghost" onclick="$('topupAmount').value='20.000.000'">+20.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='1.000.000'; updateTopupPreviewUI()">1.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='2.000.000'; updateTopupPreviewUI()">2.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='5.000.000'; updateTopupPreviewUI()">5.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='10.000.000'; updateTopupPreviewUI()">10.000.000 ₫</button>
+          <button type="button" class="small ghost" onclick="$('topupAmount').value='20.000.000'; updateTopupPreviewUI()">20.000.000 ₫</button>
         </div></div>
-      <div><label>Ghi chú đối soát (Lưu vào nhật ký biến động ví)</label>
-        <input id="topupNote" placeholder="VD: Chuyển khoản VCB lúc 14:30">
+      <div><label>Ghi chú đối soát (Lưu vào nhật ký biến động ví) *</label>
+        <input id="topupNote" placeholder="VD: Chuyển khoản VCB lúc 14:30 / Thưởng đạt doanh số">
       </div>
       <div class="actions" style="margin-top:16px">
-        <button type="button" id="btnSubmitTopup" onclick="submitTopup()">Xác nhận nạp tiền</button>
+        <button type="button" id="btnSubmitTopup" onclick="submitTopup()">Xác nhận thực hiện</button>
         <button type="button" class="ghost" onclick="closeTopupModal()">Huỷ</button>
       </div></div></div>
   <!-- Modal Xem Chứng Từ Nghiệm Thu Chi Phí -->
@@ -1986,7 +2003,7 @@ function toggleTheme() { applyTheme(document.body.classList.contains("dark") ? "
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(localStorage.getItem("geely_admin_theme") || "light");
   try { localStorage.removeItem("geely_ota_priv_key_pem"); } catch (e) {}
-  document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices, closeExpenseReceiptModal].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") [closeEdit, closeQiModal, closeFuRuleModal, closeSettingsModal, closeOtaUnsignedModal, closeSavePricesConfirmModal, closeSimulateWebhookModal, closeDevices, closeExpenseReceiptModal, closeResellerModal, closeResetPinModal, closeResellerLicensesModal, closeTopupModal].forEach(fn => { try { if (typeof fn === "function") fn(); } catch (_) {} }); });
   // T0024: Touch session on load and every 10 mins (Rolling session 3 ngày)
   if (getSession()) {
     touchClientSession();
@@ -2017,7 +2034,7 @@ function applyUrlQueryParams() {
       window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000;
       try { localStorage.setItem("geely_profit_sharing", JSON.stringify(demoPs)); } catch(e) {}
       window._salesData = { settings: {}, orders: [
-        { id: "demo_1", order_code: "EX2-DEMO1", owner_name: "Toàn (Demo)", owner_phone: "0333332093", plan_id: "lifetime", final_amount: 2950000, status: "paid", created_at: new Date().toISOString() },
+        { id: "demo_1", order_code: "EX2-DEMO1", owner_name: "Toàn (Demo)", owner_phone: "0333332093", plan_id: "lifetime", final_amount: 2960000, status: "paid", created_at: new Date().toISOString() },
         { id: "demo_2", order_code: "EX2-DEMO2", owner_name: "Khách Demo", owner_phone: "0901234567", plan_id: "yearly", final_amount: 1170000, status: "pending", created_at: new Date().toISOString() }
       ], price_locks: [], logs: [] };
     }
@@ -2028,6 +2045,8 @@ function applyUrlQueryParams() {
     const searchEl = $("searchInput"); if (searchEl) { searchEl.value = midParam; searchKeyword = midParam; }
     const ownerNameEl = $("ownerName"); if (ownerNameEl) setTimeout(() => ownerNameEl.focus(), 150);
   }
+  const pkgParam = urlParams.get("pkg");
+  if (pkgParam) setTimeout(() => selectLicensePackage(pkgParam), 50);
   const tabParam = urlParams.get("tab") || (window.location.hash || "").replace("#", "");
   if (tabParam && ["licenses", "sales", "analytics", "quickInstall", "forceUpdate", "resellers"].includes(tabParam)) {
     setTimeout(() => { switchTab(tabParam); if (isDemo && tabParam === "analytics") renderProfitSharingUI(20000000); if (isDemo && tabParam === "sales") renderSalesOrdersTable(); }, 50);
@@ -2035,7 +2054,16 @@ function applyUrlQueryParams() {
 }
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
-  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) return { ok: true, status: 200, json: async () => ({}) };
+  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) {
+    if (path.startsWith("/rest/v1/licenses?select=")) {
+      const exp90 = new Date(Date.now() + 90 * 86400000).toISOString();
+      return { ok: true, status: 200, json: async () => ([
+        { key: "EX2-SALE-3M90-FREE", owner_name: "Nguyễn Văn Sale (Showroom Geely)", owner_phone: "0909888999", role: "sale", is_trial: false, active: true, max_devices: 1, max_pc_devices: 2, activation_count: 1, max_activations: null, note: "Tài khoản Sale (3 tháng miễn phí - Không tính doanh thu)", created_at: new Date().toISOString(), expires_at: exp90, devices: [{ id: 1, os: "Android", hostname: "IHU629G-Sale", machine_id: "car-sale-01" }] },
+        { key: "EX2-CAR1-LIFE-9999", owner_name: "Khách Mua Xe (Demo)", owner_phone: "0912345678", role: "car", is_trial: false, active: true, max_devices: 1, max_pc_devices: 2, activation_count: 1, max_activations: null, note: "Gói Vĩnh Viễn (2.960.000đ)", created_at: new Date().toISOString(), expires_at: null, devices: [{ id: 2, os: "Android", hostname: "IHU629G-Car", machine_id: "car-cust-01" }] }
+      ]) };
+    }
+    return { ok: true, status: 200, text: async () => '"EX2-SALE-DEMO-2026"', json: async () => ({}) };
+  }
   const url = CONFIG.supabaseUrl;
   const isAuth = path.includes("admin_request_login_otp") || path.includes("admin_verify_login_otp");
   if (!isAuth && !getSession()) {
@@ -2100,27 +2128,28 @@ function clearDateTimeFilter() {
 let expiryTouched = false;
 function markExpiryTouched() { expiryTouched = true; syncCreateExpiryUI(); }
 function setCreateRoleDefaults() {
-  const r = $("role").value;
-  const hintEl = $("roleHint");
-  const expHintEl = $("expiryHint");
-  // Trần PC mặc định theo role: mã Dev/Admin phải để trống (nhiều máy tự do),
-  // nếu không mã nội bộ dính trần 3 trong khi max_devices của nó là 20.
+  const r = $("role").value, hintEl = $("roleHint"), expHintEl = $("expiryHint");
   $("maxPcDevices").value = (r === "admin" || r === "dev" ? "" : "2");
+  if (r !== "sale" && $("note") && $("note").value.startsWith("Tài khoản Sale")) $("note").value = "";
   if (r === "car") {
     hintEl.textContent = "Khách mua xe (mặc định kèm PC): 1 đầu xe Android + số máy tính theo ô bên cạnh.";
-    expHintEl.textContent = 'Mặc định hạn 2 tuần — tick "Vĩnh viễn" nếu bán đứt.';
-    if (!expiryTouched) { $("expiresForever").checked = false; $("expiresAt").value = defaultExpiry(); }
+    expHintEl.textContent = 'Thời hạn theo gói bản quyền đang chọn — tick "Vĩnh viễn" nếu bán đứt.';
+    if (currentPackageSelected === "sale") { selectLicensePackage("lifetime"); return; }
+    if (!expiryTouched && !currentPackageSelected) { $("expiresForever").checked = false; $("expiresAt").value = defaultExpiry(); }
+  } else if (r === "sale") {
+    hintEl.innerHTML = "Dành cho <b>Nhân viên Sale</b>: 1 đầu xe Android + 2 máy tính PC, mặc định <b>3 tháng miễn phí (0đ)</b>, <b>không tính vào doanh thu</b>.";
+    expHintEl.textContent = "Mã Sale mặc định hạn 3 tháng (90 ngày Free) — Không tính doanh thu.";
+    if (!expiryTouched) {
+      $("expiresForever").checked = false;
+      const d = new Date(); d.setDate(d.getDate() + 90); $("expiresAt").value = toDateInput(d);
+    }
+    if (currentPackageSelected !== "sale") { selectLicensePackage("sale"); return; }
   } else if (r === "pc") {
     hintEl.textContent = "Chỉ dùng trên máy tính PCConnect: số máy tính theo ô bên cạnh, chặn hẳn trên xe.";
     expHintEl.textContent = "Mã PCConnect mặc định Vĩnh viễn.";
     if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
   } else if (r === "admin") {
-    // 01/09/2026 — mã `admin` KHÔNG chỉ là "mã nhiều máy": `admin_request_login_otp` coi mọi
-    // SĐT gắn với license role='admin' đang active là ADMIN ĐƯỢC PHÉP ĐĂNG NHẬP, và
-    // `admin_verify_login_otp` trả về khoá service_role. Cấp mã admin = mở thêm một cửa vào.
-    hintEl.innerHTML = "Dành riêng cho Quản trị viên tối cao: nhận cả Xe và PC (20 máy test), không đặt trần PC, chạy cả Prod và Dev.<br>" +
-      "<b>⚠️ Mã này TẠO LUÔN QUYỀN ĐĂNG NHẬP TRANG QUẢN TRỊ</b> cho số điện thoại gắn với nó — " +
-      "chỉ cấp cho người anh thật sự tin.";
+    hintEl.innerHTML = "Dành riêng cho Quản trị viên tối cao: nhận cả Xe và PC (20 máy test), không đặt trần PC, chạy cả Prod và Dev.<br><b>⚠️ Mã này TẠO LUÔN QUYỀN ĐĂNG NHẬP TRANG QUẢN TRỊ</b> cho số điện thoại gắn với nó — chỉ cấp cho người anh thật sự tin.";
     expHintEl.textContent = "Mã Admin mặc định Vĩnh viễn.";
     if (!expiryTouched) { $("expiresForever").checked = true; $("expiresAt").value = defaultExpiry(); }
   } else if (r === "dev") {
@@ -2131,88 +2160,75 @@ function setCreateRoleDefaults() {
   syncCreateExpiryUI();
 }
 $("role").addEventListener("change", setCreateRoleDefaults);
-function defaultExpiry() {
-  const d = new Date();
-  d.setDate(d.getDate() + 14);
-  return toDateInput(d);
-}
+function defaultExpiry() { const d = new Date(); d.setDate(d.getDate() + 14); return toDateInput(d); }
 function syncCreateExpiryUI() { $("expiresAt").disabled = $("expiresForever").checked; }
 function syncEditExpiryUI() { $("edExpires").disabled = $("edExpiresForever").checked; }
-let currentPackageSelected = "lifetime"; // 'lifetime', 'yearly', 'quarter', 'trial'
+let currentPackageSelected = "lifetime"; // 'lifetime', 'yearly', 'quarter', 'sale', 'trial'
 function selectLicensePackage(pkg) {
   currentPackageSelected = pkg;
   const isTrial = (pkg === "trial");
   if ($("typeOfficial")) $("typeOfficial").checked = !isTrial;
   if ($("typeTrial")) $("typeTrial").checked = isTrial;
-  const pkgMap = {
-    lifetime: $("cardLifetime"),
-    yearly: $("cardYearly"),
-    quarter: $("cardQuarter"),
-    combo_icar: $("cardComboIcar"),
-    icar_discount: $("cardDiscountIcar"),
-    trial: $("cardTrial")
-  };
+  if (pkg === "sale" && $("role") && $("role").value !== "sale") $("role").value = "sale";
+  else if (pkg !== "sale" && pkg !== "trial" && $("role") && $("role").value === "sale") $("role").value = "car";
+  const pkgMap = { lifetime: $("cardLifetime"), yearly: $("cardYearly"), quarter: $("cardQuarter"), combo_icar: $("cardComboIcar"), icar_discount: $("cardDiscountIcar"), sale: $("cardSale"), trial: $("cardTrial") };
   Object.keys(pkgMap).forEach(k => {
     const el = pkgMap[k]; if (!el) return;
-    el.classList.remove("active", "lifetime-active", "yearly-active", "quarter-active", "combo-icar-active", "icar-discount-active", "trial-active");
+    el.classList.remove("active", "lifetime-active", "yearly-active", "quarter-active", "combo-icar-active", "icar-discount-active", "sale-active", "trial-active");
     const radio = el.querySelector("input[type=radio]"); if (radio) radio.checked = (k === pkg);
-    if (k === pkg) el.classList.add("active", k + "-active");
+    if (k === pkg) el.classList.add("active", k.replace("_", "-") + "-active");
   });
-  const pillMap = {
-    lifetime: $("pillPkgLifetime"),
-    yearly: $("pillPkgYearly"),
-    quarter: $("pillPkgQuarter"),
-    combo_icar: $("pillPkgComboIcar"),
-    icar_discount: $("pillPkgDiscountIcar")
-  };
+  const pillMap = { lifetime: $("pillPkgLifetime"), yearly: $("pillPkgYearly"), quarter: $("pillPkgQuarter"), combo_icar: $("pillPkgComboIcar"), icar_discount: $("pillPkgDiscountIcar"), sale: $("pillPkgSale") };
   Object.keys(pillMap).forEach(k => { if (pillMap[k]) pillMap[k].classList.toggle("active", k === pkg); });
   const sIcon = $("pkgSummaryIcon"), sTitle = $("pkgSummaryTitle"), sBadge = $("pkgSummaryBadge"), sExp = $("pkgSummaryExpiry");
+  const isAutoNote = v => !v || v.startsWith("Gói ") || v.startsWith("Combo ") || v.startsWith("Ưu đãi ") || v.startsWith("Mua Connect ") || v.startsWith("Tài khoản Sale");
   if (pkg === "lifetime") {
     $("expiresForever").checked = true; $("expiresForever").disabled = false; $("expiresAt").disabled = true;
     if (sIcon) sIcon.textContent = "👑"; if (sTitle) sTitle.textContent = "Gói Vĩnh Viễn (Lifetime)";
-    if (sBadge) { sBadge.textContent = "2.950.000 ₫"; sBadge.className = "type-card-badge lifetime"; }
+    if (sBadge) { sBadge.textContent = "2.960.000 ₫ (Gốc 3.950.000 ₫ -25%)"; sBadge.className = "type-card-badge lifetime"; }
     if (sExp) sExp.textContent = "👑 Vĩnh viễn (Không thời hạn)";
-    if ($("note") && (!$("note").value || $("note").value.startsWith("Gói "))) $("note").value = "Gói Vĩnh Viễn (2.950.000đ)";
+    if ($("note") && isAutoNote($("note").value)) $("note").value = "Gói Vĩnh Viễn (2.960.000đ - Giảm 25% từ 3.950.000đ)";
   } else if (pkg === "yearly") {
     $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
     const d = new Date(); d.setFullYear(d.getFullYear() + 1); $("expiresAt").value = toDateInput(d);
     if (sIcon) sIcon.textContent = "📅"; if (sTitle) sTitle.textContent = "Gói 1 Năm (12 Tháng)";
     if (sBadge) { sBadge.textContent = "1.170.000 ₫"; sBadge.className = "type-card-badge yearly"; }
     if (sExp) sExp.textContent = "📅 Hết hạn: " + toDateInput(d) + " (365 ngày)";
-    if ($("note") && (!$("note").value || $("note").value.startsWith("Gói "))) $("note").value = "Gói 1 Năm (1.170.000đ)";
+    if ($("note") && isAutoNote($("note").value)) $("note").value = "Gói 1 Năm (1.170.000đ)";
   } else if (pkg === "quarter") {
     $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
     const d = new Date(); d.setDate(d.getDate() + 90); $("expiresAt").value = toDateInput(d);
     if (sIcon) sIcon.textContent = "⚡"; if (sTitle) sTitle.textContent = "Gói 3 Tháng (Quý)";
     if (sBadge) { sBadge.textContent = "⚡ 495.000 ₫"; sBadge.className = "type-card-badge quarter"; }
     if (sExp) sExp.textContent = "⚡ Hết hạn: " + toDateInput(d) + " (90 ngày)";
-    if ($("note") && (!$("note").value || $("note").value.startsWith("Gói "))) $("note").value = "Gói 3 Tháng (495.000đ)";
+    if ($("note") && isAutoNote($("note").value)) $("note").value = "Gói 3 Tháng (495.000đ)";
+  } else if (pkg === "sale") {
+    $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
+    const d = new Date(); d.setDate(d.getDate() + 90); $("expiresAt").value = toDateInput(d);
+    if (sIcon) sIcon.textContent = "🤝"; if (sTitle) sTitle.textContent = "Tài Khoản Sale — 3 Tháng Free (Không tính doanh thu)";
+    if (sBadge) { sBadge.textContent = "0 ₫ (Không tính DT)"; sBadge.className = "type-card-badge sale"; }
+    if (sExp) sExp.textContent = "🤝 Hết hạn: " + toDateInput(d) + " (90 ngày Free)";
+    if ($("note") && isAutoNote($("note").value)) $("note").value = "Tài khoản Sale (3 tháng miễn phí - Không tính doanh thu)";
   } else if (pkg === "combo_icar") {
     $("expiresForever").checked = false; $("expiresForever").disabled = false; $("expiresAt").disabled = false;
     const d = new Date(); d.setFullYear(d.getFullYear() + 1); $("expiresAt").value = toDateInput(d);
     if (sIcon) sIcon.textContent = "📦"; if (sTitle) sTitle.textContent = "Combo 4G ICAR SLIM (3.900.000 ₫)";
     if (sBadge) { sBadge.textContent = "3.900.000 ₫"; sBadge.className = "type-card-badge combo-icar"; }
     if (sExp) sExp.textContent = "📅 Hết hạn PM: " + toDateInput(d) + " (Tặng 1 Năm Connect) • Thiết bị 4G BH 12T";
-    if ($("note") && (!$("note").value || $("note").value.startsWith("Combo ") || $("note").value.startsWith("Ưu đãi ") || $("note").value.startsWith("Mua Connect ") || $("note").value.startsWith("Gói "))) {
-      $("note").value = "Combo 4G ICAR SLIM (3.900.000đ) - Tặng 1 năm Car & Phone Connect";
-    }
+    if ($("note") && isAutoNote($("note").value)) $("note").value = "Combo 4G ICAR SLIM (3.900.000đ) - Tặng 1 năm Car & Phone Connect";
   } else if (pkg === "icar_discount") {
     const isForever = $("expiresForever") && $("expiresForever").checked;
     $("expiresForever").disabled = false; $("expiresAt").disabled = isForever;
     if (sIcon) sIcon.textContent = "💎"; if (sTitle) sTitle.textContent = "Mua Connect Giữ Giá — Giảm 20% Gói ICAR 3.9Tr";
     if (isForever) {
-      if (sBadge) { sBadge.textContent = "Tổng: 6.070.000 ₫ (Vĩnh viễn + ICAR -20%)"; sBadge.className = "type-card-badge icar-discount"; }
+      if (sBadge) { sBadge.textContent = "Tổng: 6.080.000 ₫ (Vĩnh viễn + ICAR -20%)"; sBadge.className = "type-card-badge icar-discount"; }
       if (sExp) sExp.textContent = "👑 Vĩnh viễn (Phần mềm) • Thiết bị 4G ICAR giảm 20% còn 3.120.000 ₫";
-      if ($("note") && (!$("note").value || $("note").value.startsWith("Combo ") || $("note").value.startsWith("Ưu đãi ") || $("note").value.startsWith("Mua Connect "))) {
-        $("note").value = "Mua Connect Vĩnh Viễn (2.950k) - Giảm 20% thiết bị ICAR 4G (3.120k) — Tổng: 6.070.000đ";
-      }
+      if ($("note") && isAutoNote($("note").value)) $("note").value = "Mua Connect Vĩnh Viễn (2.960k) - Giảm 20% thiết bị ICAR 4G (3.120k) — Tổng: 6.080.000đ";
     } else {
       const d = new Date(); d.setFullYear(d.getFullYear() + 1); $("expiresAt").value = toDateInput(d);
       if (sBadge) { sBadge.textContent = "Tổng: 4.290.000 ₫ (1 Năm + ICAR -20%)"; sBadge.className = "type-card-badge icar-discount"; }
       if (sExp) sExp.textContent = "📅 Hết hạn PM: " + toDateInput(d) + " (1 Năm) • Thiết bị 4G ICAR giảm 20% còn 3.120.000 ₫";
-      if ($("note") && (!$("note").value || $("note").value.startsWith("Combo ") || $("note").value.startsWith("Ưu đãi ") || $("note").value.startsWith("Mua Connect "))) {
-        $("note").value = "Mua Connect 1 Năm (1.170k) - Giảm 20% thiết bị ICAR 4G (3.120k) — Tổng: 4.290.000đ";
-      }
+      if ($("note") && isAutoNote($("note").value)) $("note").value = "Mua Connect 1 Năm (1.170k) - Giảm 20% thiết bị ICAR 4G (3.120k) — Tổng: 4.290.000đ";
     }
   } else if (pkg === "trial") {
     $("expiresForever").checked = false;
@@ -2225,88 +2241,59 @@ function selectLicensePackage(pkg) {
 function setExpiryPreset(pkg) { selectLicensePackage(pkg); }
 function onExpiresForeverChange() {
   markExpiryTouched();
-  if (currentPackageSelected === "icar_discount") {
-    selectLicensePackage("icar_discount");
-  } else {
-    selectLicensePackage($("expiresForever").checked ? "lifetime" : "yearly");
+  if (currentPackageSelected === "sale" || ($("role") && $("role").value === "sale")) {
+    syncCreateExpiryUI();
+    const sExp = $("pkgSummaryExpiry");
+    if (sExp) sExp.textContent = $("expiresForever").checked ? "🤝 Vĩnh viễn (Sale Free)" : "🤝 Hết hạn: " + ($("expiresAt").value || defaultExpiry()) + " (Free)";
+    return;
   }
+  if (currentPackageSelected === "icar_discount") selectLicensePackage("icar_discount");
+  else selectLicensePackage($("expiresForever").checked ? "lifetime" : "yearly");
 }
 function selectLicenseType(type) { selectLicensePackage(type === "trial" ? "trial" : "lifetime"); }
 function syncTrialUI() {
-  const isTrial = $("typeTrial").checked;
-  const trialBox = $("trialConfigSection");
+  const isTrial = $("typeTrial").checked, trialBox = $("trialConfigSection");
   if (trialBox) trialBox.style.display = isTrial ? "block" : "none";
-  const fcRole = $("fcRole"), fcMaxAct = $("fcMaxActivations"), fcMaxPc = $("fcMaxPcDevices"), fcExp = $("fcExpires");
-  const techBadge = $("techModeBadge");
+  const fcRole = $("fcRole"), fcMaxAct = $("fcMaxActivations"), fcMaxPc = $("fcMaxPcDevices"), fcExp = $("fcExpires"), techBadge = $("techModeBadge");
   const bRole = $("badgeRole"), bAct = $("badgeMaxAct"), bPc = $("badgeMaxPc"), bExp = $("badgeExpires");
   if (isTrial) {
     if (techBadge) { techBadge.className = "badge-sec-locked"; techBadge.textContent = "🔒 Đã tự động khoá theo chính sách Dùng thử"; }
-    $("role").value = "car";
-    $("role").disabled = true;
-    if (fcRole) fcRole.classList.add("is-locked");
+    $("role").value = "car"; $("role").disabled = true; if (fcRole) fcRole.classList.add("is-locked");
     if (bRole) bRole.innerHTML = '<span class="badge-field-locked">🔒 Cố định: Xe</span>';
     $("roleHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Bản dùng thử chỉ cấp cho Đầu xe (Flyme Auto), không cấp quyền Admin/Dev.</span>';
-    $("maxActivations").value = "1";
-    $("maxActivations").disabled = true;
-    if (fcMaxAct) fcMaxAct.classList.add("is-locked");
+    $("maxActivations").value = "1"; $("maxActivations").disabled = true; if (fcMaxAct) fcMaxAct.classList.add("is-locked");
     if (bAct) bAct.innerHTML = '<span class="badge-field-locked">🔒 Cố định: 1 lần</span>';
     $("maxActHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Mã dùng thử chỉ cho phép kích hoạt duy nhất trên 1 xe.</span>';
-    $("maxPcDevices").value = "0";
-    $("maxPcDevices").disabled = true;
-    if (fcMaxPc) fcMaxPc.classList.add("is-locked");
+    $("maxPcDevices").value = "0"; $("maxPcDevices").disabled = true; if (fcMaxPc) fcMaxPc.classList.add("is-locked");
     if (bPc) bPc.innerHTML = '<span class="badge-field-locked">🔒 Cố định: 0 PC</span>';
     $("maxPcHint").innerHTML = '<span style="color:#ef4444;font-weight:500;">Mã dùng thử không hỗ trợ máy tính PCConnect (chỉ chạy trên xe).</span>';
-    $("expiresForever").checked = false;
-    $("expiresForever").disabled = true;
-    $("expiresAt").disabled = true;
-    if (fcExp) fcExp.classList.add("is-locked");
+    $("expiresForever").checked = false; $("expiresForever").disabled = true; $("expiresAt").disabled = true; if (fcExp) fcExp.classList.add("is-locked");
     if (bExp) bExp.innerHTML = '<span class="badge-field-auto">🔒 Tự động theo ngày</span>';
     $("expiryHint").innerHTML = '<span style="color:#2563eb;font-weight:500;">Hạn dùng được tính tự động từ "Cấu hình Thời hạn Dùng thử" ở trên.</span>';
     onTrialDaysInput();
   } else {
     if (techBadge) { techBadge.className = "badge-sec-editable"; techBadge.textContent = "✏️ Tuỳ chỉnh tự do"; }
-    $("role").disabled = false;
-    if (fcRole) fcRole.classList.remove("is-locked");
-    if (bRole) bRole.innerHTML = '';
-    $("maxActivations").disabled = false;
-    if (fcMaxAct) fcMaxAct.classList.remove("is-locked");
-    if (bAct) bAct.innerHTML = '';
+    $("role").disabled = false; if (fcRole) fcRole.classList.remove("is-locked"); if (bRole) bRole.innerHTML = '';
+    $("maxActivations").disabled = false; if (fcMaxAct) fcMaxAct.classList.remove("is-locked"); if (bAct) bAct.innerHTML = '';
     $("maxActHint").innerHTML = 'Đếm số lần mã được kích hoạt trên một <b>máy mới</b> — bộ đếm <b>không giảm</b> khi xoá thiết bị.';
-    $("maxPcDevices").disabled = false;
-    if (fcMaxPc) fcMaxPc.classList.remove("is-locked");
-    if (bPc) bPc.innerHTML = '';
+    $("maxPcDevices").disabled = false; if (fcMaxPc) fcMaxPc.classList.remove("is-locked"); if (bPc) bPc.innerHTML = '';
     $("maxPcHint").innerHTML = 'Số <b>máy tính</b> được giữ chỗ cùng lúc (đầu xe đếm riêng). Để trống = không giới hạn.';
-    $("expiresForever").disabled = false;
-    $("expiresAt").disabled = $("expiresForever").checked;
-    if (fcExp) fcExp.classList.remove("is-locked");
-    if (bExp) bExp.innerHTML = '';
+    $("expiresForever").disabled = false; $("expiresAt").disabled = $("expiresForever").checked; if (fcExp) fcExp.classList.remove("is-locked"); if (bExp) bExp.innerHTML = '';
     setCreateRoleDefaults();
   }
 }
-function setTrialDays(days) {
-  $("trialDays").value = days;
-  onTrialDaysInput();
-}
+function setTrialDays(days) { $("trialDays").value = days; onTrialDaysInput(); }
 function onTrialDaysInput() {
   const val = parseInt($("trialDays").value) || 0;
-  [1, 3, 7, 14].forEach(d => {
-    const p = $("pillDays" + d);
-    if (p) { if (val === d) p.classList.add("active"); else p.classList.remove("active"); }
-  });
+  [1, 3, 7, 14].forEach(d => { const p = $("pillDays" + d); if (p) p.classList.toggle("active", val === d); });
   updateTrialExpiryPreview();
 }
 function updateTrialExpiryPreview() {
-  const days = Math.min(parseInt($("trialDays").value) || 3, 90);
-  const d = new Date();
+  const days = Math.min(parseInt($("trialDays").value) || 3, 90), d = new Date();
   d.setDate(d.getDate() + days);
-  const preview = $("trialExpiryPreview");
-  if (preview) {
-    preview.textContent = "📅 Hết hạn: " + toDateInput(d) + " (23:59:59)";
-  }
-  const sExp = $("pkgSummaryExpiry");
-  if (sExp && currentPackageSelected === "trial") {
-    sExp.textContent = "⏱️ Hết hạn: " + toDateInput(d) + " (" + days + " ngày)";
-  }
+  const preview = $("trialExpiryPreview"), sExp = $("pkgSummaryExpiry");
+  if (preview) preview.textContent = "📅 Hết hạn: " + toDateInput(d) + " (23:59:59)";
+  if (sExp && currentPackageSelected === "trial") sExp.textContent = "⏱️ Hết hạn: " + toDateInput(d) + " (" + days + " ngày)";
 }
 let createKeyBusy = false;
 async function createKey() {
@@ -2319,80 +2306,50 @@ async function createKey() {
     out.classList.remove("show");
     const name = $("ownerName").value.trim(), phone = $("ownerPhone").value.trim();
     if (!name || !phone) { showMsg(out, "err", "Nhập tên chủ mã và số điện thoại."); return; }
-    const isTrial = $("typeTrial").checked;
-    const forever = $("expiresForever").checked;
-    const expDate = $("expiresAt").value;
+    const isTrial = $("typeTrial").checked, forever = $("expiresForever").checked, expDate = $("expiresAt").value;
     if (!isTrial && !forever && !expDate) { showMsg(out, "err", 'Chọn hạn dùng hoặc tick "Vĩnh viễn".'); return; }
-    const selectedRole = $("role").value;
-    const maxActRaw = $("maxActivations").value.trim();
-    const maxAct = maxActRaw === "" ? null : parseInt(maxActRaw);
+    const selectedRole = $("role").value, maxActRaw = $("maxActivations").value.trim(), maxAct = maxActRaw === "" ? null : parseInt(maxActRaw);
     if (maxAct !== null && (!Number.isFinite(maxAct) || maxAct < 1)) {
       showMsg(out, "err", "Số lần kích hoạt tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
     }
-    const maxPcRaw = $("maxPcDevices").value.trim();
-    const maxPc = maxPcRaw === "" ? null : parseInt(maxPcRaw);
+    const maxPcRaw = $("maxPcDevices").value.trim(), maxPc = maxPcRaw === "" ? null : parseInt(maxPcRaw);
     if (!isTrial && maxPc !== null && (!Number.isFinite(maxPc) || maxPc < 1)) {
       showMsg(out, "err", "Số máy tính tối đa phải >= 1, hoặc để trống = không giới hạn."); return;
     }
-    let expIso = null;
-    let maxDevices = 1;
-    let maxPcVal = maxPc;
-    let maxActVal = maxAct;
-    let offlineDays = 14;
+    let expIso = null, maxDevices = 1, maxPcVal = maxPc, maxActVal = maxAct, offlineDays = 14;
     if (isTrial) {
-      const trialDaysRaw = parseInt($("trialDays").value);
-      const trialDays = (!Number.isFinite(trialDaysRaw) || trialDaysRaw < 1) ? 3 : Math.min(trialDaysRaw, 90);
-      const d = new Date();
-      d.setDate(d.getDate() + trialDays);
-      expIso = toDateInput(d) + "T23:59:59+07:00";
-      maxDevices = 1;
-      maxPcVal = 0;
-      maxActVal = 1;
-      offlineDays = 1;
+      const trialDaysRaw = parseInt($("trialDays").value), trialDays = (!Number.isFinite(trialDaysRaw) || trialDaysRaw < 1) ? 3 : Math.min(trialDaysRaw, 90);
+      const d = new Date(); d.setDate(d.getDate() + trialDays);
+      expIso = toDateInput(d) + "T23:59:59+07:00"; maxDevices = 1; maxPcVal = 0; maxActVal = 1; offlineDays = 1;
     } else {
       expIso = forever ? null : expDate + "T23:59:59+07:00";
-      maxDevices = (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1);
-      offlineDays = 14;
+      maxDevices = (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1); offlineDays = 14;
     }
     const body = {
       p_owner_name: name, p_owner_phone: phone, p_note: $("note").value.trim() || null,
-      p_max_devices: maxDevices,
-      p_offline_days: offlineDays,
-      p_expires_at: expIso,
-      p_role: isTrial ? "car" : selectedRole,
-      p_max_activations: maxActVal,
-      p_max_pc_devices: maxPcVal,
-      p_is_trial: isTrial
+      p_max_devices: maxDevices, p_offline_days: offlineDays, p_expires_at: expIso,
+      p_role: isTrial ? "car" : selectedRole, p_max_activations: maxActVal, p_max_pc_devices: maxPcVal, p_is_trial: isTrial
     };
     try {
       const res = await api("/rest/v1/rpc/admin_create_license", { method: "POST", body: JSON.stringify(body) });
       const text = (await res.text()).trim();
       let key = text;
       try { key = JSON.parse(text); } catch (e) {}
-      out.innerHTML = '<div class="keybox"></div>' +
-        '<button class="ghost small" id="btnCopyKey">📋 Copy mã</button>' +
-        '<div class="msg ok"></div>';
+      out.innerHTML = '<div class="keybox"></div><button class="ghost small" id="btnCopyKey">📋 Copy mã</button><div class="msg ok"></div>';
       out.querySelector(".keybox").textContent = key;
       out.querySelector(".msg").textContent = "Đã tạo thành công (" + (isTrial ? "⏱️ Dùng thử " + ($("trialDays").value || 3) + " ngày" : roleLabel($("role").value) + ", " + (forever ? "Vĩnh viễn" : "Hạn đến " + expDate)) + "). Gửi mã + SĐT cho khách.";
       $("btnCopyKey").addEventListener("click", () => {
-        copyKey(key);
-        const b = $("btnCopyKey");
-        if (b) {
-          const oldText = b.textContent;
-          b.textContent = "✅ Đã copy mã!";
-          setTimeout(() => { b.textContent = oldText; }, 2000);
-        }
+        copyKey(key); const b = $("btnCopyKey");
+        if (b) { const oldText = b.textContent; b.textContent = "✅ Đã copy mã!"; setTimeout(() => { b.textContent = oldText; }, 2000); }
       });
       out.classList.add("show");
       loadKeys();
     } catch (e) { showMsg(out, "err", "Lỗi: " + e.message); }
-  } finally {
-    createKeyBusy = false;
-    btn.disabled = false;
-  }
+  } finally { createKeyBusy = false; btn.disabled = false; }
 }
 function roleLabel(r) {
   if (r === "car") return "🚗 Xe (+PC)";
+  if (r === "sale") return "🤝 Sale (0đ)";
   if (r === "pc") return "💻 Chỉ PC";
   if (r === "admin") return "👑 Admin";
   if (r === "dev") return "🛠️ Dev";
@@ -2401,9 +2358,7 @@ function roleLabel(r) {
 function roleBadge(r, isTrial) {
   const role = r || "car";
   let html = '<span class="tag ' + role + '">' + roleLabel(role) + '</span>';
-  if (isTrial) {
-    html += ' <span class="tag" style="background:#2563eb; color:#fff;">⏱️ Trial</span>';
-  }
+  if (isTrial) html += ' <span class="tag" style="background:#2563eb; color:#fff;">⏱️ Trial</span>';
   return html;
 }
 function copyKey(k) {
@@ -2411,48 +2366,32 @@ function copyKey(k) {
     .catch(() => { const t = document.createElement("textarea"); t.value = k; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); });
 }
 function showMsg(el, kind, text) { el.className = "msg " + kind; el.textContent = text; }
-// Đếm máy ĐANG DÙNG — máy bị đá ra không tính, đúng như cách check_license đếm
-// (mọi phép đếm giới hạn máy ở server đều lọc `kicked_at is null`). Đếm cả máy bị
-// đá thì bảng hiện "2 xe" trong khi server vẫn cho kích hoạt thêm — nhìn là hoang mang.
 function formatDeviceCount(r) {
-  const devs = r.devices || [];
-  const alive = devs.filter(d => !d.kicked_at);
-  const kicked = devs.length - alive.length;
-  const kickTag = kicked > 0
-    ? ' <span class="tag off">⛔ ' + kicked + ' bị đá</span>'
-    : '';
+  const devs = r.devices || [], alive = devs.filter(d => !d.kicked_at), kicked = devs.length - alive.length;
+  const kickTag = kicked > 0 ? ' <span class="tag off">⛔ ' + kicked + ' bị đá</span>' : '';
   if (!alive.length) return '<span style="color:var(--muted)">0 máy</span>' + kickTag;
   let cars = 0, pcs = 0;
-  for (const d of alive) {
-    if ((d.os || "").toLowerCase() === "android") cars++;
-    else pcs++;
-  }
+  for (const d of alive) { if ((d.os || "").toLowerCase() === "android") cars++; else pcs++; }
   const parts = [];
   if (cars > 0) parts.push("<b>" + cars + "</b> xe");
   if (pcs > 0) parts.push("<b>" + pcs + "</b> PC" + (r.max_pc_devices != null ? "/" + r.max_pc_devices : ""));
-  const pcFull = r.max_pc_devices != null && pcs >= r.max_pc_devices
-    ? ' <span class="tag off">đầy PC</span>' : '';
+  const pcFull = r.max_pc_devices != null && pcs >= r.max_pc_devices ? ' <span class="tag off">đầy PC</span>' : '';
   return parts.join(", ") + ' <span class="hint" style="display:inline">(' + alive.length + ' máy)</span>' + pcFull + kickTag;
 }
-// Bộ đếm số lần mã được kích hoạt trên máy MỚI (không giảm khi xoá thiết bị).
-// Chạm trần / gần chạm trần thì tô màu cảnh báo để nhìn bảng là thấy ngay.
 function formatActivations(r) {
-  const used = r.activation_count || 0;
-  const max = r.max_activations;
-  const last = r.last_activated_at ? String(r.last_activated_at).slice(0, 10) : "—";
-  if (max == null) {
-    return '<b>' + used + '</b> lần <span class="hint" style="display:inline">/ ∞</span>' +
-      '<div class="hint">Gần nhất: ' + esc(last) + '</div>';
-  }
+  const used = r.activation_count || 0, max = r.max_activations, last = r.last_activated_at ? String(r.last_activated_at).slice(0, 10) : "—";
+  if (max == null) return '<b>' + used + '</b> lần <span class="hint" style="display:inline">/ ∞</span><div class="hint">Gần nhất: ' + esc(last) + '</div>';
   const color = used >= max ? "var(--err)" : (used >= max - 1 ? "var(--warn)" : "inherit");
-  return '<b style="color:' + color + '">' + used + '/' + max + '</b> lần' +
-    (used >= max ? ' <span class="tag off">Hết lượt</span>' : '') +
-    '<div class="hint">Gần nhất: ' + esc(last) + '</div>';
+  return '<b style="color:' + color + '">' + used + '/' + max + '</b> lần' + (used >= max ? ' <span class="tag off">Hết lượt</span>' : '') + '<div class="hint">Gần nhất: ' + esc(last) + '</div>';
 }
 function getLicensePackageInfo(r) {
   if (r.is_trial || (r.role || "").toLowerCase() === "trial") {
     const isExp = r.expires_at && new Date(r.expires_at) < new Date(), daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / 86400000)) : 0;
     return { id: "trial", name: "Dùng thử", badge: isExp ? '<span class="tag off">⛔ Trial hết hạn</span>' : '<span class="tag on" style="background:#d97706; color:#fff;">⏱️ Trial (' + daysLeft + 'd)</span>' };
+  }
+  if ((r.role || "").toLowerCase() === "sale") {
+    const isExp = r.expires_at && new Date(r.expires_at) < new Date(), daysLeft = r.expires_at ? Math.max(0, Math.ceil((new Date(r.expires_at) - new Date()) / 86400000)) : null;
+    return { id: "sale", name: "Mã Sale (0đ)", badge: isExp ? '<span class="tag off">⛔ Sale hết hạn</span>' : '<span class="tag sale" style="font-weight:700">🤝 Sale Free' + (daysLeft !== null ? ' (' + daysLeft + 'd)' : '') + '</span>' };
   }
   const note = (r.note || "").toLowerCase(), created = r.created_at ? new Date(r.created_at) : new Date(), expires = r.expires_at ? new Date(r.expires_at) : null;
   const isExp = expires && expires < new Date(), diffDays = expires ? Math.round((expires - created) / 86400000) : 9999;
@@ -2477,20 +2416,10 @@ function getLicensePackageInfo(r) {
   return { id: "custom", name: "Có thời hạn", badge: isExp ? '<span class="tag off">⛔ Hết hạn</span>' : '<span class="tag" style="background:#64748b; color:#fff">⏳ Có hạn</span>' };
 }
 function rowHtml(r) {
-  const adminTag = isRecordAdmin(r)
-    ? ' <span class="tag admin">👑 Quản trị</span>' : '';
-  const pkgInfo = getLicensePackageInfo(r);
-  let expiryHtml = '';
-  if (pkgInfo.id === "lifetime") {
-    expiryHtml = pkgInfo.badge;
-  } else {
-    const expDateStr = r.expires_at ? esc(r.expires_at.slice(0, 10)) : "";
-    expiryHtml = pkgInfo.badge + '<div class="hint mono" style="margin-top:2px;">' + expDateStr + '</div>';
-  }
+  const adminTag = isRecordAdmin(r) ? ' <span class="tag admin">👑 Quản trị</span>' : '', pkgInfo = getLicensePackageInfo(r);
+  const expiryHtml = pkgInfo.id === "lifetime" ? pkgInfo.badge : pkgInfo.badge + '<div class="hint mono" style="margin-top:2px;">' + (r.expires_at ? esc(r.expires_at.slice(0, 10)) : "") + '</div>';
   const trialExtendBtns = r.is_trial
-    ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button>' +
-      '<button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>'
-    : '';
+    ? '<button class="ghost small" data-act="extendTrial" data-days="1" title="Gia hạn thêm 1 ngày">+1 ngày</button><button class="ghost small" data-act="extendTrial" data-days="3" title="Gia hạn thêm 3 ngày">+3 ngày</button>' : '';
   const createdStr = r.created_at ? '<div class="hint mono" style="font-size:11px; margin-top:2px;" title="Ngày tạo: ' + esc(r.created_at) + '">🕒 ' + formatIsoTime(r.created_at) + '</div>' : '';
   return '<td class="mono nowrap"><b>' + esc(r.key) + '</b>' + createdStr + '</td>' +
     '<td><b>' + esc(r.owner_name) + '</b>' + adminTag + '</td>' +
@@ -2501,14 +2430,8 @@ function rowHtml(r) {
     '<td class="note-cell">' + (r.note ? esc(r.note) : '<span style="color:var(--muted)">—</span>') + '</td>' +
     '<td class="mono nowrap">' + expiryHtml + '</td>' +
     '<td class="nowrap"><span class="tag ' + (r.active ? "on" : "off") + '">' + (r.active ? "Đang dùng" : "Đã thu hồi") + '</span></td>' +
-    '<td style="min-width:215px"><div class="actions">' +
-      trialExtendBtns +
-      '<button class="ghost small" data-act="edit">Sửa</button>' +
-      '<button class="ghost small" data-act="devices">Máy (' + (r.devices || []).length + ')</button>' +
-      '<button class="ghost small" data-act="test">Kiểm tra</button>' +
-      '<button class="ghost small" data-act="toggle">' + (r.active ? "Thu hồi" : "Mở lại") + '</button>' +
-      '<button class="danger small" data-act="del">Xoá</button>' +
-    '</div></td>';
+    '<td style="min-width:215px"><div class="actions">' + trialExtendBtns +
+      '<button class="ghost small" data-act="edit">Sửa</button><button class="ghost small" data-act="devices">Máy (' + (r.devices || []).length + ')</button><button class="ghost small" data-act="test">Kiểm tra</button><button class="ghost small" data-act="toggle">' + (r.active ? "Thu hồi" : "Mở lại") + '</button><button class="danger small" data-act="del">Xoá</button></div></td>';
 }
 function renderTable() {
   const tbody = $("mainTable").querySelector("tbody");
@@ -2516,41 +2439,28 @@ function renderTable() {
   let filtered = window._allRows.slice();
   if (!selectedFilters.has("all") && selectedFilters.size > 0) {
     const pkgFilters = ["lifetime", "yearly", "quarter", "combo_icar", "icar_discount", "trial"], roleFilters = ["car", "pc", "admin", "dev"], statusFilters = ["active", "revoked"];
-    const selPkgs = pkgFilters.filter(f => selectedFilters.has(f)), selRoles = roleFilters.filter(f => selectedFilters.has(f)), selStatuses = statusFilters.filter(f => selectedFilters.has(f));
+    const selPkgs = pkgFilters.filter(f => selectedFilters.has(f)), selRoles = roleFilters.filter(f => selectedFilters.has(f)), selStatuses = statusFilters.filter(f => selectedFilters.has(f)), hasSale = selectedFilters.has("sale");
     filtered = filtered.filter(r => {
-      const pkgId = (getLicensePackageInfo(r) || {}).id, role = r.role || "car";
-      const matchPkg = selPkgs.length === 0 || selPkgs.includes(pkgId), matchRole = selRoles.length === 0 || selRoles.includes(role);
+      const pkgId = (getLicensePackageInfo(r) || {}).id, role = r.role || "car", isSale = role === "sale" || pkgId === "sale";
+      const matchOther = (selPkgs.length === 0 || selPkgs.includes(pkgId)) && (selRoles.length === 0 || selRoles.includes(role));
+      const matchPkgRole = hasSale ? (isSale || ((selPkgs.length > 0 || selRoles.length > 0) && matchOther)) : (matchOther && ((selPkgs.length > 0 || selRoles.length > 0) ? !isSale : true));
       const matchStatus = selStatuses.length === 0 || (selStatuses.includes("active") && r.active) || (selStatuses.includes("revoked") && !r.active);
-      return matchPkg && matchRole && matchStatus;
+      return matchPkgRole && matchStatus;
     });
   }
-  if (filterCodeKeyword) {
-    const ckw = filterCodeKeyword;
-    filtered = filtered.filter(r => (r.key || "").toLowerCase().includes(ckw));
-  }
+  if (filterCodeKeyword) { const ckw = filterCodeKeyword; filtered = filtered.filter(r => (r.key || "").toLowerCase().includes(ckw)); }
   if (filterFromTime || filterToTime) {
     const targetField = ($("dateFilterTarget") ? $("dateFilterTarget").value : "created_at");
     filtered = filtered.filter(r => {
-      const raw = r[targetField];
-      if (!raw) return false;
-      const t = new Date(raw).getTime();
-      if (isNaN(t)) return false;
-      if (filterFromTime && t < filterFromTime) return false;
-      if (filterToTime && t > filterToTime) return false;
-      return true;
+      const raw = r[targetField]; if (!raw) return false;
+      const t = new Date(raw).getTime(); if (isNaN(t)) return false;
+      return (!filterFromTime || t >= filterFromTime) && (!filterToTime || t <= filterToTime);
     });
   }
   if (searchKeyword) {
     const kw = searchKeyword.toLowerCase();
-    filtered = filtered.filter(r =>
-      (r.owner_name || "").toLowerCase().includes(kw) ||
-      (r.owner_phone || "").includes(kw) ||
-      (r.key || "").toLowerCase().includes(kw) ||
-      (r.note || "").toLowerCase().includes(kw) ||
-      (r.devices && r.devices.some(d => (d.machine_id || "").toLowerCase().includes(kw)))
-    );
+    filtered = filtered.filter(r => (r.owner_name || "").toLowerCase().includes(kw) || (r.owner_phone || "").includes(kw) || (r.key || "").toLowerCase().includes(kw) || (r.note || "").toLowerCase().includes(kw) || (r.devices && r.devices.some(d => (d.machine_id || "").toLowerCase().includes(kw))));
   }
-  // Ưu tiên Admin lên đầu, sau đó sắp xếp theo thời gian nhiều nhất giảm dần (vĩnh viễn -> 1 năm -> 3 tháng -> trial), cùng hạn thì mới nhất lên trước
   filtered.sort((a, b) => {
     const admA = isRecordAdmin(a) ? 1 : 0, admB = isRecordAdmin(b) ? 1 : 0;
     if (admB !== admA) return admB - admA;
@@ -2561,10 +2471,10 @@ function renderTable() {
   const totalAll = (window._allRows || []).length, now = new Date();
   const fActive = filtered.filter(r => r.active && (!r.expires_at || new Date(r.expires_at) >= now)).length;
   const fExpired = filtered.filter(r => r.active && r.expires_at && new Date(r.expires_at) < now).length, fRevoked = filtered.filter(r => !r.active).length;
-  const fCar = filtered.filter(r => (r.role || "car") === "car" && !isRecordAdmin(r) && !r.is_trial).length, fAdmin = filtered.filter(isRecordAdmin).length;
+  const fCar = filtered.filter(r => (r.role || "car") === "car" && !isRecordAdmin(r) && !r.is_trial).length, fSale = filtered.filter(r => (r.role || "").toLowerCase() === "sale" && !isRecordAdmin(r)).length, fAdmin = filtered.filter(isRecordAdmin).length;
   const fTrial = filtered.filter(r => r.is_trial).length, fPc = filtered.filter(r => (r.role || "").toLowerCase() === "pc" && !isRecordAdmin(r)).length;
   const roleParts = [];
-  if (fCar) roleParts.push(fCar + " khách Car"); if (fAdmin) roleParts.push(fAdmin + " quản trị"); if (fTrial) roleParts.push(fTrial + " dùng thử"); if (fPc) roleParts.push(fPc + " PC");
+  if (fCar) roleParts.push(fCar + " khách Car"); if (fSale) roleParts.push(fSale + " Sale (0đ)"); if (fAdmin) roleParts.push(fAdmin + " quản trị"); if (fTrial) roleParts.push(fTrial + " dùng thử"); if (fPc) roleParts.push(fPc + " PC");
   const statusParts = [fActive + " đang dùng"];
   if (fExpired) statusParts.push(fExpired + " hết hạn"); if (fRevoked) statusParts.push(fRevoked + " thu hồi");
   $("totalCount").textContent = filtered.length === totalAll
@@ -2941,6 +2851,14 @@ function openEdit(key) {
   $("editMask").style.display = "flex";
 }
 function closeEdit() { $("editMask").style.display = "none"; window._editKey = null; }
+$("edRole").addEventListener("change", () => {
+  if ($("edRole").value === "sale") {
+    $("edExpiresForever").checked = false;
+    const d = new Date(); d.setDate(d.getDate() + 90); $("edExpires").value = toDateInput(d);
+    if ($("edMaxPcDevices").value === "0" || $("edMaxPcDevices").value === "") $("edMaxPcDevices").value = "2";
+    syncEditExpiryUI();
+  }
+});
 function onToggleConvertToOfficial() {
   if ($("edConvertToOfficial") && $("edConvertToOfficial").checked) {
     $("edExpiresForever").checked = true;
@@ -2987,33 +2905,31 @@ async function saveEdit() {
   }
   const btn = $("btnSaveEdit");
   btn.disabled = true;
-  const selectedRole = $("edRole").value;
+  const selectedRole = $("edRole").value, prevRow = (window._editData && window._editData[key]) || {};
   const patchBody = {
-    owner_name: name,
-    owner_phone: phone,
-    note: $("edNote").value.trim() || null,
+    owner_name: name, owner_phone: phone, note: $("edNote").value.trim() || null,
     max_devices: (selectedRole === "admin" || selectedRole === "dev" ? 20 : 1),
-    max_activations: maxAct,
-    max_pc_devices: maxPc,
-    expires_at: forever ? null : expDate + "T23:59:59+07:00",
-    role: selectedRole
+    max_activations: maxAct, max_pc_devices: maxPc,
+    expires_at: forever ? null : expDate + "T23:59:59+07:00", role: selectedRole
   };
-  if (convertToOfficial) {
-    patchBody.is_trial = false;
-    patchBody.offline_days = 14;
+  if (convertToOfficial || selectedRole === "sale") {
+    patchBody.is_trial = false; patchBody.offline_days = 14;
     if (patchBody.max_pc_devices === 0) patchBody.max_pc_devices = 2;
     if (patchBody.max_activations === 1) patchBody.max_activations = null;
   }
   try {
-    await api("/rest/v1/licenses?key=eq." + encodeURIComponent(key), {
-      method: "PATCH",
-      body: JSON.stringify(patchBody)
-    });
+    await api("/rest/v1/licenses?key=eq." + encodeURIComponent(key), { method: "PATCH", body: JSON.stringify(patchBody) });
+    if (selectedRole === "sale") {
+      try { await api("/rest/v1/orders?license_key=eq." + encodeURIComponent(key) + "&qr_payload=in.(ADMIN-CREATE,ADMIN-SYNC)", { method: "DELETE" }); } catch (_) {}
+      if (window._salesData && Array.isArray(window._salesData.orders)) {
+        window._salesData.orders = window._salesData.orders.filter(o => (o.license_key || "").toUpperCase() !== key.toUpperCase());
+      }
+    } else if (prevRow.role === "sale" && selectedRole === "car") {
+      try { await api("/rest/v1/rpc/admin_sync_car_users_with_orders", { method: "POST", body: "{}" }); } catch (_) {}
+    }
     closeEdit();
     loadKeys();
-  } catch (e) { alert("Lỗi: " + e.message); } finally {
-    btn.disabled = false;
-  }
+  } catch (e) { alert("Lỗi: " + e.message); } finally { btn.disabled = false; }
 }
 // Cấp lại lượt kích hoạt cho khách đổi máy chính đáng. Chỉ đưa bộ đếm về 0 —
 // nhật ký activation_logs giữ nguyên nên vẫn truy được lịch sử thật.
@@ -3789,7 +3705,8 @@ function formatVndDots(val) { const num = parseVndNumber(val); return num ? num.
 function onPriceInputChange(input) { const num = parseVndNumber(input.value); input.value = num ? num.toLocaleString("vi-VN") : ""; }
 function formatIsoTime(iso) { if (!iso) return "-"; try { const d = new Date(iso); return isNaN(d.getTime()) ? esc(iso) : d.toLocaleString("vi-VN", { hour12: false }); } catch (e) { return esc(iso); } }
 function updateSalesPricePreview() {
-  const life = parseVndNumber($("salesLifetimePrice") ? $("salesLifetimePrice").value : 2950000);
+  const life = parseVndNumber($("salesLifetimePrice") ? $("salesLifetimePrice").value : 2960000), lifeOrig = 3950000;
+  const lifeDisc = life < lifeOrig ? Math.round((1 - life / lifeOrig) * 100) : 0, lifeSave = Math.max(0, lifeOrig - life);
   const orig = parseVndNumber($("salesYearlyPrice") ? $("salesYearlyPrice").value : 1950000);
   const quarter = parseVndNumber($("salesThreeMonthsPrice") ? $("salesThreeMonthsPrice").value : 495000);
   const comboIcar = parseVndNumber($("salesComboIcarPrice") ? $("salesComboIcarPrice").value : 3900000);
@@ -3798,13 +3715,13 @@ function updateSalesPricePreview() {
   const after = Math.round(orig * (100 - disc) / 100), saveAmt = orig - after;
   const icarBasePrice = 3900000, icarUnitCost = 2730000;
   const icarDiscountAmt = Math.round(icarBasePrice * icarDisc / 100), icarPriceAfter = icarBasePrice - icarDiscountAmt;
-  if ($("salesLifetimePricePreview")) $("salesLifetimePricePreview").textContent = "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
+  if ($("salesLifetimePricePreview")) $("salesLifetimePricePreview").textContent = lifeDisc > 0 ? "→ Sau giảm " + lifeDisc + "%: " + formatVndNumber(life) + " (Giá gốc " + formatVndNumber(lifeOrig) + " · Tiết kiệm " + formatVndNumber(lifeSave) + ")" : "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
   if ($("salesYearlyPricePreview")) $("salesYearlyPricePreview").textContent = "→ Giá gốc 1 Năm: " + formatVndNumber(orig);
   if ($("salesThreeMonthsPreview")) $("salesThreeMonthsPreview").textContent = "→ Gói 3 Tháng: " + formatVndNumber(quarter);
   if ($("salesComboIcarPreview")) $("salesComboIcarPreview").textContent = "→ Combo 4G ICAR: " + formatVndNumber(comboIcar) + " (Vốn ICAR: " + formatVndNumber(icarUnitCost) + " [-30%], Thực nhận Connect: " + formatVndNumber(comboIcar - icarUnitCost) + ")";
   if ($("salesIcarDiscountPreview")) $("salesIcarDiscountPreview").textContent = "→ Tặng giảm " + icarDisc + "% gói ICAR 3.9Tr: Khách trả " + formatVndNumber(icarPriceAfter) + " (Vốn ICAR: " + formatVndNumber(icarUnitCost) + ", Lãi thêm HW: " + formatVndNumber(icarPriceAfter - icarUnitCost) + ")";
   if ($("salesDiscountPreview")) $("salesDiscountPreview").textContent = "→ Sau giảm: " + formatVndNumber(after) + (saveAmt > 0 ? " (Tiết kiệm " + formatVndNumber(saveAmt) + ")" : "");
-  if ($("summaryLifetimePreview")) $("summaryLifetimePreview").textContent = formatVndNumber(life);
+  if ($("summaryLifetimePreview")) $("summaryLifetimePreview").textContent = lifeDisc > 0 ? formatVndNumber(life) + " (giảm " + lifeDisc + "% từ giá gốc " + formatVndNumber(lifeOrig) + ")" : formatVndNumber(life);
   if ($("summaryYearlyPreview")) $("summaryYearlyPreview").textContent = formatVndNumber(after) + " (giá gốc " + formatVndNumber(orig) + ")";
   if ($("summaryQuarterPreview")) $("summaryQuarterPreview").textContent = formatVndNumber(quarter);
   if ($("summaryComboIcarPreview")) $("summaryComboIcarPreview").textContent = formatVndNumber(comboIcar) + " (Vốn ICAR: 2.730.000 ₫ · Thực nhận: 1.170.000 ₫)";
@@ -3829,14 +3746,17 @@ async function loadAnalytics() {
 }
 function computeClientSideStats() {
   const rows = window._allRows || [], sales = window._salesData || {}, orders = sales.orders || [], locks = sales.price_locks || [];
+  const saleKeys = new Set(rows.filter(r => (r.role || "").toLowerCase() === "sale").map(r => (r.key || "").toUpperCase()));
   const now = new Date(), todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000), thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000), sevenDaysFuture = new Date(now.getTime() + 7 * 86400000);
   let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0;
   let revLifetime = 0, countLifetime = 0, revYearly = 0, countYearly = 0, revQuarter = 0, countQuarter = 0;
   let revComboIcar = 0, countComboIcar = 0, revIcarDiscount = 0, countIcarDiscount = 0;
-  let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0;
+  let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0, totalOrders = 0;
   const uniqueBuyers = new Set();
   for (const o of orders) {
+    if (o.plan_id === "sale" || (o.license_key && saleKeys.has(String(o.license_key).toUpperCase()))) continue;
+    totalOrders++;
     const d = o.paid_at ? new Date(o.paid_at) : new Date(o.created_at);
     if (o.status === "paid") {
       const rawAmt = Number(o.amount || o.final_amount) || 0;
@@ -3859,15 +3779,13 @@ function computeClientSideStats() {
     else if (o.status === "refunded") refundedOrders++;
     else if (o.status === "cancelled" || o.status === "expired") cancelledOrders++;
   }
-  const icarUnitCost = 2730000; // Vốn nhập thiết bị ICAR (giảm 30% so với 3.9Tr)
-  const totalIcarCost = (countComboIcar + countIcarDiscount) * icarUnitCost;
+  const icarUnitCost = 2730000, totalIcarCost = (countComboIcar + countIcarDiscount) * icarUnitCost;
   const netRevenueAfterIcar = Math.max(0, totalRev - totalIcarCost);
-  const totalOrders = orders.length;
   const convRate = totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0;
   let carTotal = 0, carActive = 0, carLife = 0, carYear = 0, carExp = 0, carRev = 0;
+  let saleTotal = 0, saleActive = 0, saleExp = 0, saleRev = 0;
   let pcTotal = 0, pcActive = 0, pcLife = 0, pcYear = 0, pcExp = 0, pcRev = 0;
-  let adminTotal = 0, adminActive = 0;
-  let totalDevs = 0, carDevs = 0, pcDevs = 0;
+  let adminTotal = 0, adminActive = 0, totalDevs = 0, carDevs = 0, pcDevs = 0;
   const activeDevs24h = new Set(), activeDevs7d = new Set(), expiringSoonList = [];
   for (const r of rows) {
     const role = (r.role || "car").toLowerCase(), isAct = Boolean(r.active);
@@ -3886,6 +3804,11 @@ function computeClientSideStats() {
         if (isAct && isExpired) carExp++;
         if (!isAct) carRev++;
       }
+    } else if (role === "sale") {
+      saleTotal++;
+      if (isAct && !isExpired) saleActive++;
+      if (isAct && isExpired) saleExp++;
+      if (!isAct) saleRev++;
     } else if (role === "pc") {
       pcTotal++;
       if (isAct && !isExpired) pcActive++;
@@ -3893,13 +3816,11 @@ function computeClientSideStats() {
       if (isAct && isExpired) pcExp++;
       if (!isAct) pcRev++;
     } else if (role === "admin" || role === "dev") {
-      adminTotal++;
-      if (isAct) adminActive++;
+      adminTotal++; if (isAct) adminActive++;
     }
     for (const d of (r.devices || [])) {
       totalDevs++;
-      const isCar = (d.os || "").toLowerCase().includes("android");
-      if (isCar) carDevs++; else pcDevs++;
+      if ((d.os || "").toLowerCase().includes("android")) carDevs++; else pcDevs++;
       if (d.last_seen) {
         const ls = new Date(d.last_seen);
         if (ls >= new Date(now.getTime() - 86400000)) activeDevs24h.add(d.machine_id);
@@ -3921,15 +3842,14 @@ function computeClientSideStats() {
       unique_paid_customers: uniqueBuyers.size, price_locks_count: locks.length
     },
     licenses: {
-      total_licenses: rows.length, active_licenses: carActive + pcActive + adminActive, revoked_licenses: carRev + pcRev,
-      expired_licenses: carExp + pcExp, expiring_soon_7d: expiringSoonList.length, lifetime_licenses: carLife + pcLife, yearly_licenses: carYear + pcYear,
+      total_licenses: rows.length, active_licenses: carActive + saleActive + pcActive + adminActive, revoked_licenses: carRev + saleRev + pcRev,
+      expired_licenses: carExp + saleExp + pcExp, expiring_soon_7d: expiringSoonList.length, lifetime_licenses: carLife + pcLife, yearly_licenses: carYear + pcYear,
       car_total: carTotal, car_active: carActive, car_lifetime: carLife, car_yearly: carYear, car_expired: carExp, car_revoked: carRev,
+      sale_total: saleTotal, sale_active: saleActive, sale_expired: saleExp, sale_revoked: saleRev,
       pc_total: pcTotal, pc_active: pcActive, pc_lifetime: pcLife, pc_yearly: pcYear, pc_expired: pcExp, pc_revoked: pcRev,
       admin_total: adminTotal, admin_active: adminActive
     },
-    devices: {
-      total_devices: totalDevs, car_devices: carDevs, pc_devices: pcDevs, active_24h: activeDevs24h.size, active_7d: activeDevs7d.size
-    },
+    devices: { total_devices: totalDevs, car_devices: carDevs, pc_devices: pcDevs, active_24h: activeDevs24h.size, active_7d: activeDevs7d.size },
     expiring_soon_list: expiringSoonList
   };
 }
@@ -4630,9 +4550,11 @@ async function saveProfitSharingConfig(isSilent = false) {
   }
 }
 function bridgeCarUsersToOrders() {
-  if (!window._salesData || !Array.isArray(window._salesData.orders) || !Array.isArray(window._allRows)) return;
+  if (!window._salesData || !Array.isArray(window._salesData.orders)) return;
+  window._salesData.orders = window._salesData.orders.filter(o => o.plan_id !== "sale");
+  if (!Array.isArray(window._allRows) || !window._allRows.length) return;
   const isAdm = r => typeof isRecordAdmin === "function" ? isRecordAdmin(r) : false;
-  const activeKeys = new Set((window._allRows || []).filter(r => !isAdm(r)).map(r => (r.key || "").toUpperCase()));
+  const activeKeys = new Set((window._allRows || []).filter(r => !isAdm(r) && (r.role || "car").toLowerCase() !== "sale").map(r => (r.key || "").toUpperCase()));
   window._salesData.orders = window._salesData.orders.filter(o => !o.license_key || activeKeys.has(o.license_key.toUpperCase()));
   const existing = new Set(window._salesData.orders.map(o => (o.license_key || "").toUpperCase()));
   (window._allRows || []).filter(r => (r.role || "car") === "car" && !r.is_trial && !isAdm(r)).forEach(cu => {
@@ -4642,7 +4564,7 @@ function bridgeCarUsersToOrders() {
       const code = "EX2-" + (cu.key ? cu.key.replace(/[^A-Z0-9]/gi, "").slice(-6).toUpperCase() : "AUTO");
       const orderStatus = cu.active === false ? "cancelled" : "paid";
       const orderPaidAt = orderStatus === "paid" ? (cu.created_at || new Date().toISOString()) : null;
-      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6070000 : 4290000) : 2950000))), status: orderStatus, paid_at: orderPaidAt, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
+      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6080000 : 4290000) : 2960000))), status: orderStatus, paid_at: orderPaidAt, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
       existing.add(k);
     }
   });
@@ -4666,7 +4588,7 @@ async function loadSalesData() {
     bridgeCarUsersToOrders();
     if (typeof renderTable === "function") renderTable();
     const s = data.settings || {};
-    $("salesLifetimePrice").value = formatVndDots(s.lifetime_price || 2950000);
+    $("salesLifetimePrice").value = formatVndDots(s.lifetime_price || 2960000);
     $("salesYearlyPrice").value = formatVndDots(s.yearly_price || 1950000);
     $("salesThreeMonthsPrice").value = formatVndDots(s.three_months_price || s.quarter_price || 495000);
     $("salesComboIcarPrice").value = formatVndDots(s.combo_icar_price || 3900000);
@@ -4881,7 +4803,7 @@ function renderSalesLogsTable() {
 // ==================== ACTIONS: LƯU BẢNG GIÁ & TÀI KHOẢN ====================
 function openSavePricesConfirmModal() {
   const cur = (window._salesData && window._salesData.settings) || {};
-  const newLifetime = parseVndNumber($("salesLifetimePrice").value) || 2950000;
+  const newLifetime = parseVndNumber($("salesLifetimePrice").value) || 2960000;
   const newYearly = parseVndNumber($("salesYearlyPrice").value) || 1950000;
   const newQuarter = parseVndNumber($("salesThreeMonthsPrice").value) || 495000;
   const newComboIcar = parseVndNumber($("salesComboIcarPrice").value) || 3900000;
@@ -4890,7 +4812,7 @@ function openSavePricesConfirmModal() {
   const newYears = parseInt($("salesPriceLockYears").value) || 5;
   const newRule = $("salesPriceLockRule").value;
   let diffHtml = '<table style="width:100%">';
-  diffHtml += '<tr><td><b>Gói Trọn Đời:</b></td><td>' + formatVndNumber(cur.lifetime_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newLifetime) + '</b></td></tr>';
+  diffHtml += '<tr><td><b>Gói Vĩnh Viễn (Gốc 3.950.000 ₫ -25%):</b></td><td>' + formatVndNumber(cur.lifetime_price || 2960000) + ' → <b style="color:var(--ok)">' + formatVndNumber(newLifetime) + '</b></td></tr>';
   diffHtml += '<tr><td><b>Giá Gốc Năm:</b></td><td>' + formatVndNumber(cur.yearly_price) + ' → <b style="color:var(--ok)">' + formatVndNumber(newYearly) + '</b></td></tr>';
   diffHtml += '<tr><td><b>Gói 3 Tháng (495k):</b></td><td>' + formatVndNumber(cur.three_months_price || 495000) + ' → <b style="color:var(--ok)">' + formatVndNumber(newQuarter) + '</b></td></tr>';
   diffHtml += '<tr><td><b>Combo 4G ICAR (3.9Tr):</b></td><td>' + formatVndNumber(cur.combo_icar_price || 3900000) + ' → <b style="color:#ea580c">' + formatVndNumber(newComboIcar) + '</b></td></tr>';
@@ -4913,7 +4835,7 @@ async function executeSaveSalesPrices() {
     const forever = $("salesPromoForever").checked;
     const expDate = $("salesPromoEndDate").value;
     const settingsPayload = {
-      lifetime_price: parseVndNumber($("salesLifetimePrice").value) || 2950000,
+      lifetime_price: parseVndNumber($("salesLifetimePrice").value) || 2960000,
       yearly_price: parseVndNumber($("salesYearlyPrice").value) || 1950000,
       three_months_price: parseVndNumber($("salesThreeMonthsPrice").value) || 495000,
       combo_icar_price: parseVndNumber($("salesComboIcarPrice").value) || 3900000,
@@ -5186,7 +5108,9 @@ async function testTelegramNoti() {
   }
   const token = await requireTelegramBotToken();
   if (!token) return;
-  showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang gửi tin nhắn test tới " + items.length + " Chat ID...");
+  const tokens = String(token).split(/[\s,;\n\r]+/).map(s => s.trim()).filter(Boolean);
+  if (tokens.length === 0) return;
+  showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang gửi tin nhắn test (" + tokens.length + " Bot) tới " + items.length + " Chat ID...");
   try {
     const successList = [];
     const failList = [];
@@ -5203,55 +5127,87 @@ async function testTelegramNoti() {
       + "⏰ <b>Thời gian:</b> " + sampleTime + "\n"
       + "━━━━━━━━━━━━━━━━━━━\n"
       + "👉 <i>Bấm nút [✅ Duyệt & Cấp mã] hoặc [❌ Huỷ đơn] bên dưới để kiểm tra tính năng duyệt tức thì:</i>";
-    for (const it of items) {
-      const c = it.id;
-      const label = it.name ? `${it.name} (${c})` : c;
-      try {
-        const res = await fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: c,
-            text: text,
-            parse_mode: "HTML",
-            reply_markup: {
-              inline_keyboard: [[
-                { text: "✅ Duyệt & Cấp mã (Test)", callback_data: "test_approve" },
-                { text: "❌ Huỷ đơn (Test)", callback_data: "test_cancel" }
-              ]]
+    const sentMsgs = [];
+    for (let bi = 0; bi < tokens.length; bi++) {
+      const tk = tokens[bi];
+      const botShort = tk.split(":")[0] || "Bot";
+      for (let ci = 0; ci < items.length; ci++) {
+        const it = items[ci];
+        const c = it.id;
+        const baseLabel = it.name ? `${it.name} (${c})` : c;
+        const label = tokens.length > 1 ? `${baseLabel} [Bot ${botShort}]` : baseLabel;
+        try {
+          const res = await fetch("https://api.telegram.org/bot" + tk + "/sendMessage", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: c,
+              text: text,
+              parse_mode: "HTML",
+              reply_markup: {
+                inline_keyboard: [[
+                  { text: "✅ Duyệt & Cấp mã (Test)", callback_data: "test_approve" },
+                  { text: "❌ Huỷ đơn (Test)", callback_data: "test_cancel" }
+                ]]
+              }
+            })
+          });
+          const data = await res.json();
+          if (data.ok) {
+            successList.push(label);
+            if (data.result && data.result.message_id) {
+              sentMsgs.push({ tk, bi: bi + 1, ci: ci + 1, chatId: c, msgId: data.result.message_id });
             }
-          })
-        });
-        const data = await res.json();
-        if (data.ok) {
-          successList.push(label);
-        } else {
-          let reason = data.description || "Lỗi gửi";
-          if (reason.includes("chat not found") || reason.includes("initiate conversation") || data.error_code === 400 || data.error_code === 403) {
-            reason = "Chưa bấm Start bot (Mở t.me/ToanAgent1993Bot bấm START)";
+          } else {
+            let reason = data.description || "Lỗi gửi";
+            if (reason.includes("chat not found") || reason.includes("initiate conversation") || data.error_code === 400 || data.error_code === 403) {
+              reason = "Chưa bấm Start bot (Mở t.me/ToanAgent1993Bot hoặc t.me/TranDatGeelyAppbot bấm START)";
+            }
+            failList.push({ label, error: reason });
           }
-          failList.push({ label, error: reason });
+        } catch (e) {
+          failList.push({ label, error: e.message });
         }
-      } catch (e) {
-        failList.push({ label, error: e.message });
       }
     }
+    if (sentMsgs.length > 1) {
+      const compactTriples = sentMsgs.map(m => `${m.bi}.${m.ci}.${m.msgId}`).join(",");
+      if (("test_approve:" + compactTriples).length <= 64) {
+        await Promise.all(sentMsgs.map(m =>
+          fetch("https://api.telegram.org/bot" + m.tk + "/editMessageReplyMarkup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: m.chatId,
+              message_id: m.msgId,
+              reply_markup: {
+                inline_keyboard: [[
+                  { text: "✅ Duyệt & Cấp mã (Test)", callback_data: "test_approve:" + compactTriples },
+                  { text: "❌ Huỷ đơn (Test)", callback_data: "test_cancel:" + compactTriples }
+                ]]
+              }
+            })
+          }).catch(() => {})
+        ));
+      }
+    }
+    const totalTargets = items.length * tokens.length;
     if (failList.length === 0) {
-      const okMsg = "🎉 Đã gửi thành công tới toàn bộ " + successList.length + "/" + items.length + " người nhận:\n• " + successList.join("\n• ");
-      showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã gửi thành công tới toàn bộ " + successList.length + " người nhận!");
+      const okMsg = "🎉 Đã gửi thành công tới toàn bộ " + successList.length + "/" + totalTargets + " lượt nhận:\n• " + successList.join("\n• ");
+      showMsg($("salesTelegramSaveMsg"), "ok", "✅ Đã gửi thành công tới toàn bộ " + successList.length + " lượt nhận!");
       alert(okMsg);
     } else if (successList.length > 0) {
-      const warnMsg = "⚠️ Đã gửi " + successList.length + "/" + items.length + " người nhận thành công:\n\n"
+      const warnMsg = "⚠️ Đã gửi " + successList.length + "/" + totalTargets + " lượt nhận thành công:\n\n"
         + "✅ THÀNH CÔNG (" + successList.length + "):\n• " + successList.join("\n• ") + "\n\n"
         + "❌ THẤT BẠI (" + failList.length + "):\n"
         + failList.map(f => "• " + f.label + ": " + f.error).join("\n")
-        + "\n\n👉 Lưu ý: Người chưa nhận được cần mở link https://t.me/ToanAgent1993Bot và bấm nút [START] một lần duy nhất để cho phép bot gửi tin nhắn.";
-      showMsg($("salesTelegramSaveMsg"), "warn", "⚠️ Gửi được " + successList.length + "/" + items.length + " người nhận. Xem chi tiết lỗi.");
+        + "\n\n👉 Lưu ý: Người chưa nhận được cần mở bot (@ToanAgent1993Bot / @TranDatGeelyAppbot) và bấm nút [START] một lần duy nhất để cho phép bot gửi tin nhắn.";
+      showMsg($("salesTelegramSaveMsg"), "warn", "⚠️ Gửi được " + successList.length + "/" + totalTargets + " lượt nhận. Xem chi tiết lỗi.");
       alert(warnMsg);
     } else {
-      const errMsg = "❌ Gửi thất bại tới tất cả " + failList.length + " người nhận:\n\n"
+      const errMsg = "❌ Gửi thất bại tới tất cả " + failList.length + " lượt nhận:\n\n"
         + failList.map(f => "• " + f.label + ": " + f.error).join("\n")
-        + "\n\n👉 Lưu ý: Telegram yêu cầu tài khoản phải mở link https://t.me/ToanAgent1993Bot và bấm nút [START] thì bot mới có quyền gửi tin nhắn thông báo.";
+        + "\n\n👉 Lưu ý: Telegram yêu cầu tài khoản phải mở bot (@ToanAgent1993Bot / @TranDatGeelyAppbot) và bấm nút [START] thì bot mới có quyền gửi tin nhắn thông báo.";
       showMsg($("salesTelegramSaveMsg"), "err", "Không gửi được tin nhắn test nào.");
       alert(errMsg);
     }
@@ -6809,9 +6765,10 @@ try {
 } catch (e) {
   console.warn("Lỗi render OTA mặc định:", e);
 }
-// ==================== QUẢN LÝ ĐẠI LÝ CẤP 1 (RESELLERS) ====================
+// ==================== QUẢN LÝ ĐẠI LÝ (RESELLERS) ====================
 window._resellersList = [];
 window._resellerTransactions = [];
+window._resellerLicensesModalList = [];
 window._resellerActiveFilter = 'all';
 window._showAllPins = false;
 window._revealedPinIds = new Set();
@@ -6833,27 +6790,33 @@ function copyResellerPortalUrl() {
   const url = "https://ex2.toanmobile.com/reseller";
   copyToClipboard(url, "Đã sao chép đường link Cổng Đại Lý: " + url);
 }
+function getDemoResellersPayload() {
+  const nowIso = new Date().toISOString(), earlierIso = new Date(Date.now() - 3600 * 1000 * 5).toISOString();
+  return {
+    success: true,
+    resellers: [
+      { id: "demo_dl_1", reseller_code: "DL8899", owner_name: "Trần Minh Tuấn", phone: "0908112233", garage_name: "Gara AutoPro Sài Gòn", address: "Quận 7, TP.HCM", pin_plain: "839204", wallet_balance: 8450000, credit_limit: 2000000, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 15, trial_used_this_month: 4, total_sales_count: 18, total_revenue_contributed: 25000000, bank_bin: "970436", bank_account: "0071001234567", bank_account_name: "TRAN MINH TUAN", status: "active", failed_attempts: 0, locked_until: null, note: "Đối tác chiến lược khu vực Nam Sài Gòn", created_at: earlierIso },
+      { id: "demo_dl_2", reseller_code: "DL6868", owner_name: "Lê Hoàng Nam", phone: "0988776655", garage_name: "Trung Tâm Độ Xe EV Hà Nội", address: "Cầu Giấy, Hà Nội", pin_plain: "592817", wallet_balance: 3120000, credit_limit: 0, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 20, trial_used_this_month: 7, total_sales_count: 11, total_revenue_contributed: 15000000, bank_bin: "970407", bank_account: "1903456789012", bank_account_name: "LE HOANG NAM", status: "active", failed_attempts: 0, locked_until: null, note: "Chuyên lắp phụ kiện Geely EX2 miền Bắc", created_at: earlierIso }
+    ],
+    recent_transactions: [
+      { id: "demo_tx_1", reseller_id: "demo_dl_1", reseller_code: "DL8899", garage_name: "Gara AutoPro Sài Gòn", type: "key_issue", amount: -1924000, balance_before: 10374000, balance_after: 8450000, reference_id: "EX2A-9988-7766-5544", note: "Xuất mã Trọn đời cho khách Nguyễn Hoàng (0912345678)", created_at: nowIso },
+      { id: "demo_tx_2", reseller_id: "demo_dl_1", reseller_code: "DL8899", garage_name: "Gara AutoPro Sài Gòn", type: "topup", amount: 10000000, balance_before: 374000, balance_after: 10374000, reference_id: "WEBHOOK_VCB_99812", note: "Nạp tự động qua Webhook NH [WEBHOOK:99812]: NAP DL DL8899", created_at: earlierIso },
+      { id: "demo_tx_3", reseller_id: "demo_dl_2", reseller_code: "DL6868", garage_name: "Trung Tâm Độ Xe EV Hà Nội", type: "affiliate_commission", amount: 292500, balance_before: 2827500, balance_after: 3120000, reference_id: "EX2-8821", note: "Hoa hồng 25% khách tự gia hạn gói 1 Năm trên Web", created_at: earlierIso }
+    ]
+  };
+}
 async function loadResellersData() {
   const tbody = $("resellersTableBody");
-  if (tbody) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
-  }
+  if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
   try {
-    const res = await api("/rest/v1/rpc/admin_get_resellers", { method: "POST", body: "{}" });
-    const data = await res.json();
-    if (!data.success) {
-      throw new Error(data.message || "Không thể tải danh sách đại lý");
-    }
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    let data;
+    if (isDemo) { data = window._demoResellersState || getDemoResellersPayload(); window._demoResellersState = data; }
+    else { const res = await api("/rest/v1/rpc/admin_get_resellers", { method: "POST", body: "{}" }); data = await res.json(); }
+    if (!data || !data.success) throw new Error((data && data.message) || "Không thể tải danh sách đại lý");
     window._resellersList = data.resellers || [];
     window._resellerTransactions = data.recent_transactions || [];
-    // Cập nhật thẻ KPI
-    let totalRev = 0;
-    let totalBal = 0;
-    let totalKeys = 0;
-    let activeCount = 0;
-    let suspendedCount = 0;
-    let lockedPinCount = 0;
-    let lowBalCount = 0;
+    let totalRev = 0, totalBal = 0, totalKeys = 0, activeCount = 0, suspendedCount = 0, lockedPinCount = 0, lowBalCount = 0;
     const now = new Date();
     window._resellersList.forEach(r => {
       totalRev += (Number(r.total_revenue_contributed) || 0);
@@ -6861,8 +6824,7 @@ async function loadResellersData() {
       totalKeys += (Number(r.total_sales_count) || 0);
       if (r.status === "active") activeCount++;
       if (r.status === "suspended") suspendedCount++;
-      const isLockedPin = (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
-      if (isLockedPin) lockedPinCount++;
+      if ((r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now)) lockedPinCount++;
       if (Number(r.wallet_balance) <= 0) lowBalCount++;
     });
     if ($("resellerKpiCount")) $("resellerKpiCount").textContent = window._resellersList.length;
@@ -6870,614 +6832,432 @@ async function loadResellersData() {
     if ($("resellerKpiKeysCount")) $("resellerKpiKeysCount").textContent = totalKeys;
     if ($("resellerKpiTotalBalance")) $("resellerKpiTotalBalance").textContent = totalBal.toLocaleString("vi-VN") + " ₫";
     if ($("resellerCountBadge")) $("resellerCountBadge").textContent = window._resellersList.length + " đại lý";
-    // Cập nhật số lượng trên các nút filter
     if ($("fltResellerAllCount")) $("fltResellerAllCount").textContent = window._resellersList.length;
     if ($("fltResellerActiveCount")) $("fltResellerActiveCount").textContent = activeCount;
     if ($("fltResellerSuspendedCount")) $("fltResellerSuspendedCount").textContent = suspendedCount;
     if ($("fltResellerLockedPinCount")) $("fltResellerLockedPinCount").textContent = lockedPinCount;
     if ($("fltResellerLowBalCount")) $("fltResellerLowBalCount").textContent = lowBalCount;
+    populateTransResellerFilterDropdown();
     applyResellerFilter();
-    renderResellerTransactionsTable(window._resellerTransactions);
+    filterResellerTransactions();
+    try {
+      const mParam = new URLSearchParams(window.location.search).get("modal"), firstId = window._resellersList[0] && window._resellersList[0].id;
+      if (firstId && mParam === "edit") openEditResellerModal(firstId);
+      else if (firstId && mParam === "topup") openTopupModal(firstId);
+    } catch (_) {}
   } catch (err) {
     console.error("Lỗi tải dữ liệu đại lý:", err);
-    if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
-    }
+    if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
   }
+}
+function populateTransResellerFilterDropdown() {
+  const sel = $("fltTransResellerSelect"); if (!sel) return;
+  const currentVal = sel.value || "all";
+  let opts = '<option value="all">🏢 Tất cả đại lý</option>';
+  (window._resellersList || []).forEach(r => { opts += `<option value="${esc(r.reseller_code)}">${esc(r.reseller_code)} — ${esc(r.garage_name || r.owner_name)}</option>`; });
+  sel.innerHTML = opts;
+  if ([...sel.options].some(o => o.value === currentVal)) sel.value = currentVal;
+}
+function filterResellerTransactions() {
+  const resellerCode = ($("fltTransResellerSelect") ? $("fltTransResellerSelect").value : "all");
+  const typeFilter = ($("fltTransTypeSelect") ? $("fltTransTypeSelect").value : "all");
+  const q = ($("fltTransSearchInput") ? $("fltTransSearchInput").value : "").trim().toLowerCase();
+  const filtered = (window._resellerTransactions || []).filter(t => {
+    if (resellerCode !== "all" && t.reseller_code !== resellerCode) return false;
+    if (typeFilter !== "all") {
+      if (typeFilter === "commission") { if (t.type !== "affiliate_commission" && t.type !== "renewal_commission") return false; }
+      else if (typeFilter === "adjustment") { if (t.type !== "bonus" && t.type !== "deduct" && t.type !== "adjustment") return false; }
+      else if (t.type !== typeFilter) return false;
+    }
+    if (q && !`${t.reseller_code || ""} ${t.garage_name || ""} ${t.reference_id || ""} ${t.note || ""}`.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if ($("resellerTransCountBadge")) $("resellerTransCountBadge").textContent = filtered.length + " GD";
+  renderResellerTransactionsTable(filtered);
+}
+function exportResellersCsv() {
+  const list = window._resellersList || [];
+  if (!list.length) { alert("⚠️ Chưa có dữ liệu đại lý để xuất CSV."); return; }
+  const headers = ["Ma_DL", "Gara", "Chu_Gara", "SDT", "Dia_Chi", "So_Du_Vi", "Han_Muc_Am", "Tong_Nap_Si", "So_Key_Da_Xuat", "CK_Tron_Doi_%", "CK_1_Nam_%", "HH_Gia_Han_%", "Trial_Thang", "Trang_Thai", "Ngan_Hang_BIN", "STK", "Chu_TK", "Ghi_Chu"];
+  const escCsv = val => `"${String(val ?? "").replace(/"/g, '""')}"`;
+  const rows = list.map(r => [r.reseller_code, r.garage_name, r.owner_name, r.phone, r.address || "", r.wallet_balance || 0, r.credit_limit || 0, r.total_revenue_contributed || 0, r.total_sales_count || 0, r.discount_rate_lifetime || 35, r.discount_rate_yearly || 40, r.renewal_commission_percent || 25, `${r.trial_used_this_month || 0}/${r.trial_quota_monthly || 15}`, r.status || "active", r.bank_bin || "", r.bank_account || "", r.bank_account_name || "", r.note || ""].map(escCsv).join(","));
+  const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = `danh-sach-dai-ly-geely-ex2-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 function setResellerFilter(filterType) {
   window._resellerActiveFilter = filterType;
-  const buttons = [
-    { id: "fltResellerAll", type: "all" },
-    { id: "fltResellerActive", type: "active" },
-    { id: "fltResellerSuspended", type: "suspended" },
-    { id: "fltResellerLockedPin", type: "locked_pin" },
-    { id: "fltResellerLowBal", type: "low_balance" }
-  ];
+  const buttons = [{ id: "fltResellerAll", type: "all" }, { id: "fltResellerActive", type: "active" }, { id: "fltResellerSuspended", type: "suspended" }, { id: "fltResellerLockedPin", type: "locked_pin" }, { id: "fltResellerLowBal", type: "low_balance" }];
   buttons.forEach(b => {
-    const el = $(b.id);
-    if (!el) return;
-    if (b.type === filterType) {
-      el.classList.remove("ghost");
-      el.style.fontWeight = "700";
-    } else {
-      el.classList.add("ghost");
-      el.style.fontWeight = "normal";
-    }
+    const el = $(b.id); if (!el) return;
+    el.classList.toggle("ghost", b.type !== filterType);
+    el.style.fontWeight = b.type === filterType ? "700" : "normal";
   });
   applyResellerFilter();
 }
-function filterResellersTable() {
-  applyResellerFilter();
-}
+function filterResellersTable() { applyResellerFilter(); }
 function applyResellerFilter() {
-  const q = ($("resellerSearchInput") ? $("resellerSearchInput").value : "").trim().toLowerCase();
-  const filterType = window._resellerActiveFilter || "all";
-  const now = new Date();
+  const q = ($("resellerSearchInput") ? $("resellerSearchInput").value : "").trim().toLowerCase(), filterType = window._resellerActiveFilter || "all", now = new Date();
   const filtered = (window._resellersList || []).filter(r => {
-    // 1. Text Search match
-    const textMatch = !q || (
-      (r.reseller_code || "").toLowerCase().includes(q) ||
-      (r.owner_name || "").toLowerCase().includes(q) ||
-      (r.phone || "").toLowerCase().includes(q) ||
-      (r.garage_name || "").toLowerCase().includes(q) ||
-      (r.address || "").toLowerCase().includes(q) ||
-      (r.pin_plain || "").toLowerCase().includes(q) ||
-      (r.bank_account || "").toLowerCase().includes(q)
-    );
+    const textMatch = !q || ((r.reseller_code || "").toLowerCase().includes(q) || (r.owner_name || "").toLowerCase().includes(q) || (r.phone || "").toLowerCase().includes(q) || (r.garage_name || "").toLowerCase().includes(q) || (r.address || "").toLowerCase().includes(q) || (r.pin_plain || "").toLowerCase().includes(q) || (r.bank_account || "").toLowerCase().includes(q));
     if (!textMatch) return false;
-    // 2. Filter Tab match
     if (filterType === "active") return r.status === "active";
     if (filterType === "suspended") return r.status === "suspended";
-    if (filterType === "locked_pin") {
-      return (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
-    }
+    if (filterType === "locked_pin") return (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
     if (filterType === "low_balance") return Number(r.wallet_balance) <= 0;
     return true;
   });
   renderResellersTable(filtered);
 }
-function toggleShowAllPins(checked) {
-  window._showAllPins = Boolean(checked);
-  applyResellerFilter();
-}
+function toggleShowAllPins(checked) { window._showAllPins = Boolean(checked); applyResellerFilter(); }
 function togglePinRow(resellerId) {
-  if (window._revealedPinIds.has(resellerId)) {
-    window._revealedPinIds.delete(resellerId);
-  } else {
-    window._revealedPinIds.add(resellerId);
-  }
+  if (window._revealedPinIds.has(resellerId)) window._revealedPinIds.delete(resellerId); else window._revealedPinIds.add(resellerId);
   applyResellerFilter();
 }
 function renderResellersTable(list) {
-  const tbody = $("resellersTableBody");
-  if (!tbody) return;
-  if (!list || !list.length) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:24px">Không tìm thấy đại lý nào phù hợp.</td></tr>';
-    return;
-  }
-  const now = new Date();
-  let html = "";
+  const tbody = $("resellersTableBody"); if (!tbody) return;
+  if (!list || !list.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:24px">Không tìm thấy đại lý nào phù hợp.</td></tr>'; return; }
+  const now = new Date(); let html = "";
   list.forEach(r => {
-    const isSuspended = r.status === "suspended";
-    const statusBadge = isSuspended
-      ? '<span class="tag off">⛔ Đang khoá</span>'
-      : '<span class="tag on">🟢 Hoạt động</span>';
+    const isSuspended = r.status === "suspended", statusBadge = isSuspended ? '<span class="tag off">⛔ Đang khoá</span>' : '<span class="tag on">🟢 Hoạt động</span>';
     const balanceFormatted = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
-    const creditFormatted = r.credit_limit > 0
-      ? '<div class="hint" style="color:var(--warn); font-size:11px">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>'
-      : '';
-    const discLifetime = (r.discount_rate_lifetime || 35) + "%";
-    const discYearly = (r.discount_rate_yearly || 40) + "%";
-    const commRenewal = (r.renewal_commission_percent || 25) + "%";
-    // PIN Display
-    const pin = r.pin_plain || "";
-    const isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
-    const pinDisplay = isRevealed
-      ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>`
-      : `<span class="mono" style="font-size:13px; color:var(--muted); letter-spacing:2px">••••••</span>`;
-    // Khóa do gõ sai PIN (Brute-force)
+    const creditFormatted = r.credit_limit > 0 ? '<div class="hint" style="color:var(--warn); font-size:11px">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>' : '';
+    const totalContribFormatted = (Number(r.total_revenue_contributed) || 0) > 0 ? '<div class="hint" style="font-size:11px">Đã nạp: ' + Number(r.total_revenue_contributed).toLocaleString("vi-VN") + ' ₫</div>' : '';
+    const discLifetime = (r.discount_rate_lifetime ?? 35) + "%", discYearly = (r.discount_rate_yearly ?? 40) + "%", commRenewal = (r.renewal_commission_percent ?? 25) + "%";
+    const pin = r.pin_plain || "", isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
+    const pinDisplay = isRevealed ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>` : `<span class="mono" style="font-size:13px; color:var(--muted); letter-spacing:2px">••••••</span>`;
     let pinLockHtml = "";
     if (r.locked_until && new Date(r.locked_until) > now) {
-      const lockDate = new Date(r.locked_until);
-      const timeStr = lockDate.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+      const timeStr = new Date(r.locked_until).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
       pinLockHtml = `<div style="margin-top:4px"><span class="tag off" style="font-size:10px; color:#dc2626; background:#fee2e2; padding:1px 5px">🔒 Khóa tới ${timeStr}</span> <button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:var(--accent); font-weight:700; margin-top:2px" onclick="adminUnlockReseller('${esc(r.id)}')">🔓 Mở khóa</button></div>`;
     } else if (r.failed_attempts > 0) {
       pinLockHtml = `<div style="margin-top:3px; font-size:11px; color:#d97706">⚠️ Sai ${r.failed_attempts}/5 lần <button type="button" class="small ghost" style="padding:0 4px; font-size:10px" onclick="adminUnlockReseller('${esc(r.id)}')">Xoá</button></div>`;
     }
-    // Bank Account Info
-    let bankInfoHtml = "";
-    if (r.bank_account) {
-      bankInfoHtml = `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" onclick="copyToClipboard('${esc(r.bank_account)}', 'Đã chép số tài khoản ${esc(r.bank_account)}')" title="Sao chép STK">📋</span></div>`;
-    }
-    html += '<tr>' +
-      '<td>' +
-        '<div class="mono" style="font-weight:800; font-size:13px; color:var(--accent)">' + esc(r.reseller_code) + '</div>' +
-        '<div class="hint" style="font-size:11px">' + (r.created_at ? new Date(r.created_at).toLocaleDateString("vi-VN") : '') + '</div>' +
-      '</td>' +
-      '<td>' +
-        '<div style="font-weight:700; color:var(--text); font-size:14px">' + esc(r.garage_name) + '</div>' +
-        '<div class="hint">' + esc(r.owner_name) + (r.address ? ' • ' + esc(r.address) : '') + '</div>' +
-        bankInfoHtml +
-      '</td>' +
-      '<td>' +
-        '<div class="mono" style="font-weight:600">' + esc(r.phone) + '</div>' +
-        '<div class="hint"><a href="https://zalo.me/' + esc(r.phone) + '" target="_blank" style="color:#0068ff; text-decoration:none; font-weight:600">💬 Zalo</a></div>' +
-      '</td>' +
-      '<td style="text-align:center; background:rgba(37,99,235,0.02)">' +
-        '<div style="display:inline-flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:3px 8px; border-radius:6px">' +
-          pinDisplay +
-          '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="togglePinRow(\'' + esc(r.id) + '\')" title="Hiện / Ẩn PIN">' + (isRevealed ? '🙈' : '👁️') + '</button>' +
-          '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="copyToClipboard(\'' + esc(pin) + '\', \'Đã chép mã PIN ' + esc(pin) + '\')" title="Sao chép PIN">📋</button>' +
-        '</div>' +
-        '<div style="margin-top:4px">' +
-          '<button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:#2563eb" onclick="openResetPinModal(\'' + esc(r.id) + '\')" title="Đặt lại mã PIN mới cho thợ">🔄 Đổi PIN</button>' +
-        '</div>' +
-        pinLockHtml +
-      '</td>' +
-      '<td>' +
-        '<div>Trọn đời: <b>' + discLifetime + '</b></div>' +
-        '<div class="hint">1 Năm: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div>' +
-      '</td>' +
-      '<td>' +
-        '<div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">' + balanceFormatted + '</div>' +
-        creditFormatted +
-      '</td>' +
-      '<td style="text-align:center">' +
-        '<button type="button" class="small ghost" style="font-weight:800; font-size:13px; color:#9333ea; padding:3px 8px; border-color:#d8b4fe" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Bấm xem danh sách key đã cấp">' +
-          '🔑 ' + (r.total_sales_count || 0) +
-        '</button>' +
-        '<div class="hint" style="font-size:11px; margin-top:2px">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly || 15) + '</div>' +
-      '</td>' +
+    const bankInfoHtml = r.bank_account ? `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" onclick="copyToClipboard('${esc(r.bank_account)}', 'Đã chép số tài khoản ${esc(r.bank_account)}')" title="Sao chép STK">📋</span></div>` : "";
+    html += '<tr><td><div class="mono" style="font-weight:800; font-size:13px; color:var(--accent)">' + esc(r.reseller_code) + '</div><div class="hint" style="font-size:11px">' + (r.created_at ? new Date(r.created_at).toLocaleDateString("vi-VN") : '') + '</div></td>' +
+      '<td><div style="font-weight:700; color:var(--text); font-size:14px">' + esc(r.garage_name) + '</div><div class="hint">' + esc(r.owner_name) + (r.address ? ' • ' + esc(r.address) : '') + '</div>' + bankInfoHtml + (r.note ? '<div class="hint" style="font-size:11px; font-style:italic; margin-top:2px">📝 ' + esc(r.note) + '</div>' : '') + '</td>' +
+      '<td><div class="mono" style="font-weight:600">' + esc(r.phone) + '</div><div class="hint"><a href="https://zalo.me/' + esc(r.phone) + '" target="_blank" style="color:#0068ff; text-decoration:none; font-weight:600">💬 Zalo</a></div></td>' +
+      '<td style="text-align:center; background:rgba(37,99,235,0.02)"><div style="display:inline-flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:3px 8px; border-radius:6px">' + pinDisplay +
+      '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="togglePinRow(\'' + esc(r.id) + '\')" title="Hiện / Ẩn PIN">' + (isRevealed ? '🙈' : '👁️') + '</button>' +
+      '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="copyToClipboard(\'' + esc(pin) + '\', \'Đã chép mã PIN ' + esc(pin) + '\')" title="Sao chép PIN">📋</button></div>' +
+      '<div style="margin-top:4px"><button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:#2563eb" onclick="openResetPinModal(\'' + esc(r.id) + '\')" title="Đặt lại mã PIN mới cho thợ">🔄 Đổi PIN</button></div>' + pinLockHtml + '</td>' +
+      '<td><div>Trọn đời: <b>' + discLifetime + '</b></div><div class="hint">1N/3T: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div></td>' +
+      '<td><div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">' + balanceFormatted + '</div>' + creditFormatted + totalContribFormatted + '</td>' +
+      '<td style="text-align:center"><button type="button" class="small ghost" style="font-weight:800; font-size:13px; color:#9333ea; padding:3px 8px; border-color:#d8b4fe" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Bấm xem danh sách key đã cấp">🔑 ' + (r.total_sales_count || 0) + '</button><div class="hint" style="font-size:11px; margin-top:2px">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly ?? 15) + '</div></td>' +
       '<td style="text-align:center">' + statusBadge + '</td>' +
-      '<td style="text-align:right">' +
-        '<div style="display:inline-flex; gap:4px; flex-wrap:wrap; justify-content:flex-end">' +
-          '<button type="button" class="small" onclick="openTopupModal(\'' + esc(r.id) + '\')">💰 Nạp ví</button>' +
-          '<button type="button" class="small ghost" onclick="openEditResellerModal(\'' + esc(r.id) + '\')">✏️ Sửa</button>' +
-          '<button type="button" class="small ghost" style="color:#0284c7" onclick="copyResellerHandoverMessage(\'' + esc(r.id) + '\')" title="Sao chép toàn bộ thông tin đăng nhập, link Cổng ĐL và mã PIN gửi Zalo cho thợ">📤 Gửi Zalo</button>' +
-          (isSuspended
-            ? '<button type="button" class="small ghost" style="color:var(--accent)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'active\')">🔓 Mở</button>'
-            : '<button type="button" class="small ghost" style="color:var(--err)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'suspended\')">🔒 Khoá</button>'
-          ) +
-        '</div>' +
-      '</td>' +
-    '</tr>';
+      '<td style="text-align:right"><div style="display:inline-flex; gap:4px; flex-wrap:wrap; justify-content:flex-end">' +
+        '<button type="button" class="small" onclick="openTopupModal(\'' + esc(r.id) + '\')" title="Nạp tiền sỉ, cộng thưởng hoặc điều chỉnh ví">💰 Ví</button>' +
+        '<button type="button" class="small ghost" onclick="openEditResellerModal(\'' + esc(r.id) + '\')">✏️ Sửa</button>' +
+        '<button type="button" class="small ghost" style="color:#0284c7" onclick="copyResellerHandoverMessage(\'' + esc(r.id) + '\')" title="Sao chép toàn bộ thông tin đăng nhập, link Cổng ĐL và mã PIN gửi Zalo cho thợ">📤 Gửi Zalo</button>' +
+        (isSuspended ? '<button type="button" class="small ghost" style="color:var(--accent)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'active\')">🔓 Mở</button>' : '<button type="button" class="small ghost" style="color:var(--err)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'suspended\')">🔒 Khoá</button>') +
+      '</div></td></tr>';
   });
   tbody.innerHTML = html;
 }
 function renderResellerTransactionsTable(transList) {
-  const tbody = $("resellerTransTableBody");
-  if (!tbody) return;
-  if (!transList || !transList.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--muted); padding:20px">Chưa có giao dịch biến động ví nào gần đây.</td></tr>';
-    return;
-  }
+  const tbody = $("resellerTransTableBody"); if (!tbody) return;
+  if (!transList || !transList.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--muted); padding:20px">Chưa có giao dịch biến động ví nào phù hợp.</td></tr>'; return; }
   let html = "";
   transList.forEach(t => {
-    const isPositive = t.amount > 0;
-    const amtColor = isPositive ? "var(--ok)" : "var(--err)";
-    const amtSign = isPositive ? "+" : "";
-    const amtStr = amtSign + Number(t.amount).toLocaleString("vi-VN") + " ₫";
-    const balAfter = Number(t.balance_after).toLocaleString("vi-VN") + " ₫";
-    let typeBadge = "";
-    if (t.type === "topup") {
-      typeBadge = '<span class="tag on">💰 Nạp tiền</span>';
-    } else if (t.type === "key_issue") {
-      typeBadge = '<span class="tag car">🔑 Xuất mã</span>';
-    } else if (t.type === "affiliate_commission") {
-      typeBadge = '<span class="tag on" style="background:#15803d; color:#fff">🎁 Hoa hồng</span>';
-    } else if (t.type === "renewal_commission") {
-      typeBadge = '<span class="tag on" style="background:#0369a1; color:#fff">🔄 Tái tục</span>';
-    } else {
-      typeBadge = '<span class="tag off">' + esc(t.type) + '</span>';
-    }
+    const isPositive = t.amount > 0, amtColor = isPositive ? "var(--ok)" : "var(--err)", amtSign = isPositive ? "+" : "", amtStr = amtSign + Number(t.amount).toLocaleString("vi-VN") + " ₫";
+    const balBefore = (t.balance_before !== null && t.balance_before !== undefined) ? Number(t.balance_before).toLocaleString("vi-VN") + " ₫" : null, balAfter = Number(t.balance_after).toLocaleString("vi-VN") + " ₫";
+    const balTransitionHtml = balBefore ? `<span class="hint" style="font-size:11px">${balBefore} →</span> <b style="color:var(--text)">${balAfter}</b>` : `<b style="color:var(--text)">${balAfter}</b>`;
+    let typeBadge = '<span class="tag off">' + esc(t.type) + '</span>';
+    if (t.type === "topup") typeBadge = '<span class="tag on">💰 Nạp tiền sỉ</span>';
+    else if (t.type === "key_issue") typeBadge = '<span class="tag car">🔑 Xuất mã</span>';
+    else if (t.type === "affiliate_commission") typeBadge = '<span class="tag on" style="background:#15803d; color:#fff">🎁 Hoa hồng</span>';
+    else if (t.type === "renewal_commission") typeBadge = '<span class="tag on" style="background:#0369a1; color:#fff">🔄 Tái tục</span>';
+    else if (t.type === "bonus") typeBadge = '<span class="tag on" style="background:#7c3aed; color:#fff">🎁 Cộng thưởng</span>';
+    else if (t.type === "deduct" || t.type === "adjustment") typeBadge = '<span class="tag off" style="background:#fef3c7; color:#b45309">⚖️ Điều chỉnh ví</span>';
     const timeStr = t.created_at ? new Date(t.created_at).toLocaleString("vi-VN") : "—";
-    html += '<tr>' +
-      '<td class="hint">' + esc(timeStr) + '</td>' +
-      '<td><b>' + esc(t.reseller_code || "") + '</b><div class="hint">' + esc(t.garage_name || "") + '</div></td>' +
-      '<td>' + typeBadge + '</td>' +
-      '<td style="text-align:right; font-weight:700; color:' + amtColor + '">' + amtStr + '</td>' +
-      '<td style="text-align:right; font-weight:600">' + balAfter + '</td>' +
-      '<td><span class="mono">' + esc(t.reference_id || "—") + '</span></td>' +
-      '<td>' + esc(t.note || "—") + '</td>' +
-    '</tr>';
+    html += '<tr><td class="hint">' + esc(timeStr) + '</td><td><b>' + esc(t.reseller_code || "") + '</b><div class="hint">' + esc(t.garage_name || "") + '</div></td><td>' + typeBadge + '</td><td style="text-align:right; font-weight:700; color:' + amtColor + '">' + amtStr + '</td><td style="text-align:right">' + balTransitionHtml + '</td><td><span class="mono">' + esc(t.reference_id || "—") + '</span></td><td>' + esc(t.note || "—") + '</td></tr>';
   });
   tbody.innerHTML = html;
 }
-// Modal Reset PIN
 function openResetPinModal(resellerId) {
-  const r = (window._resellersList || []).find(item => item.id === resellerId);
-  if (!r) return;
+  const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
   $("resetPinResellerId").value = r.id;
   $("resetPinResellerDesc").textContent = `Đại lý: ${r.reseller_code} — ${r.garage_name} (${r.owner_name} • ${r.phone})`;
   $("resetPinNewValue").value = r.pin_plain || "";
   $("resellerResetPinMask").style.display = "flex";
 }
-function closeResetPinModal() {
-  $("resellerResetPinMask").style.display = "none";
-}
+function closeResetPinModal() { $("resellerResetPinMask").style.display = "none"; }
 // PIN 6 số ngẫu nhiên bằng CSPRNG (audit 12/10/2026: không dùng Math.random cho mã đăng nhập).
-function randomPin6() {
-  const u = new Uint32Array(1);
-  crypto.getRandomValues(u);
-  return String(u[0] % 1000000).padStart(6, "0");
-}
-function generateRandomResetPin() {
-  $("resetPinNewValue").value = randomPin6();
-}
+function randomPin6() { const u = new Uint32Array(1); crypto.getRandomValues(u); return String(u[0] % 1000000).padStart(6, "0"); }
+function generateRandomResetPin() { $("resetPinNewValue").value = randomPin6(); }
 async function submitResetPin() {
-  const resellerId = $("resetPinResellerId").value;
-  const newPin = ($("resetPinNewValue").value || "").trim();
-  if (!/^\d{6}$/.test(newPin)) {
-    alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9).");
-    return;
-  }
-  const btn = $("btnConfirmResetPin");
-  btn.disabled = true;
-  btn.textContent = "Đang lưu...";
+  const resellerId = $("resetPinResellerId").value, newPin = ($("resetPinNewValue").value || "").trim();
+  if (!/^\d{6}$/.test(newPin)) { alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9)."); return; }
+  const btn = $("btnConfirmResetPin"); btn.disabled = true; btn.textContent = "Đang lưu...";
   try {
-    const res = await api("/rest/v1/rpc/admin_reset_reseller_pin", {
-      method: "POST",
-      body: JSON.stringify({
-        p_id: resellerId,
-        p_new_pin: newPin
-      })
-    });
+    const res = await api("/rest/v1/rpc/admin_reset_reseller_pin", { method: "POST", body: JSON.stringify({ p_id: resellerId, p_new_pin: newPin }) });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Không thể đặt lại mã PIN");
-    closeResetPinModal();
-    await loadResellersData();
-    if (confirm(`🎉 Đã đặt lại mã PIN thành công thành: ${newPin}\n\nBạn có muốn sao chép tin nhắn bàn giao tài khoản kèm mã PIN mới này để gửi Zalo cho đại lý không?`)) {
-      copyResellerHandoverMessage(resellerId);
-    }
-  } catch (err) {
-    alert("❌ Lỗi: " + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Xác nhận đổi PIN";
-  }
+    closeResetPinModal(); await loadResellersData();
+    if (confirm(`🎉 Đã đặt lại mã PIN thành công thành: ${newPin}\n\nBạn có muốn sao chép tin nhắn bàn giao tài khoản kèm mã PIN mới này để gửi Zalo cho đại lý không?`)) copyResellerHandoverMessage(resellerId);
+  } catch (err) { alert("❌ Lỗi: " + err.message); } finally { btn.disabled = false; btn.textContent = "Xác nhận đổi PIN"; }
 }
 async function adminUnlockReseller(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
-  if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) {
-    return;
-  }
+  if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) return;
   try {
-    const res = await api("/rest/v1/rpc/admin_unlock_reseller", {
-      method: "POST",
-      body: JSON.stringify({ p_id: resellerId })
-    });
+    const res = await api("/rest/v1/rpc/admin_unlock_reseller", { method: "POST", body: JSON.stringify({ p_id: resellerId }) });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi mở khóa");
-    alert("✅ Đã mở khóa tài khoản đại lý thành công!");
-    loadResellersData();
-  } catch (err) {
-    alert("❌ Lỗi: " + err.message);
-  }
+    alert("✅ Đã mở khóa tài khoản đại lý thành công!"); loadResellersData();
+  } catch (err) { alert("❌ Lỗi: " + err.message); }
 }
-// Modal Xem Key Đã Cấp Của Đại Lý
+function getResellerLicensePlanBadgeHtml(lic) {
+  const isTrial = Boolean(lic.is_trial) || lic.role === "trial";
+  if (isTrial) {
+    const expStr = lic.expires_at ? new Date(lic.expires_at).toLocaleDateString("vi-VN") : "";
+    return '<span class="tag off">🎁 Dùng thử 3N</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
+  }
+  if (lic.role === "sale") {
+    const expStr = lic.expires_at ? new Date(lic.expires_at).toLocaleDateString("vi-VN") : "";
+    return '<span class="tag sale">🤝 Sale (0đ)</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
+  }
+  if (lic.expires_at) {
+    const expDate = new Date(lic.expires_at), createdDate = lic.created_at ? new Date(lic.created_at) : new Date();
+    const diffDays = Math.round((expDate - createdDate) / (1000 * 60 * 60 * 24)), isQuarter = diffDays > 0 && diffDays <= 120;
+    const label = isQuarter ? "⚡ Gói 3 Tháng" : "📅 Gói 1 Năm", bg = isQuarter ? "#0d9488" : "#0284c7", isExpired = expDate < new Date();
+    return `<span class="tag on" style="background:${bg}; color:#fff">${label}</span><div class="hint" style="font-size:10px; margin-top:2px; color:${isExpired ? 'var(--err)' : 'var(--muted)'}">${isExpired ? '⚠️ Đã hết hạn: ' : 'Hết hạn: '}${esc(expDate.toLocaleDateString("vi-VN"))}</div>`;
+  }
+  return '<span class="tag car">👑 Trọn đời</span><div class="hint" style="font-size:10px; margin-top:2px">Vĩnh viễn</div>';
+}
 async function openResellerLicensesModal(resellerId) {
-  const r = (window._resellersList || []).find(item => item.id === resellerId);
-  if (!r) return;
+  const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
   $("resellerLicensesTitle").textContent = `🔑 Key Đã Cấp: ${r.reseller_code} — ${r.garage_name}`;
   $("resellerLicensesSubtitle").textContent = `Chủ gara: ${r.owner_name} • SĐT: ${r.phone} • Tổng đã xuất: ${r.total_sales_count || 0} key`;
+  if ($("resellerLicensesSearch")) $("resellerLicensesSearch").value = "";
   const tbody = $("resellerLicensesTableBody");
   tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải danh sách key từ Supabase...</td></tr>';
   $("resellerLicensesMask").style.display = "flex";
   try {
-    const res = await api("/rest/v1/rpc/admin_get_reseller_licenses", {
-      method: "POST",
-      body: JSON.stringify({ p_reseller_id: resellerId })
-    });
-    const list = await res.json();
-    if (!list || !list.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Đại lý này chưa cấp bản quyền nào.</td></tr>';
-      return;
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    let list = [];
+    if (isDemo) {
+      list = [
+        { key: "EX2A-9988-7766-5544", owner_name: "Nguyễn Hoàng", owner_phone: "0912345678", role: "car", is_trial: false, expires_at: null, reseller_price: 1924000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
+        { key: "EX2B-1122-3344-5566", owner_name: "Phạm Minh Đức", owner_phone: "0987654321", role: "car", is_trial: false, expires_at: new Date(Date.now() + 365 * 86400000).toISOString(), reseller_price: 702000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
+        { key: "EX2T-0011-2233-4455", owner_name: "Khách Trải Nghiệm", owner_phone: "0909123123", role: "car", is_trial: true, expires_at: new Date(Date.now() + 3 * 86400000).toISOString(), reseller_price: 0, active: true, activation_count: 0, devices_count: 0, max_devices: 2, created_at: new Date().toISOString() }
+      ];
+    } else {
+      const res = await api("/rest/v1/rpc/admin_get_reseller_licenses", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId }) });
+      list = await res.json();
     }
-    let html = "";
-    list.forEach(lic => {
-      const timeStr = lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "—";
-      const isTrial = lic.is_trial || lic.role === "trial";
-      const roleBadge = isTrial
-        ? '<span class="tag off">Dùng thử</span>'
-        : (lic.role === "yearly" ? '<span class="tag on" style="background:#0284c7; color:#fff">1 Năm</span>' : '<span class="tag car">Trọn đời</span>');
-      const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined
-        ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫"
-        : "—";
-      const activeBadge = lic.active
-        ? (lic.activation_count > 0 ? '<span class="tag on">Đã kích hoạt</span>' : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>')
-        : '<span class="tag off">Đã thu hồi</span>';
-      html += '<tr>' +
-        '<td class="hint">' + esc(timeStr) + '</td>' +
-        '<td>' +
-          '<span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> ' +
-          '<button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button>' +
-        '</td>' +
-        '<td>' +
-          '<b>' + esc(lic.owner_name || "—") + '</b>' +
-          (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') +
-        '</td>' +
-        '<td>' + roleBadge + '</td>' +
-        '<td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td>' +
-        '<td style="text-align:center">' + activeBadge + '</td>' +
-      '</tr>';
-    });
-    tbody.innerHTML = html;
-  } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>';
-  }
+    window._resellerLicensesModalList = Array.isArray(list) ? list : [];
+    renderResellerLicensesModalTable(window._resellerLicensesModalList);
+  } catch (err) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>'; }
 }
-function closeResellerLicensesModal() {
-  $("resellerLicensesMask").style.display = "none";
+function filterResellerLicensesModalTable() {
+  const q = ($("resellerLicensesSearch") ? $("resellerLicensesSearch").value : "").trim().toLowerCase();
+  const list = (window._resellerLicensesModalList || []).filter(lic => !q || `${lic.key || ""} ${lic.owner_name || ""} ${lic.owner_phone || ""} ${lic.note || ""}`.toLowerCase().includes(q));
+  renderResellerLicensesModalTable(list);
 }
-// Bàn giao tài khoản gửi Zalo
+function renderResellerLicensesModalTable(list) {
+  const tbody = $("resellerLicensesTableBody"); if (!tbody) return;
+  if (!list || !list.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Không có mã bản quyền nào phù hợp.</td></tr>'; return; }
+  let html = "";
+  list.forEach(lic => {
+    const timeStr = lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "—", roleBadge = getResellerLicensePlanBadgeHtml(lic);
+    const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫" : "—";
+    const devCount = Number(lic.devices_count ?? (lic.activation_count > 0 ? 1 : 0)), maxDev = Number(lic.max_devices || 2);
+    const activeBadge = lic.active ? (lic.activation_count > 0 ? `<span class="tag on">Đã kích hoạt (${devCount}/${maxDev})</span>` : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>') : '<span class="tag off">Đã thu hồi</span>';
+    html += '<tr><td class="hint">' + esc(timeStr) + '</td><td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> <button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button></td><td><b>' + esc(lic.owner_name || "—") + '</b>' + (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') + '</td><td>' + roleBadge + '</td><td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td><td style="text-align:center">' + activeBadge + '</td></tr>';
+  });
+  tbody.innerHTML = html;
+}
+function closeResellerLicensesModal() { $("resellerLicensesMask").style.display = "none"; }
 function copyResellerHandoverMessage(resellerId) {
-  const r = (window._resellersList || []).find(item => item.id === resellerId);
-  if (!r) return;
-  const pin = r.pin_plain || "";
-  const portalUrl = "https://ex2.toanmobile.com/reseller";
-  const balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
-  const msg =
-`🚗 THÔNG TIN TÀI KHOẢN CỔNG ĐẠI LÝ CẤP 1 — GEELY EX2
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-🏢 Đại lý: ${r.garage_name} (${r.owner_name})
-🌐 Cổng đăng nhập: ${portalUrl}
-📱 Số điện thoại đăng nhập: ${r.phone}
-(Hoặc dùng Mã đại lý: ${r.reseller_code})
-🔑 MÃ PIN ĐĂNG NHẬP (6 SỐ): ${pin}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎁 CHÍNH SÁCH CHIẾT KHẤU ĐẠI LÝ:
-• Gói Trọn Đời (Lifetime): Chiết khấu ${r.discount_rate_lifetime || 35}%
-• Gói 1 Năm (Yearly): Chiết khấu ${r.discount_rate_yearly || 40}% (Hoa hồng gia hạn: ${r.renewal_commission_percent || 25}%)
-• Hạn ngạch Key Dùng Thử: ${r.trial_quota_monthly || 15} xe/tháng (Miễn phí 100%)
-💳 Số dư ví khả dụng hiện tại: ${balStr}
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-📌 HƯỚNG DẪN CẤP MÃ CHO KHÁCH:
-1. Đăng nhập vào link trên bằng SĐT và mã PIN ${pin}.
-2. Chọn gói bản quyền, nhập Tên & SĐT khách hàng rồi bấm "XUẤT MÃ BẢN QUYỀN".
-3. Nhập mã key 16 số vừa tạo lên màn hình xe Geely EX2 (hoặc gửi Zalo cho khách).
-⚠️ Quý đại lý vui lòng bảo mật mã PIN. Chúc đại lý kinh doanh thuận lợi!`;
+  const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
+  const pin = r.pin_plain || "", portalUrl = "https://ex2.toanmobile.com/reseller", balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
+  const msg = `🚗 THÔNG TIN TÀI KHOẢN CỔNG ĐẠI LÝ — GEELY EX2\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🏢 Đại lý: ${r.garage_name} (${r.owner_name})\n🌐 Cổng đăng nhập: ${portalUrl}\n📱 Số điện thoại đăng nhập: ${r.phone}\n(Hoặc dùng Mã đại lý: ${r.reseller_code})\n🔑 MÃ PIN ĐĂNG NHẬP (6 SỐ): ${pin}\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎁 CHÍNH SÁCH CHIẾT KHẤU ĐẠI LÝ:\n• Gói Trọn Đời (Lifetime): Chiết khấu ${r.discount_rate_lifetime ?? 35}%\n• Gói 1 Năm & 3 Tháng: Chiết khấu ${r.discount_rate_yearly ?? 40}% (Hoa hồng gia hạn: ${r.renewal_commission_percent ?? 25}%)\n• Hạn ngạch Key Dùng Thử: ${r.trial_quota_monthly ?? 15} xe/tháng (Miễn phí 100%)\n💳 Số dư ví khả dụng hiện tại: ${balStr}\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 HƯỚNG DẪN CẤP MÃ CHO KHÁCH:\n1. Đăng nhập vào link trên bằng SĐT và mã PIN ${pin}.\n2. Chọn gói bản quyền, nhập Tên & SĐT khách hàng rồi bấm "XUẤT MÃ BẢN QUYỀN".\n3. Nhập mã key 16 số vừa tạo lên màn hình xe Geely EX2 (hoặc gửi Zalo cho khách).\n⚠️ Quý đại lý vui lòng bảo mật mã PIN. Chúc đại lý kinh doanh thuận lợi!`;
   copyToClipboard(msg, `Đã sao chép nội dung bàn giao tài khoản của ${r.reseller_code}! Bạn có thể dán ngay vào Zalo gửi cho thợ.`);
 }
-function copyResellerPin(pin) {
-  copyToClipboard(pin, "Đã chép mã PIN: " + pin);
+function copyResellerPin(pin) { copyToClipboard(pin, "Đã chép mã PIN: " + pin); }
+function unlockResellerAccount(resellerId) { return adminUnlockReseller(resellerId); }
+function viewResellerLicenses(resellerId) { return openResellerLicensesModal(resellerId); }
+function getCurrentRetailPricesForResellerPreview() {
+  const s = (window._salesData && window._salesData.settings) ? window._salesData.settings : {};
+  const lifeRetail = Number(s.lifetime_price || s.price_lifetime) > 0 ? Number(s.lifetime_price || s.price_lifetime) : 2960000;
+  const rawYear = Number(s.yearly_price || s.price_yearly) || 1950000, yDisc = s.yearly_discount_percent !== undefined ? Number(s.yearly_discount_percent) : 40;
+  const yearRetail = (rawYear > 1500000 && yDisc > 0) ? Math.round(rawYear * (100 - yDisc) / 100) : (rawYear > 0 ? rawYear : 1170000);
+  const quarterRetail = Number(s.three_months_price || s.quarter_price || s.price_quarter) > 0 ? Number(s.three_months_price || s.quarter_price || s.price_quarter) : 495000;
+  return { lifeRetail, yearRetail, quarterRetail };
 }
-function unlockResellerAccount(resellerId) {
-  return adminUnlockReseller(resellerId);
-}
-function viewResellerLicenses(resellerId) {
-  return openResellerLicensesModal(resellerId);
-}
-// Modal Thêm / Sửa Đại lý
 function updateResellerModalProfitPreview() {
-  const lifeDisc = parseInt($("resellerModalDiscLife").value, 10) || 35;
-  const yearDisc = parseInt($("resellerModalDiscYear").value, 10) || 40;
-  const lifeRetail = 2950000;
-  const yearRetail = 1950000;
-  const lifeWholesale = Math.round(lifeRetail * (100 - lifeDisc) / 100);
-  const lifeProfit = lifeRetail - lifeWholesale;
-  const yearWholesale = Math.round(yearRetail * (100 - yearDisc) / 100);
-  const yearProfit = yearRetail - yearWholesale;
-  const previewEl = $("resellerModalProfitPreview");
+  const lifeDiscVal = parseInt($("resellerModalDiscLife").value, 10), yearDiscVal = parseInt($("resellerModalDiscYear").value, 10), renewCommVal = parseInt($("resellerModalRenewalComm") ? $("resellerModalRenewalComm").value : "25", 10);
+  const lifeDisc = isNaN(lifeDiscVal) ? 35 : lifeDiscVal, yearDisc = isNaN(yearDiscVal) ? 40 : yearDiscVal, renewComm = isNaN(renewCommVal) ? 25 : renewCommVal;
+  const { lifeRetail, yearRetail, quarterRetail } = getCurrentRetailPricesForResellerPreview();
+  const lifeWholesale = Math.round(lifeRetail * (100 - lifeDisc) / 100), lifeProfit = lifeRetail - lifeWholesale;
+  const yearWholesale = Math.round(yearRetail * (100 - yearDisc) / 100), yearProfit = yearRetail - yearWholesale;
+  const quarterWholesale = Math.round(quarterRetail * (100 - yearDisc) / 100), quarterProfit = quarterRetail - quarterWholesale;
+  const renewBonus = Math.round(yearRetail * renewComm / 100), previewEl = $("resellerModalProfitPreview");
   if (previewEl) {
     previewEl.innerHTML =
-      `• <b>Gói Trọn Đời (${lifeRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${lifeWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${lifeProfit.toLocaleString("vi-VN")}₫/xe</b><br>` +
-      `• <b>Gói 1 Năm (${yearRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${yearWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${yearProfit.toLocaleString("vi-VN")}₫/xe</b>`;
+      `• <b>Gói Trọn Đời (${lifeRetail.toLocaleString("vi-VN")}₫ — giảm 25% từ 3.950.000₫):</b> Giá sỉ trừ ví <b>${lifeWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${lifeProfit.toLocaleString("vi-VN")}₫/xe</b><br>` +
+      `• <b>Gói 1 Năm (${yearRetail.toLocaleString("vi-VN")}₫ — giảm 40% từ 1.950.000₫):</b> Giá sỉ trừ ví <b>${yearWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${yearProfit.toLocaleString("vi-VN")}₫/xe</b> (Tái tục tự động: <b style="color:#0284c7">+${renewBonus.toLocaleString("vi-VN")}₫</b>)<br>` +
+      `• <b>Gói 3 Tháng (${quarterRetail.toLocaleString("vi-VN")}₫):</b> Giá sỉ trừ ví <b>${quarterWholesale.toLocaleString("vi-VN")}₫</b> &bull; Đại lý lời <b style="color:#16a34a">+${quarterProfit.toLocaleString("vi-VN")}₫/xe</b>`;
   }
 }
 function onResellerBankSelectChange(selectEl) {
-  const val = selectEl.value;
-  const binInput = $("resellerModalBankBin");
-  if (val === "custom") {
-    binInput.style.display = "block";
-    binInput.value = "";
-    binInput.focus();
-  } else {
-    binInput.style.display = "none";
-    binInput.value = val;
-  }
+  const val = selectEl.value, binInput = $("resellerModalBankBin");
+  if (val === "custom") { binInput.style.display = "block"; binInput.value = ""; binInput.focus(); }
+  else { binInput.style.display = "none"; binInput.value = val; }
 }
 function toggleModalPinVisibility() {
-  const pinInput = $("resellerModalPin");
-  const btn = $("btnToggleModalPin");
-  if (!pinInput) return;
-  if (pinInput.type === "password") {
-    pinInput.type = "text";
-    if (btn) btn.textContent = "🙈 Ẩn";
-  } else {
-    pinInput.type = "password";
-    if (btn) btn.textContent = "👁️ Xem";
-  }
+  const pinInput = $("resellerModalPin"), btn = $("btnToggleModalPin"); if (!pinInput) return;
+  pinInput.type = pinInput.type === "password" ? "text" : "password";
+  if (btn) btn.textContent = pinInput.type === "text" ? "🙈 Ẩn" : "👁️ Xem";
 }
 function generateRandomModalPin() {
-  $("resellerModalPin").value = randomPin6();
-  $("resellerModalPin").type = "text";
+  $("resellerModalPin").value = randomPin6(); $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
 }
 function openCreateResellerModal() {
-  $("resellerModalTitle").textContent = "➕ Thêm Đại Lý Cấp 1 Mới";
-  $("resellerEditId").value = "";
-  $("resellerModalCode").value = "";
-  $("resellerModalCode").disabled = false;
-  $("resellerModalPhone").value = "";
-  $("resellerModalPhone").disabled = false;
-  $("resellerModalName").value = "";
-  $("resellerModalGarage").value = "";
-  $("resellerModalAddress").value = "";
-  $("resellerModalPin").value = "";
-  $("resellerModalPin").type = "text";
+  $("resellerModalTitle").textContent = "➕ Thêm Đại Lý Mới";
+  $("resellerEditId").value = ""; $("resellerModalCode").value = ""; $("resellerModalCode").disabled = false;
+  $("resellerModalPhone").value = ""; $("resellerModalPhone").disabled = false;
+  $("resellerModalName").value = ""; $("resellerModalGarage").value = ""; $("resellerModalAddress").value = "";
+  $("resellerModalPin").value = ""; $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
-  $("resellerModalCredit").value = "0";
-  $("resellerModalDiscLife").value = "35";
-  $("resellerModalDiscYear").value = "40";
-  $("resellerModalBankSelect").value = "970436";
-  $("resellerModalBankBin").value = "970436";
-  $("resellerModalBankBin").style.display = "none";
-  $("resellerModalBankAcc").value = "";
-  $("resellerModalBankName").value = "";
-  $("resellerModalNote").value = "";
+  $("resellerModalCredit").value = "0"; $("resellerModalDiscLife").value = "35"; $("resellerModalDiscYear").value = "40";
+  if ($("resellerModalRenewalComm")) $("resellerModalRenewalComm").value = "25";
+  if ($("resellerModalTrialQuota")) $("resellerModalTrialQuota").value = "15";
+  if ($("resellerModalEditExtraWrap")) $("resellerModalEditExtraWrap").style.display = "none";
+  if ($("resellerModalStatus")) $("resellerModalStatus").value = "active";
+  if ($("resellerModalResetTrialUsed")) $("resellerModalResetTrialUsed").checked = false;
+  $("resellerModalBankSelect").value = "970436"; $("resellerModalBankBin").value = "970436"; $("resellerModalBankBin").style.display = "none";
+  $("resellerModalBankAcc").value = ""; $("resellerModalBankName").value = ""; $("resellerModalNote").value = "";
   updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
 function openEditResellerModal(id) {
-  const r = (window._resellersList || []).find(item => item.id === id);
-  if (!r) return;
+  const r = (window._resellersList || []).find(item => item.id === id); if (!r) return;
   $("resellerModalTitle").textContent = "✏️ Sửa Thông Tin Đại Lý: " + r.reseller_code;
-  $("resellerEditId").value = r.id;
-  $("resellerModalCode").value = r.reseller_code;
-  $("resellerModalCode").disabled = true; // Không cho đổi mã
-  $("resellerModalPhone").value = r.phone;
-  $("resellerModalPhone").disabled = true; // Không cho đổi SĐT
-  $("resellerModalName").value = r.owner_name || "";
-  $("resellerModalGarage").value = r.garage_name || "";
-  $("resellerModalAddress").value = r.address || "";
-  $("resellerModalPin").value = r.pin_plain || "";
-  $("resellerModalPin").type = "text";
+  $("resellerEditId").value = r.id; $("resellerModalCode").value = r.reseller_code; $("resellerModalCode").disabled = true;
+  $("resellerModalPhone").value = r.phone || ""; $("resellerModalPhone").disabled = false;
+  $("resellerModalName").value = r.owner_name || ""; $("resellerModalGarage").value = r.garage_name || ""; $("resellerModalAddress").value = r.address || "";
+  $("resellerModalPin").value = r.pin_plain || ""; $("resellerModalPin").type = "text";
   if ($("btnToggleModalPin")) $("btnToggleModalPin").textContent = "🙈 Ẩn";
   $("resellerModalCredit").value = r.credit_limit || 0;
-  $("resellerModalDiscLife").value = r.discount_rate_lifetime || 35;
-  $("resellerModalDiscYear").value = r.discount_rate_yearly || 40;
-  const bin = r.bank_bin || "970436";
-  const select = $("resellerModalBankSelect");
+  $("resellerModalDiscLife").value = r.discount_rate_lifetime ?? 35; $("resellerModalDiscYear").value = r.discount_rate_yearly ?? 40;
+  if ($("resellerModalRenewalComm")) $("resellerModalRenewalComm").value = r.renewal_commission_percent ?? 25;
+  if ($("resellerModalTrialQuota")) $("resellerModalTrialQuota").value = r.trial_quota_monthly ?? 15;
+  if ($("resellerModalEditExtraWrap")) $("resellerModalEditExtraWrap").style.display = "grid";
+  if ($("resellerModalStatus")) $("resellerModalStatus").value = r.status || "active";
+  if ($("resellerModalResetTrialUsed")) $("resellerModalResetTrialUsed").checked = false;
+  const bin = r.bank_bin || "970436", select = $("resellerModalBankSelect");
   let foundOption = false;
   for (let i = 0; i < select.options.length; i++) {
-    if (select.options[i].value === bin) {
-      select.selectedIndex = i;
-      foundOption = true;
-      break;
-    }
+    if (select.options[i].value === bin) { select.selectedIndex = i; foundOption = true; break; }
   }
-  if (!foundOption) {
-    select.value = "custom";
-    $("resellerModalBankBin").style.display = "block";
-    $("resellerModalBankBin").value = bin;
-  } else {
-    $("resellerModalBankBin").style.display = "none";
-    $("resellerModalBankBin").value = bin;
-  }
-  $("resellerModalBankAcc").value = r.bank_account || "";
-  $("resellerModalBankName").value = r.bank_account_name || "";
-  $("resellerModalNote").value = r.note || "";
+  if (!foundOption) { select.value = "custom"; $("resellerModalBankBin").style.display = "block"; $("resellerModalBankBin").value = bin; }
+  else { $("resellerModalBankBin").style.display = "none"; $("resellerModalBankBin").value = bin; }
+  $("resellerModalBankAcc").value = r.bank_account || ""; $("resellerModalBankName").value = r.bank_account_name || ""; $("resellerModalNote").value = r.note || "";
   updateResellerModalProfitPreview();
   $("resellerModalMask").style.display = "flex";
 }
-function closeResellerModal() {
-  $("resellerModalMask").style.display = "none";
-}
+function closeResellerModal() { $("resellerModalMask").style.display = "none"; }
 async function saveReseller() {
-  const isEdit = !!$("resellerEditId").value;
-  const btn = $("btnSaveReseller");
-  btn.disabled = true;
-  btn.textContent = "Đang lưu...";
+  const isEdit = !!$("resellerEditId").value, btn = $("btnSaveReseller");
+  btn.disabled = true; btn.textContent = "Đang lưu...";
   try {
     const pinVal = $("resellerModalPin").value.trim();
-    if (pinVal && !/^\d{6}$/.test(pinVal)) {
-      alert("❌ Mã PIN phải gồm đúng 6 chữ số (0-9).");
-      btn.disabled = false;
-      btn.textContent = "Lưu thông tin";
-      return;
-    }
+    if (pinVal && !/^\d{6}$/.test(pinVal)) { alert("❌ Mã PIN phải gồm đúng 6 chữ số (0-9)."); btn.disabled = false; btn.textContent = "Lưu thông tin"; return; }
+    const discLifeVal = parseInt($("resellerModalDiscLife").value, 10), discYearVal = parseInt($("resellerModalDiscYear").value, 10);
+    const renewCommVal = parseInt($("resellerModalRenewalComm") ? $("resellerModalRenewalComm").value : "25", 10), trialQuotaVal = parseInt($("resellerModalTrialQuota") ? $("resellerModalTrialQuota").value : "15", 10);
     if (isEdit) {
+      const editId = $("resellerEditId").value, existingReseller = (window._resellersList || []).find(item => item.id === editId);
+      const statusVal = ($("resellerModalStatus") && $("resellerModalStatus").value) ? $("resellerModalStatus").value : (existingReseller ? existingReseller.status : "active");
       const payload = {
-        p_id: $("resellerEditId").value,
-        p_name: $("resellerModalName").value.trim(),
-        p_garage_name: $("resellerModalGarage").value.trim(),
-        p_address: $("resellerModalAddress").value.trim(),
-        p_pin: pinVal,
-        p_discount_lifetime: parseInt($("resellerModalDiscLife").value, 10) || 35,
-        p_discount_yearly: parseInt($("resellerModalDiscYear").value, 10) || 40,
-        p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
-        p_status: "active",
-        p_bank_bin: $("resellerModalBankBin").value.trim(),
-        p_bank_account: $("resellerModalBankAcc").value.trim(),
-        p_bank_account_name: $("resellerModalBankName").value.trim(),
-        p_note: $("resellerModalNote").value.trim()
+        p_id: editId, p_name: $("resellerModalName").value.trim(), p_garage_name: $("resellerModalGarage").value.trim(), p_address: $("resellerModalAddress").value.trim(), p_pin: pinVal,
+        p_discount_lifetime: isNaN(discLifeVal) ? 35 : discLifeVal, p_discount_yearly: isNaN(discYearVal) ? 40 : discYearVal, p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0, p_status: statusVal,
+        p_bank_bin: $("resellerModalBankBin").value.trim(), p_bank_account: $("resellerModalBankAcc").value.trim(), p_bank_account_name: $("resellerModalBankName").value.trim(), p_note: $("resellerModalNote").value.trim(),
+        p_renewal_commission: isNaN(renewCommVal) ? 25 : renewCommVal, p_trial_quota: isNaN(trialQuotaVal) ? 15 : trialQuotaVal, p_phone: $("resellerModalPhone").value.trim(),
+        p_reset_trial_used: Boolean($("resellerModalResetTrialUsed") && $("resellerModalResetTrialUsed").checked)
       };
-      const res = await api("/rest/v1/rpc/admin_update_reseller", {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
+      const res = await api("/rest/v1/rpc/admin_update_reseller", { method: "POST", body: JSON.stringify(payload) }), data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể cập nhật đại lý");
       alert("✅ Đã cập nhật thông tin đại lý thành công!");
     } else {
       const payload = {
-        p_code: $("resellerModalCode").value.trim().toUpperCase(),
-        p_name: $("resellerModalName").value.trim(),
-        p_phone: $("resellerModalPhone").value.trim(),
-        p_garage_name: $("resellerModalGarage").value.trim(),
-        p_address: $("resellerModalAddress").value.trim(),
-        p_pin: pinVal || "",
-        p_discount_lifetime: parseInt($("resellerModalDiscLife").value, 10) || 35,
-        p_discount_yearly: parseInt($("resellerModalDiscYear").value, 10) || 40,
-        p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
-        p_bank_bin: $("resellerModalBankBin").value.trim(),
-        p_bank_account: $("resellerModalBankAcc").value.trim(),
-        p_bank_account_name: $("resellerModalBankName").value.trim(),
-        p_note: $("resellerModalNote").value.trim()
+        p_code: $("resellerModalCode").value.trim().toUpperCase(), p_name: $("resellerModalName").value.trim(), p_phone: $("resellerModalPhone").value.trim(),
+        p_garage_name: $("resellerModalGarage").value.trim(), p_address: $("resellerModalAddress").value.trim(), p_pin: pinVal || "",
+        p_discount_lifetime: isNaN(discLifeVal) ? 35 : discLifeVal, p_discount_yearly: isNaN(discYearVal) ? 40 : discYearVal, p_credit_limit: parseInt($("resellerModalCredit").value, 10) || 0,
+        p_bank_bin: $("resellerModalBankBin").value.trim(), p_bank_account: $("resellerModalBankAcc").value.trim(), p_bank_account_name: $("resellerModalBankName").value.trim(), p_note: $("resellerModalNote").value.trim(),
+        p_renewal_commission: isNaN(renewCommVal) ? 25 : renewCommVal, p_trial_quota: isNaN(trialQuotaVal) ? 15 : trialQuotaVal
       };
-      if (!payload.p_code || !payload.p_phone || !payload.p_name || !payload.p_garage_name) {
-        alert("❌ Vui lòng điền đủ: Mã đại lý, SĐT, Tên chủ và Tên Gara.");
-        btn.disabled = false;
-        btn.textContent = "Lưu thông tin";
-        return;
-      }
-      const res = await api("/rest/v1/rpc/admin_create_reseller", {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
+      if (!payload.p_code || !payload.p_phone || !payload.p_name || !payload.p_garage_name) { alert("❌ Vui lòng điền đủ: Mã đại lý, SĐT, Tên chủ và Tên Gara."); btn.disabled = false; btn.textContent = "Lưu thông tin"; return; }
+      const res = await api("/rest/v1/rpc/admin_create_reseller", { method: "POST", body: JSON.stringify(payload) }), data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể tạo đại lý");
-      alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + (data.pin || payload.p_pin || "?") + ")!");
+      alert("🎉 Đã tạo đại lý " + (data.reseller_code || payload.p_code) + " thành công (Mã PIN: " + (data.pin || payload.p_pin || "?") + ")!");
     }
-    closeResellerModal();
-    loadResellersData();
-  } catch (err) {
-    alert("❌ Lỗi: " + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Lưu thông tin";
-  }
+    closeResellerModal(); loadResellersData();
+  } catch (err) { alert("❌ Lỗi: " + err.message); } finally { btn.disabled = false; btn.textContent = "Lưu thông tin"; }
 }
 function openTopupModal(resellerId) {
-  const r = (window._resellersList || []).find(item => item.id === resellerId);
-  if (!r) return;
+  const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
   $("topupResellerId").value = r.id;
   $("topupResellerTitle").textContent = r.reseller_code + " — " + r.garage_name + " (" + r.owner_name + ")";
   $("topupResellerCurrentBalance").textContent = "Số dư hiện tại: " + (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
-  $("topupAmount").value = "5.000.000";
-  $("topupNote").value = "";
+  if ($("topupActionType")) $("topupActionType").value = "topup";
+  $("topupAmount").value = "5.000.000"; $("topupNote").value = "";
+  updateTopupPreviewUI();
   $("resellerTopupMask").style.display = "flex";
+}
+function updateTopupPreviewUI() {
+  const resellerId = $("topupResellerId") ? $("topupResellerId").value : "", r = (window._resellersList || []).find(item => item.id === resellerId);
+  const curBal = r ? (Number(r.wallet_balance) || 0) : 0, actionType = $("topupActionType") ? $("topupActionType").value : "topup";
+  const amount = parseVndNumber($("topupAmount") ? $("topupAmount").value : "0") || 0, delta = actionType === "deduct" ? -amount : amount, nextBal = curBal + delta;
+  const previewEl = $("topupAfterBalancePreview");
+  if (previewEl) {
+    const signStr = delta >= 0 ? "+" : "", color = actionType === "deduct" ? "var(--err)" : "var(--ok)";
+    previewEl.innerHTML = `Biến động: <b style="color:${color}">${signStr}${delta.toLocaleString("vi-VN")} ₫</b> &rarr; Số dư mới: <b style="color:var(--text)">${nextBal.toLocaleString("vi-VN")} ₫</b>`;
+  }
+  const btn = $("btnSubmitTopup");
+  if (btn && !btn.disabled) btn.textContent = actionType === "topup" ? "💰 Xác nhận nạp tiền sỉ" : (actionType === "bonus" ? "🎁 Xác nhận cộng thưởng" : "➖ Xác nhận trừ ví");
 }
 function closeTopupModal() { $("resellerTopupMask").style.display = "none"; }
 async function submitTopup() {
-  const resellerId = $("topupResellerId").value, amount = parseVndNumber($("topupAmount").value), note = $("topupNote").value.trim();
-  if (!amount || amount <= 0) { alert("❌ Vui lòng nhập số tiền nạp hợp lệ (> 0 VND)"); return; }
-  const btn = $("btnSubmitTopup"); btn.disabled = true; btn.textContent = "Đang nạp...";
+  const resellerId = $("topupResellerId").value, actionType = $("topupActionType") ? $("topupActionType").value : "topup", amount = parseVndNumber($("topupAmount").value), note = $("topupNote").value.trim();
+  if (!amount || amount <= 0) { alert("❌ Vui lòng nhập số tiền hợp lệ (> 0 VND)"); return; }
+  if (actionType !== "topup" && !note) { alert("❌ Vui lòng nhập ghi chú lý do khi Cộng thưởng hoặc Điều chỉnh trừ ví."); return; }
+  const btn = $("btnSubmitTopup"); btn.disabled = true; btn.textContent = "Đang xử lý...";
   try {
-    const res = await api("/rest/v1/rpc/admin_topup_reseller", {
-      method: "POST",
-      body: JSON.stringify({ p_reseller_id: resellerId, p_amount: amount, p_note: note || "Nạp tiền ví đại lý" })
-    });
-    const data = await res.json();
-    if (!data.success) throw new Error(data.message || "Không thể nạp tiền ví");
-    alert("🎉 Đã nạp thành công +" + amount.toLocaleString("vi-VN") + " ₫ vào ví đại lý!");
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    if (isDemo && window._demoResellersState) {
+      const r = window._demoResellersState.resellers.find(x => x.id === resellerId);
+      if (r) {
+        const before = Number(r.wallet_balance) || 0, delta = actionType === "deduct" ? -amount : amount;
+        r.wallet_balance = before + delta;
+        if (actionType === "topup") r.total_revenue_contributed = (Number(r.total_revenue_contributed) || 0) + amount;
+        window._demoResellersState.recent_transactions.unshift({ id: "demo_tx_" + Date.now(), reseller_id: r.id, reseller_code: r.reseller_code, garage_name: r.garage_name, type: actionType, amount: delta, balance_before: before, balance_after: r.wallet_balance, reference_id: "ADMIN_DEMO", note: note || "Giao dịch ví Demo", created_at: new Date().toISOString() });
+      }
+      alert("✅ Đã cập nhật số dư ví đại lý thành công!"); closeTopupModal(); loadResellersData(); return;
+    }
+    if (actionType === "topup") {
+      const res = await api("/rest/v1/rpc/admin_topup_reseller", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId, p_amount: amount, p_note: note || "Nạp tiền ví đại lý" }) }), data = await res.json();
+      if (!data.success) throw new Error(data.message || "Không thể nạp tiền ví");
+      alert("🎉 Đã nạp thành công +" + amount.toLocaleString("vi-VN") + " ₫ vào ví đại lý!");
+    } else {
+      const signedAmount = actionType === "deduct" ? -amount : amount;
+      const res = await api("/rest/v1/rpc/admin_adjust_reseller_wallet", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId, p_amount: signedAmount, p_type: actionType, p_note: note }) }), data = await res.json();
+      if (!data.success) throw new Error(data.message || "Không thể điều chỉnh số dư ví");
+      alert("✅ Đã điều chỉnh ví đại lý (" + (signedAmount > 0 ? "+" : "") + signedAmount.toLocaleString("vi-VN") + " ₫) thành công!");
+    }
     closeTopupModal(); loadResellersData();
-  } catch (err) { alert("❌ Lỗi: " + err.message); } finally { btn.disabled = false; btn.textContent = "Xác nhận nạp tiền"; }
+  } catch (err) { alert("❌ Lỗi: " + err.message); } finally { btn.disabled = false; updateTopupPreviewUI(); }
 }
 async function toggleResellerStatus(resellerId, newStatus) {
-  const r = (window._resellersList || []).find(item => item.id === resellerId);
-  const actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN" : "MỞ HOẠT ĐỘNG LẠI";
+  const r = (window._resellersList || []).find(item => item.id === resellerId), actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN (thu hồi ngay phiên đăng nhập hiện tại)" : "MỞ HOẠT ĐỘNG LẠI";
   if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) return;
   try {
-    const res = await api("/rest/v1/rpc/admin_toggle_reseller_status", {
-      method: "POST",
-      body: JSON.stringify({ p_reseller_id: resellerId, p_status: newStatus })
-    });
-    const data = await res.json();
+    const res = await api("/rest/v1/rpc/admin_toggle_reseller_status", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId, p_status: newStatus }) }), data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi thay đổi trạng thái");
-    alert("✅ Đã cập nhật trạng thái đại lý thành công!");
-    loadResellersData();
+    alert("✅ Đã cập nhật trạng thái đại lý thành công!"); loadResellersData();
   } catch (err) { alert("❌ Lỗi: " + err.message); }
 }
 </script>
