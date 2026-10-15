@@ -22,6 +22,19 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.1
+
+- **🎙️ "Hi Geely" ít bật nhầm hơn**: xe chỉ thức khi nghe đúng câu "Hi Geely" (kể cả "Hai Geely", "Hey Geely"); không còn thức khi nghe "OK / Hello / Alo Geely", "xe ơi", "này xe". Trên 2.738 lượt ghi thật, số lần xe tưởng là gọi giảm từ 127 xuống 98, và mọi cách đọc "Hi Geely" đã thử vẫn nhận. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại.
+- **🅿️ "Chế độ chờ khi rời xe"**: nói "bật/tắt chế độ rời xe" hay "trừ khi rời xe" xe cũng hiểu; câu nghe nhầm "bắt chế độ chờ khi rời xe" nay xe im thay vì bật giữ điện.
+- **🪟 Kính và cửa sổ trời**: câu chỉ có con số phần trăm không còn bị hiểu thành lệnh kính; nói "cửa sổ trời / nóc xe" không còn thành lệnh kính hay mở cốp (xe im).
+- **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
+- **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
+- **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.3.1
+
+- **🔄 Cập nhật cùng nhịp với CarConnect 1.3.1**: thêm máy tính thời gian sạc và nhắc rút súng sạc (chỉ trên điện thoại); nhắc nhở vẫn huỷ được khi chuông tới muộn; lệnh từ xa iCar không còn báo thành công giả; không còn nối lại bằng mã cũ.
+
 ## CarConnect 1.3.0
 
 - **🎵 Ứng dụng nghe nhạc, bản đồ không còn bị xe dọn khi ra nền**: danh sách ứng dụng được xe giữ chạy nền nay lấy từ danh sách Cài nhanh và tự cập nhật theo từng bản CarConnect, nên mọi ứng dụng Cài nhanh (kể cả YouTube Music bản Morphe) không còn bị màn hình chính của xe dọn sau khoảng 30 giây. Sau khi cài bản này, màn hình chính của xe có thể tự khởi động lại một lần. Lưu ý: nếu YouTube Music tự đứng ở trạng thái đang tải giữa bài thì đó là lỗi tải nhạc của chính ứng dụng, bản này chưa sửa phần đó.

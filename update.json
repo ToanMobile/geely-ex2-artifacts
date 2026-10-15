@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.2.9",
-    "versionCode": 1209,
+    "latestVersionName": "1.3.1",
+    "versionCode": 1301,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "6f0e9769846af6917d3c46d4d3c7323f3ba266ab24f3f2d2a84af8a63f783be7",
-    "releaseNotes": "- 🎙️ Chờ nghe \"Hi Geely\" nhẹ máy hơn: Xe chờ bằng mic thô và chỉ bật bộ lọc ồn khi nghe thấy gọi, nên CPU lúc chờ giảm hơn một nửa trong lần đo trên xe. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại để chỉnh.\n- 🎯 Bớt đánh thức nhầm: Câu \"Hi Geely\" bị nghe nhầm từ tiếng nói khác giảm khoảng một nửa trong thử nghiệm với kho âm thanh thật.\n- 🅿️ Bật/tắt \"chế độ chờ khi rời xe\" bằng giọng nói, xe đọc lại kết quả bằng giọng.\n- ⚖️ Nói \"tắc cân bằng điện tử\" hay \"hỗ trợ đổ đèo\" xe hiểu đúng; nói \"nhà riêng\" không còn bị hiểu thành lệnh kính.\n- ⏭️ Phím Next/Prev trên vô lăng chỉ chuyển đúng một bài, không nhảy ba bài như trước.\n- 📥 Gỡ ứng dụng từ điện thoại không còn làm các lệnh sau (nhiệt độ, kính…) phải chờ.\n- ⚡ Xe tự tối ưu ứng dụng sau mỗi lần cài để Maps, YouTube chạy mượt hơn; cài ứng dụng khi bản cũ ký khác thì xe tự gỡ bản cũ rồi cài.",
+    "sha256": "5daffa7cf716936b9b6576a285b31130eb4b7f5e58d7050cebbf06f985ad6f55",
+    "releaseNotes": "- 🎙️ \"Hi Geely\" ít bật nhầm hơn: xe chỉ thức khi nghe đúng câu \"Hi Geely\" (kể cả \"Hai Geely\", \"Hey Geely\"); không còn thức khi nghe \"OK / Hello / Alo Geely\", \"xe ơi\", \"này xe\". Trên 2.738 lượt ghi thật, số lần xe tưởng là gọi giảm từ 127 xuống 98, và mọi cách đọc \"Hi Geely\" đã thử vẫn nhận. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại.\n- 🅿️ \"Chế độ chờ khi rời xe\": nói \"bật/tắt chế độ rời xe\" hay \"trừ khi rời xe\" xe cũng hiểu; câu nghe nhầm \"bắt chế độ chờ khi rời xe\" nay xe im thay vì bật giữ điện.\n- 🪟 Kính và cửa sổ trời: câu chỉ có con số phần trăm không còn bị hiểu thành lệnh kính; nói \"cửa sổ trời / nóc xe\" không còn thành lệnh kính hay mở cốp (xe im).\n- ⚡ Màn Trạng thái hiện luồng năng lượng của xe; nút Play/Pause trên cửa sổ PIP chỉ điều khiển đúng ứng dụng đang ở PIP.\n- 💳 Gói Trọn đời 2.960.000 ₫ (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.\n- 🔬 Bản dev để thu log: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
