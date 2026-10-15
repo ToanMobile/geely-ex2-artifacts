@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.2.9",
-    "versionCode": 1209,
+    "latestVersionName": "1.3.1",
+    "versionCode": 1301,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "e9bf491d58ebf00daf308d5b78cba2de748a9ff6559beed5335c286d107d958f",
-    "releaseNotes": "- 🔄 Cập nhật cùng nhịp với CarConnect 1.2.9: không có thay đổi giao diện.",
+    "sha256": "c7e155fbfd048a40f81e29adb5425c6ba7782ea8d711ef388dae94a9ad7306d5",
+    "releaseNotes": "- 🔄 Cập nhật cùng nhịp với CarConnect 1.3.1: thêm máy tính thời gian sạc và nhắc rút súng sạc (chỉ trên điện thoại); nhắc nhở vẫn huỷ được khi chuông tới muộn; lệnh từ xa iCar không còn báo thành công giả; không còn nối lại bằng mã cũ.",
     "minVersionCode": 0,
     "forceRules": []
   },
