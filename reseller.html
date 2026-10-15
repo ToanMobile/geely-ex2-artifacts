@@ -799,6 +799,7 @@ function getDemoDashboardState() {
       trial_used: 4,
       trial_remaining: 11,
       total_sales: 18,
+      total_sales_count: 18,
       total_contributed: 25000000,
       bank_bin: "970436",
       bank_account: "0071001234567",
@@ -914,15 +915,21 @@ async function api(path, body = {}, timeoutMs = 15000) {
       const before = st.reseller.wallet_balance;
       st.reseller.wallet_balance -= wholesale;
       st.reseller.available_balance = st.reseller.wallet_balance + st.reseller.credit_limit;
-      st.reseller.total_sales += 1;
-      if (isTrial) st.reseller.trial_remaining = Math.max(0, st.reseller.trial_remaining - 1);
+      if (isTrial) {
+        st.reseller.trial_used = (st.reseller.trial_used || 0) + 1;
+        st.reseller.trial_remaining = Math.max(0, st.reseller.trial_remaining - 1);
+      } else {
+        st.reseller.total_sales = (st.reseller.total_sales || 0) + 1;
+        st.reseller.total_sales_count = st.reseller.total_sales;
+      }
+      const expAt = isTrial ? new Date(Date.now() + 3 * 86400000).toISOString() : (plan === "yearly" ? new Date(Date.now() + 365 * 86400000).toISOString() : (plan === "quarter" ? new Date(Date.now() + 90 * 86400000).toISOString() : null));
       st.recent_licenses.unshift({
         key: newKey,
         owner_name: body.p_owner_name,
         owner_phone: body.p_owner_phone,
         role: "car",
         is_trial: isTrial,
-        expires_at: isTrial ? new Date(Date.now() + 3 * 86400000).toISOString() : (plan === "yearly" ? new Date(Date.now() + 365 * 86400000).toISOString() : (plan === "quarter" ? new Date(Date.now() + 90 * 86400000).toISOString() : null)),
+        expires_at: expAt,
         reseller_price: wholesale,
         active: true,
         note: body.p_note || "",
@@ -947,10 +954,13 @@ async function api(path, body = {}, timeoutMs = 15000) {
         plan_id: plan,
         owner_name: body.p_owner_name,
         owner_phone: body.p_owner_phone,
-        retail_price: retail,
+        expires_at: expAt,
+        retail_price: custPay,
         customer_pay_price: custPay,
+        wholesale_price: wholesale,
         wholesale_cost: wholesale,
         reseller_profit: profit,
+        remaining_balance: st.reseller.wallet_balance,
         new_wallet_balance: st.reseller.wallet_balance,
         is_trial: isTrial
       };
@@ -1446,6 +1456,9 @@ function copyResultKey() {
 
 function sendResultToZalo() {
   if (!lastIssuedData || !lastIssuedData.owner_phone) return;
+  const planText = getPlanDisplayName(lastIssuedData.plan_id);
+  const msg = buildCustomerGuideText(lastIssuedData.owner_name, lastIssuedData.owner_phone, lastIssuedData.license_key, planText);
+  copyTextSafe(msg, "📋 Đã sao chép tin nhắn kích hoạt & đang mở Zalo khách hàng!");
   openZaloForPhone(lastIssuedData.owner_phone);
 }
 

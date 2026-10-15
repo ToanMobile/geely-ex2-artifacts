@@ -1172,7 +1172,7 @@
         <button type="button" class="small ghost" id="fltResellerActive" onclick="setResellerFilter('active')">🟢 Hoạt động (<span id="fltResellerActiveCount">0</span>)</button>
         <button type="button" class="small ghost" id="fltResellerSuspended" onclick="setResellerFilter('suspended')">⛔ Đang khoá (<span id="fltResellerSuspendedCount">0</span>)</button>
         <button type="button" class="small ghost" id="fltResellerLockedPin" onclick="setResellerFilter('locked_pin')">⚠️ Kẹt PIN / Sai PIN (<span id="fltResellerLockedPinCount">0</span>)</button>
-        <button type="button" class="small ghost" id="fltResellerLowBal" onclick="setResellerFilter('low_balance')">💳 Cần nạp ví (<span id="fltResellerLowBalCount">0</span>)</button>
+        <button type="button" class="small ghost" id="fltResellerLowBal" onclick="setResellerFilter('low_balance')" title="Đại lý có số dư ví dưới 2.000.000 ₫ (chưa đủ xuất 1 mã Trọn đời)">💳 Cần nạp ví (<span id="fltResellerLowBalCount">0</span>)</button>
         <div style="margin-left:auto; display:flex; align-items:center; gap:6px"><label style="display:inline-flex; align-items:center; gap:5px; font-size:12px; cursor:pointer; color:var(--text); user-select:none">
             <input type="checkbox" id="chkShowAllPins" onchange="toggleShowAllPins(this.checked)" style="width:14px; height:14px; margin:0; cursor:pointer">
             <span>👁️ Hiện toàn bộ PIN</span>
@@ -1180,7 +1180,7 @@
         </div></div>
       <div style="overflow-x:auto">
         <table id="resellersTable">
-          <thead><tr><th style="width:110px">Mã ĐL</th><th style="min-width:200px">Đại lý / Gara</th><th style="width:130px">Số điện thoại</th><th style="width:140px; text-align:center">Mã PIN (6 số)</th><th style="width:140px">Chiết khấu (%)</th><th style="width:160px">Số dư ví / Hạn mức</th><th style="width:110px; text-align:center">Key đã cấp</th><th style="width:120px; text-align:center">Trạng thái</th><th style="width:240px; text-align:right">Thao tác</th></tr></thead>
+          <thead><tr><th style="width:110px">Mã ĐL</th><th style="min-width:200px">Đại lý / Gara</th><th style="width:130px">Số điện thoại</th><th style="width:140px; text-align:center">Mã PIN (6 số)</th><th style="width:140px">Chiết khấu (%)</th><th style="width:190px">Ví & Doanh thu riêng</th><th style="width:115px; text-align:center">Key & Báo cáo</th><th style="width:120px; text-align:center">Trạng thái</th><th style="width:240px; text-align:right">Thao tác</th></tr></thead>
           <tbody id="resellersTableBody">
             <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">Đang tải dữ liệu đại lý...</td></tr></tbody>
         </table></div></div>
@@ -1205,6 +1205,7 @@
           <input id="fltTransSearchInput" placeholder="🔍 Tìm mã key, ghi chú..." style="width:200px" oninput="filterResellerTransactions()">
         </div>
       </div>
+      <div id="resellerTransFilterSummary" style="display:none; background:var(--panel2); border:1px solid var(--border); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:12px; line-height:1.5"></div>
       <div style="overflow-x:auto">
         <table id="resellerTransTable">
           <thead><tr><th style="width:150px">Thời gian</th><th style="width:130px">Đại lý</th><th style="width:140px">Loại GD</th><th style="width:140px; text-align:right">Biến động</th><th style="width:170px; text-align:right">Số dư (Trước → Sau)</th><th style="width:150px">Tham chiếu</th><th>Ghi chú</th></tr></thead>
@@ -1505,7 +1506,7 @@
           <input id="resellerModalDiscYear" type="number" value="40" min="0" max="70" oninput="updateResellerModalProfitPreview()">
         </div>
         <div><label>Hoa hồng Gia hạn / Tái tục (%)</label>
-          <input id="resellerModalRenewalComm" type="number" value="25" min="0" max="70" oninput="updateResellerModalProfitPreview()">
+          <input id="resellerModalRenewalComm" type="number" value="25" min="0" max="50" oninput="updateResellerModalProfitPreview()">
         </div>
         <div><label>Hạn ngạch Key Dùng thử / tháng</label>
           <input id="resellerModalTrialQuota" type="number" value="15" min="0" max="500">
@@ -1574,26 +1575,57 @@
         <button type="button" id="btnConfirmResetPin" class="primary" onclick="submitResetPin()">Xác nhận đổi PIN</button>
         <button type="button" class="ghost" onclick="closeResetPinModal()">Huỷ</button>
       </div></div></div>
-  <!-- Modal Danh Sách Key Đại Lý Đã Cấp -->
+  <!-- Modal Báo Cáo Doanh Thu & Danh Sách Key Đại Lý Đã Cấp -->
   <div class="modal-mask" id="resellerLicensesMask" style="display:none" onclick="if(event.target===this)closeResellerLicensesModal()">
-    <div class="modal" style="max-width:820px">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:10px; flex-wrap:wrap">
+    <div class="modal" style="width:min(940px, 95vw)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px; flex-wrap:wrap">
         <div>
-          <h3 id="resellerLicensesTitle" style="margin:0">🔑 Danh Sách Key Đã Cấp</h3>
-          <div class="hint" id="resellerLicensesSubtitle" style="margin-top:2px">Danh sách tất cả bản quyền xe do đại lý xuất</div>
+          <h3 id="resellerLicensesTitle" style="margin:0">📊 Doanh Thu & Key Đã Cấp Của Đại Lý</h3>
+          <div class="hint" id="resellerLicensesSubtitle" style="margin-top:2px">Báo cáo doanh số riêng, lợi nhuận và danh sách bản quyền xe do đại lý xuất</div>
         </div>
-        <div style="display:flex; gap:8px; align-items:center">
-          <input id="resellerLicensesSearch" placeholder="🔍 Tìm key, tên, SĐT khách..." style="width:210px" oninput="filterResellerLicensesModalTable()">
+        <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap">
+          <select id="resellerLicensesPeriodFilter" style="width:155px" onchange="filterResellerLicensesModalTable()">
+            <option value="all">📅 Toàn thời gian</option>
+            <option value="month">📆 Tháng này</option>
+            <option value="7d">🗓️ 7 ngày qua</option>
+            <option value="today">☀️ Hôm nay</option>
+          </select>
+          <input id="resellerLicensesSearch" placeholder="🔍 Tìm key, tên, SĐT khách..." style="width:195px" oninput="filterResellerLicensesModalTable()">
+          <button type="button" class="small ghost" onclick="exportSingleResellerReportCsv()" title="Xuất báo cáo doanh thu & danh sách key của riêng đại lý này ra CSV">⬇️ Xuất CSV ĐL</button>
           <button type="button" class="small ghost" onclick="closeResellerLicensesModal()">✕ Đóng</button>
         </div>
       </div>
-      <div style="overflow-x:auto; margin-top:10px; max-height:430px; overflow-y:auto">
+      <!-- 4 Thẻ KPI Doanh thu riêng của Đại lý -->
+      <div id="resellerDetailKpiGrid" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 10px; margin-bottom: 12px">
+        <div style="background:var(--panel2); border:1px solid var(--border); border-left:3px solid #2563eb; border-radius:8px; padding:10px 12px">
+          <div style="font-size:11px; color:var(--muted); font-weight:700">💰 TỔNG ĐÃ NẠP SỈ & SỐ DƯ VÍ</div>
+          <div id="resDetailTopupVal" style="font-size:18px; font-weight:800; color:#2563eb; margin:3px 0">0 ₫</div>
+          <div id="resDetailWalletSub" class="hint" style="font-size:11px">Số dư ví: 0 ₫</div>
+        </div>
+        <div style="background:var(--panel2); border:1px solid var(--border); border-left:3px solid #059669; border-radius:8px; padding:10px 12px">
+          <div style="font-size:11px; color:var(--muted); font-weight:700">📈 DOANH SỐ XUẤT KEY (GIÁ SỈ)</div>
+          <div id="resDetailWholesaleVal" style="font-size:18px; font-weight:800; color:#059669; margin:3px 0">0 ₫</div>
+          <div id="resDetailRetailSub" class="hint" style="font-size:11px">Quy đổi giá lẻ: 0 ₫</div>
+        </div>
+        <div style="background:var(--panel2); border:1px solid var(--border); border-left:3px solid #d97706; border-radius:8px; padding:10px 12px">
+          <div style="font-size:11px; color:var(--muted); font-weight:700">🎁 LỢI NHUẬN & HOA HỒNG ĐL</div>
+          <div id="resDetailProfitVal" style="font-size:18px; font-weight:800; color:#d97706; margin:3px 0">+0 ₫</div>
+          <div id="resDetailCommSub" class="hint" style="font-size:11px">Lãi xuất mã + Hoa hồng tái tục</div>
+        </div>
+        <div style="background:var(--panel2); border:1px solid var(--border); border-left:3px solid #9333ea; border-radius:8px; padding:10px 12px">
+          <div style="font-size:11px; color:var(--muted); font-weight:700">🔑 CƠ CẤU GÓI ĐÃ XUẤT</div>
+          <div id="resDetailPlanCountVal" style="font-size:16px; font-weight:800; color:#9333ea; margin:3px 0">0 key thương mại</div>
+          <div id="resDetailPlanBreakdownSub" class="hint" style="font-size:11px">Trọn đời: 0 • 1N: 0 • 3T: 0 • Trial: 0</div>
+        </div>
+      </div>
+      <div style="overflow-x:auto; margin-top:6px; max-height:390px; overflow-y:auto">
         <table>
-          <thead><tr><th style="width:130px">Thời gian</th><th>Mã License Key</th><th>Khách hàng / SĐT</th><th style="width:125px">Gói & Hạn</th><th style="text-align:right; width:115px">Giá sỉ trừ ví</th><th style="text-align:center; width:110px">Kích hoạt</th></tr></thead>
+          <thead><tr><th style="width:130px">Thời gian</th><th>Mã License Key</th><th>Khách hàng / SĐT</th><th style="width:125px">Gói & Hạn</th><th style="text-align:right; width:130px">Giá sỉ trừ ví</th><th style="text-align:center; width:110px">Kích hoạt</th></tr></thead>
           <tbody id="resellerLicensesTableBody">
             <tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px">Đang tải danh sách key...</td></tr></tbody>
         </table></div>
-      <div class="actions" style="margin-top:16px; justify-content:flex-end">
+      <div class="actions" style="margin-top:14px; justify-content:space-between; display:flex; align-items:center; flex-wrap:wrap; gap:8px">
+        <button type="button" class="small ghost" onclick="focusResellerTransactionsFromModal()" style="color:#0284c7">📜 Xem lịch sử biến động ví của đại lý này</button>
         <button type="button" class="ghost" onclick="closeResellerLicensesModal()">Đóng</button>
       </div></div></div>
   <!-- Modal Nạp Tiền / Điều Chỉnh Ví Đại Lý -->
@@ -1912,6 +1944,7 @@ async function verifyLoginOtp() {
       setCreateRoleDefaults();
       loadKeys();
       loadSalesData();
+      loadResellersData();
       renderQuickInstallTable();
       loadQuickInstallCatalog();
       loadAppUpdateConfig();
@@ -1954,6 +1987,7 @@ function saveSettings() {
   alert("Đã lưu cấu hình thành công!");
   loadKeys();
   loadSalesData();
+  loadResellersData();
   loadQuickInstallCatalog();
 }
 function resetDefaultSettings() {
@@ -2029,7 +2063,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   renderAppUpdateConfigUI(); applyUrlQueryParams();
   if (checkAuthUI()) {
-    syncTrialUI(); setCreateRoleDefaults(); loadKeys(); loadSalesData();
+    syncTrialUI(); setCreateRoleDefaults(); loadKeys(); loadSalesData(); loadResellersData();
     renderQuickInstallTable(); loadQuickInstallCatalog(); loadAppUpdateConfig();
   }
 });
@@ -2546,7 +2580,7 @@ async function loadKeys() {
   const msg = $("listMsg");
   msg.textContent = "";
   try {
-    const res = await api("/rest/v1/licenses?select=key,owner_name,owner_phone,note,active,max_devices,max_pc_devices,activation_count,max_activations,last_activated_at,expires_at,created_at,role,is_trial,devices(id,machine_id,phone,ip,hostname,os,app_version,use_count,first_seen,last_seen,kicked_at,kick_attempts,last_kick_attempt_at)&order=created_at.desc&limit=500");
+    const res = await api("/rest/v1/licenses?select=key,owner_name,owner_phone,note,active,max_devices,max_pc_devices,activation_count,max_activations,last_activated_at,expires_at,created_at,role,is_trial,reseller_id,reseller_price,issued_by_reseller,devices(id,machine_id,phone,ip,hostname,os,app_version,use_count,first_seen,last_seen,kicked_at,kick_attempts,last_kick_attempt_at)&order=created_at.desc&limit=500");
     window._allRows = await res.json();
     // Gom phiên bản đội xe đang chạy thật cho tab Ép cập nhật (bảng danh mục không còn danh sách cứng).
     const fleet = { car: {}, phone: {}, ios: {} };
@@ -3763,7 +3797,7 @@ function computeClientSideStats() {
   const saleKeys = new Set(rows.filter(r => (r.role || "").toLowerCase() === "sale").map(r => (r.key || "").toUpperCase()));
   const now = new Date(), todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000), thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000), sevenDaysFuture = new Date(now.getTime() + 7 * 86400000);
-  let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0;
+  let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0, resellerOrderRev = 0;
   let revLifetime = 0, countLifetime = 0, revYearly = 0, countYearly = 0, revQuarter = 0, countQuarter = 0;
   let revComboIcar = 0, countComboIcar = 0, revIcarDiscount = 0, countIcarDiscount = 0;
   let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0, totalOrders = 0;
@@ -3779,6 +3813,7 @@ function computeClientSideStats() {
       paidOrders++;
       const amt = (o.plan_id === "combo_icar" || o.plan_id === "icar_discount") ? Math.max(0, rawAmt - 2730000) : rawAmt;
       totalRev += amt;
+      if (o.price_rule_applied === "reseller_wholesale" || o.reseller_id) resellerOrderRev += amt;
       if (d >= todayStart) revToday += amt;
       if (d >= sevenDaysAgo) rev7d += amt;
       if (d >= thirtyDaysAgo) rev30d += amt;
@@ -3793,6 +3828,8 @@ function computeClientSideStats() {
     else if (o.status === "refunded") refundedOrders++;
     else if (o.status === "cancelled" || o.status === "expired") cancelledOrders++;
   }
+  const resList = window._resellersList || [], totalResSpent = resList.reduce((acc, r) => acc + (typeof getResellerWholesaleSpent === "function" ? getResellerWholesaleSpent(r) : (Number(r.total_wholesale_spent) || 0)), 0);
+  if (totalResSpent > resellerOrderRev) { const diffRes = totalResSpent - resellerOrderRev; totalRev += diffRes; rev30d += Math.min(diffRes, resList.reduce((acc, r) => acc + (Number(r.month_wholesale_spent) || 0), 0)); }
   const icarUnitCost = 2730000, totalIcarCost = (countComboIcar + countIcarDiscount) * icarUnitCost;
   const netRevenueAfterIcar = Math.max(0, totalRev - totalIcarCost);
   const convRate = totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0;
@@ -4578,18 +4615,23 @@ function bridgeCarUsersToOrders() {
   (window._allRows || []).filter(r => (r.role || "car") === "car" && !r.is_trial && !isAdm(r)).forEach(cu => {
     const k = (cu.key || "").toUpperCase();
     if (k && !existing.has(k) && !_deletedOrders.has(k) && !_deletedOrders.has("auto-" + k.slice(0, 8))) {
-      const pkg = getLicensePackageInfo(cu);
-      const code = "EX2-" + (cu.key ? cu.key.replace(/[^A-Z0-9]/gi, "").slice(-6).toUpperCase() : "AUTO");
-      const orderStatus = cu.active === false ? "cancelled" : "paid";
-      const orderPaidAt = orderStatus === "paid" ? (cu.created_at || new Date().toISOString()) : null;
-      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6080000 : 4290000) : 2960000))), status: orderStatus, paid_at: orderPaidAt, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
+      const pkg = getLicensePackageInfo(cu), isReseller = Boolean((cu.issued_by_reseller || cu.reseller_id) && Number(cu.reseller_price) > 0);
+      const code = (isReseller ? "DL-" : "EX2-") + (cu.key ? cu.key.replace(/[^A-Z0-9]/gi, "").slice(-6).toUpperCase() : "AUTO");
+      const orderStatus = cu.active === false ? "cancelled" : "paid", orderPaidAt = orderStatus === "paid" ? (cu.created_at || new Date().toISOString()) : null;
+      const defaultAmt = pkg.id === "quarter" ? 495000 : (pkg.id === "yearly" ? 1170000 : (pkg.id === "combo_icar" ? 3900000 : (pkg.id === "icar_discount" ? (pkg.name.includes("Vĩnh") ? 6080000 : 4290000) : 2960000)));
+      window._salesData.orders.unshift({ id: "auto-" + k.slice(0, 8), order_code: code, license_key: cu.key, plan_id: pkg.id || "lifetime", amount: isReseller ? Number(cu.reseller_price) : defaultAmt, price_rule_applied: isReseller ? "reseller_wholesale" : "standard", reseller_id: cu.reseller_id || null, status: orderStatus, paid_at: orderPaidAt, owner_name: cu.owner_name || (cu.note ? cu.note.split("\n")[0] : "Khách Car"), owner_phone: cu.owner_phone || "", note: cu.note || "", created_at: cu.created_at || new Date().toISOString() });
       existing.add(k);
     }
   });
   window._salesData.orders.forEach(o => {
-    if (o.id && o.id.startsWith("auto-") && o.license_key) {
+    if (o.license_key) {
       const matchKey = (window._allRows || []).find(r => (r.key || "").toUpperCase() === o.license_key.toUpperCase());
-      if (matchKey && matchKey.active === false) o.status = "cancelled";
+      if (matchKey) {
+        if (o.id && o.id.startsWith("auto-") && matchKey.active === false) o.status = "cancelled";
+        if ((matchKey.issued_by_reseller || matchKey.reseller_id) && Number(matchKey.reseller_price) > 0) {
+          o.amount = Number(matchKey.reseller_price); o.price_rule_applied = "reseller_wholesale"; o.reseller_id = matchKey.reseller_id || o.reseller_id;
+        }
+      }
     }
   });
 }
@@ -4749,6 +4791,8 @@ function renderSalesOrdersTable() {
     if (o.plan_id === "combo_icar" || o.plan_id === "icar_discount") {
       primaryAmount = Math.max(0, displayAmount - ICAR_UNIT_COST);
       costBreakdownHtml = '<div class="hint mono" style="font-size:10px; color:var(--muted)">Thu khách: ' + formatVndNumber(displayAmount) + ' · Vốn ICAR: -' + formatVndNumber(ICAR_UNIT_COST) + '</div>';
+    } else if (o.price_rule_applied === "reseller_wholesale" || o.reseller_id) {
+      costBreakdownHtml = '<div class="hint mono" style="font-size:10px; color:#059669">🏢 Giá sỉ ĐL trừ ví</div>';
     }
     const amountCellHtml = isAppleOutlay
       ? '<span class="mono" style="text-decoration:line-through; color:var(--muted)">' + formatVndNumber(displayAmount) + '</span><div class="hint" style="color:#d97706; font-size:10px">Toàn ứng · Trừ khỏi DT</div>'
@@ -6800,12 +6844,40 @@ async function copyToClipboard(text, successMessage = "Đã sao chép vào bộ 
   } catch (e) {}
   prompt("Sao chép văn bản dưới đây:", text);
 }
+function getResellerPortalUrl(forPublicShare = false) {
+  const CANONICAL_PUBLIC_URL = "https://toanmobile.github.io/geely-ex2-artifacts/reseller/";
+  try {
+    const loc = window.location;
+    if (!loc || loc.protocol === "file:") {
+      if (forPublicShare) return CANONICAL_PUBLIC_URL;
+      const isDemo = Boolean(new URLSearchParams(loc ? loc.search : "").get("demo"));
+      return new URL("./reseller.html" + (isDemo ? "?demo=1" : ""), loc.href).href;
+    }
+    const host = (loc.hostname || "").toLowerCase();
+    const isLocalHost = host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
+    if (forPublicShare && isLocalHost) return CANONICAL_PUBLIC_URL;
+    const isDirectHtmlFile = /\/admin-keys\.html$/i.test(loc.pathname || "");
+    if (isDirectHtmlFile && !forPublicShare) {
+      const isDemo = Boolean(new URLSearchParams(loc.search || "").get("demo"));
+      return new URL("./reseller.html" + (isDemo ? "?demo=1" : ""), loc.href).href;
+    }
+    let basePath = (loc.pathname || "")
+      .replace(/\/admin-keys\.html$/i, "")
+      .replace(/\/admin(?:\/index\.html|\/)?$/i, "")
+      .replace(/\/+$/, "");
+    if (!basePath && host === "toanmobile.github.io") basePath = "/geely-ex2-artifacts";
+    const isDemo = !forPublicShare && Boolean(new URLSearchParams(loc.search || "").get("demo"));
+    return `${loc.origin}${basePath}/reseller/${isDemo ? "?demo=1" : ""}`;
+  } catch (_) {
+    return CANONICAL_PUBLIC_URL;
+  }
+}
 function openResellerPortalLink() {
-  const url = window.location.origin + "/reseller";
-  window.open(url, "_blank");
+  const url = getResellerPortalUrl(false);
+  window.open(url, "_blank", "noopener");
 }
 function copyResellerPortalUrl() {
-  const url = "https://ex2.toanmobile.com/reseller";
+  const url = getResellerPortalUrl(true);
   copyToClipboard(url, "Đã sao chép đường link Cổng Đại Lý: " + url);
 }
 function getDemoResellersPayload() {
@@ -6813,8 +6885,8 @@ function getDemoResellersPayload() {
   return {
     success: true,
     resellers: [
-      { id: "demo_dl_1", reseller_code: "DL8899", owner_name: "Trần Minh Tuấn", phone: "0908112233", garage_name: "Gara AutoPro Sài Gòn", address: "Quận 7, TP.HCM", pin_plain: "839204", wallet_balance: 8450000, credit_limit: 2000000, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 15, trial_used_this_month: 4, total_sales_count: 18, total_revenue_contributed: 25000000, bank_bin: "970436", bank_account: "0071001234567", bank_account_name: "TRAN MINH TUAN", status: "active", failed_attempts: 0, locked_until: null, note: "Đối tác chiến lược khu vực Nam Sài Gòn", created_at: earlierIso },
-      { id: "demo_dl_2", reseller_code: "DL6868", owner_name: "Lê Hoàng Nam", phone: "0988776655", garage_name: "Trung Tâm Độ Xe EV Hà Nội", address: "Cầu Giấy, Hà Nội", pin_plain: "592817", wallet_balance: 3120000, credit_limit: 0, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 20, trial_used_this_month: 7, total_sales_count: 11, total_revenue_contributed: 15000000, bank_bin: "970407", bank_account: "1903456789012", bank_account_name: "LE HOANG NAM", status: "active", failed_attempts: 0, locked_until: null, note: "Chuyên lắp phụ kiện Geely EX2 miền Bắc", created_at: earlierIso }
+      { id: "demo_dl_1", reseller_code: "DL8899", owner_name: "Trần Minh Tuấn", phone: "0908112233", garage_name: "Gara AutoPro Sài Gòn", address: "Quận 7, TP.HCM", pin_plain: "839204", wallet_balance: 8450000, credit_limit: 2000000, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 15, trial_used_this_month: 4, total_sales_count: 18, total_revenue_contributed: 25000000, total_wholesale_spent: 16550000, month_wholesale_spent: 5772000, month_sales_count: 4, total_commission_earned: 585000, paid_keys_count: 18, trial_keys_count: 4, bank_bin: "970436", bank_account: "0071001234567", bank_account_name: "TRAN MINH TUAN", status: "active", failed_attempts: 0, locked_until: null, note: "Đối tác chiến lược khu vực Nam Sài Gòn", created_at: earlierIso },
+      { id: "demo_dl_2", reseller_code: "DL6868", owner_name: "Lê Hoàng Nam", phone: "0988776655", garage_name: "Trung Tâm Độ Xe EV Hà Nội", address: "Cầu Giấy, Hà Nội", pin_plain: "592817", wallet_balance: 3120000, credit_limit: 0, discount_rate_lifetime: 35, discount_rate_yearly: 40, renewal_commission_percent: 25, trial_quota_monthly: 20, trial_used_this_month: 7, total_sales_count: 11, total_revenue_contributed: 15000000, total_wholesale_spent: 12172500, month_wholesale_spent: 3848000, month_sales_count: 3, total_commission_earned: 292500, paid_keys_count: 11, trial_keys_count: 7, bank_bin: "970407", bank_account: "1903456789012", bank_account_name: "LE HOANG NAM", status: "active", failed_attempts: 0, locked_until: null, note: "Chuyên lắp phụ kiện Geely EX2 miền Bắc", created_at: earlierIso }
     ],
     recent_transactions: [
       { id: "demo_tx_1", reseller_id: "demo_dl_1", reseller_code: "DL8899", garage_name: "Gara AutoPro Sài Gòn", type: "key_issue", amount: -1924000, balance_before: 10374000, balance_after: 8450000, reference_id: "EX2A-9988-7766-5544", note: "Xuất mã Trọn đời cho khách Nguyễn Hoàng (0912345678)", created_at: nowIso },
@@ -6843,7 +6915,7 @@ async function loadResellersData() {
       if (r.status === "active") activeCount++;
       if (r.status === "suspended") suspendedCount++;
       if ((r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now)) lockedPinCount++;
-      if (Number(r.wallet_balance) <= 0) lowBalCount++;
+      if (Number(r.wallet_balance) < 2000000) lowBalCount++;
     });
     if ($("resellerKpiCount")) $("resellerKpiCount").textContent = window._resellersList.length;
     if ($("resellerKpiTotalRevenue")) $("resellerKpiTotalRevenue").textContent = totalRev.toLocaleString("vi-VN") + " ₫";
@@ -6858,10 +6930,12 @@ async function loadResellersData() {
     populateTransResellerFilterDropdown();
     applyResellerFilter();
     filterResellerTransactions();
+    if (typeof loadAnalytics === "function") loadAnalytics();
     try {
       const mParam = new URLSearchParams(window.location.search).get("modal"), firstId = window._resellersList[0] && window._resellersList[0].id;
       if (firstId && mParam === "edit") openEditResellerModal(firstId);
       else if (firstId && mParam === "topup") openTopupModal(firstId);
+      else if (firstId && (mParam === "licenses" || mParam === "revenue")) openResellerLicensesModal(firstId);
     } catch (_) {}
   } catch (err) {
     console.error("Lỗi tải dữ liệu đại lý:", err);
@@ -6891,14 +6965,43 @@ function filterResellerTransactions() {
     return true;
   });
   if ($("resellerTransCountBadge")) $("resellerTransCountBadge").textContent = filtered.length + " GD";
+  const sumEl = $("resellerTransFilterSummary");
+  if (sumEl) {
+    if (resellerCode !== "all") {
+      const rObj = (window._resellersList || []).find(x => x.reseller_code === resellerCode);
+      let sumTopup = 0, sumSpent = 0, sumComm = 0;
+      filtered.forEach(t => {
+        const amt = Number(t.amount) || 0;
+        if (t.type === "topup" && amt > 0) sumTopup += amt;
+        else if (t.type === "key_issue" && amt < 0) sumSpent += Math.abs(amt);
+        else if ((t.type === "affiliate_commission" || t.type === "renewal_commission" || t.type === "bonus" || (t.type === "credit_adjust" && amt > 0)) && amt > 0) sumComm += amt;
+      });
+      const rTotalSpent = rObj ? (Number(rObj.total_wholesale_spent) || Math.max(0, (Number(rObj.total_revenue_contributed) || 0) - (Number(rObj.wallet_balance) || 0))) : sumSpent;
+      sumEl.style.display = "block";
+      sumEl.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px">` +
+        `<div>📊 <b>Tổng hợp riêng đại lý ${esc(resellerCode)}${rObj ? ' (' + esc(rObj.garage_name) + ')' : ''}:</b> ` +
+        `Đã nạp sỉ: <b style="color:#2563eb">${(rObj ? Number(rObj.total_revenue_contributed) || 0 : sumTopup).toLocaleString("vi-VN")} ₫</b> &bull; ` +
+        `Doanh số xuất key (giá sỉ): <b style="color:#059669">${rTotalSpent.toLocaleString("vi-VN")} ₫</b> &bull; ` +
+        `Số dư ví hiện tại: <b>${(rObj ? Number(rObj.wallet_balance) || 0 : 0).toLocaleString("vi-VN")} ₫</b> &bull; ` +
+        `Hoa hồng/Thưởng trong danh sách lọc: <b style="color:#d97706">+${sumComm.toLocaleString("vi-VN")} ₫</b></div>` +
+        (rObj ? `<button type="button" class="small ghost" style="padding:2px 8px; font-size:11px; color:#9333ea" onclick="openResellerLicensesModal('${esc(rObj.id)}')">📊 Mở Báo cáo Doanh thu & Key ĐL này</button>` : '') +
+        `</div>`;
+    } else {
+      sumEl.style.display = "none";
+    }
+  }
   renderResellerTransactionsTable(filtered);
+}
+function getResellerWholesaleSpent(r) {
+  if (r.total_wholesale_spent !== undefined && r.total_wholesale_spent !== null) return Number(r.total_wholesale_spent) || 0;
+  return Math.max(0, (Number(r.total_revenue_contributed) || 0) + (Number(r.total_commission_earned) || 0) - (Number(r.wallet_balance) || 0));
 }
 function exportResellersCsv() {
   const list = window._resellersList || [];
   if (!list.length) { alert("⚠️ Chưa có dữ liệu đại lý để xuất CSV."); return; }
-  const headers = ["Ma_DL", "Gara", "Chu_Gara", "SDT", "Dia_Chi", "So_Du_Vi", "Han_Muc_Am", "Tong_Nap_Si", "So_Key_Da_Xuat", "CK_Tron_Doi_%", "CK_1_Nam_%", "HH_Gia_Han_%", "Trial_Thang", "Trang_Thai", "Ngan_Hang_BIN", "STK", "Chu_TK", "Ghi_Chu"];
+  const headers = ["Ma_DL", "Gara", "Chu_Gara", "SDT", "Dia_Chi", "So_Du_Vi", "Han_Muc_Am", "Tong_Nap_Si", "Doanh_So_Xuat_Key_Si", "Doanh_So_Thang_Nay", "Tong_Hoa_Hong_Tai_Tuc", "So_Key_Da_Xuat", "CK_Tron_Doi_%", "CK_1_Nam_%", "HH_Gia_Han_%", "Trial_Thang", "Trang_Thai", "Ngan_Hang_BIN", "STK", "Chu_TK", "Ghi_Chu"];
   const escCsv = val => `"${String(val ?? "").replace(/"/g, '""')}"`;
-  const rows = list.map(r => [r.reseller_code, r.garage_name, r.owner_name, r.phone, r.address || "", r.wallet_balance || 0, r.credit_limit || 0, r.total_revenue_contributed || 0, r.total_sales_count || 0, r.discount_rate_lifetime || 35, r.discount_rate_yearly || 40, r.renewal_commission_percent || 25, `${r.trial_used_this_month || 0}/${r.trial_quota_monthly || 15}`, r.status || "active", r.bank_bin || "", r.bank_account || "", r.bank_account_name || "", r.note || ""].map(escCsv).join(","));
+  const rows = list.map(r => [r.reseller_code, r.garage_name, r.owner_name, r.phone, r.address || "", r.wallet_balance || 0, r.credit_limit || 0, r.total_revenue_contributed || 0, getResellerWholesaleSpent(r), r.month_wholesale_spent || 0, r.total_commission_earned || 0, r.total_sales_count || 0, r.discount_rate_lifetime || 35, r.discount_rate_yearly || 40, r.renewal_commission_percent || 25, `${r.trial_used_this_month || 0}/${r.trial_quota_monthly || 15}`, r.status || "active", r.bank_bin || "", r.bank_account || "", r.bank_account_name || "", r.note || ""].map(escCsv).join(","));
   const csvContent = "\uFEFF" + [headers.join(","), ...rows].join("\n");
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
   a.href = url; a.download = `danh-sach-dai-ly-geely-ex2-${new Date().toISOString().slice(0, 10)}.csv`;
@@ -6923,7 +7026,7 @@ function applyResellerFilter() {
     if (filterType === "active") return r.status === "active";
     if (filterType === "suspended") return r.status === "suspended";
     if (filterType === "locked_pin") return (r.failed_attempts > 0) || (r.locked_until && new Date(r.locked_until) > now);
-    if (filterType === "low_balance") return Number(r.wallet_balance) <= 0;
+    if (filterType === "low_balance") return Number(r.wallet_balance) < 2000000;
     return true;
   });
   renderResellersTable(filtered);
@@ -6941,7 +7044,12 @@ function renderResellersTable(list) {
     const isSuspended = r.status === "suspended", statusBadge = isSuspended ? '<span class="tag off">⛔ Đang khoá</span>' : '<span class="tag on">🟢 Hoạt động</span>';
     const balanceFormatted = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
     const creditFormatted = r.credit_limit > 0 ? '<div class="hint" style="color:var(--warn); font-size:11px">Âm tối đa: ' + (Number(r.credit_limit)).toLocaleString("vi-VN") + ' ₫</div>' : '';
-    const totalContribFormatted = (Number(r.total_revenue_contributed) || 0) > 0 ? '<div class="hint" style="font-size:11px">Đã nạp: ' + Number(r.total_revenue_contributed).toLocaleString("vi-VN") + ' ₫</div>' : '';
+    const totalContribFormatted = '<div class="hint" style="font-size:11px">Đã nạp sỉ: <b>' + (Number(r.total_revenue_contributed) || 0).toLocaleString("vi-VN") + ' ₫</b></div>';
+    const wholesaleSpent = getResellerWholesaleSpent(r);
+    const monthSpent = Number(r.month_wholesale_spent) || 0;
+    const commEarned = Number(r.total_commission_earned) || 0;
+    const spentFormatted = `<div class="hint" style="font-size:11px; color:#059669">Doanh số xuất: <b>${wholesaleSpent.toLocaleString("vi-VN")} ₫</b>${monthSpent > 0 ? ' (T.này: ' + monthSpent.toLocaleString("vi-VN") + '₫)' : ''}</div>`;
+    const commFormatted = commEarned > 0 ? `<div class="hint" style="font-size:11px; color:#0284c7">HH tái tục: <b>+${commEarned.toLocaleString("vi-VN")} ₫</b></div>` : '';
     const discLifetime = (r.discount_rate_lifetime ?? 35) + "%", discYearly = (r.discount_rate_yearly ?? 40) + "%", commRenewal = (r.renewal_commission_percent ?? 25) + "%";
     const pin = r.pin_plain || "", isRevealed = window._showAllPins || window._revealedPinIds.has(r.id);
     const pinDisplay = isRevealed ? `<span class="mono" style="font-weight:800; font-size:14px; color:#2563eb; letter-spacing:1px">${esc(pin)}</span>` : `<span class="mono" style="font-size:13px; color:var(--muted); letter-spacing:2px">••••••</span>`;
@@ -6961,11 +7069,12 @@ function renderResellersTable(list) {
       '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="copyToClipboard(\'' + esc(pin) + '\', \'Đã chép mã PIN ' + esc(pin) + '\')" title="Sao chép PIN">📋</button></div>' +
       '<div style="margin-top:4px"><button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:#2563eb" onclick="openResetPinModal(\'' + esc(r.id) + '\')" title="Đặt lại mã PIN mới cho thợ">🔄 Đổi PIN</button></div>' + pinLockHtml + '</td>' +
       '<td><div>Trọn đời: <b>' + discLifetime + '</b></div><div class="hint">1N/3T: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div></td>' +
-      '<td><div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">' + balanceFormatted + '</div>' + creditFormatted + totalContribFormatted + '</td>' +
-      '<td style="text-align:center"><button type="button" class="small ghost" style="font-weight:800; font-size:13px; color:#9333ea; padding:3px 8px; border-color:#d8b4fe" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Bấm xem danh sách key đã cấp">🔑 ' + (r.total_sales_count || 0) + '</button><div class="hint" style="font-size:11px; margin-top:2px">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly ?? 15) + '</div></td>' +
+      '<td><div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">Ví: ' + balanceFormatted + '</div>' + creditFormatted + totalContribFormatted + spentFormatted + commFormatted + '</td>' +
+      '<td style="text-align:center"><button type="button" class="small ghost" style="font-weight:800; font-size:13px; color:#9333ea; padding:3px 8px; border-color:#d8b4fe" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Bấm xem Báo cáo Doanh thu riêng & Danh sách key đã cấp của đại lý này">📊 ' + (r.total_sales_count || 0) + ' key</button><div class="hint" style="font-size:11px; margin-top:2px">Trial: ' + (r.trial_used_this_month || 0) + '/' + (r.trial_quota_monthly ?? 15) + '</div></td>' +
       '<td style="text-align:center">' + statusBadge + '</td>' +
       '<td style="text-align:right"><div style="display:inline-flex; gap:4px; flex-wrap:wrap; justify-content:flex-end">' +
         '<button type="button" class="small" onclick="openTopupModal(\'' + esc(r.id) + '\')" title="Nạp tiền sỉ, cộng thưởng hoặc điều chỉnh ví">💰 Ví</button>' +
+        '<button type="button" class="small ghost" style="color:#9333ea" onclick="openResellerLicensesModal(\'' + esc(r.id) + '\')" title="Xem Báo cáo Doanh thu riêng & các key đã xuất của đại lý này">📊 Doanh thu</button>' +
         '<button type="button" class="small ghost" onclick="openEditResellerModal(\'' + esc(r.id) + '\')">✏️ Sửa</button>' +
         '<button type="button" class="small ghost" style="color:#0284c7" onclick="copyResellerHandoverMessage(\'' + esc(r.id) + '\')" title="Sao chép toàn bộ thông tin đăng nhập, link Cổng ĐL và mã PIN gửi Zalo cho thợ">📤 Gửi Zalo</button>' +
         (isSuspended ? '<button type="button" class="small ghost" style="color:var(--accent)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'active\')">🔓 Mở</button>' : '<button type="button" class="small ghost" style="color:var(--err)" onclick="toggleResellerStatus(\'' + esc(r.id) + '\', \'suspended\')">🔒 Khoá</button>') +
@@ -7010,6 +7119,14 @@ async function submitResetPin() {
   if (!/^\d{6}$/.test(newPin)) { alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9)."); return; }
   const btn = $("btnConfirmResetPin"); btn.disabled = true; btn.textContent = "Đang lưu...";
   try {
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    if (isDemo && window._demoResellersState) {
+      const r = window._demoResellersState.resellers.find(x => x.id === resellerId);
+      if (r) { r.pin_plain = newPin; r.failed_attempts = 0; r.locked_until = null; }
+      closeResetPinModal(); await loadResellersData();
+      if (confirm(`🎉 Đã đặt lại mã PIN thành công thành: ${newPin}\n\nBạn có muốn sao chép tin nhắn bàn giao tài khoản kèm mã PIN mới này để gửi Zalo cho đại lý không?`)) copyResellerHandoverMessage(resellerId);
+      return;
+    }
     const res = await api("/rest/v1/rpc/admin_reset_reseller_pin", { method: "POST", body: JSON.stringify({ p_id: resellerId, p_new_pin: newPin }) });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Không thể đặt lại mã PIN");
@@ -7021,77 +7138,127 @@ async function adminUnlockReseller(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) return;
   try {
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    if (isDemo && window._demoResellersState) {
+      const target = window._demoResellersState.resellers.find(x => x.id === resellerId);
+      if (target) { target.failed_attempts = 0; target.locked_until = null; }
+      alert("✅ Đã mở khóa tài khoản đại lý thành công!"); loadResellersData(); return;
+    }
     const res = await api("/rest/v1/rpc/admin_unlock_reseller", { method: "POST", body: JSON.stringify({ p_id: resellerId }) });
     const data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi mở khóa");
     alert("✅ Đã mở khóa tài khoản đại lý thành công!"); loadResellersData();
   } catch (err) { alert("❌ Lỗi: " + err.message); }
 }
-function getResellerLicensePlanBadgeHtml(lic) {
+function classifyResellerLicensePlan(lic) {
   const isTrial = Boolean(lic.is_trial) || lic.role === "trial";
-  if (isTrial) {
-    const expStr = lic.expires_at ? new Date(lic.expires_at).toLocaleDateString("vi-VN") : "";
-    return '<span class="tag off">🎁 Dùng thử 3N</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
-  }
-  if (lic.role === "sale") {
-    const expStr = lic.expires_at ? new Date(lic.expires_at).toLocaleDateString("vi-VN") : "";
-    return '<span class="tag sale">🤝 Sale (0đ)</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
-  }
+  if (isTrial) return "trial";
+  if (lic.role === "sale") return "sale";
   if (lic.expires_at) {
     const expDate = new Date(lic.expires_at), createdDate = lic.created_at ? new Date(lic.created_at) : new Date();
-    const diffDays = Math.round((expDate - createdDate) / (1000 * 60 * 60 * 24)), isQuarter = diffDays > 0 && diffDays <= 120;
-    const label = isQuarter ? "⚡ Gói 3 Tháng" : "📅 Gói 1 Năm", bg = isQuarter ? "#0d9488" : "#0284c7", isExpired = expDate < new Date();
+    const diffDays = Math.round((expDate - createdDate) / (1000 * 60 * 60 * 24));
+    return (diffDays > 0 && diffDays <= 120) ? "quarter" : "yearly";
+  }
+  return "lifetime";
+}
+function getResellerLicensePlanBadgeHtml(lic) {
+  const plan = classifyResellerLicensePlan(lic), expStr = lic.expires_at ? new Date(lic.expires_at).toLocaleDateString("vi-VN") : "";
+  if (plan === "trial") return '<span class="tag off">🎁 Dùng thử 3N</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
+  if (plan === "sale") return '<span class="tag sale">🤝 Sale (0đ)</span>' + (expStr ? `<div class="hint" style="font-size:10px; margin-top:2px">Hết: ${esc(expStr)}</div>` : '');
+  if (plan === "quarter" || plan === "yearly") {
+    const expDate = new Date(lic.expires_at), isQuarter = plan === "quarter", label = isQuarter ? "⚡ Gói 3 Tháng" : "📅 Gói 1 Năm", bg = isQuarter ? "#0d9488" : "#0284c7", isExpired = expDate < new Date();
     return `<span class="tag on" style="background:${bg}; color:#fff">${label}</span><div class="hint" style="font-size:10px; margin-top:2px; color:${isExpired ? 'var(--err)' : 'var(--muted)'}">${isExpired ? '⚠️ Đã hết hạn: ' : 'Hết hạn: '}${esc(expDate.toLocaleDateString("vi-VN"))}</div>`;
   }
   return '<span class="tag car">👑 Trọn đời</span><div class="hint" style="font-size:10px; margin-top:2px">Vĩnh viễn</div>';
 }
 async function openResellerLicensesModal(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
-  $("resellerLicensesTitle").textContent = `🔑 Key Đã Cấp: ${r.reseller_code} — ${r.garage_name}`;
-  $("resellerLicensesSubtitle").textContent = `Chủ gara: ${r.owner_name} • SĐT: ${r.phone} • Tổng đã xuất: ${r.total_sales_count || 0} key`;
+  window._currentDetailReseller = r;
+  $("resellerLicensesTitle").textContent = `📊 Doanh Thu & Key Đã Cấp: ${r.reseller_code} — ${r.garage_name}`;
+  $("resellerLicensesSubtitle").textContent = `Chủ gara: ${r.owner_name} • SĐT: ${r.phone} • CK Trọn đời: ${r.discount_rate_lifetime ?? 35}% • CK 1N/3T: ${r.discount_rate_yearly ?? 40}%`;
   if ($("resellerLicensesSearch")) $("resellerLicensesSearch").value = "";
+  if ($("resellerLicensesPeriodFilter")) $("resellerLicensesPeriodFilter").value = "all";
   const tbody = $("resellerLicensesTableBody");
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải danh sách key từ Supabase...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải dữ liệu doanh thu & danh sách key từ Supabase...</td></tr>';
   $("resellerLicensesMask").style.display = "flex";
   try {
     const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
-    let list = [];
-    if (isDemo) {
-      list = [
-        { key: "EX2A-9988-7766-5544", owner_name: "Nguyễn Hoàng", owner_phone: "0912345678", role: "car", is_trial: false, expires_at: null, reseller_price: 1924000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
-        { key: "EX2B-1122-3344-5566", owner_name: "Phạm Minh Đức", owner_phone: "0987654321", role: "car", is_trial: false, expires_at: new Date(Date.now() + 365 * 86400000).toISOString(), reseller_price: 702000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
-        { key: "EX2T-0011-2233-4455", owner_name: "Khách Trải Nghiệm", owner_phone: "0909123123", role: "car", is_trial: true, expires_at: new Date(Date.now() + 3 * 86400000).toISOString(), reseller_price: 0, active: true, activation_count: 0, devices_count: 0, max_devices: 2, created_at: new Date().toISOString() }
-      ];
-    } else {
-      const res = await api("/rest/v1/rpc/admin_get_reseller_licenses", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId }) });
-      list = await res.json();
-    }
+    const list = isDemo ? [
+      { key: "EX2A-9988-7766-5544", owner_name: "Nguyễn Hoàng", owner_phone: "0912345678", role: "car", is_trial: false, expires_at: null, reseller_price: 1924000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
+      { key: "EX2B-1122-3344-5566", owner_name: "Phạm Minh Đức", owner_phone: "0987654321", role: "car", is_trial: false, expires_at: new Date(Date.now() + 365 * 86400000).toISOString(), reseller_price: 702000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
+      { key: "EX2Q-4455-6677-8899", owner_name: "Võ Văn Kiệt", owner_phone: "0933445566", role: "car", is_trial: false, expires_at: new Date(Date.now() + 90 * 86400000).toISOString(), reseller_price: 297000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date(Date.now() - 2 * 86400000).toISOString() },
+      { key: "EX2T-0011-2233-4455", owner_name: "Khách Trải Nghiệm", owner_phone: "0909123123", role: "car", is_trial: true, expires_at: new Date(Date.now() + 3 * 86400000).toISOString(), reseller_price: 0, active: true, activation_count: 0, devices_count: 0, max_devices: 2, created_at: new Date().toISOString() }
+    ] : await (await api("/rest/v1/rpc/admin_get_reseller_licenses", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId }) })).json();
     window._resellerLicensesModalList = Array.isArray(list) ? list : [];
-    renderResellerLicensesModalTable(window._resellerLicensesModalList);
+    filterResellerLicensesModalTable();
   } catch (err) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--err); padding:20px">❌ Lỗi: ' + esc(err.message) + '</td></tr>'; }
 }
+function updateResellerDetailKpis(r, filteredList) {
+  if (!r) return;
+  const { lifeRetail, yearRetail, quarterRetail } = getCurrentRetailPricesForResellerPreview();
+  let wholesaleSum = 0, retailSum = 0, cntLife = 0, cntYear = 0, cntQuarter = 0, cntTrial = 0;
+  (filteredList || []).forEach(lic => {
+    const plan = classifyResellerLicensePlan(lic);
+    if (plan === "trial") { cntTrial++; return; }
+    if (!lic.active) return;
+    wholesaleSum += Number(lic.reseller_price) || 0;
+    if (plan === "lifetime") { cntLife++; retailSum += lifeRetail; }
+    else if (plan === "yearly") { cntYear++; retailSum += yearRetail; }
+    else if (plan === "quarter") { cntQuarter++; retailSum += quarterRetail; }
+  });
+  const paidCount = cntLife + cntYear + cntQuarter, period = $("resellerLicensesPeriodFilter") ? $("resellerLicensesPeriodFilter").value : "all";
+  const commEarned = Number(r.total_commission_earned) || 0, directMargin = Math.max(0, retailSum - wholesaleSum), totalProfit = directMargin + (period === "all" ? commEarned : 0);
+  if ($("resDetailTopupVal")) $("resDetailTopupVal").textContent = (Number(r.total_revenue_contributed) || 0).toLocaleString("vi-VN") + " ₫";
+  if ($("resDetailWalletSub")) $("resDetailWalletSub").textContent = `Số dư ví: ${(Number(r.wallet_balance) || 0).toLocaleString("vi-VN")} ₫` + (r.credit_limit > 0 ? ` • Hạn mức âm: ${Number(r.credit_limit).toLocaleString("vi-VN")} ₫` : '');
+  if ($("resDetailWholesaleVal")) $("resDetailWholesaleVal").textContent = wholesaleSum.toLocaleString("vi-VN") + " ₫";
+  if ($("resDetailRetailSub")) $("resDetailRetailSub").textContent = `Quy đổi giá lẻ: ${retailSum.toLocaleString("vi-VN")} ₫`;
+  if ($("resDetailProfitVal")) $("resDetailProfitVal").textContent = "+" + totalProfit.toLocaleString("vi-VN") + " ₫";
+  if ($("resDetailCommSub")) $("resDetailCommSub").textContent = `Chênh lệch sỉ-lẻ: +${directMargin.toLocaleString("vi-VN")} ₫ • HH tái tục: +${commEarned.toLocaleString("vi-VN")} ₫`;
+  if ($("resDetailPlanCountVal")) $("resDetailPlanCountVal").textContent = `${paidCount} key thương mại • ${cntTrial} dùng thử`;
+  if ($("resDetailPlanBreakdownSub")) $("resDetailPlanBreakdownSub").textContent = `👑 Trọn đời: ${cntLife} • 📅 1 Năm: ${cntYear} • ⚡ 3 Tháng: ${cntQuarter} • 🎁 Trial: ${cntTrial}`;
+}
 function filterResellerLicensesModalTable() {
-  const q = ($("resellerLicensesSearch") ? $("resellerLicensesSearch").value : "").trim().toLowerCase();
-  const list = (window._resellerLicensesModalList || []).filter(lic => !q || `${lic.key || ""} ${lic.owner_name || ""} ${lic.owner_phone || ""} ${lic.note || ""}`.toLowerCase().includes(q));
-  renderResellerLicensesModalTable(list);
+  const q = ($("resellerLicensesSearch") ? $("resellerLicensesSearch").value : "").trim().toLowerCase(), period = ($("resellerLicensesPeriodFilter") ? $("resellerLicensesPeriodFilter").value : "all");
+  const now = new Date(), startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(), startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime(), sevenDaysAgo = now.getTime() - 7 * 86400000;
+  const list = (window._resellerLicensesModalList || []).filter(lic => {
+    if (q && !`${lic.key || ""} ${lic.owner_name || ""} ${lic.owner_phone || ""} ${lic.note || ""}`.toLowerCase().includes(q)) return false;
+    if (period !== "all" && lic.created_at) {
+      const ts = new Date(lic.created_at).getTime();
+      if ((period === "today" && ts < startOfToday) || (period === "7d" && ts < sevenDaysAgo) || (period === "month" && ts < startOfMonth)) return false;
+    }
+    return true;
+  });
+  window._resellerLicensesFilteredList = list; updateResellerDetailKpis(window._currentDetailReseller, list); renderResellerLicensesModalTable(list);
 }
 function renderResellerLicensesModalTable(list) {
   const tbody = $("resellerLicensesTableBody"); if (!tbody) return;
-  if (!list || !list.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Không có mã bản quyền nào phù hợp.</td></tr>'; return; }
-  let html = "";
-  list.forEach(lic => {
+  if (!list || !list.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">Không có mã bản quyền nào phù hợp trong khoảng thời gian này.</td></tr>'; return; }
+  tbody.innerHTML = list.map(lic => {
     const timeStr = lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "—", roleBadge = getResellerLicensePlanBadgeHtml(lic);
     const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫" : "—";
     const devCount = Number(lic.devices_count ?? (lic.activation_count > 0 ? 1 : 0)), maxDev = Number(lic.max_devices || 2);
     const activeBadge = lic.active ? (lic.activation_count > 0 ? `<span class="tag on">Đã kích hoạt (${devCount}/${maxDev})</span>` : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>') : '<span class="tag off">Đã thu hồi</span>';
-    html += '<tr><td class="hint">' + esc(timeStr) + '</td><td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> <button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button></td><td><b>' + esc(lic.owner_name || "—") + '</b>' + (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') + '</td><td>' + roleBadge + '</td><td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td><td style="text-align:center">' + activeBadge + '</td></tr>';
+    return '<tr><td class="hint">' + esc(timeStr) + '</td><td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> <button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button></td><td><b>' + esc(lic.owner_name || "—") + '</b>' + (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') + '</td><td>' + roleBadge + '</td><td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td><td style="text-align:center">' + activeBadge + '</td></tr>';
+  }).join("");
+}
+function exportSingleResellerReportCsv() {
+  const r = window._currentDetailReseller, list = window._resellerLicensesFilteredList || window._resellerLicensesModalList || []; if (!r) return;
+  const headers = ["Thoi_Gian", "Ma_DL", "Gara", "License_Key", "Khach_Hang", "SDT_Khach", "Goi_Cuoc", "Gia_Si_Tru_Vi", "Trang_Thai_Key", "So_Thiet_Bi"], escCsv = val => `"${String(val ?? "").replace(/"/g, '""')}"`;
+  const rows = list.map(lic => {
+    const plan = classifyResellerLicensePlan(lic), planLabel = plan === "trial" ? "Dung_Thu_3N" : (plan === "quarter" ? "Goi_3_Thang" : (plan === "yearly" ? "Goi_1_Nam" : "Goi_Tron_Doi"));
+    return [lic.created_at ? new Date(lic.created_at).toLocaleString("vi-VN") : "", r.reseller_code, r.garage_name, lic.key, lic.owner_name || "", lic.owner_phone || "", planLabel, lic.reseller_price || 0, lic.active ? "Hoat_Dong" : "Thu_Hoi", lic.devices_count ?? (lic.activation_count || 0)].map(escCsv).join(",");
   });
-  tbody.innerHTML = html;
+  const blob = new Blob(["\uFEFF" + [headers.join(","), ...rows].join("\n")], { type: "text/csv;charset=utf-8;" }), url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = `doanh-thu-dai-ly-${r.reseller_code}-${new Date().toISOString().slice(0, 10)}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+function focusResellerTransactionsFromModal() {
+  const r = window._currentDetailReseller; closeResellerLicensesModal(); if (!r || !$("fltTransResellerSelect")) return;
+  $("fltTransResellerSelect").value = r.reseller_code; filterResellerTransactions(); const tbl = $("resellerTransTable"); if (tbl && tbl.scrollIntoView) tbl.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 function closeResellerLicensesModal() { $("resellerLicensesMask").style.display = "none"; }
 function copyResellerHandoverMessage(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId); if (!r) return;
-  const pin = r.pin_plain || "", portalUrl = "https://ex2.toanmobile.com/reseller", balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
+  const pin = r.pin_plain || "", portalUrl = getResellerPortalUrl(true), balStr = (Number(r.wallet_balance) || 0).toLocaleString("vi-VN") + " ₫";
   const msg = `🚗 THÔNG TIN TÀI KHOẢN CỔNG ĐẠI LÝ — GEELY EX2\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🏢 Đại lý: ${r.garage_name} (${r.owner_name})\n🌐 Cổng đăng nhập: ${portalUrl}\n📱 Số điện thoại đăng nhập: ${r.phone}\n(Hoặc dùng Mã đại lý: ${r.reseller_code})\n🔑 MÃ PIN ĐĂNG NHẬP (6 SỐ): ${pin}\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n🎁 CHÍNH SÁCH CHIẾT KHẤU ĐẠI LÝ:\n• Gói Trọn Đời (Lifetime): Chiết khấu ${r.discount_rate_lifetime ?? 35}%\n• Gói 1 Năm & 3 Tháng: Chiết khấu ${r.discount_rate_yearly ?? 40}% (Hoa hồng gia hạn: ${r.renewal_commission_percent ?? 25}%)\n• Hạn ngạch Key Dùng Thử: ${r.trial_quota_monthly ?? 15} xe/tháng (Miễn phí 100%)\n💳 Số dư ví khả dụng hiện tại: ${balStr}\n━━━━━━━━━━━━━━━━━━━━━━━━━━\n📌 HƯỚNG DẪN CẤP MÃ CHO KHÁCH:\n1. Đăng nhập vào link trên bằng SĐT và mã PIN ${pin}.\n2. Chọn gói bản quyền, nhập Tên & SĐT khách hàng rồi bấm "XUẤT MÃ BẢN QUYỀN".\n3. Nhập mã key 16 số vừa tạo lên màn hình xe Geely EX2 (hoặc gửi Zalo cho khách).\n⚠️ Quý đại lý vui lòng bảo mật mã PIN. Chúc đại lý kinh doanh thuận lợi!`;
   copyToClipboard(msg, `Đã sao chép nội dung bàn giao tài khoản của ${r.reseller_code}! Bạn có thể dán ngay vào Zalo gửi cho thợ.`);
 }
@@ -7188,6 +7355,7 @@ async function saveReseller() {
     if (pinVal && !/^\d{6}$/.test(pinVal)) { alert("❌ Mã PIN phải gồm đúng 6 chữ số (0-9)."); btn.disabled = false; btn.textContent = "Lưu thông tin"; return; }
     const discLifeVal = parseInt($("resellerModalDiscLife").value, 10), discYearVal = parseInt($("resellerModalDiscYear").value, 10);
     const renewCommVal = parseInt($("resellerModalRenewalComm") ? $("resellerModalRenewalComm").value : "25", 10), trialQuotaVal = parseInt($("resellerModalTrialQuota") ? $("resellerModalTrialQuota").value : "15", 10);
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
     if (isEdit) {
       const editId = $("resellerEditId").value, existingReseller = (window._resellersList || []).find(item => item.id === editId);
       const statusVal = ($("resellerModalStatus") && $("resellerModalStatus").value) ? $("resellerModalStatus").value : (existingReseller ? existingReseller.status : "active");
@@ -7198,6 +7366,21 @@ async function saveReseller() {
         p_renewal_commission: isNaN(renewCommVal) ? 25 : renewCommVal, p_trial_quota: isNaN(trialQuotaVal) ? 15 : trialQuotaVal, p_phone: $("resellerModalPhone").value.trim(),
         p_reset_trial_used: Boolean($("resellerModalResetTrialUsed") && $("resellerModalResetTrialUsed").checked)
       };
+      if (isDemo && window._demoResellersState) {
+        const r = window._demoResellersState.resellers.find(x => x.id === editId);
+        if (r) {
+          r.owner_name = payload.p_name; r.garage_name = payload.p_garage_name; r.address = payload.p_address;
+          if (payload.p_pin) r.pin_plain = payload.p_pin;
+          r.discount_rate_lifetime = payload.p_discount_lifetime; r.discount_rate_yearly = payload.p_discount_yearly;
+          r.credit_limit = payload.p_credit_limit; r.status = payload.p_status;
+          r.bank_bin = payload.p_bank_bin; r.bank_account = payload.p_bank_account; r.bank_account_name = payload.p_bank_account_name;
+          r.note = payload.p_note; r.renewal_commission_percent = payload.p_renewal_commission; r.trial_quota_monthly = payload.p_trial_quota;
+          if (payload.p_phone) r.phone = payload.p_phone;
+          if (payload.p_reset_trial_used) r.trial_used_this_month = 0;
+        }
+        alert("✅ Đã cập nhật thông tin đại lý thành công!");
+        closeResellerModal(); loadResellersData(); return;
+      }
       const res = await api("/rest/v1/rpc/admin_update_reseller", { method: "POST", body: JSON.stringify(payload) }), data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể cập nhật đại lý");
       alert("✅ Đã cập nhật thông tin đại lý thành công!");
@@ -7210,6 +7393,19 @@ async function saveReseller() {
         p_renewal_commission: isNaN(renewCommVal) ? 25 : renewCommVal, p_trial_quota: isNaN(trialQuotaVal) ? 15 : trialQuotaVal
       };
       if (!payload.p_code || !payload.p_phone || !payload.p_name || !payload.p_garage_name) { alert("❌ Vui lòng điền đủ: Mã đại lý, SĐT, Tên chủ và Tên Gara."); btn.disabled = false; btn.textContent = "Lưu thông tin"; return; }
+      if (isDemo && window._demoResellersState) {
+        const finalPin = payload.p_pin || randomPin6();
+        window._demoResellersState.resellers.unshift({
+          id: "demo_dl_" + Date.now(), reseller_code: payload.p_code, owner_name: payload.p_name, phone: payload.p_phone,
+          garage_name: payload.p_garage_name, address: payload.p_address, pin_plain: finalPin, wallet_balance: 0, credit_limit: payload.p_credit_limit,
+          discount_rate_lifetime: payload.p_discount_lifetime, discount_rate_yearly: payload.p_discount_yearly, renewal_commission_percent: payload.p_renewal_commission,
+          trial_quota_monthly: payload.p_trial_quota, trial_used_this_month: 0, total_sales_count: 0, total_revenue_contributed: 0,
+          bank_bin: payload.p_bank_bin, bank_account: payload.p_bank_account, bank_account_name: payload.p_bank_account_name,
+          status: "active", failed_attempts: 0, locked_until: null, note: payload.p_note, created_at: new Date().toISOString()
+        });
+        alert("🎉 Đã tạo đại lý " + payload.p_code + " thành công (Mã PIN: " + finalPin + ")!");
+        closeResellerModal(); loadResellersData(); return;
+      }
       const res = await api("/rest/v1/rpc/admin_create_reseller", { method: "POST", body: JSON.stringify(payload) }), data = await res.json();
       if (!data.success) throw new Error(data.message || "Không thể tạo đại lý");
       alert("🎉 Đã tạo đại lý " + (data.reseller_code || payload.p_code) + " thành công (Mã PIN: " + (data.pin || payload.p_pin || "?") + ")!");
@@ -7274,6 +7470,12 @@ async function toggleResellerStatus(resellerId, newStatus) {
   const r = (window._resellersList || []).find(item => item.id === resellerId), actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN (thu hồi ngay phiên đăng nhập hiện tại)" : "MỞ HOẠT ĐỘNG LẠI";
   if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) return;
   try {
+    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    if (isDemo && window._demoResellersState) {
+      const target = window._demoResellersState.resellers.find(x => x.id === resellerId);
+      if (target) target.status = newStatus;
+      alert("✅ Đã cập nhật trạng thái đại lý thành công!"); loadResellersData(); return;
+    }
     const res = await api("/rest/v1/rpc/admin_toggle_reseller_status", { method: "POST", body: JSON.stringify({ p_reseller_id: resellerId, p_status: newStatus }) }), data = await res.json();
     if (!data.success) throw new Error(data.message || "Lỗi thay đổi trạng thái");
     alert("✅ Đã cập nhật trạng thái đại lý thành công!"); loadResellersData();
