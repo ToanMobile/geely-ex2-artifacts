@@ -22,6 +22,17 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.2
+
+- ✨ Mới: Bộ thu tín hiệu cốp điện và gương độ trong bản debug
+- ✨ Mới: Lượt bấm tay trượt thì xe tự mở tai một lần, khỏi bấm lại
+- ✨ Mới: Bảo dưỡng ẩn cả icon Car Connect
+- ✨ Mới: "mở camera 4 mắt" mở app AuresEyes
+- 🐛 Sửa lỗi: Giọng nói hiểu thêm 5 khuôn câu im có bằng chứng trên kho WAV 1.3.x
+- 🐛 Sửa lỗi: GrammarSnap không nói nốt câu cụt, không bịa động từ, không bịa sấy kính
+- 🐛 Sửa lỗi: Câu "nhận thời tiết thế nào" (STT đọc nhầm "hiện") không còn bị đáp "chưa có địa điểm"
+- 🐛 Sửa lỗi: Hai nhãn tự động đóng băng hành vi 1.3.0 chuyển observe/must_reject
+
 ## CarConnect 1.3.1
 
 - **🎙️ "Hi Geely" ít bật nhầm hơn**: xe chỉ thức khi nghe đúng câu "Hi Geely" (kể cả "Hai Geely", "Hey Geely"); không còn thức khi nghe "OK / Hello / Alo Geely", "xe ơi", "này xe". Trên 2.738 lượt ghi thật, số lần xe tưởng là gọi giảm từ 127 xuống 98, và mọi cách đọc "Hi Geely" đã thử vẫn nhận. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại.
@@ -30,6 +41,10 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.3.2
+
+- 🐛 Sửa lỗi: Cloud 4G giữ được kết nối, tự tìm đúng endpoint của xe
 
 ## PhoneConnect 1.3.1
 

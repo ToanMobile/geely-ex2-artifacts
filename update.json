@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.3.1",
-    "versionCode": 1301,
+    "latestVersionName": "1.3.2",
+    "versionCode": 1302,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "5daffa7cf716936b9b6576a285b31130eb4b7f5e58d7050cebbf06f985ad6f55",
-    "releaseNotes": "- 🎙️ \"Hi Geely\" ít bật nhầm hơn: xe chỉ thức khi nghe đúng câu \"Hi Geely\" (kể cả \"Hai Geely\", \"Hey Geely\"); không còn thức khi nghe \"OK / Hello / Alo Geely\", \"xe ơi\", \"này xe\". Trên 2.738 lượt ghi thật, số lần xe tưởng là gọi giảm từ 127 xuống 98, và mọi cách đọc \"Hi Geely\" đã thử vẫn nhận. Nếu thấy xe khó thức dậy hơn trước, hãy báo lại.\n- 🅿️ \"Chế độ chờ khi rời xe\": nói \"bật/tắt chế độ rời xe\" hay \"trừ khi rời xe\" xe cũng hiểu; câu nghe nhầm \"bắt chế độ chờ khi rời xe\" nay xe im thay vì bật giữ điện.\n- 🪟 Kính và cửa sổ trời: câu chỉ có con số phần trăm không còn bị hiểu thành lệnh kính; nói \"cửa sổ trời / nóc xe\" không còn thành lệnh kính hay mở cốp (xe im).\n- ⚡ Màn Trạng thái hiện luồng năng lượng của xe; nút Play/Pause trên cửa sổ PIP chỉ điều khiển đúng ứng dụng đang ở PIP.\n- 💳 Gói Trọn đời 2.960.000 ₫ (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.\n- 🔬 Bản dev để thu log: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.",
+    "sha256": "f3f137585a29fa2b78ca0f44c76d228371a19975ab07874040308f3f2a8c6ffe",
+    "releaseNotes": "- ✨ Mới: Bộ thu tín hiệu cốp điện và gương độ trong bản debug\n- ✨ Mới: Lượt bấm tay trượt thì xe tự mở tai một lần, khỏi bấm lại\n- ✨ Mới: Bảo dưỡng ẩn cả icon Car Connect\n- ✨ Mới: \"mở camera 4 mắt\" mở app AuresEyes\n- 🐛 Sửa lỗi: Giọng nói hiểu thêm 5 khuôn câu im có bằng chứng trên kho WAV 1.3.x\n- 🐛 Sửa lỗi: GrammarSnap không nói nốt câu cụt, không bịa động từ, không bịa sấy kính\n- 🐛 Sửa lỗi: Câu \"nhận thời tiết thế nào\" (STT đọc nhầm \"hiện\") không còn bị đáp \"chưa có địa điểm\"\n- 🐛 Sửa lỗi: Hai nhãn tự động đóng băng hành vi 1.3.0 chuyển observe/must_reject",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
