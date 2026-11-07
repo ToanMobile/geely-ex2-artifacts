@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.3.1",
-    "versionCode": 1301,
+    "latestVersionName": "1.3.2",
+    "versionCode": 1302,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "c7e155fbfd048a40f81e29adb5425c6ba7782ea8d711ef388dae94a9ad7306d5",
-    "releaseNotes": "- 🔄 Cập nhật cùng nhịp với CarConnect 1.3.1: thêm máy tính thời gian sạc và nhắc rút súng sạc (chỉ trên điện thoại); nhắc nhở vẫn huỷ được khi chuông tới muộn; lệnh từ xa iCar không còn báo thành công giả; không còn nối lại bằng mã cũ.",
+    "sha256": "4fac4b97ac758360ed70f948489caa2874389fb7d96a53eff13fdb17a86a4202",
+    "releaseNotes": "- 🐛 Sửa lỗi: Cloud 4G giữ được kết nối, tự tìm đúng endpoint của xe",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,11 +78,11 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.2.3",
-    "versionCode": 1203,
+    "latestVersionName": "1.3.2",
+    "versionCode": 1302,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- 🪟 Đồng bộ cấu hình tiện ích xe: Bổ sung công tắc điều khiển Hé kính cửa đối diện và theo dõi trạng thái chế độ lái, nhiệt độ thời gian thực ngay trên điện thoại.\n- 🔗 Ghép đôi 1 chạm siêu tốc: Tự nhận diện và gửi yêu cầu ghép đôi qua Wi-Fi / Bluetooth, xe hiện mã xác nhận 4 số to rõ, chạm \"Cho phép\" trên màn hình xe là xong.\n- 🖼️ Đổi hình nền màn hình xe trực tiếp: Chọn ảnh từ thư viện điện thoại, tự động chuyển chuẩn tỷ lệ 1920×1080 và đổi ngay trên màn hình xe mà không cần chạm vào xe.\n- 🍏 Đồng bộ 100% Android & iOS: Tách biệt kênh phát hành riêng cho iOS (TestFlight / App Store); tối ưu hóa kết nối Hotspot & Bluetooth SPP bền bỉ, tiết kiệm pin điện thoại tối đa. - ---"
+    "releaseNotes": "- 🐛 Sửa lỗi: Cloud 4G giữ được kết nối, tự tìm đúng endpoint của xe"
   },
   "phoneIos": {
     "packageName": "com.techlead.app.geely.phone",
