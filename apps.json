@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.3.4",
-    "versionCode": 1304,
+    "latestVersionName": "1.3.5",
+    "versionCode": 1305,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "9041c2341b73ac9495813b58b06d0e915d0fccbf00b9b2e1c57800b78cce33ee",
-    "releaseNotes": "- ✨ Mới: Cải thiện đường thu mic/DSP/AEC chống sập gain xi-nhan và thêm bộ xuất dữ liệu fine-tune 65M\n- ✨ Mới: Tăng tỉ lệ nhận diện khẩu lệnh giọng nói đợt 3\n- ⚡ Nhanh hơn: Tối ưu độ mượt 60fps toàn diện và bổ sung baseline-prof.txt cho CarConnect\n- 🐛 Sửa lỗi: Khắc phục triệt để các phát hiện audit đợt 2 và đợt 3",
+    "sha256": "65e08cf1091f61d512d1182c4a291169e1ec6a86f67b99b043036af1947f6cce",
+    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
