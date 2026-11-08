@@ -22,6 +22,13 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.4
+
+- ✨ Mới: Cải thiện đường thu mic/DSP/AEC chống sập gain xi-nhan và thêm bộ xuất dữ liệu fine-tune 65M
+- ✨ Mới: Tăng tỉ lệ nhận diện khẩu lệnh giọng nói đợt 3
+- ⚡ Nhanh hơn: Tối ưu độ mượt 60fps toàn diện và bổ sung baseline-prof.txt cho CarConnect
+- 🐛 Sửa lỗi: Khắc phục triệt để các phát hiện audit đợt 2 và đợt 3
+
 ## CarConnect 1.3.3
 
 - ✨ Mới: Nâng cấp parseCompound cho câu lệnh kép và bổ sung telemetry comfort
@@ -52,6 +59,12 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.3.4
+
+- 🐛 Sửa lỗi: Giữ kênh cập nhật thử nghiệm cho role test và chống giật Home khi sai token
+- 🐛 Sửa lỗi: Gia cố ma trận tình huống biên điều hoà và mở xe từ xa
+- 🐛 Sửa lỗi: Bỏ qua mở xe khi xe đã mở sẵn và gia cố an toàn điều hoà từ xa
 
 ## PhoneConnect 1.3.3
 
