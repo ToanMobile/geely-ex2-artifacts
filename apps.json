@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.3.3",
-    "versionCode": 1303,
+    "latestVersionName": "1.3.4",
+    "versionCode": 1304,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "d7c0ce83e05da5c3453b04dd79d0d36f139e3ebefe8afd8f54f87f4fc2f7bdf0",
-    "releaseNotes": "- ✨ Mới: Chỉnh nhiệt độ, mức quạt và làm mát/sưởi nhanh điều hoà từ xa, chống kẹt khoá kênh Cloud 4G\n- 🐛 Sửa lỗi: Giữ nguyên hợp đồng dây bắt buộc, package MicroG gốc và chuyển fallback JAVA_HOME sang merge-gate (#118, #160, #162)\n- 🐛 Sửa lỗi: Vá lỗ hổng ADB/ECDSA, đua luồng socket, lọc HEIC và đối xứng UI (#151, #128, #160, #161)\n- 🐛 Sửa lỗi: Bật desugaring SDK 28, đồng bộ QuickInstall v23, sửa contrast Light và che PII logcat (#157, #160, #162, #163, #164, #118)\n- 🐛 Sửa lỗi: Ký A_AUTH đúng giao thức adbd + khoá 524 byte bền, chặn lệnh nguy hiểm tách toán tử, một CarProtocolClient trên iOS\n- 🐛 Sửa lỗi: Sửa crash iPad, chọn BT SPP và đối xứng iOS\n- 🐛 Sửa lỗi: Các lỗi P2, P3 còn lại của chế độ điều khiển từ xa\n- 🐛 Sửa lỗi: Keepalive Cloud không chạy lại sau khi xe từ chối auth, chụp token một lần cho phiên",
+    "sha256": "47aeac6599bad08906a28f45c406789a53c44d8a221cb4d0b728d8187c3b4147",
+    "releaseNotes": "- 🐛 Sửa lỗi: Giữ kênh cập nhật thử nghiệm cho role test và chống giật Home khi sai token\n- 🐛 Sửa lỗi: Gia cố ma trận tình huống biên điều hoà và mở xe từ xa\n- 🐛 Sửa lỗi: Bỏ qua mở xe khi xe đã mở sẵn và gia cố an toàn điều hoà từ xa",
     "minVersionCode": 0,
     "forceRules": []
   },
@@ -78,11 +78,11 @@
     "name": "PhoneConnect iOS",
     "minVersionCode": 0,
     "forceRules": [],
-    "latestVersionName": "1.3.3",
-    "versionCode": 1303,
+    "latestVersionName": "1.3.4",
+    "versionCode": 1304,
     "downloadUrl": "itms-beta://",
     "sha256": "",
-    "releaseNotes": "- ✨ Mới: Chỉnh nhiệt độ, mức quạt và làm mát/sưởi nhanh điều hoà từ xa, chống kẹt khoá kênh Cloud 4G\n- 🐛 Sửa lỗi: Giữ nguyên hợp đồng dây bắt buộc, package MicroG gốc và chuyển fallback JAVA_HOME sang merge-gate (#118, #160, #162)\n- 🐛 Sửa lỗi: Vá lỗ hổng ADB/ECDSA, đua luồng socket, lọc HEIC và đối xứng UI (#151, #128, #160, #161)\n- 🐛 Sửa lỗi: Bật desugaring SDK 28, đồng bộ QuickInstall v23, sửa contrast Light và che PII logcat (#157, #160, #162, #163, #164, #118)\n- 🐛 Sửa lỗi: Ký A_AUTH đúng giao thức adbd + khoá 524 byte bền, chặn lệnh nguy hiểm tách toán tử, một CarProtocolClient trên iOS\n- 🐛 Sửa lỗi: Sửa crash iPad, chọn BT SPP và đối xứng iOS\n- 🐛 Sửa lỗi: Các lỗi P2, P3 còn lại của chế độ điều khiển từ xa\n- 🐛 Sửa lỗi: Keepalive Cloud không chạy lại sau khi xe từ chối auth, chụp token một lần cho phiên"
+    "releaseNotes": "- 🐛 Sửa lỗi: Giữ kênh cập nhật thử nghiệm cho role test và chống giật Home khi sai token\n- 🐛 Sửa lỗi: Gia cố ma trận tình huống biên điều hoà và mở xe từ xa\n- 🐛 Sửa lỗi: Bỏ qua mở xe khi xe đã mở sẵn và gia cố an toàn điều hoà từ xa"
   },
   "phoneIos": {
     "packageName": "com.techlead.app.geely.phone",
