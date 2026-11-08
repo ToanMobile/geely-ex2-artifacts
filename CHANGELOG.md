@@ -22,6 +22,10 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.6
+
+- 🐛 Sửa lỗi: Sửa lệch 1 độ nhiệt độ/1% pin, cập nhật ngoài trời realtime và chặn KWS wake nhầm ở 1.3.3
+
 ## CarConnect 1.3.5
 
 - 🔄 Cải tiến nhỏ và tăng độ ổn định.
@@ -63,6 +67,10 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.3.6
+
+- 🐛 Sửa lỗi: Sửa lệch 1 độ nhiệt độ/1% pin, cập nhật ngoài trời realtime và chặn KWS wake nhầm ở 1.3.3
 
 ## PhoneConnect 1.3.5
 
