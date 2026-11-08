@@ -22,6 +22,17 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.3.3
+
+- ✨ Mới: Nâng cấp parseCompound cho câu lệnh kép và bổ sung telemetry comfort
+- ✨ Mới: Phiên bản model STT, giữ bản cũ và quay lại được
+- ✨ Mới: Lệnh bật/tắt chế độ "Siêu bền bỉ" của pin (chỉ trên xe)
+- ✨ Mới: Bộ đo một lệnh do-kho.py + báo cáo HTML, cập nhật skill voice
+- ⚡ Nhanh hơn: Tối ưu toàn trình độ trễ nhận lệnh và phản hồi giọng nói đợt 2
+- 🐛 Sửa lỗi: Đóng trọn gói 13 thẻ giọng nói, dẫn đường, hội thoại, clip Kokoro v13 và 4 test kho lệnh (#30, #83, #97, #98, #114, #115, #125, #155, #159, #173, #175, #182, #277)
+- 🐛 Sửa lỗi: Chống lặp phím media, bảo cố cài đặt/relay, tự nối lại VHAL và sửa giao diện xe (#96, #98, #115, #137, #139, #153, #156, #157, #158, #159, #161, #164)
+- 🐛 Sửa lỗi: Giữ nguyên hợp đồng dây bắt buộc, package MicroG gốc và chuyển fallback JAVA_HOME sang merge-gate (#118, #160, #162)
+
 ## CarConnect 1.3.2
 
 - ✨ Mới: Bộ thu tín hiệu cốp điện và gương độ trong bản debug
@@ -41,6 +52,17 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.3.3
+
+- ✨ Mới: Chỉnh nhiệt độ, mức quạt và làm mát/sưởi nhanh điều hoà từ xa, chống kẹt khoá kênh Cloud 4G
+- 🐛 Sửa lỗi: Giữ nguyên hợp đồng dây bắt buộc, package MicroG gốc và chuyển fallback JAVA_HOME sang merge-gate (#118, #160, #162)
+- 🐛 Sửa lỗi: Vá lỗ hổng ADB/ECDSA, đua luồng socket, lọc HEIC và đối xứng UI (#151, #128, #160, #161)
+- 🐛 Sửa lỗi: Bật desugaring SDK 28, đồng bộ QuickInstall v23, sửa contrast Light và che PII logcat (#157, #160, #162, #163, #164, #118)
+- 🐛 Sửa lỗi: Ký A_AUTH đúng giao thức adbd + khoá 524 byte bền, chặn lệnh nguy hiểm tách toán tử, một CarProtocolClient trên iOS
+- 🐛 Sửa lỗi: Sửa crash iPad, chọn BT SPP và đối xứng iOS
+- 🐛 Sửa lỗi: Các lỗi P2, P3 còn lại của chế độ điều khiển từ xa
+- 🐛 Sửa lỗi: Keepalive Cloud không chạy lại sau khi xe từ chối auth, chụp token một lần cho phiên
 
 ## PhoneConnect 1.3.2
 

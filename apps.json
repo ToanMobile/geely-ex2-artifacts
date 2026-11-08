@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.3.2",
-    "versionCode": 1302,
+    "latestVersionName": "1.3.3",
+    "versionCode": 1303,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "f3f137585a29fa2b78ca0f44c76d228371a19975ab07874040308f3f2a8c6ffe",
-    "releaseNotes": "- ✨ Mới: Bộ thu tín hiệu cốp điện và gương độ trong bản debug\n- ✨ Mới: Lượt bấm tay trượt thì xe tự mở tai một lần, khỏi bấm lại\n- ✨ Mới: Bảo dưỡng ẩn cả icon Car Connect\n- ✨ Mới: \"mở camera 4 mắt\" mở app AuresEyes\n- 🐛 Sửa lỗi: Giọng nói hiểu thêm 5 khuôn câu im có bằng chứng trên kho WAV 1.3.x\n- 🐛 Sửa lỗi: GrammarSnap không nói nốt câu cụt, không bịa động từ, không bịa sấy kính\n- 🐛 Sửa lỗi: Câu \"nhận thời tiết thế nào\" (STT đọc nhầm \"hiện\") không còn bị đáp \"chưa có địa điểm\"\n- 🐛 Sửa lỗi: Hai nhãn tự động đóng băng hành vi 1.3.0 chuyển observe/must_reject",
+    "sha256": "1ab0a23ecf1f296c00be96ee9caf4f42713b2827e026d3b42e28f23642f4f973",
+    "releaseNotes": "- ✨ Mới: Nâng cấp parseCompound cho câu lệnh kép và bổ sung telemetry comfort\n- ✨ Mới: Phiên bản model STT, giữ bản cũ và quay lại được\n- ✨ Mới: Lệnh bật/tắt chế độ \"Siêu bền bỉ\" của pin (chỉ trên xe)\n- ✨ Mới: Bộ đo một lệnh do-kho.py + báo cáo HTML, cập nhật skill voice\n- ⚡ Nhanh hơn: Tối ưu toàn trình độ trễ nhận lệnh và phản hồi giọng nói đợt 2\n- 🐛 Sửa lỗi: Đóng trọn gói 13 thẻ giọng nói, dẫn đường, hội thoại, clip Kokoro v13 và 4 test kho lệnh (#30, #83, #97, #98, #114, #115, #125, #155, #159, #173, #175, #182, #277)\n- 🐛 Sửa lỗi: Chống lặp phím media, bảo cố cài đặt/relay, tự nối lại VHAL và sửa giao diện xe (#96, #98, #115, #137, #139, #153, #156, #157, #158, #159, #161, #164)\n- 🐛 Sửa lỗi: Giữ nguyên hợp đồng dây bắt buộc, package MicroG gốc và chuyển fallback JAVA_HOME sang merge-gate (#118, #160, #162)",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
