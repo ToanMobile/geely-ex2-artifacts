@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.3.7",
-    "versionCode": 1307,
+    "latestVersionName": "1.3.8",
+    "versionCode": 1308,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "6bb36b3c335dd7610fe6a080865a57b94e320173712d96457025351954d151a5",
-    "releaseNotes": "- 🐛 Sửa lỗi: Thu gọn FlymeDockHeight 112dp xóa khoảng trống 56dp dưới màn hình và đồng bộ làm tròn nhiệt độ/pin half-up",
+    "sha256": "c5212b03a12c1e0e32a62cc7a7a702eb4bd60a81dd66a131c15797745cb4d00c",
+    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "minVersionCode": 0,
     "forceRules": []
   },
