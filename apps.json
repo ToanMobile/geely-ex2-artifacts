@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.3.8",
-    "versionCode": 1308,
+    "latestVersionName": "1.3.9",
+    "versionCode": 1309,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "f9348014c1098f881479497f0c6e0124a33232f60129d4fdf99c2cd0f4b36b34",
-    "releaseNotes": "- 🐛 Sửa lỗi: Thu hẹp khoảng trống đáy toàn bộ màn hình CarConnect sát dock Flyme 112px",
+    "sha256": "e2a7dbe9145c5e3bb09bdbae14add3852ec480bca5015ce6752b088ada48021b",
+    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
