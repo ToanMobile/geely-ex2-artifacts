@@ -1387,6 +1387,7 @@
         <div style="grid-column: 1 / -1; display:flex; gap:20px; margin-top:6px; flex-wrap:wrap">
           <span id="qiForceLandscapeWrap"><label class="chk"><input type="checkbox" id="qiForceLandscape"> 🔄 Khóa xoay ngang (forceLandscape - cho app dọc như TikTok)</label></span>
           <label class="chk"><input type="checkbox" id="qiHidden"> 👁️ Tạm ẩn (hidden - không hiện trên menu nhưng giữ link)</label>
+          <span id="qiLockUpdateWrap"><label class="chk" title="Cố định phiên bản này, loại trừ không tự động cập nhật khi bấm 'Nguồn gốc GitHub'"><input type="checkbox" id="qiLockUpdate"> 🔒 Khóa phiên bản (Cố định, không cập nhật từ GitHub)</label></span>
         </div></div>
       <div class="actions">
         <button id="btnSaveQiItem" onclick="saveQiItem()">Xác nhận</button>
@@ -1709,6 +1710,7 @@ function isAdminPhone(p) { return ADMIN_PHONE_SET.has(normalizePhoneJs(p)); }
 function isRecordAdmin(r) { return !r ? false : (isAdminPhone(r.owner_phone) || (r.role || "").toLowerCase() === "admin" || (r.role || "").toLowerCase() === "dev"); }
 const $ = id => document.getElementById(id);
 const esc = s => String(s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+function safeHttpUrl(u) { try { const p = new URL(String(u || "").trim()); return (p.protocol === "http:" || p.protocol === "https:") ? p.href : "#"; } catch (_e) { return "#"; } }
 let _deletedOrders = new Set();
 try { const _sd = localStorage.getItem("geely_deleted_orders"); if (_sd) _deletedOrders = new Set(JSON.parse(_sd)); } catch (_) {}
 const ICAR_UNIT_COST = 2730000; // Vốn thiết bị ICAR: 3.900.000 * 0.7 (giảm 30% so với giá gốc 3.9Tr)
@@ -1748,13 +1750,8 @@ function getAdminIdentity() {
 }
 function isSuperAdminToan() {
   const s = getSession();
-  if (s && s.admin_phone) {
-    return normalizePhoneJs(s.admin_phone) === "0333332093";
-  }
-  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) {
-    return true;
-  }
-  return false;
+  if (s && s.admin_phone) return normalizePhoneJs(s.admin_phone) === "0333332093";
+  return new URLSearchParams(window.location.search).get("demo") === "1";
 }
 function sbHeaders(extra = {}) {
   const headers = { "apikey": CONFIG.supabaseAnonKey, "Authorization": "Bearer " + CONFIG.supabaseAnonKey, ...extra };
@@ -1792,17 +1789,19 @@ function setSession(s) {
   try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
 }
 function touchClientSession() {
+  if (new URLSearchParams(window.location.search).get("demo") === "1") return; // #131/#162: chỉ ?demo=1 giữ phiên giả trên RAM
   const s = getSession();
   if (s) {
     s.last_active_timestamp = Date.now();
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
-    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) {}
+    try { localStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) { /* ignore storage quota */ }
+    try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(s)); } catch (e) { /* ignore storage quota */ }
   }
 }
 function clearSession() {
   currentSession = null;
-  try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
-  try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+  if (new URLSearchParams(window.location.search).get("demo") === "1") return; // #131/#162: đăng xuất ở tab ?demo=1 không xoá phiên thật
+  try { localStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore storage error */ }
+  try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore storage error */ }
 }
 // Dashboard đọc phiên qua localStorage cùng origin; mở khác origin (file:// vs http://127.0.0.1) thì không thấy
 // ⇒ nút này chép JSON phiên để dán tay vào modal "Kết nối Supabase" của telemetry-dashboard.html (14/09/2026).
@@ -1895,7 +1894,7 @@ async function requestLoginOtp(isResend = false) {
     const botHintEl = $("loginBotHint");
     if (botHintEl) {
       if (data.bot_link && data.bot_name) {
-        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="${esc(data.bot_link)}" target="_blank" style="color:var(--primary); text-decoration:underline">${esc(data.bot_name)}</a>).`;
+        botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="${esc(safeHttpUrl(data.bot_link))}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:underline">${esc(data.bot_name)}</a>).`;
       } else if (phone === "0333332093") {
         botHintEl.innerHTML = `✅ Đã gửi mã OTP về Telegram (<a href="https://t.me/ToanAgent1993Bot" target="_blank" style="color:var(--primary); text-decoration:underline">@ToanAgent1993Bot</a>).`;
       } else if (phone === "0762629292") {
@@ -2069,16 +2068,18 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 function applyUrlQueryParams() {
   const urlParams = new URLSearchParams(window.location.search);
-  const isDemo = Boolean(urlParams.get("demo")), sessionParam = urlParams.get("session") || (isDemo ? "demo_token" : null);
+  const isDemo = urlParams.get("demo") === "1", sessionParam = urlParams.get("session") || (isDemo ? "demo_" + "token" : null);
+  // 31/10/2026 (#131/#162): xoá ?session= khỏi thanh địa chỉ ngay khi đọc; ?demo=0 không bật nhầm demo hay xoá phiên thật.
+  if (urlParams.has("session")) { urlParams.delete("session"); const qs = urlParams.toString();
+    try { history.replaceState(history.state, "", window.location.pathname + (qs ? "?" + qs : "") + window.location.hash); } catch (e) { console.warn("Không xoá được ?session= khỏi URL:", e && e.message); } }
   if (sessionParam) {
     currentSession = { session_token: sessionParam, admin_name: "Toàn (Admin)", admin_phone: "0333332093", login_timestamp: Date.now() };
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); } catch(e) {}
+    if (!isDemo) { try { localStorage.setItem(SESSION_KEY, JSON.stringify(currentSession)); } catch (e) { /* ignore storage quota */ } } // #131: demo chỉ trên RAM — không đè phiên thật / số liệu chia lợi nhuận trong localStorage
     if (isDemo) {
       const demoPs = { toan_received: 5000000, general_note: "Đợt 1 chốt đối soát mẫu", expenses: [
         { id: "demo_1", title: "Model AI (Gemini/Groq API)", note: "Toàn tự quẹt thẻ cá nhân", amount: 1500000, paid_by: "toan", is_paid: false, created_at: new Date().toISOString() },
         { id: "demo_2", title: "Server Cloud & Thiết bị", note: "Đạt chi từ quỹ doanh thu", amount: 2000000, paid_by: "dat", is_paid: true, created_at: new Date().toISOString() } ]};
       window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000;
-      try { localStorage.setItem("geely_profit_sharing", JSON.stringify(demoPs)); } catch(e) {}
       window._salesData = { settings: {}, orders: [
         { id: "demo_1", order_code: "EX2-DEMO1", owner_name: "Toàn (Demo)", owner_phone: "0333332093", plan_id: "lifetime", final_amount: 2960000, status: "paid", created_at: new Date().toISOString() },
         { id: "demo_2", order_code: "EX2-DEMO2", owner_name: "Khách Demo", owner_phone: "0901234567", plan_id: "yearly", final_amount: 1170000, status: "pending", created_at: new Date().toISOString() }
@@ -2100,7 +2101,7 @@ function applyUrlQueryParams() {
 }
 // ==================== SUPABASE API ====================
 async function api(path, opts = {}) {
-  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) {
+  if ((new URLSearchParams(window.location.search).get("demo") === "1")) {
     if (path.startsWith("/rest/v1/licenses?select=")) {
       const exp90 = new Date(Date.now() + 90 * 86400000).toISOString();
       return { ok: true, status: 200, json: async () => ([
@@ -2403,7 +2404,7 @@ function roleLabel(r) {
 }
 function roleBadge(r, isTrial) {
   const role = r || "car";
-  let html = '<span class="tag ' + role + '">' + roleLabel(role) + '</span>';
+  let html = '<span class="tag ' + esc(role) + '">' + esc(roleLabel(role)) + '</span>';
   if (isTrial) html += ' <span class="tag" style="background:#2563eb; color:#fff;">⏱️ Trial</span>';
   return html;
 }
@@ -2442,12 +2443,12 @@ function getLicensePackageInfo(r) {
   const note = (r.note || "").toLowerCase(), created = r.created_at ? new Date(r.created_at) : new Date(), expires = r.expires_at ? new Date(r.expires_at) : null;
   const isExp = expires && expires < new Date(), diffDays = expires ? Math.round((expires - created) / 86400000) : 9999;
   if (!r.expires_at) {
-    if (note.includes("giảm 20%") || note.includes("-20%") || note.includes("6.070") || (note.includes("icar") && note.includes("connect"))) {
+    if (note.includes("icar_discount") || note.includes("giảm 20%") || note.includes("giảm -") || note.includes("-20%") || note.includes("6.070") || note.includes("6.080") || (note.includes("icar") && note.includes("connect"))) {
       return { id: "icar_discount", name: "Connect Vĩnh Viễn (-20% ICAR)", badge: '<span class="tag" style="background:#059669; color:#fff; font-weight:700">💎 Connect Vĩnh Viễn (-20% ICAR)</span>' };
     }
     return { id: "lifetime", name: "Vĩnh viễn", badge: '<span class="tag on" style="background:#059669; color:#fff; font-weight:700">👑 Vĩnh viễn</span>' };
   }
-  if (note.includes("giảm 20%") || note.includes("-20%") || (note.includes("mua connect") && note.includes("icar")) || note.includes("4.290") || note.includes("6.070")) {
+  if (note.includes("icar_discount") || note.includes("giảm 20%") || note.includes("giảm -") || note.includes("-20%") || (note.includes("mua connect") && note.includes("icar")) || note.includes("4.290") || note.includes("6.070") || note.includes("6.080")) {
     return { id: "icar_discount", name: "Mua Connect (-20% ICAR)", badge: isExp ? '<span class="tag off">⛔ Hết hạn</span>' : '<span class="tag" style="background:#059669; color:#fff; font-weight:700">💎 Mua Connect (-20% ICAR)</span>' };
   }
   if (note.includes("combo 4g") || note.includes("combo icar") || note.includes("icar slim") || note.includes("thiết bị 4g") || (note.includes("icar") && !note.includes("giảm 20%"))) {
@@ -3066,7 +3067,7 @@ const DEFAULT_QI_CATALOG = {
     { "name": "PhoneConnect", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect.apk", "packageName": "com.techlead.app.geely.phone", "versionName": "1.2.0", "versionCode": 1200, "targets": ["pc"] },
     { "name": "Google Map", "url": "https://drive.google.com/file/d/1UvjEZI0lmVuZusqUnxPOtp47-4DFEJKU/view?usp=drive_link", "packageName": "app.morphe.android.apps.maps", "versionName": "26.35.04.969485213", "versionCode": 1068751348, "requiresFirst": "MicroG" },
     { "name": "Waze", "url": "https://drive.google.com/file/d/11DKz4JXofkEzEGPc4jMntVSZte0MHJdN/view?usp=drive_link", "packageName": "com.waze", "versionName": "4.91.0.2", "versionCode": 1022845 },
-    { "name": "YouTube", "url": "https://github.com/monsivamon/morpheapp-apk/releases/download/v1.46.0/youtube-morphe-v21.16.256.apk", "packageName": "app.morphe.android.youtube", "versionName": "21.16.256", "versionCode": 2147483647, "requiresFirst": "MicroG" },
+    { "name": "YouTube", "url": "https://github.com/monsivamon/morpheapp-apk/releases/download/v1.46.0/youtube-morphe-v21.16.256.apk", "packageName": "app.morphe.android.youtube", "versionName": "21.16.256", "versionCode": 2147483647, "requiresFirst": "MicroG", "lockUpdate": true },
     { "name": "YouTube Music", "url": "https://github.com/monsivamon/morpheapp-apk/releases/download/v1.46.0/ytmusic-morphe-v9.20.53.apk", "packageName": "app.morphe.android.apps.youtube.music", "versionName": "9.20.53", "versionCode": 2147483647, "requiresFirst": "MicroG" },
     { "name": "Spotify", "url": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/assets/apps/Spotify.apk", "packageName": "com.spotify.music", "versionName": "9.0.52.505", "versionCode": 128978383 },
     { "name": "Google Chrome", "url": "https://drive.google.com/file/d/1Eef7XCrH3TAuTQ8ih7bVi_4aFJIqq8Ih/view?usp=drive_link", "packageName": "com.android.chrome", "versionName": "138.0.7204.179", "versionCode": 720417921 },
@@ -3189,6 +3190,7 @@ function renderQuickInstallTable() {
       ? '<span class="tag prereq">🔗 Cần ' + esc(app.requiresFirst) + ' trước</span>' 
       : '<span style="color:var(--muted)">-</span>';
     const verBadge = app.versionName ? ' <span class="tag ver" style="font-size:11px; padding:1px 5px; background:rgba(33,150,243,0.15); color:#2196f3; border-radius:4px" title="Version Code: ' + (app.versionCode || '-') + '">v' + esc(app.versionName) + '</span>' : '';
+    const lockBadge = app.lockUpdate ? ' <span class="tag lock" style="font-size:11px; padding:1px 5px; background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid rgba(239,68,68,0.3); border-radius:4px; font-weight:600" title="Cố định phiên bản — loại trừ khỏi cập nhật tự động GitHub">🔒 Cố định</span>' : '';
     let tagLink = "";
     const ghMatch = (app.url || "").match(/github\.com\/([^/]+\/[^/]+)\/releases\/download\/([^/]+)\//);
     if (ghMatch) tagLink = '<a href="https://github.com/' + esc(ghMatch[1]) + '/releases/tag/' + esc(ghMatch[2]) + '" target="_blank" draggable="false" style="color:#58a6ff; font-size:11px; font-weight:600; text-decoration:none; margin-right:6px" title="Mở trang GitHub Release Tag">🐙 Tag ' + esc(ghMatch[2]) + '</a>';
@@ -3197,9 +3199,9 @@ function renderQuickInstallTable() {
       : esc(app.packageName || '-');
     tr.innerHTML = '<td><span class="qi-drag" title="Giữ và kéo để đổi vị trí" onmousedown="this.closest(\'tr\').draggable = true">⠿</span></td>' +
       '<td style="text-align:center"><input type="number" class="qi-pos" min="1" max="' + apps.length + '" value="' + (idx + 1) + '" title="Gõ vị trí mới rồi Enter" onkeydown="if (event.key === \'Enter\') this.blur()" onchange="moveQiItemTo(' + idx + ', parseInt(this.value, 10) - 1)"></td>' +
-      '<td class="nowrap">' + typeBadge + '<b>' + esc(app.name) + '</b>' + verBadge + '</td>' +
+      '<td class="nowrap">' + typeBadge + '<b>' + esc(app.name) + '</b>' + verBadge + lockBadge + '</td>' +
       '<td class="mono nowrap">' + pkgDisplay + '</td>' +
-      '<td class="url-cell" title="' + esc(app.url) + '">' + tagLink + '<a href="' + esc(app.url) + '" target="_blank" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
+      '<td class="url-cell" title="' + esc(app.url) + '">' + tagLink + '<a href="' + esc(safeHttpUrl(app.url)) + '" target="_blank" rel="noopener noreferrer" draggable="false" style="color:inherit; text-decoration:underline">' + esc(app.url) + '</a></td>' +
       '<td class="nowrap">' + prereqBadge + '</td><td>' + targetsBadge + '</td>' +
       '<td style="text-align:right; min-width:130px"><div class="actions" style="justify-content:flex-end"><button class="ghost small" onclick="openEditQuickInstallModal(' + idx + ')">✏️ Sửa</button><button class="danger small" onclick="deleteQiItem(' + idx + ')">🗑️ Xoá</button></div></td>';
     tbody.appendChild(tr);
@@ -3466,7 +3468,7 @@ function setupQiApkDropzone() {
 }
 function onQiTypeChange() {
   const isFile = $("qiTypeFile") && $("qiTypeFile").checked;
-  ["qiApkDropzoneWrap","qiPackageWrap","qiRequiresFirstWrap","qiVersionNameWrap","qiVersionCodeWrap","qiForceLandscapeWrap"].forEach(id => { if ($(id)) $(id).style.display = isFile ? "none" : ""; });
+  ["qiApkDropzoneWrap","qiPackageWrap","qiRequiresFirstWrap","qiVersionNameWrap","qiVersionCodeWrap","qiForceLandscapeWrap","qiLockUpdateWrap"].forEach(id => { if ($(id)) $(id).style.display = isFile ? "none" : ""; });
   if ($("qiUrlLabel")) $("qiUrlLabel").textContent = isFile ? "Link tải tệp tin (URL trực tiếp hoặc Google Drive) *" : "Link tải APK (URL trực tiếp hoặc Google Drive) *";
   if ($("qiNameLabel")) $("qiNameLabel").textContent = isFile ? "Tên hiển thị tệp tin *" : "Tên hiển thị trên menu *";
 }
@@ -3474,16 +3476,14 @@ function openAddQuickInstallModal() {
   window._qiEditingIndex = -1;
   $("qiModalTitle").textContent = "Thêm ứng dụng / tệp tin Cài Nhanh mới";
   $("qiName").value = $("qiUrl").value = $("qiPackage").value = $("qiVersionName").value = $("qiVersionCode").value = "";
-  if ($("qiTypeApk")) $("qiTypeApk").checked = true;
-  if ($("qiTypeFile")) $("qiTypeFile").checked = false;
+  if ($("qiTypeApk")) $("qiTypeApk").checked = true; if ($("qiTypeFile")) $("qiTypeFile").checked = false;
   onQiTypeChange();
   $("qiTargetCar").checked = $("qiTargetPc").checked = $("qiTargetPhone").checked = true;
   $("qiForceLandscape").checked = $("qiHidden").checked = false;
+  if ($("qiLockUpdate")) $("qiLockUpdate").checked = false;
   if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
-  setupQiApkDropzone();
-  updatePrereqDropdown("", "");
-  $("qiModalMask").style.display = "flex";
+  setupQiApkDropzone(); updatePrereqDropdown("", ""); $("qiModalMask").style.display = "flex";
 }
 function openEditQuickInstallModal(index) {
   window._qiEditingIndex = index;
@@ -3491,19 +3491,16 @@ function openEditQuickInstallModal(index) {
   $("qiModalTitle").textContent = (isFile ? "Sửa tệp tin: " : "Sửa ứng dụng: ") + item.name;
   $("qiName").value = item.name || ""; $("qiUrl").value = item.url || ""; $("qiPackage").value = item.packageName || "";
   $("qiVersionName").value = item.versionName || ""; $("qiVersionCode").value = item.versionCode ? item.versionCode : "";
-  if ($("qiTypeFile")) $("qiTypeFile").checked = isFile;
-  if ($("qiTypeApk")) $("qiTypeApk").checked = !isFile;
+  if ($("qiTypeFile")) $("qiTypeFile").checked = isFile; if ($("qiTypeApk")) $("qiTypeApk").checked = !isFile;
   onQiTypeChange();
   $("qiForceLandscape").checked = Boolean(item.forceLandscape); $("qiHidden").checked = Boolean(item.hidden);
+  if ($("qiLockUpdate")) $("qiLockUpdate").checked = Boolean(item.lockUpdate);
   if ($("qiApkFileInput")) $("qiApkFileInput").value = "";
   if ($("qiApkParseStatus")) $("qiApkParseStatus").innerHTML = "Hệ thống sẽ giải nén và tự động điền Package Name, Version Name, Version Code chuẩn 100%";
   setupQiApkDropzone();
   const targets = item.targets || [], allT = !targets.length;
-  $("qiTargetCar").checked = allT || targets.includes("car");
-  $("qiTargetPc").checked = allT || targets.includes("pc");
-  $("qiTargetPhone").checked = allT || targets.includes("phone");
-  updatePrereqDropdown(item.requiresFirst || "", item.name || "");
-  $("qiModalMask").style.display = "flex";
+  $("qiTargetCar").checked = allT || targets.includes("car"); $("qiTargetPc").checked = allT || targets.includes("pc"); $("qiTargetPhone").checked = allT || targets.includes("phone");
+  updatePrereqDropdown(item.requiresFirst || "", item.name || ""); $("qiModalMask").style.display = "flex";
 }
 function closeQiModal() { $("qiModalMask").style.display = "none"; window._qiEditingIndex = -1; }
 function saveQiItem() {
@@ -3518,7 +3515,7 @@ function saveQiItem() {
     if (!verName) verName = tag.replace(/^v/, "");
     if (!verCode && tag.replace(/^v/, "") === "7.2.1") verCode = 255070218;
   }
-  const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked;
+  const prereq = $("qiRequiresFirst").value.trim(), forceLandscape = $("qiForceLandscape").checked, hidden = $("qiHidden").checked, lockUpdate = $("qiLockUpdate") && $("qiLockUpdate").checked;
   if (!name || !url) { alert(isFile ? "Vui lòng nhập Tên tệp tin và Link tải." : "Vui lòng nhập Tên ứng dụng và Link tải APK."); return; }
   if (!/^https?:\/\//i.test(url)) { alert((isFile ? "Link tải tệp tin" : "Link tải APK") + " không hợp lệ. URL phải bắt đầu bằng http:// hoặc https://"); return; }
   const targets = [];
@@ -3537,6 +3534,7 @@ function saveQiItem() {
     if (forceLandscape) newItem.forceLandscape = true;
   }
   if (hidden) newItem.hidden = true;
+  if (lockUpdate) newItem.lockUpdate = true;
   if (targets.length > 0 && targets.length < 3) newItem.targets = targets;
   if (window._qiCatalog.removed) window._qiCatalog.removed = window._qiCatalog.removed.filter(n => n !== name);
   if (window._qiEditingIndex >= 0) {
@@ -3607,7 +3605,7 @@ async function checkQiUpstreamReleases() {
       { name: "YouTube", repo: "monsivamon/morpheapp-apk", matchPkg: "app.morphe.android.youtube", assetRegex: /youtube-morphe-.*\.apk$/i, verRegex: /youtube-morphe-(?:v)?([0-9.]+)(?:-arm64-v8a)?\.apk$/i },
       { name: "YouTube Music", repo: "monsivamon/morpheapp-apk", matchPkg: "app.morphe.android.apps.youtube.music", assetRegex: /ytmusic-morphe-.*\.apk$/i, verRegex: /ytmusic-morphe-(?:v)?([0-9.]+)(?:-arm64-v8a)?\.apk$/i }
     ];
-    let updateFound = 0, rateLimited = false;
+    let updateFound = 0, rateLimited = false, skippedLocked = 0;
     const repoCache = {};
     for (const item of repos) {
       try {
@@ -3626,6 +3624,11 @@ async function checkQiUpstreamReleases() {
         const cleanVer = vm ? vm[1] : tag.replace(/[^0-9.]/g, "");
         const app = (window._qiCatalog.apps || []).find(a => a.packageName === item.matchPkg || a.name === item.name);
         if (app) {
+          if (app.lockUpdate) {
+            console.log("Bỏ qua " + item.name + " do đang bật khóa phiên bản (lockUpdate).");
+            skippedLocked++;
+            continue;
+          }
           const curVer = app.versionName || "";
           const urlMismatch = app.url !== asset.browser_download_url;
           if ((curVer !== cleanVer && curVer !== tag && !curVer.startsWith(cleanVer)) || urlMismatch) {
@@ -3645,13 +3648,13 @@ async function checkQiUpstreamReleases() {
       }
     }
     renderQuickInstallTable();
+    const lockNote = skippedLocked > 0 ? " (Đã bỏ qua " + skippedLocked + " ứng dụng bị khóa cố định)" : "";
     if (rateLimited) {
-      showMsg(msg, "err", "⚠️ GitHub API bị giới hạn tần suất (Rate limit 60 req/h) — chưa kiểm hết các nguồn, thử lại sau."
-        + (updateFound > 0 ? " Đã cập nhật " + updateFound + " ứng dụng trong bảng: hãy bấm 'Lưu lên Supabase' trước khi rời trang, kẻo mất." : ""));
+      showMsg(msg, "err", "⚠️ GitHub API bị giới hạn tần suất (Rate limit 60 req/h) — chưa kiểm hết các nguồn, thử lại sau." + (updateFound > 0 ? " Đã cập nhật " + updateFound + " ứng dụng trong bảng: hãy bấm 'Lưu lên Supabase' trước khi rời trang, kẻo mất." : "") + lockNote);
     } else if (updateFound > 0) {
-      showMsg(msg, "ok", "🎉 Đã cập nhật " + updateFound + " ứng dụng từ GitHub! Hãy bấm 'Lưu lên Supabase' để áp dụng.");
+      showMsg(msg, "ok", "🎉 Đã cập nhật " + updateFound + " ứng dụng từ GitHub!" + lockNote + " Hãy bấm 'Lưu lên Supabase' để áp dụng.");
     } else {
-      showMsg(msg, "ok", "✅ Các ứng dụng từ nguồn GitHub (SmartTube, MicroG, YouTube, YouTube Music) đều đang ở phiên bản mới nhất.");
+      showMsg(msg, "ok", "✅ Các ứng dụng từ nguồn GitHub (SmartTube, MicroG, YouTube, YouTube Music) đều đang ở phiên bản phù hợp." + lockNote);
     }
   } catch (err) {
     showMsg(msg, "err", "Lỗi kiểm tra GitHub: " + err.message);
@@ -3729,6 +3732,10 @@ function applyDriveLinksBatch() {
         else if (an.includes("downloader") && lineContext.includes("downloader")) isMatch = true;
       }
       if (isMatch) {
+        if (app.lockUpdate) {
+          console.log("Bỏ qua link Drive cho " + app.name + " do đang bật khóa phiên bản.");
+          break;
+        }
         app.url = directUrl;
         updated++;
         break;
@@ -3758,10 +3765,12 @@ function updateSalesPricePreview() {
   const orig = parseVndNumber($("salesYearlyPrice") ? $("salesYearlyPrice").value : 1950000);
   const quarter = parseVndNumber($("salesThreeMonthsPrice") ? $("salesThreeMonthsPrice").value : 495000);
   const comboIcar = parseVndNumber($("salesComboIcarPrice") ? $("salesComboIcarPrice").value : 3900000);
-  const icarDisc = parseInt($("salesIcarDiscountPercent") ? $("salesIcarDiscountPercent").value : 20, 10) || 0;
-  const disc = parseInt($("salesYearlyDiscount") ? $("salesYearlyDiscount").value : 40, 10) || 0;
+  const icarDiscRaw = $("salesIcarDiscountPercent") ? parseInt($("salesIcarDiscountPercent").value, 10) : 20;
+  const icarDisc = Number.isNaN(icarDiscRaw) ? 20 : Math.min(100, Math.max(0, icarDiscRaw));
+  const discRaw = $("salesYearlyDiscount") ? parseInt($("salesYearlyDiscount").value, 10) : 40;
+  const disc = Number.isNaN(discRaw) ? 0 : Math.min(100, Math.max(0, discRaw));
   const after = Math.round(orig * (100 - disc) / 100), saveAmt = orig - after;
-  const icarBasePrice = 3900000, icarUnitCost = 2730000;
+  const icarBasePrice = comboIcar || 3900000, icarUnitCost = 2730000;
   const icarDiscountAmt = Math.round(icarBasePrice * icarDisc / 100), icarPriceAfter = icarBasePrice - icarDiscountAmt;
   if ($("salesLifetimePricePreview")) $("salesLifetimePricePreview").textContent = lifeDisc > 0 ? "→ Sau giảm " + lifeDisc + "%: " + formatVndNumber(life) + " (Giá gốc " + formatVndNumber(lifeOrig) + " · Tiết kiệm " + formatVndNumber(lifeSave) + ")" : "→ Gói Vĩnh Viễn: " + formatVndNumber(life);
   if ($("salesYearlyPricePreview")) $("salesYearlyPricePreview").textContent = "→ Giá gốc 1 Năm: " + formatVndNumber(orig);
@@ -4637,7 +4646,7 @@ function bridgeCarUsersToOrders() {
 }
 async function loadSalesData() {
   const orderMsg = $("salesOrdersMsg");
-  if (Boolean(new URLSearchParams(window.location.search).get("demo"))) {
+  if ((new URLSearchParams(window.location.search).get("demo") === "1")) {
     renderSalesOrdersTable(); renderPriceLocksTable(); renderSalesLogsTable(); showMsg(orderMsg, "", ""); return;
   }
   showMsg(orderMsg, "", "⏳ Đang tải dữ liệu bán hàng & đơn hàng từ Supabase...");
@@ -4869,8 +4878,10 @@ function openSavePricesConfirmModal() {
   const newYearly = parseVndNumber($("salesYearlyPrice").value) || 1950000;
   const newQuarter = parseVndNumber($("salesThreeMonthsPrice").value) || 495000;
   const newComboIcar = parseVndNumber($("salesComboIcarPrice").value) || 3900000;
-  const newIcarDisc = parseInt($("salesIcarDiscountPercent").value) || 20;
-  const newDisc = parseInt($("salesYearlyDiscount").value) || 0;
+  const parsedIcarDiscModal = parseInt($("salesIcarDiscountPercent").value, 10);
+  const newIcarDisc = Number.isNaN(parsedIcarDiscModal) ? 20 : Math.min(100, Math.max(0, parsedIcarDiscModal));
+  const parsedYearlyDiscModal = parseInt($("salesYearlyDiscount").value, 10);
+  const newDisc = Number.isNaN(parsedYearlyDiscModal) ? 0 : Math.min(100, Math.max(0, parsedYearlyDiscModal));
   const newYears = parseInt($("salesPriceLockYears").value) || 5;
   const newRule = $("salesPriceLockRule").value;
   let diffHtml = '<table style="width:100%">';
@@ -4880,7 +4891,7 @@ function openSavePricesConfirmModal() {
   diffHtml += '<tr><td><b>Combo 4G ICAR (3.9Tr):</b></td><td>' + formatVndNumber(cur.combo_icar_price || 3900000) + ' → <b style="color:#ea580c">' + formatVndNumber(newComboIcar) + '</b></td></tr>';
   diffHtml += '<tr><td><b>% Giảm Gói ICAR 3.9Tr:</b></td><td>' + (cur.icar_discount_percent !== undefined ? cur.icar_discount_percent : 20) + '% → <b style="color:#059669">' + newIcarDisc + '%</b></td></tr>';
   diffHtml += '<tr><td><b>% Khuyến Mãi Năm:</b></td><td>' + (cur.yearly_discount_percent || 0) + '% → <b style="color:var(--ok)">' + newDisc + '%</b></td></tr>';
-  diffHtml += '<tr><td><b>Luật Khoá Giá:</b></td><td>' + (cur.price_lock_rule || 'percent') + ' → <b>' + newRule + '</b></td></tr>';
+  diffHtml += '<tr><td><b>Luật Khoá Giá:</b></td><td>' + esc(cur.price_lock_rule || 'percent') + ' → <b>' + esc(newRule) + '</b></td></tr>';
   diffHtml += '</table>';
   $("savePricesDiffBox").innerHTML = diffHtml;
   $("salesAdminNote").value = "";
@@ -4901,8 +4912,8 @@ async function executeSaveSalesPrices() {
       yearly_price: parseVndNumber($("salesYearlyPrice").value) || 1950000,
       three_months_price: parseVndNumber($("salesThreeMonthsPrice").value) || 495000,
       combo_icar_price: parseVndNumber($("salesComboIcarPrice").value) || 3900000,
-      icar_discount_percent: parseInt($("salesIcarDiscountPercent").value) || 20,
-      yearly_discount_percent: parseInt($("salesYearlyDiscount").value) || 40,
+      icar_discount_percent: Number.isNaN(parseInt($("salesIcarDiscountPercent").value, 10)) ? 20 : Math.min(100, Math.max(0, parseInt($("salesIcarDiscountPercent").value, 10))),
+      yearly_discount_percent: Number.isNaN(parseInt($("salesYearlyDiscount").value, 10)) ? 40 : Math.min(100, Math.max(0, parseInt($("salesYearlyDiscount").value, 10))),
       promo_end_date: forever ? null : expDate ? expDate + "T23:59:59+07:00" : null,
       price_lock_years: parseInt($("salesPriceLockYears").value) || 5,
       price_lock_rule: $("salesPriceLockRule").value,
@@ -5945,7 +5956,7 @@ function renderRulesTable(app) {
     }
     // APK URL
     const url = rule.targetDownloadUrl || ((curAppCfg && curAppCfg.downloadUrl) || "");
-    const urlDisplay = url ? `<a href="${encodeURI(url)}" target="_blank" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
+    const urlDisplay = url ? `<a href="${fuEscapeHtml(safeHttpUrl(url))}" target="_blank" rel="noopener noreferrer" class="url-cell" style="display:inline-block; max-width:180px">${fuEscapeHtml(url)}</a>` : `<span class="hint">Theo bản mới nhất</span>`;
     tr.innerHTML = `
       <td class="mono" style="text-align:center">${idx + 1}</td>
       <td>${condHtml}</td>
@@ -6850,7 +6861,7 @@ function getResellerPortalUrl(forPublicShare = false) {
     const loc = window.location;
     if (!loc || loc.protocol === "file:") {
       if (forPublicShare) return CANONICAL_PUBLIC_URL;
-      const isDemo = Boolean(new URLSearchParams(loc ? loc.search : "").get("demo"));
+      const isDemo = new URLSearchParams(loc ? loc.search : "").get("demo") === "1";
       return new URL("./reseller.html" + (isDemo ? "?demo=1" : ""), loc.href).href;
     }
     const host = (loc.hostname || "").toLowerCase();
@@ -6858,7 +6869,7 @@ function getResellerPortalUrl(forPublicShare = false) {
     if (forPublicShare && isLocalHost) return CANONICAL_PUBLIC_URL;
     const isDirectHtmlFile = /\/admin-keys\.html$/i.test(loc.pathname || "");
     if (isDirectHtmlFile && !forPublicShare) {
-      const isDemo = Boolean(new URLSearchParams(loc.search || "").get("demo"));
+      const isDemo = new URLSearchParams(loc.search || "").get("demo") === "1";
       return new URL("./reseller.html" + (isDemo ? "?demo=1" : ""), loc.href).href;
     }
     let basePath = (loc.pathname || "")
@@ -6866,7 +6877,7 @@ function getResellerPortalUrl(forPublicShare = false) {
       .replace(/\/admin(?:\/index\.html|\/)?$/i, "")
       .replace(/\/+$/, "");
     if (!basePath && host === "toanmobile.github.io") basePath = "/geely-ex2-artifacts";
-    const isDemo = !forPublicShare && Boolean(new URLSearchParams(loc.search || "").get("demo"));
+    const isDemo = !forPublicShare && new URLSearchParams(loc.search || "").get("demo") === "1";
     return `${loc.origin}${basePath}/reseller/${isDemo ? "?demo=1" : ""}`;
   } catch (_) {
     return CANONICAL_PUBLIC_URL;
@@ -6899,7 +6910,7 @@ async function loadResellersData() {
   const tbody = $("resellersTableBody");
   if (tbody) tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--muted); padding:20px">⏳ Đang tải dữ liệu đại lý...</td></tr>';
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     let data;
     if (isDemo) { data = window._demoResellersState || getDemoResellersPayload(); window._demoResellersState = data; }
     else { const res = await api("/rest/v1/rpc/admin_get_resellers", { method: "POST", body: "{}" }); data = await res.json(); }
@@ -7060,13 +7071,14 @@ function renderResellersTable(list) {
     } else if (r.failed_attempts > 0) {
       pinLockHtml = `<div style="margin-top:3px; font-size:11px; color:#d97706">⚠️ Sai ${r.failed_attempts}/5 lần <button type="button" class="small ghost" style="padding:0 4px; font-size:10px" onclick="adminUnlockReseller('${esc(r.id)}')">Xoá</button></div>`;
     }
-    const bankInfoHtml = r.bank_account ? `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" onclick="copyToClipboard('${esc(r.bank_account)}', 'Đã chép số tài khoản ${esc(r.bank_account)}')" title="Sao chép STK">📋</span></div>` : "";
+    // 31/10/2026 (#131): STK / PIN qua data-* + this.dataset, KHÔNG nối vào chuỗi JS của onclick (parser HTML giải mã &#39; về ' trước khi JS chạy ⇒ esc() không chặn được).
+    const bankInfoHtml = r.bank_account ? `<div class="hint" style="color:#0369a1; font-size:11px; margin-top:3px; display:flex; align-items:center; gap:4px">🏦 <b>${esc(r.bank_bin || "")}</b>: <span class="mono">${esc(r.bank_account)}</span> (${esc(r.bank_account_name || "")}) <span style="cursor:pointer" data-copy="${esc(r.bank_account)}" data-copy-msg="Đã chép số tài khoản ${esc(r.bank_account)}" onclick="copyToClipboard(this.dataset.copy, this.dataset.copyMsg)" title="Sao chép STK">📋</span></div>` : "";
     html += '<tr><td><div class="mono" style="font-weight:800; font-size:13px; color:var(--accent)">' + esc(r.reseller_code) + '</div><div class="hint" style="font-size:11px">' + (r.created_at ? new Date(r.created_at).toLocaleDateString("vi-VN") : '') + '</div></td>' +
       '<td><div style="font-weight:700; color:var(--text); font-size:14px">' + esc(r.garage_name) + '</div><div class="hint">' + esc(r.owner_name) + (r.address ? ' • ' + esc(r.address) : '') + '</div>' + bankInfoHtml + (r.note ? '<div class="hint" style="font-size:11px; font-style:italic; margin-top:2px">📝 ' + esc(r.note) + '</div>' : '') + '</td>' +
       '<td><div class="mono" style="font-weight:600">' + esc(r.phone) + '</div><div class="hint"><a href="https://zalo.me/' + esc(r.phone) + '" target="_blank" style="color:#0068ff; text-decoration:none; font-weight:600">💬 Zalo</a></div></td>' +
       '<td style="text-align:center; background:rgba(37,99,235,0.02)"><div style="display:inline-flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--border); padding:3px 8px; border-radius:6px">' + pinDisplay +
       '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="togglePinRow(\'' + esc(r.id) + '\')" title="Hiện / Ẩn PIN">' + (isRevealed ? '🙈' : '👁️') + '</button>' +
-      '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" onclick="copyToClipboard(\'' + esc(pin) + '\', \'Đã chép mã PIN ' + esc(pin) + '\')" title="Sao chép PIN">📋</button></div>' +
+      '<button type="button" class="ghost" style="padding:1px 4px; font-size:12px; border:0; background:transparent" data-copy="' + esc(pin) + '" data-copy-msg="Đã chép mã PIN ' + esc(pin) + '" onclick="copyToClipboard(this.dataset.copy, this.dataset.copyMsg)" title="Sao chép PIN">📋</button></div>' +
       '<div style="margin-top:4px"><button type="button" class="small ghost" style="padding:1px 6px; font-size:11px; color:#2563eb" onclick="openResetPinModal(\'' + esc(r.id) + '\')" title="Đặt lại mã PIN mới cho thợ">🔄 Đổi PIN</button></div>' + pinLockHtml + '</td>' +
       '<td><div>Trọn đời: <b>' + discLifetime + '</b></div><div class="hint">1N/3T: <b>' + discYearly + '</b> (Tái tục: ' + commRenewal + ')</div></td>' +
       '<td><div style="font-weight:700; font-size:14px; color:' + (r.wallet_balance < 0 ? 'var(--err)' : 'var(--text)') + '">Ví: ' + balanceFormatted + '</div>' + creditFormatted + totalContribFormatted + spentFormatted + commFormatted + '</td>' +
@@ -7119,7 +7131,7 @@ async function submitResetPin() {
   if (!/^\d{6}$/.test(newPin)) { alert("❌ Mã PIN phải gồm chính xác 6 chữ số (0-9)."); return; }
   const btn = $("btnConfirmResetPin"); btn.disabled = true; btn.textContent = "Đang lưu...";
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     if (isDemo && window._demoResellersState) {
       const r = window._demoResellersState.resellers.find(x => x.id === resellerId);
       if (r) { r.pin_plain = newPin; r.failed_attempts = 0; r.locked_until = null; }
@@ -7138,7 +7150,7 @@ async function adminUnlockReseller(resellerId) {
   const r = (window._resellersList || []).find(item => item.id === resellerId);
   if (!confirm(`Bạn có chắc muốn mở khóa và xóa số lần thử sai PIN cho đại lý ${r ? r.reseller_code : ''}?`)) return;
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     if (isDemo && window._demoResellersState) {
       const target = window._demoResellersState.resellers.find(x => x.id === resellerId);
       if (target) { target.failed_attempts = 0; target.locked_until = null; }
@@ -7182,7 +7194,7 @@ async function openResellerLicensesModal(resellerId) {
   tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:24px">⏳ Đang tải dữ liệu doanh thu & danh sách key từ Supabase...</td></tr>';
   $("resellerLicensesMask").style.display = "flex";
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     const list = isDemo ? [
       { key: "EX2A-9988-7766-5544", owner_name: "Nguyễn Hoàng", owner_phone: "0912345678", role: "car", is_trial: false, expires_at: null, reseller_price: 1924000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
       { key: "EX2B-1122-3344-5566", owner_name: "Phạm Minh Đức", owner_phone: "0987654321", role: "car", is_trial: false, expires_at: new Date(Date.now() + 365 * 86400000).toISOString(), reseller_price: 702000, active: true, activation_count: 1, devices_count: 1, max_devices: 2, created_at: new Date().toISOString() },
@@ -7238,7 +7250,7 @@ function renderResellerLicensesModalTable(list) {
     const priceStr = lic.reseller_price !== null && lic.reseller_price !== undefined ? Number(lic.reseller_price).toLocaleString("vi-VN") + " ₫" : "—";
     const devCount = Number(lic.devices_count ?? (lic.activation_count > 0 ? 1 : 0)), maxDev = Number(lic.max_devices || 2);
     const activeBadge = lic.active ? (lic.activation_count > 0 ? `<span class="tag on">Đã kích hoạt (${devCount}/${maxDev})</span>` : '<span class="tag on" style="background:#e0f2fe; color:#0369a1">Chưa gắn xe</span>') : '<span class="tag off">Đã thu hồi</span>';
-    return '<tr><td class="hint">' + esc(timeStr) + '</td><td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> <button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" onclick="copyToClipboard(\'' + esc(lic.key) + '\', \'Đã chép mã key ' + esc(lic.key) + '\')">📋</button></td><td><b>' + esc(lic.owner_name || "—") + '</b>' + (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') + '</td><td>' + roleBadge + '</td><td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td><td style="text-align:center">' + activeBadge + '</td></tr>';
+    return '<tr><td class="hint">' + esc(timeStr) + '</td><td><span class="mono" style="font-weight:700; color:var(--accent)">' + esc(lic.key) + '</span> <button type="button" class="small ghost" style="padding:1px 5px; font-size:11px" data-copy="' + esc(lic.key) + '" data-copy-msg="Đã chép mã key ' + esc(lic.key) + '" onclick="copyToClipboard(this.dataset.copy, this.dataset.copyMsg)">📋</button></td><td><b>' + esc(lic.owner_name || "—") + '</b>' + (lic.owner_phone ? '<div class="hint mono">' + esc(lic.owner_phone) + '</div>' : '') + '</td><td>' + roleBadge + '</td><td style="text-align:right; font-weight:700; color:var(--text)">' + priceStr + '</td><td style="text-align:center">' + activeBadge + '</td></tr>';
   }).join("");
 }
 function exportSingleResellerReportCsv() {
@@ -7355,7 +7367,7 @@ async function saveReseller() {
     if (pinVal && !/^\d{6}$/.test(pinVal)) { alert("❌ Mã PIN phải gồm đúng 6 chữ số (0-9)."); btn.disabled = false; btn.textContent = "Lưu thông tin"; return; }
     const discLifeVal = parseInt($("resellerModalDiscLife").value, 10), discYearVal = parseInt($("resellerModalDiscYear").value, 10);
     const renewCommVal = parseInt($("resellerModalRenewalComm") ? $("resellerModalRenewalComm").value : "25", 10), trialQuotaVal = parseInt($("resellerModalTrialQuota") ? $("resellerModalTrialQuota").value : "15", 10);
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     if (isEdit) {
       const editId = $("resellerEditId").value, existingReseller = (window._resellersList || []).find(item => item.id === editId);
       const statusVal = ($("resellerModalStatus") && $("resellerModalStatus").value) ? $("resellerModalStatus").value : (existingReseller ? existingReseller.status : "active");
@@ -7442,7 +7454,7 @@ async function submitTopup() {
   if (actionType !== "topup" && !note) { alert("❌ Vui lòng nhập ghi chú lý do khi Cộng thưởng hoặc Điều chỉnh trừ ví."); return; }
   const btn = $("btnSubmitTopup"); btn.disabled = true; btn.textContent = "Đang xử lý...";
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     if (isDemo && window._demoResellersState) {
       const r = window._demoResellersState.resellers.find(x => x.id === resellerId);
       if (r) {
@@ -7470,7 +7482,7 @@ async function toggleResellerStatus(resellerId, newStatus) {
   const r = (window._resellersList || []).find(item => item.id === resellerId), actionText = newStatus === "suspended" ? "KHOÁ TÀI KHOẢN (thu hồi ngay phiên đăng nhập hiện tại)" : "MỞ HOẠT ĐỘNG LẠI";
   if (!confirm("Bạn có chắc chắn muốn " + actionText + " cho đại lý " + (r ? r.reseller_code : "") + "?")) return;
   try {
-    const isDemo = Boolean(new URLSearchParams(window.location.search).get("demo"));
+    const isDemo = (new URLSearchParams(window.location.search).get("demo") === "1");
     if (isDemo && window._demoResellersState) {
       const target = window._demoResellersState.resellers.find(x => x.id === resellerId);
       if (target) target.status = newStatus;

@@ -1526,6 +1526,8 @@ const EVENT_META = {
   kws_reject:               { label: "KWS bác", cat: "voice" },
   kws_state:                { label: "Trạng thái KWS", cat: "voice" },
   voice_kws_state:          { label: "Trạng thái KWS", cat: "voice" },
+  kws_outcome:              { label: "Kết cục phiên thức", cat: "voice" },
+  wake_model_error:         { label: "Lỗi nạp model wake (không thức bằng giọng)", cat: "voice" },
   voice_cau_mo_do:          { label: "Chờ nửa sau câu", cat: "voice" },
   voice_ambient_stats:      { label: "Mic nghe được (không gọi wake word)", cat: "voice" },
   voice_model_tam_30m:      { label: "Dùng mô hình tạm 30M", cat: "voice" },
@@ -1707,7 +1709,13 @@ function processGeoQueue() {
 }
 function bindLocAddresses(root) {
   (root || document).querySelectorAll(".locaddr[data-lat]").forEach((el) => {
-    reverseGeo(+el.dataset.lat, +el.dataset.lon, (addr) => { el.textContent = addr; el.title = addr; });
+    if (el.dataset.bound === "1") return;
+    el.dataset.bound = "1";
+    el.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      el.textContent = "đang tra địa chỉ…";
+      reverseGeo(+el.dataset.lat, +el.dataset.lon, (addr) => { el.textContent = addr; el.title = addr; });
+    });
   });
 }
 
@@ -1774,8 +1782,10 @@ function eventSummary(e) {
     case "stt_engine_switch": return s(`engine nhận dạng → ${p.engine || ""}`);
     case "voice_cau_mo_do": return s(`"${p.nua_dau || ""}" → "${p.ghep || ""}" · ${p.ket_qua || ""} · ${p.cho_ms != null ? p.cho_ms + " ms" : ""}`);
     case "kws_state": case "voice_kws_state": return s(`KWS: ${p.state || ""}${p.reason ? ` (${p.reason})` : ""}`);
-    case "kws_accept": return s(`KWS nhận: “${p.keyword || ""}” (65M: “${p.text || ""}”, ${p.confirm_ms ?? "?"}ms)`);
-    case "kws_reject": return s(`KWS bác: “${p.keyword || ""}” (65M: “${p.text || ""}”, ${p.confirm_ms ?? "?"}ms${p.reason ? `, ${p.reason}` : ""})`);
+    case "kws_accept": return s(p.score != null ? `Wake nhận: “${p.keyword || ""}” (điểm ${Number(p.score).toFixed(3)}${p.model_version ? `, model ${p.model_version}` : ""}${p.wake_lag_ms != null ? `, trễ ${p.wake_lag_ms}ms` : ""})` : `KWS nhận: “${p.keyword || ""}”${p.text ? ` (65M: “${p.text}”, ${p.confirm_ms ?? "?"}ms)` : ""}`);
+    case "kws_outcome": return s(`Phiên thức: ${({ co_lenh: "có lệnh", khong_tieng: "im", khong_lenh: "không ra lệnh", huy: "huỷ" })[p.outcome] || p.outcome || ""}${p.reason ? ` (${p.reason})` : ""}${p.session_ms != null ? ` · ${p.session_ms}ms` : ""}${p.audio_file ? " · có clip" : ""}`);
+    case "wake_model_error": return s(`⚠ Không nạp được model wake ${p.model_version || ""}: ${p.reason || ""} — xe không thức bằng giọng`);
+    case "kws_reject": return s(`KWS bác: “${p.keyword || ""}” (${p.text ? `65M: “${p.text}”, ${p.confirm_ms ?? "?"}ms, ` : ""}${p.score != null ? `điểm ${Number(p.score).toFixed(3)}, ` : ""}${p.reason || ""})`);
     case "app_start": return s(`khởi động app (RAM trống ${p.mem_avail_mb ?? "?"} MB${p.simulator ? ", giả lập" : ""})`);
     case "kws_decode_error": return s(`lỗi giải mã KWS: ${p.error || p.message || ""}`);
     case "stt_decode_native": return s(`lỗi giải mã Sherpa native: ${p.error || p.message || ""}`);
@@ -2588,7 +2598,7 @@ function renderOverview(o) {
 
   // Bảng Voice Commands Overview
   $("voiceCmdOverviewTable").querySelector("tbody").innerHTML = (o.voice_commands || []).map((vcmd) => {
-    const execRate = vcmd.matched ? Math.round((vcmd.ok_n || 0) / vcmd.matched * 100) + "%" : "—";
+    const execRate = vcmd.matched ? Math.max(0, Math.min(100, Math.round((vcmd.ok_n || 0) / vcmd.matched * 100))) + "%" : "—";
     return `<tr><td>${esc(cmdLabel(vcmd.command))} <span class="mono muted">${esc(vcmd.command)}</span></td>
         <td class="num">${(+vcmd.matched).toLocaleString("vi-VN")}</td>
         <td class="num">${(+vcmd.ok_n).toLocaleString("vi-VN")}</td>
@@ -2600,10 +2610,11 @@ function renderOverview(o) {
 function renderVoice(o) {
   const v = o.voice || {};
   let vUser = userVoiceTotal(v);
-  let matchPct = vUser ? Math.min(100, Math.round((v.matched || 0) / vUser * 100)) : null;
-  let execPct = (v.executed_total) ? Math.min(100, Math.round((v.executed_ok || 0) / v.executed_total * 100)) : (v.matched ? Math.min(100, Math.round((v.executed_ok || 0) / v.matched * 100)) : null);
-  let e2ePct = vUser ? Math.min(100, Math.round((v.executed_ok || 0) / vUser * 100)) : null;
-  let missPct = vUser ? Math.min(100, Math.round((v.parser_miss || 0) / vUser * 100)) : null;
+  const clampPct = (num, den) => den ? Math.max(0, Math.min(100, Math.round((num || 0) / den * 100))) : null;
+  let matchPct = clampPct(v.matched, vUser);
+  let execPct = v.executed_total ? clampPct(v.executed_ok, v.executed_total) : clampPct(v.executed_ok, v.matched);
+  let e2ePct = clampPct(v.executed_ok, vUser);
+  let missPct = clampPct(v.parser_miss, vUser);
   let ambient = (v.ambient_utterances ?? 0) + (v.no_wake ?? 0) + (v.ambient_empty ?? 0);
 
   // Lọc theo phiên bản (Version Filter) nếu người dùng chọn
@@ -2621,8 +2632,8 @@ function renderVoice(o) {
     scopedDevices = new Set(verRows.map((r) => r.device).filter(Boolean)).size;
 
     vUser = scopedN;
-    matchPct = scopedN ? Math.min(100, Math.round(scopedMatched / scopedN * 100)) : null;
-    missPct = scopedN ? Math.min(100, Math.round(scopedMiss / scopedN * 100)) : null;
+    matchPct = clampPct(scopedMatched, scopedN);
+    missPct = clampPct(scopedMiss, scopedN);
     ambient = scopedAmbient + scopedNoWake + scopedEmpty;
   }
 
@@ -2673,7 +2684,7 @@ function renderVoice(o) {
     const n = +r.n || 0, m = +r.matched || 0, e = +r.empty || 0, miss = +r.parser_miss || 0;
     const nw = +r.no_wake || 0, amb = +r.ambient || 0, ptt = +r.ptt || 0;
     const stt = r.stt_p50_ms === null || r.stt_p50_ms === undefined ? null : +r.stt_p50_ms;
-    const rate = n ? Math.round(m / n * 100) : null;
+    const rate = n ? Math.max(0, Math.min(100, Math.round(m / n * 100))) : null;
     const dauHieu = [];
     if (n >= 5 && e >= n * 0.8 && stt !== null && stt <= 5) dauHieu.push("STT chết / model thiếu (bản cũ)");
     if (amb >= n * 0.5) dauHieu.push("KWS 1.1.0 bắn tiếng cabin (ambient)");
@@ -2691,22 +2702,24 @@ function renderVoice(o) {
   // Funnel
   const sttCount = vUser;
   const matchedCount = (selectedVersion && verRows.length > 0) ? scopedMatched : (v.matched || 0);
-  const execOkCount = v.executed_ok || 0;
+  const execOkCount = Math.min(vUser || Infinity, v.executed_ok || 0);
   const speakFailCount = v.speak_failed_total || 0;
   const spokenCount = Math.max(0, execOkCount - speakFailCount);
+  const basePct = vUser > 0 ? "100%" : "—";
+  const spokenPct = vUser ? Math.max(0, Math.min(100, Math.round(spokenCount / vUser * 100))) : null;
 
   $("voiceFunnel").innerHTML = `
     <div class="funnel-step">
       <div class="f-num">${vUser.toLocaleString("vi-VN")}</div>
       <div class="f-lbl">1. Người dùng gọi xe</div>
       <div class="f-sub">Wake word / nút mic vô-lăng / nút mic floater</div>
-      <div class="f-pct"><span>Bắt đầu</span> <span>100%</span></div>
+      <div class="f-pct"><span>Bắt đầu</span> <span>${basePct}</span></div>
     </div>
     <div class="funnel-step">
       <div class="f-num">${sttCount.toLocaleString("vi-VN")}</div>
       <div class="f-lbl">2. STT nghe &amp; ra chữ</div>
       <div class="f-sub">Model AI được huấn luyện riêng</div>
-      <div class="f-pct"><span>Nhận dạng</span> <span>100%</span></div>
+      <div class="f-pct"><span>Nhận dạng</span> <span>${basePct}</span></div>
     </div>
     <div class="funnel-step">
       <div class="f-num">${matchedCount.toLocaleString("vi-VN")}</div>
@@ -2724,7 +2737,7 @@ function renderVoice(o) {
       <div class="f-num">${spokenCount.toLocaleString("vi-VN")}</div>
       <div class="f-lbl">5. Xe đọc phản hồi</div>
       <div class="f-sub">${speakFailCount > 0 ? `⚠ ${speakFailCount} lần hụt voice (bíp)` : "Đọc câu phản hồi thành tiếng"}</div>
-      <div class="f-pct"><span>Trọn vẹn E2E</span> <span>${e2ePct !== null ? e2ePct + "%" : "—"}</span></div>
+      <div class="f-pct"><span>Trọn vẹn E2E</span> <span>${spokenPct !== null ? spokenPct + "%" : "—"}</span></div>
     </div>`;
 
   // Timeline lượt nói theo thời gian
@@ -2784,7 +2797,7 @@ function renderVoice(o) {
 
   // Bảng lệnh nói chi tiết 2 tầng
   $("voiceCmdTable").querySelector("tbody").innerHTML = (o.voice_commands || []).map((vcmd) => {
-    const execRate = vcmd.matched ? Math.round((vcmd.ok_n || 0) / vcmd.matched * 100) : 0;
+    const execRate = vcmd.matched ? Math.max(0, Math.min(100, Math.round((vcmd.ok_n || 0) / vcmd.matched * 100))) : 0;
     const okBadge = vcmd.ok_n > 0 ? `<span class="badge ok">${vcmd.ok_n}</span>` : `<span class="muted">0</span>`;
     const failBadge = vcmd.fail_n > 0 ? `<span class="badge error">${vcmd.fail_n}</span>` : `<span class="muted">0</span>`;
     return `<tr>
@@ -3345,7 +3358,7 @@ function renderAggregates(o) {
         <td class="num">${(+d.events).toLocaleString("vi-VN")}</td>
         <td>${d.last_lat != null && d.last_lon != null
           ? `📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${d.last_lat},${d.last_lon}" title="Mở Google Maps (±${Math.round(d.last_loc_accuracy || 0)} m)">mở bản đồ</a>
-             <div class="muted locaddr" data-lat="${d.last_lat}" data-lon="${d.last_lon}">đang tra địa chỉ…</div>`
+             <div class="muted locaddr" style="cursor:pointer;text-decoration:underline" data-lat="${d.last_lat}" data-lon="${d.last_lon}">tra địa chỉ</div>`
           : `<span class="muted">—</span>`}</td>
         <td class="mono" title="${esc(fmtT(d.last_seen))}">${esc(fmtAgo(d.last_seen))}</td>
         <td class="num" title="${esc(fmtT(d.first_seen))} → ${esc(fmtT(d.last_seen))}">${d.first_seen && d.last_seen
@@ -3372,7 +3385,7 @@ function renderAggregates(o) {
         <td class="num">${(+d.events).toLocaleString("vi-VN")}</td>
         <td>${d.last_lat != null && d.last_lon != null
           ? `📍 <a target="_blank" rel="noopener" href="https://maps.google.com/?q=${d.last_lat},${d.last_lon}" title="Mở Google Maps (±${Math.round(d.last_loc_accuracy || 0)} m)">mở bản đồ</a>
-             <div class="muted locaddr" data-lat="${d.last_lat}" data-lon="${d.last_lon}">đang tra địa chỉ…</div>`
+             <div class="muted locaddr" style="cursor:pointer;text-decoration:underline" data-lat="${d.last_lat}" data-lon="${d.last_lon}">tra địa chỉ</div>`
           : `<span class="muted">—</span>`}</td>
         <td class="mono" title="${esc(fmtT(d.last_seen))}">${esc(fmtAgo(d.last_seen))}</td>
         <td class="num" title="${esc(fmtT(d.first_seen))} → ${esc(fmtT(d.last_seen))}">${d.first_seen && d.last_seen
@@ -3386,6 +3399,12 @@ function renderAggregates(o) {
 
 /* ================= Sự cố Phần cứng, VHAL, Giọng nói & Nghiệp vụ (Domain Errors) ================= */
 let domainErrRows = [];
+// voice_kws_state nào là SỰ CỐ (dùng chung cho tab sự cố + tab giọng nói). init_failed chỉ tính cho bản CŨ (chưa emb5,
+// không model_version); emb5 luôn có model_version và đã báo lỗi nạp bằng wake_model_error — tính cả hai là đếm đôi.
+function kwsStateLaSuCo(p) {
+  const s = p && p.state;
+  return ["download_failed", "model_missing"].includes(s) || (s === "init_failed" && !(p && p.model_version));
+}
 async function loadDomainErrors() {
   const type = $("fDomainErrType")?.value || "";
   const level = $("fDomainErrLevel")?.value || "";
@@ -3393,7 +3412,7 @@ async function loadDomainErrors() {
 
   const DOMAIN_GROUPS = {
     vhal: ["vhal_ensure_connected_failed", "vhal_binder_timeout", "vhal_create_car_failed", "hardware_cmd_blocked", "vhal_command_failed"],
-    voice: ["voice_lenh_bi_nuot", "voice_speak_failed", "voice_upload_failed", "voice_mic_rebuild", "voice_mic_xe_khoa", "kws_decode_error", "stt_decode_native", "voice_kws_state", "model_download"],
+    voice: ["voice_lenh_bi_nuot", "voice_speak_failed", "voice_upload_failed", "voice_mic_rebuild", "voice_mic_xe_khoa", "kws_decode_error", "stt_decode_native", "voice_kws_state", "wake_model_error", "model_download"],
     nav_media: ["nav_route_failed", "media_search_failed"],
     conn: ["connect_failed", "car_connect_failed", "auth_failed", "auth_rejected", "relay_reject", "auth_lockout", "phone_rejected_too_many", "relay_state", "bt_permission_denied", "bt_adapter_disabled", "bt_socket_failed", "conn_high_latency"],
     system: ["watchdog_restart", "watchdog_safe_mode", "main_thread_hang", "app_trim", "app_low_memory", "crash_upload", "license_refresh_denied", "license_grace_warning", "finalizer_watchdog_off_failed", "admin_parked_gate_override", "admin_reboot", "exec_on_main_thread", "update_sig_invalid", "steering_key_flood", "main_looper_recovered", "ac_program_result", "apk_upload_result", "app_update"]
@@ -3425,7 +3444,7 @@ async function loadDomainErrors() {
     const p = e.props || {};
     if (e.event === "ac_program_result" && p.ok !== false) return false;
     if (e.event === "apk_upload_result" && p.ok !== false) return false;
-    if (e.event === "voice_kws_state" && !["download_failed", "init_failed", "model_missing"].includes(p.state)) return false;
+    if (e.event === "voice_kws_state" && !kwsStateLaSuCo(p)) return false;
     if (e.event === "model_download" && !["fail", "stopped"].includes(p.phase) && e.level !== "warning" && e.level !== "error") return false;
     if (e.event === "app_update" && !["download_failed", "install_failed", "sha_mismatch", "signature_mismatch", "flow_error", "sha_missing", "install_backoff"].includes(p.phase) && e.level !== "error" && e.level !== "warning") return false;
     if (e.event === "relay_state" && !["all_endpoints_failed", "join_failed"].includes(p.state) && e.level !== "warning" && e.level !== "error") return false;
@@ -3702,7 +3721,12 @@ async function signVoiceUrl(url) {
   for (const m of markers) { const k = url.indexOf(m); if (k >= 0) { i = k; marker = m; break; } }
   if (i < 0) return url;                       // link ngoài (TTS…) — để nguyên
   let path = url.slice(i + marker.length);
-  path = path.split("?")[0].replace(/^\/+/, "");
+  path = path.split("?")[0].split("#")[0].replace(/^\/+/, "");
+  let decodedPath = path;
+  try { decodedPath = decodeURIComponent(path); } catch (_decErr) { throw new Error("Đường dẫn mẫu giọng nói không hợp lệ."); }
+  if (!decodedPath || decodedPath.includes("..") || decodedPath.includes("\\") || path.includes("..")) {
+    throw new Error("Đường dẫn mẫu giọng nói không hợp lệ.");
+  }
 
   const tok = sessionToken();
   if (!tok) {
@@ -4115,7 +4139,7 @@ async function loadVoiceIssues() {
     media: ["media_search_failed", "media_play_xac_minh"],
     resume: ["audio_focus_resume", "audio_focus_resume_exec"],
     mic: ["voice_mic_rebuild", "voice_mic_xe_khoa"],
-    decode: ["kws_decode_error", "stt_decode_native", "voice_kws_state"],
+    decode: ["kws_decode_error", "stt_decode_native", "voice_kws_state", "wake_model_error"],
     upload: ["voice_upload_failed"],
   };
 
@@ -4137,8 +4161,7 @@ async function loadVoiceIssues() {
   const rows = await api("/rest/v1/telemetry_events?" + q.toString());
   const filtered = rows.filter((e) => {
     if (e.event === "voice_kws_state") {
-      const state = e.props?.state;
-      return ["download_failed", "init_failed", "model_missing"].includes(state);
+      return kwsStateLaSuCo(e.props || {});
     }
     return true;
   });
@@ -4156,6 +4179,7 @@ async function loadVoiceIssues() {
     kws_decode_error: `<span class="badge error">⚡ KWS Decode ✕</span>`,
     stt_decode_native: `<span class="badge error">⚡ STT Native ✕</span>`,
     voice_kws_state: `<span class="badge warning">⚡ KWS Lỗi</span>`,
+    wake_model_error: `<span class="badge error">⚡ Model wake ✕</span>`,
     voice_upload_failed: `<span class="badge error">☁ Lỗi Upload WAV</span>`,
   };
 
@@ -4211,6 +4235,10 @@ async function loadVoiceIssues() {
       detail = `Trạng thái: <b>${esc(p.state || "")}</b> · Model: ${esc(p.model || "")}`;
       resBadge = `<span class="badge error">✕ ${esc(p.state || "")}</span>`;
       reason = esc(p.error || p.reason || "");
+    } else if (e.event === "wake_model_error") {
+      detail = `Không nạp được model wake <b>${esc(p.model_version || "")}</b> — xe KHÔNG thức bằng giọng (nút nói vẫn dùng được)`;
+      resBadge = `<span class="badge error">✕ Không thức bằng giọng</span>`;
+      reason = esc(p.reason || "");
     } else if (e.event === "voice_upload_failed") {
       detail = `Tệp: <b>${esc(p.file || "")}</b>`;
       resBadge = `<span class="badge error">✕ Upload lỗi</span>`;
@@ -4267,7 +4295,7 @@ function renderEvents(rows) {
       <td>${LEVEL_BADGE[e.level] || esc(e.level)}</td>
       <td title="${esc(e.event)}">${esc(evLabel(e.event))} <span class="dot" style="background:${catColor(evCat(e.event))}"></span></td>
       <td title="${esc(eventSummary(e) || "")}">${esc(eventSummary(e)) || `<span class="muted">—</span>`}${voiceBtn}${e.event === "heartbeat" && e.props?.location
-        ? ` <span class="locaddr" data-lat="${+e.props.location.lat}" data-lon="${+e.props.location.lon}">📍 đang tra địa chỉ…</span>`
+        ? ` <span class="locaddr" style="cursor:pointer;text-decoration:underline" data-lat="${+e.props.location.lat}" data-lon="${+e.props.location.lon}">📍 tra địa chỉ</span>`
         : ""}</td>
       <td title="${esc(routeLabel(e.screen) || "")}">${esc(routeLabel(e.screen) || "")}</td>
       <td title="${esc(procLabel(e.process_name) || "")}">${esc(procLabel(e.process_name))}</td>
