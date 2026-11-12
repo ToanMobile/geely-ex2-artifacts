@@ -22,6 +22,15 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.4.1
+
+- ✨ Mới: Wake "Hi Geely" đổi sang kws_v7 (ít nổ nhầm hơn) + clip wake 5 s
+- ✨ Mới: Widget nổi thêm Mở cốp trước (cốp sau tạm ẩn) và cỡ chữ 5 mức
+- 🐛 Sửa lỗi: Khoá cửa báo "chưa rõ" + sạc/ignition đọc mỗi nhịp
+- 🐛 Sửa lỗi: Token sai gửi lặp lại chỉ đếm một lần; QR bỏ khoá một lần mỗi cửa sổ
+- 🐛 Sửa lỗi: QR ghép đôi bỏ khoá đoán token ở mỗi nhịp, ghim lời gọi bằng guard
+- 🐛 Sửa lỗi: Mở QR ghép đôi trên màn xe thì bỏ khoá đoán token
+
 ## CarConnect 1.4.0
 
 - 🐛 Sửa lỗi: Nhiet do ngoai troi dong bo o main, 15 phut mot lan; ghi lai REG-GUARD-03
@@ -89,6 +98,12 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.4.1
+
+- 🐛 Sửa lỗi: Khoá cửa báo "chưa rõ" + sạc/ignition đọc mỗi nhịp
+- 🐛 Sửa lỗi: Thông điệp cuối khi cài CarConnect nói đúng
+- 🐛 Sửa lỗi: Sau cài CarConnect compile speed đúng thứ tự + dialog → bottom sheet
 
 ## PhoneConnect 1.4.0
 

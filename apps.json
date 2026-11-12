@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.3.9",
-    "versionCode": 1309,
+    "latestVersionName": "1.4.1",
+    "versionCode": 1401,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "e2a7dbe9145c5e3bb09bdbae14add3852ec480bca5015ce6752b088ada48021b",
-    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
+    "sha256": "aa9bb0b34a24b16b063f862195c90cd532afc00b8d8f8291633beb1f1bb4200b",
+    "releaseNotes": "- ✨ Mới: Wake \"Hi Geely\" đổi sang kws_v7 (ít nổ nhầm hơn) + clip wake 5 s\n- ✨ Mới: Widget nổi thêm Mở cốp trước (cốp sau tạm ẩn) và cỡ chữ 5 mức\n- 🐛 Sửa lỗi: Khoá cửa báo \"chưa rõ\" + sạc/ignition đọc mỗi nhịp\n- 🐛 Sửa lỗi: Token sai gửi lặp lại chỉ đếm một lần; QR bỏ khoá một lần mỗi cửa sổ\n- 🐛 Sửa lỗi: QR ghép đôi bỏ khoá đoán token ở mỗi nhịp, ghim lời gọi bằng guard\n- 🐛 Sửa lỗi: Mở QR ghép đôi trên màn xe thì bỏ khoá đoán token",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []

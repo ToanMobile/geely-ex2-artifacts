@@ -8,25 +8,29 @@
 
 💬 Nhóm Zalo hỗ trợ / trao đổi: **[zalo.me/g/knl7dndglibpuzclc4vg](https://zalo.me/g/knl7dndglibpuzclc4vg)**
 
+<p align="center">
+  <img src="screenshots/car/car_01_home_overview.png" alt="Car Connect — màn Tổng quan trên màn hình xe" width="100%"><br>
+  <sub>Car Connect trên màn hình giữa Geely EX2 (1920×1080): thanh biểu tượng bên trái, điều hoà và các tiện ích xe ngay trên màn Tổng quan</sub>
+</p>
+
 ---
 
 ## 🌟 Vì sao nên dùng bộ app này?
 
 > **Biến Geely EX2 thành chiếc xe bạn điều khiển được — từ ghế lái, từ điện thoại, từ máy tính.**
 
-- 🎙️ **Nói tiếng Việt là xe nghe** — 121+ lệnh điều khiển + câu hỏi tra cứu bằng giọng nói,
-  nhận dạng **offline** (không cần mạng, không gửi giọng lên server), **đạt 95% đúng lệnh**
-  đo trên 606 lượt nói thật với 3 giọng Bắc – Trung – Nam.
-- 📱 **Điều khiển xe từ điện thoại** — chỉnh điều hoà, khoá/mở cửa, kính, đèn… qua Bluetooth,
-  WiFi hoặc 4G khi xe đang bật (ACC / nổ máy), tiện lợi cho người ngồi ghế sau hoặc lúc đỗ xe nghỉ ngơi.
-- 🧊 **Điều hoà theo lịch & đa bước (AC program)** — tự động hoá chuỗi tác vụ làm mát, làm ấm,
-  chạy ngầm ổn định khi xe hoạt động.
-- 📲 **Cài app cho xe không cần máy tính, không cần ADB** — chọn trong danh mục "Cài nhanh"
-  rồi bấm cài, ngay trên màn xe hoặc từ điện thoại.
-- 📊 **Thông tin xe luôn trước mắt** — pin %, tốc độ, nhiệt độ ngoài trời hiện thẳng trên
-  thanh trạng thái; chế độ lái, đèn viền, độ sáng đèn pha chỉnh trong 1 chạm.
-- 🛟 **Có đường lùi khi lỡ tay** — PCConnect cứu hộ qua ADB, watchdog tự khôi phục khi app
-  lỗi, cập nhật thẳng từ GitHub.
+- 🎙️ **Nói tiếng Việt là xe nghe** — gọi "Hi Geely" rồi ra lệnh; hơn 180 câu lệnh điều khiển,
+  nhận dạng **ngay trên xe** (không cần mạng). Xe đọc lại kết quả bằng giọng nói.
+- 🧭 **Một màn hình, mọi thứ trong 1 chạm** — Tổng quan gom điều hoà, chế độ lái, khoá cửa,
+  Wi-Fi, áp suất lốp, đóng kính, đèn viền và chia màn hình; thanh biểu tượng bên trái mở từng màn chi tiết.
+- 🪟 **Truy cập nhanh nổi trên mọi ứng dụng** — đang mở bản đồ hay video vẫn chỉnh được điều hoà,
+  chế độ lái, âm lượng, độ sáng mà không phải quay về app.
+- 📱 **Điều khiển xe từ điện thoại** — xem pin, quãng đường còn lại, khoá xe, mở cốp, đóng/mở
+  kính, chỉnh điều hoà qua Bluetooth, Wi-Fi hoặc Cloud 4G khi xe đang thức (ACC / nổ máy).
+- 🧊 **Điều hoà theo chương trình** — "Làm mát nhanh", "Làm ấm nhanh", "Thông gió mạnh" chạy
+  một chuỗi bước (nhiệt độ → quạt → gió trong → chờ) chỉ với một nút "Chạy".
+- 📲 **Cài app cho xe không cần máy tính, không cần ADB** — kho "Cài nhanh" chia nhóm Bản đồ,
+  Video & nhạc, Trình duyệt, Tiện ích xe; chọn nhiều app rồi cài một lượt, cập nhật tất cả một lần.
 - 🔒 **An toàn cho xe theo thiết kế** — app **không đụng tới phân vùng `/system`**, không
   cần root, không unlock bootloader: cài vào là dùng, gỡ ra là xe về nguyên trạng.
 - 🔑 **Cần mã kích hoạt để dùng — bộ app này không miễn phí.** Tải file ở dưới rồi
@@ -44,9 +48,10 @@
    - [📱 Phone Connect (Điện thoại)](#-phone-connect--app-điện-thoại-android--ios)
    - [💻 PCConnect (Máy tính)](#-pcconnect--app-máy-tính-macos--windows)
 4. [Sơ đồ kết nối](#-sơ-đồ-kết-nối)
-5. [Cách cài](#-cách-cài)
-6. [Kích hoạt mở thêm gì?](#-kích-hoạt-mở-thêm-gì)
-7. [Báo lỗi / góp ý](#-báo-lỗi--góp-ý)
+5. [Thao tác bị chặn khi xe đang chạy](#️-thao-tác-bị-chặn-khi-xe-đang-chạy)
+6. [Cách cài](#-cách-cài)
+7. [Kích hoạt mở thêm gì?](#-kích-hoạt-mở-thêm-gì)
+8. [Báo lỗi / góp ý](#-báo-lỗi--góp-ý)
 
 ---
 
@@ -54,135 +59,172 @@
 
 | File | Cài ở đâu | Trạng thái | Chức năng tóm tắt |
 |---|---|---|---|
-| `CarConnect.apk` | 🚗 Màn hình xe Geely EX2 (Android 9) | ✅ Chính thức | App chạy trên xe: thông số lên thanh trạng thái, điều khiển xe qua VHAL, điều hoà, giọng nói tiếng Việt, điều khiển từ xa 4G, cài app + cập nhật |
-| `PhoneConnect.apk` | 📱 Điện thoại Android · iOS (qua CMP/TestFlight) | ✅ Chính thức | Điều khiển + xem trạng thái xe từ xa (Bluetooth / WiFi / 4G), điều hoà, cửa & kính, giọng nói, quản lý app trên xe, cài APK không cần ADB |
-| `PCConnect(MacOS).dmg` | 💻 Máy Mac (Apple Silicon & Intel) | ✅ Chính thức | App quản lý trên máy tính: cứu hộ ADB, quét tìm xe subnet /24, cài app XAPK/APKs/OBB cho xe, hệ thống cấp mã |
+| `CarConnect.apk` | 🚗 Màn hình xe Geely EX2 (Android 9) | ✅ Chính thức | App chạy trên xe: điều hoà, chế độ lái, cửa & kính, đèn viền, âm thanh, giọng nói tiếng Việt, chia đôi màn hình, cài app + cập nhật |
+| `PhoneConnect.apk` | 📱 Điện thoại Android | ✅ Chính thức | Xem trạng thái + điều khiển xe (Bluetooth / Wi-Fi / Cloud 4G), điều hoà, cốp & kính, nhật ký hoạt động |
+| `PhoneConnect.ipa` | 📱 iPhone | ✅ Chính thức | Bản iOS của Phone Connect — cùng giao diện và tính năng như bản Android |
+| `PCConnect(MacOS).dmg` | 💻 Máy Mac (Apple Silicon & Intel) | ✅ Chính thức | App quản lý trên máy tính: cứu hộ ADB, quét tìm IP xe, cài app XAPK/APKs/OBB cho xe |
 | `PCConnect(Windows).exe` | 💻 Máy Windows (x64) | ✅ Chính thức | Bản Windows của PCConnect — cùng chức năng như bản macOS |
 
 ---
 
 ## ✨ Giao diện & Tính năng từng app
 
-### 🚗 Car Connect — app trên màn hình xe (Head Unit 1920×1080)
+### 🚗 Car Connect — app trên màn hình xe
 
-Hỗ trợ **2 chế độ giao diện Sáng (Light) & Tối (Dark)** tự động thích ứng hoặc tuỳ chỉnh theo ý muốn:
+Giao diện thiết kế riêng cho màn hình giữa 1920×1080: nút lớn, chữ dễ đọc khi liếc, mục đang bật/đang
+chọn tô đặc màu xanh. Có giao diện **ban ngày và ban đêm** theo giờ của xe.
+Thanh biểu tượng bên trái mở 10 màn: Tổng quan · Trạng thái · Lái xe · Điều hoà · Đèn viền · Cửa & cửa sổ ·
+Giọng nói · Âm thanh · Ứng dụng · Cài nhanh; nút bánh răng góc trên mở Cài đặt.
 
-#### 1. Màn hình Tổng quan (Dashboard & Telemetry)
+#### 1. Tổng quan & Trạng thái
 <p align="center">
-  <img src="screenshots/car_01_overview.png" alt="Car Connect — Tổng quan (Dark)" width="48%">
-  <img src="screenshots/car_01_overview_light.png" alt="Car Connect — Tổng quan (Light)" width="48%"><br>
-  <sub>Màn hình Tổng quan: Pin %, Tốc độ, Khóa trung tâm, Điều hòa, Chế độ lái (Trái: Giao diện Tối · Phải: Giao diện Sáng)</sub>
+  <img src="screenshots/car/car_01_home_overview.png" alt="Car Connect — Tổng quan" width="49%">
+  <img src="screenshots/car/car_02_status_widgets.png" alt="Car Connect — Trạng thái & tiện ích" width="49%"><br>
+  <sub>(Trái) Tổng quan: số đang gài, tốc độ, quãng đường còn đi được, điều hoà và các ô tiện ích · (Phải) Trạng thái: pin, phân bổ năng lượng, Wi-Fi và tiện ích thanh trạng thái</sub>
 </p>
 
-- **Thông số lên thanh trạng thái**: pin % (SOC), tốc độ km/h, nhiệt độ ngoài trời — kèm widget launcher, chỉnh vị trí từng biểu tượng (Rank 1..30).
-- **Chế độ lái & Tái sinh năng lượng**: Eco / Comfort / Sport + mức hồi năng lượng — tự nhớ & khôi phục khi bật màn hình xe.
-- **Đèn viền nội thất**: bật/tắt + lịch hẹn giờ ban đêm (chạy ngầm kể cả sau reboot).
-- **Độ sáng đèn pha**: tự động theo điều kiện ánh sáng ngoài trời và đèn xe.
-- **AVAS**: tắt tiếng bíp cảnh báo người đi bộ an toàn + chỉnh âm lượng loa.
+- **Tổng quan**: số P/R/N/D, tốc độ, km còn đi được + % pin; chỉnh nhiệt độ, quạt, hướng gió, gió trong, sấy kính
+  ngay tại chỗ; ô nhanh cho chế độ lái, tái tạo năng lượng, khoá cửa, Wi-Fi, áp suất lốp, đóng hết kính, đèn viền, chia màn hình.
+- **Thanh trên cùng**: nhiệt độ ngoài trời, trạng thái kết nối điện thoại, đồng hồ, nút **Nghỉ màn hình**, nút mở camera 360.
+- **Trạng thái & tiện ích**: % pin + km còn lại, phân bổ năng lượng (lái xe / điều hoà / khác), nhiệt độ ngoài trời.
+- **Wi-Fi trên xe**: bật/tắt, tự bật khi nổ máy, xem mạng đang nối và **IP cho điện thoại & máy tính**, chọn mạng.
+- **Tiện ích thanh trạng thái**: hiện nhiệt độ và % pin lên thanh trạng thái hoặc thanh điều hướng của xe, chọn thứ tự hiển thị (1–30), có ô xem trước.
 
 ---
 
-#### 2. Trạng thái & Chế độ lái (Driving & Regen)
+#### 2. Lái xe & Điều hoà
 <p align="center">
-  <img src="screenshots/car_02_widgets.png" alt="Trạng thái & Widgets" width="48%">
-  <img src="screenshots/car_03_driving_sport.png" alt="Chế độ lái Sport" width="48%"><br>
-  <sub>(Trái) Trạng thái kết nối Wi-Fi & Cấu hình Widget nổi · (Phải) Chế độ lái Sport thể thao & 3 mức phanh tái sinh</sub>
+  <img src="screenshots/car/car_03_driving_regen.png" alt="Car Connect — Lái xe" width="49%">
+  <img src="screenshots/car/car_04_climate_ac.png" alt="Car Connect — Điều hoà" width="49%"><br>
+  <sub>(Trái) Chế độ lái, tái tạo năng lượng và cảnh báo người đi bộ · (Phải) Điều hoà: vòng nhiệt độ, quạt 7 mức, hướng gió và chương trình nhiều bước</sub>
 </p>
 
-- **Chế độ lái**: Chuyển đổi linh hoạt Eco / Comfort / Sport, điều chỉnh mức hồi năng lượng (Thấp / Trung bình / Cao).
-- **Tự động nhớ & khôi phục**: Tự động phục hồi chế độ lái và mức tái tạo năng lượng sau mỗi lần khởi động xe.
-- **Cấu hình Wi-Fi & Trạng thái**: Tự bật Wi-Fi khi khởi động xe, kiểm tra IP và cấu hình vị trí widget hiển thị.
+- **Chế độ lái**: Tiết kiệm · Thoải mái · Thể thao (mỗi chế độ một màu riêng).
+- **Tái tạo năng lượng**: Thấp · Trung bình · Cao. App **tự khôi phục** chế độ lái và mức tái tạo sau khi bật màn hình.
+- **Cảnh báo người đi bộ (AVAS)**: bật/tắt loa phát âm ra ngoài khi xe chạy chậm.
+- **Điều hoà**: nhiệt độ bước 0,5 °C, quạt 7 mức, Máy lạnh, Gió trong, Chế độ Eco, Sấy kính lái,
+  4 hướng gió (Mặt · Chân · Mặt + chân · Kính + chân) và **Đảo gió tuần hoàn** tự đổi mỗi 90 giây.
+- **Chương trình điều hoà**: Làm mát nhanh, Làm ấm nhanh, Thông gió mạnh — mỗi chương trình là chuỗi bước
+  (ví dụ 18 °C → quạt 7 → gió trong → chờ 300 s); thêm và sửa chương trình ngay trên màn.
 
 ---
 
-#### 3. Đèn viền nội thất & Điều hòa thông minh (HVAC & AC Program)
+#### 3. Đèn viền & Cửa, cửa sổ
 <p align="center">
-  <img src="screenshots/car_04_ambient.png" alt="Đèn viền nội thất & Hẹn giờ" width="48%">
-  <img src="screenshots/car_05_hvac.png" alt="Điều hòa & Lập trình AC" width="48%"><br>
-  <sub>(Trái) Đèn viền nội thất RGB & Lịch hẹn giờ ban đêm · (Phải) Bảng điều khiển Điều hòa & Lập trình chuỗi tác vụ</sub>
+  <img src="screenshots/car/car_05_ambient_light.png" alt="Car Connect — Đèn viền" width="49%">
+  <img src="screenshots/car/car_06_doors_windows.png" alt="Car Connect — Cửa & cửa sổ" width="49%"><br>
+  <sub>(Trái) Đèn viền nội thất với lịch hẹn giờ mỗi ngày · (Phải) Cửa sổ 4 góc nhìn từ nóc xe, khoá trung tâm và cốp</sub>
 </p>
 
-- **Đèn viền nội thất thông minh**: Bật/tắt dải đèn viền táp-lô và 4 cánh cửa, cài đặt lịch hẹn giờ tự động bật lúc 19:00 và tắt lúc 23:30.
-- **Điều hoà ngay trên xe**: A/C, nhiệt độ chính xác ±0.5°C, quạt gió, tuần hoàn gió trong, chế độ nhanh ECO, sấy kính lái.
-- **Tự động chống gió ngoài**: Tắt máy lạnh A/C tự động chuyển sang chế độ gió trong (**Recirculation = ON**).
-- **Lịch trình điều hòa đa bước (AC Program)**: Lập trình chuỗi tác vụ làm mát nhanh, làm ấm, thông gió tự động.
+- **Đèn viền nội thất** (táp-lô và bốn cửa): Tự động · Bật · Tắt; **lịch hẹn giờ mỗi ngày** (ví dụ bật 19:00, tắt 23:30), xem trên thước 24 giờ.
+- **Cửa sổ**: trạng thái từng kính (Trước trái · Trước phải · Sau trái · Sau phải) và nút **Hạ kính** cho từng cửa.
+- **Tự hé kính khi mở cửa**: chọn mức 7 % · 10 % · 20 %; tuỳ chọn **hé kính bên đối diện**.
+- **Khoá trung tâm**, **mở cốp trước** (nhả chốt ca-pô) và **mở khoá cốp sau**.
 
 ---
 
-#### 4. Sơ đồ Cửa/Kính 3D & Trợ lý Giọng nói Tiếng Việt Offline
+#### 4. Giọng nói & Âm thanh
 <p align="center">
-  <img src="screenshots/car_06_doors.png" alt="Sơ đồ cửa sổ 3D" width="48%">
-  <img src="screenshots/car_07_voice.png" alt="Trợ lý giọng nói tiếng Việt Offline" width="48%"><br>
-  <sub>(Trái) Sơ đồ xe 3D điều khiển kính từng góc · (Phải) Trợ lý giọng nói tiếng Việt Offline (121+ câu lệnh)</sub>
+  <img src="screenshots/car/car_07_voice_assistant.png" alt="Car Connect — Giọng nói" width="49%">
+  <img src="screenshots/car/car_08_sound_avas.png" alt="Car Connect — Âm thanh" width="49%"><br>
+  <sub>(Trái) Trợ lý giọng nói tiếng Việt với danh sách câu lệnh tìm được · (Phải) Âm thanh khoá cửa, giai điệu AVAS và chuyển bài bằng vô lăng</sub>
 </p>
 
-- **Sơ đồ xe 3D trực quan**: hiển thị cửa mở và trạng thái hạ kính từng góc (FL, FR, RL, RR), phím nâng/hạ kính và đóng tất cả cửa sổ.
-- **Cửa & kính tự động**: hé kính 20% khi mở cửa, đóng kín khi đóng cửa (tự động khóa an toàn khi xe chạy).
-- **Giọng nói tiếng Việt offline**: 121+ lệnh điều khiển + câu hỏi tra cứu, nhận dạng offline (Model AI được huấn luyện riêng) 95% chính xác, hỗ trợ đủ 3 giọng Bắc – Trung – Nam.
-- **Tùy biến ứng dụng giọng nói**: Gán bản đồ dẫn đường mặc định (VietMap Live / Waze), ứng dụng nghe nhạc mặc định (Spotify / Zing MP3) và đặt địa chỉ nhà để dẫn đường 1-chạm.
+- **Lệnh giọng nói nhận dạng ngay trên xe**: gọi **"Hi Geely"** hoặc bấm nút lớn "Bấm để nói lệnh"; xe đọc lại kết quả bằng giọng nói, chọn được giọng đọc.
+- **Danh sách câu lệnh** (hơn 180 câu) có ô tìm kiếm; sửa câu lệnh trên ứng dụng điện thoại.
+- **Ứng dụng mặc định cho lệnh thoại**: bản đồ (ví dụ VietMap Live), nhạc & video (ví dụ Spotify), địa chỉ nhà.
+- **Mẫu giọng**: tuỳ chọn lưu mẫu giọng để kiểm tra khi nhận sai và gửi mẫu ẩn danh để cải thiện nhận dạng (bạn tự bật/tắt).
+- **Âm thanh khoá cửa**: dùng âm gốc của xe hoặc chép tệp `.wav` từ USB.
+- **AVAS**: chọn 1 trong 3 giai điệu cảnh báo người đi bộ (phát dưới 30 km/h).
+- **Chuyển bài bằng vô lăng**: phím trước/sau cho Spotify, YouTube Music, Bluetooth.
 
 ---
 
-#### 5. Đa nhiệm Ứng dụng & Kho 17 App Cài Nhanh
+#### 5. Ứng dụng, chia đôi màn hình & Cài nhanh
 <p align="center">
-  <img src="screenshots/car_08_apps.png" alt="Ứng dụng & Chia đôi màn hình" width="48%">
-  <img src="screenshots/car_09_quickinstall.png" alt="Danh mục Cài nhanh 17 app" width="48%"><br>
-  <sub>(Trái) Đa nhiệm chia đôi màn hình 1:1 & Cứu hộ PIP · (Phải) Kho 17 ứng dụng Cài nhanh 1-chạm</sub>
+  <img src="screenshots/car/car_09_apps_manager.png" alt="Car Connect — Ứng dụng & chia đôi" width="49%">
+  <img src="screenshots/car/car_10_store_fastinstall.png" alt="Car Connect — Cài nhanh" width="49%"><br>
+  <sub>(Trái) Chọn 2 ứng dụng để chia đôi, cửa sổ nhỏ, bố cục gần nhất · (Phải) Cài nhanh: danh mục theo nhóm, cài nhiều app, cập nhật tất cả</sub>
 </p>
 
-- **Kho 17 Ứng dụng Cài Nhanh (v11)**: VietMap Live, Waze, SmartTube, YouTube Morphe, Spotify, Zalo... tải và cài 1-chạm không cần máy tính hay ADB.
-- **Cứu hộ PIP & Chia đôi màn hình**: Hỗ trợ kéo thả cửa sổ SmartTube PIP không bị liệt cảm ứng, chia đôi màn hình 1:1 cho VietMap Live + YouTube.
-- **Cài đặt & Watchdog chống crash/bootloop**: bảo vệ 3 tiến trình (`:main`, `:core`, `:watchdog`) ổn định 24/7, cập nhật OTA trực tiếp từ GitHub.
+- **Chia đôi màn hình**: chọn app Bên trái / Bên phải, xem trước khung chia; **Mở lại bố cục gần nhất** một chạm (ví dụ VietMap Live + YouTube).
+- **Cửa sổ nhỏ** kéo được và **Đóng tất cả ứng dụng nền** để giải phóng bộ nhớ.
+- **Cài nhanh**: cài từ mạng, cài từ tệp, xem ứng dụng đã cài; lọc theo nhóm (Bản đồ · Video & nhạc · Trình duyệt & tải về · Tiện ích xe · Nền tảng) và tìm theo tên.
+- **Chọn nhiều** rồi cài một lượt, hoặc **Cài tất cả**; app cần MicroG được báo trước và MicroG được cài trước.
+- **Bản cập nhật**: thấy ngay app nào có bản mới (ví dụ SmartTube v31.94 → v32.68), bấm **Cập nhật tất cả**.
+
+---
+
+#### 6. Truy cập nhanh nổi & Điều khiển chia đôi
+<p align="center">
+  <img src="screenshots/car/car_12_widget_noi.png" alt="Car Connect — Truy cập nhanh nổi" width="100%"><br>
+  <sub>Bảng "Truy cập nhanh" nổi trên mọi ứng dụng: điều hoà & quạt gió · chế độ lái, hồi năng lượng, âm lượng & độ sáng · tiện ích xe</sub>
+</p>
+
+<p align="center">
+  <img src="screenshots/car/car_13_widget_split.png" alt="Car Connect — Điều khiển chia đôi" width="49%">
+  <img src="screenshots/car/car_14_widget_split_pill.png" alt="Car Connect — Thanh chia đôi thu gọn" width="49%"><br>
+  <sub>(Trái) Bảng "Điều khiển chia đôi": đổi tỷ lệ, đổi chỗ, đóng cả 2 app · (Phải) Thanh chia đôi thu gọn nằm trên 2 ứng dụng đang chạy</sub>
+</p>
+
+- **Truy cập nhanh** (tab mờ ghim mép trái màn hình): nhiệt độ, quạt Tắt/1–7, hướng gió, A/C, Gió trong/Gió ngoài,
+  sấy kính trước, sấy gương; chế độ lái, mức hồi năng lượng; thanh **âm lượng** và **độ sáng**;
+  tiện ích Tắt màn hình, AVAS, Giọng nói, Điều khiển chia đôi, Đóng tất cả app, Đặt lại màn hình. Nút **Tuỳ chỉnh** để chọn mục hiện.
+- **Điều khiển chia đôi**: tỷ lệ 1:2 · 1:1 · 2:1, đổi app từng bên, **Đổi chỗ** trái/phải, **Đóng cả 2**,
+  giữ một app và cho app còn lại chạy nền. Thu gọn thành thanh nhỏ nằm trên 2 ứng dụng.
+
+---
+
+#### 7. Cài đặt
+<p align="center">
+  <img src="screenshots/car/car_11_settings_system.png" alt="Car Connect — Cài đặt" width="70%"><br>
+  <sub>Cài đặt gom thành 6 nhóm, mỗi nhóm hiện trạng thái ngay trên thẻ</sub>
+</p>
+
+- **Chung** (ngôn ngữ, giao diện tự động) · **Giọng nói** (bật/tắt, danh sách lệnh) · **Màn hình & hệ thống** (nút nổi, nghỉ màn hình, đặt lại)
+  · **Kết nối** (điện thoại, 4G, nhà thông minh) · **Cập nhật** (ứng dụng & giọng nói) · **Bản quyền & Thiết bị** (kích hoạt, mã máy).
 
 ---
 
 ### 📱 Phone Connect — app điện thoại (Android · iOS)
 
-Hỗ trợ **giao diện Sáng (Light) & Tối (Dark)** đồng bộ hoàn hảo:
+Cùng phong cách với app trên xe, có giao diện Tự động · Sáng · Tối. Năm tab: **Tổng quan · Điều khiển · Điều hoà · Nhật ký · Cài đặt**.
 
 <p align="center">
-  <img src="screenshots/phone_01_overview.png" alt="Tổng quan (Dark)" width="19%">
-  <img src="screenshots/phone_02_controls.png" alt="Điều khiển (Dark)" width="19%">
-  <img src="screenshots/phone_03_climate.png" alt="Điều hòa (Dark)" width="19%">
-  <img src="screenshots/phone_04_history.png" alt="Nhật ký (Dark)" width="19%">
-  <img src="screenshots/phone_05_settings.png" alt="Cài đặt (Dark)" width="19%"><br>
-  <sub>5 Tab trên PhoneConnect (Giao diện Tối): Tổng quan · Điều khiển · Điều hoà · Nhật ký · Cài đặt</sub>
+  <img src="screenshots/phone/phone_01_home_overview.png" alt="Phone Connect — Tổng quan" width="19%">
+  <img src="screenshots/phone/phone_02_control.png" alt="Phone Connect — Điều khiển" width="19%">
+  <img src="screenshots/phone/phone_03_climate.png" alt="Phone Connect — Điều hoà" width="19%">
+  <img src="screenshots/phone/phone_04_history.png" alt="Phone Connect — Nhật ký" width="19%">
+  <img src="screenshots/phone/phone_05_settings.png" alt="Phone Connect — Cài đặt" width="19%"><br>
+  <sub>Tổng quan · Điều khiển · Điều hoà · Nhật ký · Cài đặt</sub>
 </p>
 
-<p align="center">
-  <img src="screenshots/phone_01_overview_light.png" alt="Tổng quan (Light)" width="19%">
-  <img src="screenshots/phone_02_controls_light.png" alt="Điều khiển (Light)" width="19%">
-  <img src="screenshots/phone_03_climate_light.png" alt="Điều hòa (Light)" width="19%">
-  <img src="screenshots/phone_04_history_light.png" alt="Nhật ký (Light)" width="19%">
-  <img src="screenshots/phone_05_settings_light.png" alt="Cài đặt (Light)" width="19%"><br>
-  <sub>5 Tab trên PhoneConnect (Giao diện Sáng): Tổng quan · Điều khiển · Điều hoà · Nhật ký · Cài đặt</sub>
-</p>
-
-- **5 tab chính**: **Tổng quan · Điều khiển · Điều hoà · Nhật ký · Cài đặt** — hỗ trợ cả Android và iOS (Compose Multiplatform).
-- **3 cách kết nối xe**: Bluetooth SPP / WiFi cùng mạng (TCP `:44700`) / Cloud Relay (4G) — tự dò xe, tự reconnect, chạy nền.
-- **Tổng quan**: tốc độ + pin %, chế độ lái, nhiệt độ ngoài trời, gear, odometer, quãng đường còn đi được, khoá/mở nhanh.
-- **Điều khiển xe từ điện thoại**: khoá/mở cửa, kính từng cửa (% mở từng bánh FL/FR/RL/RR), đèn viền, WiFi xe.
-- **Điều hoà thông minh**: A/C, nhiệt độ ±0.5°C, quạt gió, tuần hoàn gió trong, chạy các chương trình điều hòa tự động đa bước.
-- **Nhật ký hoạt động (Audit Log & Telemetry)**: Lưu trữ và theo dõi toàn bộ lịch sử gửi/nhận lệnh điều khiển, trạng thái kết nối xe (Bluetooth/WiFi/Cloud), thống kê thành công/lỗi, lọc theo danh mục và sao chép log nhanh.
-- **Giọng nói**: xem/sửa lệnh thoại theo nhóm, đổi câu đánh thức (wake word), đồng bộ 2 chiều với xe.
-- **Cài APK lên xe không cần ADB**: đẩy file APK từ điện thoại lên xe qua HTTP `:8876`.
-- **Đồng bộ cài đặt xe**: rank widget thanh trạng thái, hé kính tự động từng cửa, khôi phục chế độ lái/regen, đổi cổng mạng.
+- **Tổng quan**: trạng thái kết nối, kênh đang dùng, khoá cửa; pin %, km còn lại, tổng ODO; lối tắt
+  **Mở khoá và bật điều hoà từ xa** (xe lên điện và tự bật điều hoà, luôn hỏi lại trước khi đề nổ); chi tiết lái xe, tổng quãng đường, vị trí đỗ xe.
+- **Điều khiển**: trạng thái khoá và nút **Khoá xe** (mở khoá vẫn dùng chìa khoá); mở chốt **cốp trước**, mở khoá **cốp sau**;
+  mở/đóng cửa sổ và xem từng kính.
+- **Điều hoà**: nhiệt độ, quạt 7 mức, bật/tắt máy lạnh (trạng thái đọc trực tiếp từ xe), 4 hướng gió, chạy chương trình điều hoà.
+- **Nhật ký**: tổng thao tác, thành công, cần chú ý; tìm kiếm, lọc theo nhóm (Lệnh điều khiển, Kết nối…), **Xuất CSV**, xoá nhật ký.
+- **Cài đặt**: giao diện Tự động/Sáng/Tối; kênh kết nối **Bluetooth · Wi-Fi · Cloud 4G**; **tự động kết nối chạy nền**
+  (tự dừng khi xe im lặng 10 phút); **Quét tìm xe** trong cùng mạng Wi-Fi hoặc hotspot.
+- **Trang con** (nút lưới góc trên): Lái xe · Ứng dụng · Hành trình · Lịch & chương trình điều hoà · **Kho ứng dụng**
+  (cài app lên xe không cần máy tính) · Bảo trì · Cài đặt xe · Câu lệnh giọng nói · Nhạc & Hình nền xe.
 
 > [!IMPORTANT]
 > **💡 ĐIỀU KIỆN ĐIỀU KHIỂN TỪ ĐIỆN THOẠI — XE PHẢI ĐANG THỨC:**
-> Ứng dụng PhoneConnect giao tiếp trực tiếp với CarConnect chạy trên màn hình xe (IHU629G). Do đó, **xe cần đang thức (bật nguồn ACC, nổ máy hoặc màn hình xe đang bật)** để nhận lệnh. Khi xe tắt máy khóa kín và ngủ sâu (deep sleep), hệ thống đầu xe ngắt điện nên sẽ không nhận được lệnh điều khiển.
+> Phone Connect nói chuyện trực tiếp với Car Connect trên màn hình xe. Vì vậy **xe cần đang thức (bật ACC, nổ máy hoặc
+> màn hình xe đang bật)** để nhận lệnh. Khi xe tắt máy, khoá kín và ngủ sâu, đầu xe ngắt điện nên không nhận được lệnh.
 
 ---
 
 ### 💻 PCConnect — app máy tính (macOS / Windows)
 
-- **Quét tìm xe tự động (Network Scan)**: quét dải mạng subnet /24 tìm IP màn hình xe qua cổng `:44700` chỉ trong 3 giây.
+- **Quét tìm xe (Network Scan)**: quét dải mạng /24 để tìm IP màn hình xe — chỉ dùng để tìm xe, PCConnect không gửi lệnh điều khiển xe.
 - **Cứu hộ qua ADB**: hướng dẫn mở khoá, tự tính mã kỹ thuật theo giờ, kiểm tra kết nối — adb nhúng sẵn trong app.
 - **Tab ⚡ Cài nhanh**: bấm 1 nút là tải + cài (SmartTube, Waze, VietMap…) — hỗ trợ link GitHub / Google Drive / tải trực tiếp.
-- **Cài từ file / folder**: kéo-thả APK, XAPK, APKs, tự động trích xuất thư mục đồ họa OBB vào đúng `/sdcard/Android/obb/`.
-- **Quản lý package trên xe**: ẩn/hiện app (không mất dữ liệu), gỡ cài đặt app hệ thống an toàn.
-- **Công cụ thiết bị**: chia màn hình 2 app, gỡ kẹt PIP (chuyển pinned stack về fullscreen), chạy lệnh shell tuỳ ý.
-- **Hệ thống cấp mã kích hoạt (Supabase)**: tạo mã license, quản lý người dùng, xử lý offline grace-period.
+- **Cài từ file / folder**: kéo-thả APK, XAPK, APKs, tự đưa thư mục OBB vào đúng `/sdcard/Android/obb/`.
+- **Quản lý package trên xe**: ẩn/hiện app (không mất dữ liệu), gỡ cài đặt app.
+- **Công cụ thiết bị**: chia màn hình 2 app, gỡ kẹt cửa sổ nhỏ (PIP), chạy lệnh shell.
 
 ---
 
@@ -191,78 +233,70 @@ Hỗ trợ **giao diện Sáng (Light) & Tối (Dark)** đồng bộ hoàn hảo
 ```mermaid
 flowchart TD
     subgraph DEVICES["📱 💻 THIẾT BỊ CỦA BẠN"]
-        PHONE["📱 <b>Phone Connect</b><br><i>(Điện thoại Android & iPhone)</i><br>• Xem pin %, tốc độ, chế độ lái, nhiệt độ<br>• Điều khiển điều hòa, khóa cửa, hạ kính khi xe thức<br>• Cài ứng dụng lên xe không cần máy tính"]
-        PC["💻 <b>PCConnect</b><br><i>(Máy tính macOS & Windows)</i><br>• Cài nhanh VietMap Live, YouTube, Waze...<br>• Cứu hộ & Gỡ lỗi hiển thị màn hình xe<br>• Quản trị và kích hoạt tính năng"]
+        PHONE["📱 <b>Phone Connect</b><br><i>(Điện thoại Android & iPhone)</i><br>• Xem pin %, km còn lại, trạng thái khoá<br>• Điều hoà, khoá xe, cốp, cửa sổ khi xe thức<br>• Nhật ký hoạt động"]
+        PC["💻 <b>PCConnect</b><br><i>(Máy tính macOS & Windows)</i><br>• Cài nhanh VietMap Live, YouTube, Waze...<br>• Cứu hộ màn hình xe qua ADB<br>• Quản lý ứng dụng trên xe"]
     end
 
     subgraph CAR["🚗 HỆ THỐNG XE GEELY EX2"]
-        CAR_APP["⚡ <b>Car Connect</b><br><i>(Ứng dụng trung tâm trên màn hình xe)</i><br>• Trợ lý giọng nói Tiếng Việt offline (95% chính xác)<br>• Hiện pin %, tốc độ lên thanh trạng thái<br>• Chia đôi màn hình & Chống kẹt video nổi"]
-        
-        VEHICLE["🏎️ <b>Chiếc xe Geely EX2 của bạn</b><br>• Hệ thống Điều hòa & Lập trình chuỗi tác vụ<br>• Đèn viền nội thất, Chế độ lái & Phanh tái sinh<br>• Cửa sổ & Hệ thống khóa an toàn"]
+        CAR_APP["⚡ <b>Car Connect</b><br><i>(Ứng dụng trung tâm trên màn hình xe)</i><br>• Trợ lý giọng nói tiếng Việt, nhận dạng trên xe<br>• Truy cập nhanh nổi trên mọi ứng dụng<br>• Chia đôi màn hình & Cài nhanh"]
+        VEHICLE["🏎️ <b>Chiếc xe Geely EX2 của bạn</b><br>• Điều hoà & chương trình nhiều bước<br>• Đèn viền, chế độ lái & tái tạo năng lượng<br>• Cửa sổ, khoá trung tâm, cốp"]
     end
 
-    PHONE ==>|"① Điều khiển & Xem trạng thái (Bluetooth / Wi-Fi / 4G khi xe thức)"| CAR_APP
-    PHONE -.->|"② Truyền file ứng dụng để cài đặt"| CAR_APP
-    PC ==>|"③ Cài đặt ứng dụng & Cứu hộ (Wi-Fi / Cáp USB)"| CAR_APP
+    PHONE ==>|"① Điều khiển & xem trạng thái (Bluetooth / Wi-Fi / Cloud 4G khi xe thức)"| CAR_APP
+    PHONE -.->|"② Gửi file ứng dụng để cài"| CAR_APP
+    PC ==>|"③ Cài ứng dụng & cứu hộ (Wi-Fi / cáp USB)"| CAR_APP
 
-    CAR_APP <==>|"Đọc thông số & Điều khiển xe trực tiếp"| VEHICLE
+    CAR_APP <==>|"Đọc thông số & điều khiển xe"| VEHICLE
 
-    classDef clientStyle fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
-    classDef appStyle fill:#0f172a,stroke:#22c55e,stroke-width:2px,color:#f8fafc;
-    classDef carStyle fill:#18181b,stroke:#f59e0b,stroke-width:2px,color:#f8fafc;
+    classDef clientStyle fill:#FFFFFF,stroke:#1C5BD0,stroke-width:2px,color:#111720;
+    classDef appStyle fill:#1C5BD0,stroke:#1C5BD0,stroke-width:2px,color:#FFFFFF;
+    classDef carStyle fill:#EDF0F5,stroke:#4A5466,stroke-width:2px,color:#111720;
 
     class PHONE,PC clientStyle;
     class CAR_APP appStyle;
     class VEHICLE carStyle;
 ```
 
-### 📋 Các cách kết nối & Sử dụng:
+### 📋 Các cách kết nối & sử dụng
 
-| Kênh kết nối | Phương thức | Mục đích sử dụng cho người dùng |
+| Kênh kết nối | Phương thức | Mục đích sử dụng |
 |---|---|---|
-| **Điều khiển & Giám sát xe** | `Bluetooth` · `Wi-Fi` · `4G trực tuyến` | Xem mức pin %, tốc độ, điều chỉnh điều hòa, mở/khóa cửa và hạ kính thuận tiện ngay từ điện thoại khi xe đang bật (ACC / nổ máy). |
-| **Cài ứng dụng từ điện thoại** | `Wi-Fi nội bộ` | Chọn và gửi file ứng dụng trực tiếp từ điện thoại lên màn hình xe để cài đặt ngay lập tức. |
-| **Cài ứng dụng & Cứu hộ từ máy tính** | `Wi-Fi` · `Cáp USB` | Cài đặt ứng dụng trọn gói (VietMap Live, YouTube, Spotify...), cứu hộ màn hình và quản lý hệ thống. |
+| **Điều khiển & giám sát xe** | `Bluetooth` · `Wi-Fi` · `Cloud 4G` | Xem pin %, km còn lại, chỉnh điều hoà, khoá xe, mở cốp, đóng/mở kính từ điện thoại khi xe đang bật (ACC / nổ máy). |
+| **Cài ứng dụng từ điện thoại** | `Wi-Fi nội bộ` | Gửi file ứng dụng từ điện thoại lên màn hình xe để cài ngay. |
+| **Cài ứng dụng & cứu hộ từ máy tính** | `Wi-Fi` · `Cáp USB` | Cài ứng dụng trọn gói (VietMap Live, YouTube, Spotify...), cứu hộ màn hình và quản lý ứng dụng. |
 
 ---
 
-## 🛡️ Cổng Chặn An Toàn & Thông Báo Người Dùng
+## 🛡️ Thao tác bị chặn khi xe đang chạy
 
-Hệ thống tích hợp sẵn các cơ chế bảo vệ an toàn chủ động khi xe đang lưu thông trên đường. Mọi thao tác bị chặn đều được **thông báo bằng tiếng Việt rõ ràng** trên màn hình xe hoặc điện thoại:
+Lệnh bấm tay và lệnh giọng nói **không hỏi xác nhận chỉ vì xe đang chạy**. Xe chỉ hỏi lại khi **nghe chưa rõ** câu lệnh.
+Một số thao tác vẫn bị chặn khi xe đang chạy, và app báo lý do bằng tiếng Việt:
 
-| Tình huống chặn / Xác nhận an toàn | Nguyên nhân an toàn | Phản hồi tới người dùng (Điện thoại / Màn hình xe) |
-|---|---|---|
-| **Kính / Khóa cửa khi xe đang chạy** | Vận tốc $>3\text{ km/h}$ hoặc Cần số $\ne$ P | 📱 Hiện thông báo: *"Thao tác này chỉ dùng khi xe đang đỗ an toàn"*<br>🎙️ Trợ lý xe hỏi lại: *"Bạn có chắc muốn thực hiện khi xe đang chạy không?"* $\rightarrow$ Người lái nói *"Đồng ý"* là xe thực hiện ngay. |
-| **Chế độ lái khi xe đang chạy** *(Eco / Comfort / Sport)* | Thay đổi độ nhạy chân ga / công suất động cơ khi đang lăn bánh | 📱 Chuyển chế độ mượt mà từ điện thoại.<br>🎙️ Trợ lý giọng nói hỏi xác nhận: *"Bạn có chắc muốn chuyển sang chế độ [Sport/Eco/Comfort] khi xe đang chạy không?"* $\rightarrow$ Nói *"Đồng ý"* là xe đổi ngay. |
-| **Phanh tái sinh khi xe đang chạy** *(Hồi năng lượng 1/2/3)* | Thay đổi độ ghì phanh khi nhả chân ga | 📱 Chuyển mức phanh tái sinh từ điện thoại.<br>🎙️ Trợ lý giọng nói hỏi xác nhận: *"Bạn có chắc muốn đổi mức phanh tái sinh khi xe đang chạy không?"* $\rightarrow$ Nói *"Đồng ý"* là xe đổi ngay. |
-| **Cài đặt ứng dụng khi xe đang chạy** | Vận tốc $\ge 3\text{ km/h}$ | 📱 Hiện thông báo: *"Xe đang di chuyển — chỉ cài đặt ứng dụng khi xe đã dừng/đỗ"* |
-| **Bố cục chia 3 ứng dụng** | Chia 3 app cùng lúc | 📱 / 🖥️ Hiện thông báo: *"Bố cục 3 ứng dụng chỉ khả dụng khi xe đang đỗ an toàn"* *(Chia đôi 2 app vẫn hoạt động bình thường)* |
-| **Điều khiển khi xe tắt máy & ngủ sâu** | Đầu xe ngắt điện khi tắt máy | 📱 Hiện thông báo: *"Xe đang ngủ · mở ACC hoặc nổ máy để nhận lệnh"* |
-| **Sai mã kết nối bảo mật** | Mã bảo mật không khớp | 📱 Hiện thông báo: *"Sai token bảo mật · sửa ở Cài đặt → Kết nối"* |
-| **Mất kết nối với xe** | Mất sóng / Ngắt mạng | 📱 Hiện thông báo: *"Chưa kết nối với xe · kiểm tra Wi-Fi, Bluetooth hoặc Cloud"* |
-
-> [!NOTE]
-> **💡 LƯU Ý VỀ CƠ CHẾ XÁC NHẬN AN TOÀN 2 BƯỚC (TÍNH NĂNG BẢO VỆ CHỦ ĐỘNG — KHÔNG PHẢI LỖI):**
-> Khi xe đang lăn bánh trên đường ($> 3\text{ km/h}$), hệ thống **bắt buộc yêu cầu xác nhận 2 bước** đối với 3 nhóm thao tác phần cứng nhạy cảm: **Hạ kính**, **Chuyển chế độ lái (Driving Mode)** và **Mức phanh tái sinh (Regen Level)**.
-> - **Mục đích thiết kế**: Bảo vệ tối đa cho người lái, ngăn ngừa triệt để tình huống nhận diện nhầm tiếng ồn hoặc thao tác vô ý làm thay đổi đột ngột chân ga, lực phanh ghì hay gió lốc tạt vào cabin khi đang chạy tốc độ cao.
-> - **Cách thao tác**: Khi nghe trợ lý xe hỏi lại (*"Bạn có chắc muốn thực hiện khi xe đang chạy không?"*), bạn chỉ cần nói tự nhiên: **"Đồng ý"** hoặc **"Đúng"** $\rightarrow$ Xe sẽ thực thi lệnh ngay lập tức!
+| Thao tác | Khi nào bị chặn |
+|---|---|
+| **Mở cốp trước / mở khoá cốp sau** | Khi xe đang chạy |
+| **Cảnh nghỉ trưa** | Khi xe đang chạy |
+| **Cốp sau điện, gập gương** *(chỉ xe có lắp, bật trong Cài đặt)* | Khi xe đang chạy |
+| **Chia đôi màn hình** | Khi hệ thống cửa sổ của xe chưa sẵn sàng (không phụ thuộc tốc độ) |
+| **Điều khiển từ điện thoại khi xe ngủ sâu** | Đầu xe đã ngắt điện — mở ACC hoặc nổ máy để nhận lệnh |
 
 ---
 
-## 🔒 Cam Kết An Toàn Tuyệt Đối — Không Can Thiệp Hệ Thống Gốc
+## 🔒 Cam kết an toàn — không can thiệp hệ thống gốc
 
-Hệ thống ứng dụng được thiết kế theo tiêu chuẩn **Zero-System-Impact (Hoàn toàn không can thiệp sâu / Không xâm lấn hệ thống)**:
-
-- 🛡️ **Tuyệt đối KHÔNG đụng / can thiệp phân vùng `/system`**: Không can thiệp root, không remount, không ghi đè bất kỳ file nào vào hệ điều hành gốc của xe. Giữ nguyên 100% cơ chế bảo mật và bảo hành của nhà sản xuất.
-- 🚗 **KHÔNG can thiệp hệ thống điều khiển lái / ECU chuyên sâu**: Ứng dụng chỉ giao tiếp qua cổng API tiện ích tiêu chuẩn của Android Automotive (VHAL) để đọc thông số hiển thị (pin %, tốc độ, nhiệt độ) và điều khiển các tiện nghi (điều hòa, nâng/hạ kính, đèn viền, âm lượng).
-- 🔄 **An toàn tuyệt đối — Gỡ bỏ là sạch 100%**: Ứng dụng hoạt động độc lập như một app Android thông thường. Nếu có bất kỳ lỗi nào hoặc khi không muốn dùng nữa, **bạn chỉ cần gỡ app (Uninstall) là xe lập tức trở về trạng thái nguyên bản 100% của nhà máy** mà không để lại bất kỳ ảnh hưởng nào!
+- 🛡️ **KHÔNG đụng phân vùng `/system`**: không root, không remount, không ghi đè file nào của hệ điều hành xe.
+- 🚗 **KHÔNG can thiệp ECU chuyên sâu**: app chỉ dùng cổng API tiêu chuẩn của Android Automotive (VHAL) để đọc thông số
+  (pin %, tốc độ, nhiệt độ) và điều khiển tiện nghi (điều hoà, kính, đèn viền, âm lượng).
+- 🔄 **Gỡ là sạch**: app chạy như một app Android thông thường. Khi không muốn dùng nữa, **gỡ app (Uninstall)** là xe về
+  trạng thái như lúc chưa cài.
 
 ---
 
 ## 🛠 Cách cài
 
 - **Lên xe (Car Connect):** dùng PCConnect trên máy tính (mục Cài nhanh / Cài app) cài `CarConnect.apk`.
-- **Lên điện thoại (Phone Connect):** tải `PhoneConnect.apk`, cho phép cài từ nguồn không rõ (Cài đặt → Bảo mật), cài như APK thường. Mở app → chọn transport Bluetooth / WiFi / Cloud để kết nối xe.
+- **Lên điện thoại Android (Phone Connect):** tải `PhoneConnect.apk`, cho phép cài từ nguồn không rõ (Cài đặt → Bảo mật), cài như APK thường.
+  Mở app → **Cài đặt → Kết nối** chọn Bluetooth / Wi-Fi / Cloud 4G, hoặc bấm **Quét tìm xe**.
 - **Trên máy tính (PCConnect):** tải `.dmg` (Mac) hoặc `.exe` (Windows) → mở app → trình duyệt tự mở `http://localhost:8848` → dùng được ngay; muốn thêm tính năng thì **kích hoạt mã**.
 
 ---
