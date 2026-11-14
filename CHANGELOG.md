@@ -22,6 +22,14 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.4.2
+
+- ✨ Mới: Model ASR voice_v9 (ft8a_w75) + R1 + R3' — đời 2, ghim sha256, nâng cấp xe đã cài (KHÔNG merge trước publish)
+- ✨ Mới: Nút X huỷ lượt nghe trên popup voice
+- 🐛 Sửa lỗi: Clip wake +1 s sau lúc nổ, telemetry nguồn âm/bước nổ, test gác chống tự kích
+- 🐛 Sửa lỗi: Giọng nói hiểu câu hỏi trần "quãng đường đi được" sau wake
+- 🐛 Sửa lỗi: Giọng nói nhận "bật/tắt rời xe" và "bật/tắt đổ đèo"
+
 ## CarConnect 1.4.1
 
 - ✨ Mới: Wake "Hi Geely" đổi sang kws_v7 (ít nổ nhầm hơn) + clip wake 5 s

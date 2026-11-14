@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.4.1",
-    "versionCode": 1401,
+    "latestVersionName": "1.4.2",
+    "versionCode": 1402,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "aa9bb0b34a24b16b063f862195c90cd532afc00b8d8f8291633beb1f1bb4200b",
-    "releaseNotes": "- ✨ Mới: Wake \"Hi Geely\" đổi sang kws_v7 (ít nổ nhầm hơn) + clip wake 5 s\n- ✨ Mới: Widget nổi thêm Mở cốp trước (cốp sau tạm ẩn) và cỡ chữ 5 mức\n- 🐛 Sửa lỗi: Khoá cửa báo \"chưa rõ\" + sạc/ignition đọc mỗi nhịp\n- 🐛 Sửa lỗi: Token sai gửi lặp lại chỉ đếm một lần; QR bỏ khoá một lần mỗi cửa sổ\n- 🐛 Sửa lỗi: QR ghép đôi bỏ khoá đoán token ở mỗi nhịp, ghim lời gọi bằng guard\n- 🐛 Sửa lỗi: Mở QR ghép đôi trên màn xe thì bỏ khoá đoán token",
+    "sha256": "104c8d04116fa940dc49fdf1453528f980f7690073401173ef93ad9b656282a0",
+    "releaseNotes": "- ✨ Mới: Model ASR voice_v9 (ft8a_w75) + R1 + R3' — đời 2, ghim sha256, nâng cấp xe đã cài (KHÔNG merge trước publish)\n- ✨ Mới: Nút X huỷ lượt nghe trên popup voice\n- 🐛 Sửa lỗi: Clip wake +1 s sau lúc nổ, telemetry nguồn âm/bước nổ, test gác chống tự kích\n- 🐛 Sửa lỗi: Giọng nói hiểu câu hỏi trần \"quãng đường đi được\" sau wake\n- 🐛 Sửa lỗi: Giọng nói nhận \"bật/tắt rời xe\" và \"bật/tắt đổ đèo\"",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
