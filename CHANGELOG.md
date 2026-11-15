@@ -22,6 +22,15 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.4.3
+
+- ✨ Mới: Gom 15/11 — wake kws_v12 r4 + voice sau #390 + no_speech sau đoạn bỏ (CHƯA ĐO TRÊN XE)
+- ✨ Mới: Voice im lặng thì popup báo lý do theo ngữ cảnh + sửa review sau #389
+- ✨ Mới: Cỡ chữ toàn app ở Cài đặt → Chung
+- ✨ Mới: Nút voice vô-lăng là công tắc — popup đang hiện thì bấm tắt như nút X
+- 🐛 Sửa lỗi: Voice bấm mic im 2 s thì tắt im; sai lệnh chỉ ghi "Không đúng lệnh" rồi tắt liền
+- 🐛 Sửa lỗi: Telemetry ghi lý do xác minh màn dẫn đường Google Maps hỏng
+
 ## CarConnect 1.4.2
 
 - ✨ Mới: Model ASR voice_v9 (ft8a_w75) + R1 + R3' — đời 2, ghim sha256, nâng cấp xe đã cài (KHÔNG merge trước publish)
@@ -106,6 +115,10 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.4.3
+
+- 🔄 Cải tiến nhỏ và tăng độ ổn định.
 
 ## PhoneConnect 1.4.1
 

@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.4.2",
-    "versionCode": 1402,
+    "latestVersionName": "1.4.3",
+    "versionCode": 1403,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "104c8d04116fa940dc49fdf1453528f980f7690073401173ef93ad9b656282a0",
-    "releaseNotes": "- ✨ Mới: Model ASR voice_v9 (ft8a_w75) + R1 + R3' — đời 2, ghim sha256, nâng cấp xe đã cài (KHÔNG merge trước publish)\n- ✨ Mới: Nút X huỷ lượt nghe trên popup voice\n- 🐛 Sửa lỗi: Clip wake +1 s sau lúc nổ, telemetry nguồn âm/bước nổ, test gác chống tự kích\n- 🐛 Sửa lỗi: Giọng nói hiểu câu hỏi trần \"quãng đường đi được\" sau wake\n- 🐛 Sửa lỗi: Giọng nói nhận \"bật/tắt rời xe\" và \"bật/tắt đổ đèo\"",
+    "sha256": "d968fc79d49c0b0f6bc07cdc6261205a973eab623c0a75878d197a9f182c328e",
+    "releaseNotes": "- ✨ Mới: Gom 15/11 — wake kws_v12 r4 + voice sau #390 + no_speech sau đoạn bỏ (CHƯA ĐO TRÊN XE)\n- ✨ Mới: Voice im lặng thì popup báo lý do theo ngữ cảnh + sửa review sau #389\n- ✨ Mới: Cỡ chữ toàn app ở Cài đặt → Chung\n- ✨ Mới: Nút voice vô-lăng là công tắc — popup đang hiện thì bấm tắt như nút X\n- 🐛 Sửa lỗi: Voice bấm mic im 2 s thì tắt im; sai lệnh chỉ ghi \"Không đúng lệnh\" rồi tắt liền\n- 🐛 Sửa lỗi: Telemetry ghi lý do xác minh màn dẫn đường Google Maps hỏng",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
