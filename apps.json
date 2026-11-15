@@ -42,11 +42,11 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.4.1",
-    "versionCode": 1401,
+    "latestVersionName": "1.4.3",
+    "versionCode": 1403,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "cf3d0294f0ce61a4d9a0e1e3209719b0f2136ff8b23d529835a68c9e7d32e3a8",
-    "releaseNotes": "- 🐛 Sửa lỗi: Khoá cửa báo \"chưa rõ\" + sạc/ignition đọc mỗi nhịp\n- 🐛 Sửa lỗi: Thông điệp cuối khi cài CarConnect nói đúng\n- 🐛 Sửa lỗi: Sau cài CarConnect compile speed đúng thứ tự + dialog → bottom sheet",
+    "sha256": "639ec95597d4fce34509a6f4205dbceb307f7a374fd1dd61c99d2d3dbf96dae7",
+    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "minVersionCode": 0,
     "forceRules": []
   },
