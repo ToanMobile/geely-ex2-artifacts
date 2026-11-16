@@ -1,18 +1,18 @@
 {
   "type": "update_check",
-  "latestVersionName": "1.4.0",
-  "versionCode": 1400,
+  "latestVersionName": "1.4.5",
+  "versionCode": 1405,
   "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-  "sha256": "e525096d643ddf63a187230e8ac872d335fd8fce1f8f0883e3408aa5e444211c",
-  "releaseNotes": "- 🐛 Sửa lỗi: Nhiet do ngoai troi dong bo o main, 15 phut mot lan; ghi lai REG-GUARD-03\n- 🐛 Sửa lỗi: Nạp speed sau tự biên dịch, giảm tải vẽ Cài nhanh, bỏ cổng số P khi cài",
+  "sha256": "cadb5bc8110c5a22790baaf5631cd4b891be02ee198eca4f85468dfb4360364e",
+  "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
   "channel": "stable",
   "car": {
     "type": "update_check",
-    "latestVersionName": "1.4.0",
-    "versionCode": 1400,
+    "latestVersionName": "1.4.5",
+    "versionCode": 1405,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-    "sha256": "e525096d643ddf63a187230e8ac872d335fd8fce1f8f0883e3408aa5e444211c",
-    "releaseNotes": "- 🐛 Sửa lỗi: Nhiet do ngoai troi dong bo o main, 15 phut mot lan; ghi lai REG-GUARD-03\n- 🐛 Sửa lỗi: Nạp speed sau tự biên dịch, giảm tải vẽ Cài nhanh, bỏ cổng số P khi cài",
+    "sha256": "cadb5bc8110c5a22790baaf5631cd4b891be02ee198eca4f85468dfb4360364e",
+    "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "channel": "stable",
     "minVersionCode": 1100,
     "forceRules": []
@@ -54,11 +54,11 @@
     {
       "packageName": "com.techlead.app.geely.car",
       "name": "CarConnect",
-      "latestVersionName": "1.4.0",
-      "versionCode": 1400,
+      "latestVersionName": "1.4.5",
+      "versionCode": 1405,
       "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect.apk",
-      "sha256": "e525096d643ddf63a187230e8ac872d335fd8fce1f8f0883e3408aa5e444211c",
-      "releaseNotes": "- 🐛 Sửa lỗi: Nhiet do ngoai troi dong bo o main, 15 phut mot lan; ghi lai REG-GUARD-03\n- 🐛 Sửa lỗi: Nạp speed sau tự biên dịch, giảm tải vẽ Cài nhanh, bỏ cổng số P khi cài",
+      "sha256": "cadb5bc8110c5a22790baaf5631cd4b891be02ee198eca4f85468dfb4360364e",
+      "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
       "minVersionCode": 1100
     },
     {
