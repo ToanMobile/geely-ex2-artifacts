@@ -22,6 +22,12 @@ Quy ước:
 - Mục mới thêm lên **trên cùng**.
 - **Đừng xoá mục cũ**: file đã tích luỹ từ 30/08 (đính chính 14/09/2026), `publish-artifacts.sh` dò đúng mục `## <Tên app> <VERSION_NAME>`. Không đụng các mục bản trước đó.
 
+## CarConnect 1.4.4
+
+- ✨ Mới: Log train wake + ASR — đoạn suýt nổ, mẫu số nổ/giờ, x_mode, đời model ASR
+- ✨ Mới: Floater — thẻ năng lượng dưới ô Mở cốp trước + icon frunk
+- 🐛 Sửa lỗi: Thẻ năng lượng — làm tròn SOC/km an toàn với NaN/vô cực/số âm
+
 ## CarConnect 1.4.3
 
 - ✨ Mới: Gom 15/11 — wake kws_v12 r4 + voice sau #390 + no_speech sau đoạn bỏ (CHƯA ĐO TRÊN XE)
@@ -115,6 +121,10 @@ Quy ước:
 - **⚡ Màn Trạng thái** hiện luồng năng lượng của xe; **nút Play/Pause trên cửa sổ PIP** chỉ điều khiển đúng ứng dụng đang ở PIP.
 - **💳 Gói Trọn đời 2.960.000 ₫** (giảm 25% từ 3.950.000 ₫) ở màn kích hoạt.
 - **🔬 Bản dev để thu log**: thêm số liệu ẩn để đo CPU lúc chờ gọi và mạng 4G; không đổi cách dùng.
+
+## PhoneConnect 1.4.4
+
+- 🔄 Cải tiến nhỏ và tăng độ ổn định.
 
 ## PhoneConnect 1.4.3
 

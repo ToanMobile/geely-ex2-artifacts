@@ -30,11 +30,11 @@
   },
   "carDev": {
     "type": "update_check",
-    "latestVersionName": "1.4.3",
-    "versionCode": 1403,
+    "latestVersionName": "1.4.4",
+    "versionCode": 1404,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/CarConnect-dev.apk",
-    "sha256": "d968fc79d49c0b0f6bc07cdc6261205a973eab623c0a75878d197a9f182c328e",
-    "releaseNotes": "- ✨ Mới: Gom 15/11 — wake kws_v12 r4 + voice sau #390 + no_speech sau đoạn bỏ (CHƯA ĐO TRÊN XE)\n- ✨ Mới: Voice im lặng thì popup báo lý do theo ngữ cảnh + sửa review sau #389\n- ✨ Mới: Cỡ chữ toàn app ở Cài đặt → Chung\n- ✨ Mới: Nút voice vô-lăng là công tắc — popup đang hiện thì bấm tắt như nút X\n- 🐛 Sửa lỗi: Voice bấm mic im 2 s thì tắt im; sai lệnh chỉ ghi \"Không đúng lệnh\" rồi tắt liền\n- 🐛 Sửa lỗi: Telemetry ghi lý do xác minh màn dẫn đường Google Maps hỏng",
+    "sha256": "3c33d9b6be28d86bf81d4b492349633f5c140beb7b1d52b5bf487ae7774c25ea",
+    "releaseNotes": "- ✨ Mới: Log train wake + ASR — đoạn suýt nổ, mẫu số nổ/giờ, x_mode, đời model ASR\n- ✨ Mới: Floater — thẻ năng lượng dưới ô Mở cốp trước + icon frunk\n- 🐛 Sửa lỗi: Thẻ năng lượng — làm tròn SOC/km an toàn với NaN/vô cực/số âm",
     "channel": "develop",
     "minVersionCode": 0,
     "forceRules": []
