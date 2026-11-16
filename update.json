@@ -42,10 +42,10 @@
   "phoneDev": {
     "packageName": "com.techlead.app.geely.phone",
     "name": "PhoneConnect",
-    "latestVersionName": "1.4.3",
-    "versionCode": 1403,
+    "latestVersionName": "1.4.4",
+    "versionCode": 1404,
     "downloadUrl": "https://raw.githubusercontent.com/ToanMobile/geely-ex2-artifacts/main/PhoneConnect-dev.apk",
-    "sha256": "639ec95597d4fce34509a6f4205dbceb307f7a374fd1dd61c99d2d3dbf96dae7",
+    "sha256": "a178be0b6aaecc0546dec89da3ad129f305f8307c16d4918761b7782f4535962",
     "releaseNotes": "- 🔄 Cải tiến nhỏ và tăng độ ổn định.",
     "minVersionCode": 0,
     "forceRules": []
