@@ -700,8 +700,7 @@
         <div class="metric-grid-3" style="margin-bottom:12px">
           <div class="kpi-box" style="border-left:3px solid var(--accent); background:var(--panel2)"><div class="lbl">💰 Tổng Doanh Thu (bao gồm đại lý)</div><div class="val" id="psGrossRevenue" style="font-size:18px">0 ₫</div><div class="hint" style="margin-top:4px">Đạt nhận 100% từ đơn VietQR, gồm cả phần hoa hồng của đại lý</div></div>
           <div class="kpi-box" style="border-left:3px solid #d97706; background:var(--panel2)"><div class="lbl">🤝 Chiết Khấu Hoa Hồng Đại Lý</div><div class="val" id="psAgentCommission" style="font-size:18px; color:var(--warn)">0 ₫</div><div class="hint" style="margin-top:4px">Phần chiết khấu hoa hồng của đại lý, trừ khỏi tổng doanh thu để ra doanh thu thật</div></div>
-          <div class="kpi-box" style="border-left:3px solid var(--ok, #16a34a); background:var(--panel2)"><div class="lbl">✅ Tổng Doanh Thu Thật</div><div class="val" id="psRealRevenue" style="font-size:18px; color:var(--ok)">0 ₫</div><div class="hint" style="margin-top:4px">= Tổng bao gồm đại lý trừ chiết khấu hoa hồng. Toàn và Đạt chia từ số này</div></div></div>
-        <div class="metric-grid-2" style="margin-bottom:12px">
+          <div class="kpi-box" style="border-left:3px solid var(--ok, #16a34a); background:var(--panel2)"><div class="lbl">✅ Tổng Doanh Thu Thật</div><div class="val" id="psRealRevenue" style="font-size:18px; color:var(--ok)">0 ₫</div><div class="hint" style="margin-top:4px">= Tổng bao gồm đại lý trừ chiết khấu hoa hồng. Toàn và Đạt chia từ số này</div></div></div> <div class="metric-grid-2" style="margin-bottom:12px">
           <div class="kpi-box" style="border-left:3px solid var(--danger); background:var(--panel2)"><div class="lbl">🧾 Tổng Chi Phí (Đã TT)</div><div class="val" id="psTotalExpenses" style="font-size:18px; color:var(--danger)">0 ₫</div><div class="hint" id="psTotalExpensesHint" style="margin-top:4px">Model AI, Thiết bị, Apple, Server...</div></div>
           <div class="kpi-box" style="border-left:3px solid #0284c7; background:var(--panel2)"><div class="lbl">💎 Lợi Nhuận Ròng Phân Chia</div><div class="val" id="psNetProfit" style="font-size:18px; color:#0284c7">0 ₫</div><div class="hint" id="psNetProfitHint" style="margin-top:4px">= Doanh thu thật trừ Tổng chi phí đã thanh toán</div></div></div>
         <!-- 2 Thẻ Tỷ lệ 60:40 -->
@@ -3797,7 +3796,7 @@ function computeClientSideStats() {
   const now = new Date(), todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000), thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000), sevenDaysFuture = new Date(now.getTime() + 7 * 86400000);
   let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0, resellerOrderRev = 0;
-  let totalReal = 0, agentCommission = 0, commissionAlreadyNet = 0; // hoa hồng đại lý chưa chuyển; phần đã bị trừ sẵn khỏi o.amount (xem bridgeCarUsersToOrders)
+  let totalReal = 0, agentCommission = 0, commissionAlreadyNet = 0; const rowByKey = new Map(rows.map(r => [String(r.key || "").toUpperCase(), r])); // hoa hồng đại lý chưa chuyển; phần đã bị trừ sẵn khỏi o.amount (xem bridgeCarUsersToOrders)
   let revLifetime = 0, countLifetime = 0, revYearly = 0, countYearly = 0, revQuarter = 0, countQuarter = 0;
   let revComboIcar = 0, countComboIcar = 0, revIcarDiscount = 0, countIcarDiscount = 0;
   let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0, totalOrders = 0;
@@ -3813,7 +3812,9 @@ function computeClientSideStats() {
       paidOrders++;
       const amt = (o.plan_id === "combo_icar" || o.plan_id === "icar_discount") ? Math.max(0, rawAmt - 2730000) : rawAmt;
       totalRev += amt;
-      const commAmt = o.price_rule_applied === "reseller_wholesale" ? 0 : Math.max(0, Number(o.reseller_commission) || Number(o.commission_amount) || 0); agentCommission += commAmt;
+      const row = rowByKey.get(String(o.license_key || "").toUpperCase()); let commAmt = o.price_rule_applied === "reseller_wholesale" ? 0 : Math.max(0, Number(o.reseller_commission) || Number(o.commission_amount) || 0);
+      if (!commAmt && o.price_rule_applied !== "reseller_wholesale" && row && row.reseller_id && row.reseller_status !== "rejected" && !(Number(row.reseller_price) > 0)) commAmt = Math.min(rawAmt, agentCommissionFor(o, row)); // mã gán đại lý (kể cả chờ duyệt): trừ ước tính theo % chiết khấu
+      agentCommission += commAmt;
       if (o.price_rule_applied === "reseller_commission") commissionAlreadyNet += commAmt; // o.amount đã = gốc - hoa hồng
       const real = o.price_rule_applied === "reseller_commission" ? amt : Math.max(0, amt - commAmt); totalReal += real; // doanh thu thật của đơn
       if (o.price_rule_applied === "reseller_wholesale" || (o.reseller_id && !commAmt)) resellerOrderRev += amt; // đơn hoa hồng không phải đơn sỉ: tránh diffRes nuốt doanh thu
@@ -3887,8 +3888,7 @@ function computeClientSideStats() {
     sales: {
       total_orders: totalOrders, paid_orders: paidOrders, pending_orders: pendingOrders, mismatch_orders: mismatchOrders,
       refunded_orders: refundedOrders, cancelled_orders: cancelledOrders, conversion_rate: Number(convRate),
-      gross_incl_agents: totalRev + commissionAlreadyNet, agent_commission_total: agentCommission,
-      total_revenue: totalReal, // doanh thu thật: đã trừ hoa hồng đại lý; mọi ô doanh thu của tab Thống kê dùng số này
+      gross_incl_agents: totalRev + commissionAlreadyNet, agent_commission_total: agentCommission, total_revenue: totalReal, // doanh thu thật: đã trừ hoa hồng đại lý; mọi ô doanh thu của tab Thống kê dùng số này
       lifetime_revenue: revLifetime, lifetime_paid_count: countLifetime,
       yearly_revenue: revYearly, yearly_paid_count: countYearly, quarter_revenue: revQuarter, quarter_paid_count: countQuarter,
       combo_icar_revenue: revComboIcar, combo_icar_paid_count: countComboIcar,
@@ -4028,8 +4028,7 @@ function renderAnalyticsUI(stats) {
     });
   }
   const hasGross = s.gross_incl_agents !== undefined, totalRev = hasGross ? Number(s.gross_incl_agents) || 0 : (Number(s.total_revenue) || window._currentTotalRevenue || 0);
-  window._currentTotalRevenue = totalRev;
-  window._currentAgentCommission = hasGross ? Number(s.agent_commission_total) || 0 : 0;
+  window._currentTotalRevenue = totalRev; window._currentAgentCommission = hasGross ? Number(s.agent_commission_total) || 0 : 0;
   renderProfitSharingUI(totalRev);
 }
 // ==================== PHÂN CHIA DOANH THU & QUYẾT TOÁN LỢI NHUẬN (TOÀN 60% — ĐẠT 40%) ====================
@@ -5296,7 +5295,6 @@ async function registerTelegramWebhook() {
   const defaultWebhook = sbUrl + "/rest/v1/rpc/handle_telegram_webhook?apikey=" + encodeURIComponent(CONFIG.supabaseAnonKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNqaXB1eHVzcXVqaHF1bnZqdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDU1MDksImV4cCI6MjEwMTQyMTUwOX0.xWjaeFbf0SLZhN0CGoXPrrfkVU8GNbDGxxXPF1w6fZ8");
   const webhookUrl = prompt("Nhập Webhook URL cho Telegram Bot (Mặc định gọi thẳng REST RPC Supabase 24/7):", defaultWebhook);
   if (!webhookUrl) return;
-
   let webhookSecret = ((window._salesData || {}).settings || {}).telegram_webhook_secret || "";
   if (!webhookSecret) {
     try {
@@ -5311,7 +5309,6 @@ async function registerTelegramWebhook() {
     alert("❌ Chưa lấy được bí mật webhook (telegram_webhook_secret).\n\nHãy dán lại supabase/schema.sql rồi bấm Tải lại dữ liệu bán hàng.");
     return;
   }
-
   const tokens = String(token).split(/[\s,;\n\r]+/).filter(Boolean);
   showMsg($("salesTelegramSaveMsg"), "", "⏳ Đang đăng ký Webhook cho " + tokens.length + " bot...");
   let successCount = 0;
@@ -7002,6 +6999,9 @@ function filterResellerTransactions() {
     }
   }
   renderResellerTransactionsTable(filtered);
+}
+function agentCommissionFor(o, row) { // hoa hồng đại lý ước tính khi DB chưa ghi commission_amount (cùng công thức với bridgeCarUsersToOrders, bản đó giữ nguyên vì test cắt riêng hàm): % chiết khấu của đại lý (mặc định 35 trọn đời, 40 một năm/3 tháng)
+  const rv = (window._resellersList || []).find(x => x.id === row.reseller_id) || {}, gross = Number(o.gross_amount ?? o.amount) || 0, life = o.plan_id === "lifetime" || (o.plan_id === "icar_discount" && gross >= 5000000), rate = Number(life ? (rv.discount_rate_lifetime ?? 35) : (rv.discount_rate_yearly ?? 40)); if (rv.status && rv.status !== "active") return 0; return Math.round((/icar/.test(o.plan_id || "") ? Math.max(0, gross - 2730000) : gross) * rate / 100);
 }
 function getResellerWholesaleSpent(r) {
   if (r.total_wholesale_spent !== undefined && r.total_wholesale_spent !== null) return Number(r.total_wholesale_spent) || 0;
