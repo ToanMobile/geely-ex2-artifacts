@@ -90,7 +90,7 @@
   .url-cell { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; } .url-cell a { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .stat-ribbon { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-bottom: 16px; } .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease, box-shadow 0.15s ease; } .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
   .stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between; } .stat-val { font-size: 20px; font-weight: 700; color: var(--text); margin: 4px 0 2px; font-family: var(--mono); } .stat-sub { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-wrap: wrap; } .stat-sub b { color: var(--text); } .stat-progress { height: 6px; background: var(--panel2); border-radius: 4px; overflow: hidden; margin: 6px 0 2px; display: flex; } .stat-progress-bar { height: 100%; transition: width 0.3s ease; }
-  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; } .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; } .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; } .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; } .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
+  .metric-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 14px; } .metric-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 14px; } .metric-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 14px; } .kpi-box { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; } .kpi-box .val { font-size: 18px; font-weight: 700; color: var(--text); font-family: var(--mono); margin-top: 2px; } .kpi-box .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 600; }
   .ratio-bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; background: var(--panel2); } .ratio-bar-segment { height: 100%; transition: width 0.4s ease; }
   .login-screen { min-height: calc(100vh - 48px); display: flex; align-items: center; justify-content: center; padding: 20px 0; } .login-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 440px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); position: relative; }
   .login-header { text-align: center; margin-bottom: 22px; } .login-header h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; } .login-header .sub { font-size: 13px; color: var(--muted); line-height: 1.4; margin-bottom: 0; }
@@ -147,7 +147,7 @@
     </div></div>
   <!-- Top KPI Ribbon -->
   <div class="stat-ribbon" id="topStatRibbon">
-    <div class="stat-card" style="border-left: 3px solid var(--accent)"><div class="stat-lbl">💰 Doanh Thu Thực Nhận</div><div class="stat-val" id="topRevTotal">--</div><div class="stat-sub">Hôm nay: <b id="topRevToday">--</b> • 7 ngày: <b id="topRev7d">--</b></div></div>
+    <div class="stat-card" style="border-left: 3px solid var(--accent)"><div class="stat-lbl">💰 Doanh Thu Thật</div><div class="stat-val" id="topRevTotal">--</div><div class="stat-sub">Hôm nay: <b id="topRevToday">--</b> • 7 ngày: <b id="topRev7d">--</b></div></div>
     <div class="stat-card" style="border-left: 3px solid #0284c7"><div class="stat-lbl">👥 Khách Đã Mua (VietQR)</div><div class="stat-val" id="topPaidCount">--</div><div class="stat-sub">Đơn trả tiền: <b id="topPaidOrders">--</b> • Khoá giá: <b id="topLocksCount">--</b></div></div>
     <div class="stat-card" style="border-left: 3px solid #16a34a"><div class="stat-lbl">🚗 Gói Xe (Car - Full)</div><div class="stat-val" id="topCarCount">--</div><div class="stat-sub">Đang dùng: <b id="topCarActive">--</b> • Vĩnh viễn: <b id="topCarLife">--</b></div></div>
     <div class="stat-card" style="border-left: 3px solid #9333ea"><div class="stat-lbl">💻 Gói Chỉ PCConnect</div><div class="stat-val" id="topPcCount">--</div><div class="stat-sub">Đang dùng: <b id="topPcActive">--</b> • Hết hạn: <b id="topPcExp">--</b></div></div>
@@ -635,9 +635,9 @@
       </div>
       <div class="metric-grid-4">
         <div class="kpi-box" style="border-left:3px solid var(--accent)">
-          <div class="lbl">💰 Tổng Doanh Thu Thực Nhận</div>
+          <div class="lbl">💰 Tổng Doanh Thu Thật</div>
           <div class="val" id="anRevTotal">0 ₫</div>
-          <div class="hint" style="margin-top:4px">Từ <b id="anPaidOrdersCount">0</b> đơn hàng đã khớp tiền</div>
+          <div class="hint" style="margin-top:4px">Từ <b id="anPaidOrdersCount">0</b> đơn đã khớp tiền, đã trừ hoa hồng đại lý</div>
         </div>
         <div class="kpi-box" style="border-left:3px solid #0284c7">
           <div class="lbl">👑 Gói Trọn Đời (Lifetime)</div>
@@ -691,29 +691,19 @@
               <span class="tag admin" style="font-size:11px">Toàn 60% — Đạt 40%</span>
             </h3>
             <div class="hint" style="margin-top:2px">
-              Doanh thu VietQR chuyển về tài khoản của Đạt. Lợi nhuận ròng = Doanh thu - Tổng chi phí, sau đó chia theo tỷ lệ 6:4.
+              Doanh thu VietQR chuyển về tài khoản của Đạt. Lợi nhuận ròng = Doanh thu thật (đã trừ hoa hồng đại lý) - Tổng chi phí, sau đó chia theo tỷ lệ 6:4.
             </div></div>
           <div style="display:flex; gap:8px; align-items:center">
             <button class="small" onclick="saveProfitSharingConfig()">💾 Lưu Dữ Liệu Đối Soát</button>
             <span id="profitSharingSaveMsg" class="msg" style="margin:0"></span>
           </div></div>
-        <!-- 3 Thẻ Tổng quan: Doanh thu, Chi phí, Lợi nhuận ròng -->
         <div class="metric-grid-3" style="margin-bottom:12px">
-          <div class="kpi-box" style="border-left:3px solid var(--accent); background:var(--panel2)">
-            <div class="lbl">💰 Tổng Doanh Thu (Đạt nhận 100%)</div>
-            <div class="val" id="psGrossRevenue" style="font-size:18px">0 ₫</div>
-            <div class="hint" style="margin-top:4px">Đã khớp tự động từ đơn VietQR</div>
-          </div>
-          <div class="kpi-box" style="border-left:3px solid var(--danger); background:var(--panel2)">
-            <div class="lbl">🧾 Tổng Chi Phí (Đã TT)</div>
-            <div class="val" id="psTotalExpenses" style="font-size:18px; color:var(--danger)">0 ₫</div>
-            <div class="hint" id="psTotalExpensesHint" style="margin-top:4px">Model AI, Thiết bị, Apple, Server...</div>
-          </div>
-          <div class="kpi-box" style="border-left:3px solid #0284c7; background:var(--panel2)">
-            <div class="lbl">💎 Lợi Nhuận Ròng Phân Chia</div>
-            <div class="val" id="psNetProfit" style="font-size:18px; color:#0284c7">0 ₫</div>
-            <div class="hint" id="psNetProfitHint" style="margin-top:4px">= Doanh thu trừ Tổng chi phí đã thanh toán</div>
-          </div></div>
+          <div class="kpi-box" style="border-left:3px solid var(--accent); background:var(--panel2)"><div class="lbl">💰 Tổng Doanh Thu (bao gồm đại lý)</div><div class="val" id="psGrossRevenue" style="font-size:18px">0 ₫</div><div class="hint" style="margin-top:4px">Đạt nhận 100% từ đơn VietQR, gồm cả phần hoa hồng của đại lý</div></div>
+          <div class="kpi-box" style="border-left:3px solid #d97706; background:var(--panel2)"><div class="lbl">🤝 Chiết Khấu Hoa Hồng Đại Lý</div><div class="val" id="psAgentCommission" style="font-size:18px; color:var(--warn)">0 ₫</div><div class="hint" style="margin-top:4px">Phần chiết khấu hoa hồng của đại lý, trừ khỏi tổng doanh thu để ra doanh thu thật</div></div>
+          <div class="kpi-box" style="border-left:3px solid var(--ok, #16a34a); background:var(--panel2)"><div class="lbl">✅ Tổng Doanh Thu Thật</div><div class="val" id="psRealRevenue" style="font-size:18px; color:var(--ok)">0 ₫</div><div class="hint" style="margin-top:4px">= Tổng bao gồm đại lý trừ chiết khấu hoa hồng. Toàn và Đạt chia từ số này</div></div></div>
+        <div class="metric-grid-2" style="margin-bottom:12px">
+          <div class="kpi-box" style="border-left:3px solid var(--danger); background:var(--panel2)"><div class="lbl">🧾 Tổng Chi Phí (Đã TT)</div><div class="val" id="psTotalExpenses" style="font-size:18px; color:var(--danger)">0 ₫</div><div class="hint" id="psTotalExpensesHint" style="margin-top:4px">Model AI, Thiết bị, Apple, Server...</div></div>
+          <div class="kpi-box" style="border-left:3px solid #0284c7; background:var(--panel2)"><div class="lbl">💎 Lợi Nhuận Ròng Phân Chia</div><div class="val" id="psNetProfit" style="font-size:18px; color:#0284c7">0 ₫</div><div class="hint" id="psNetProfitHint" style="margin-top:4px">= Doanh thu thật trừ Tổng chi phí đã thanh toán</div></div></div>
         <!-- 2 Thẻ Tỷ lệ 60:40 -->
         <div class="metric-grid-2" style="margin-bottom:14px">
           <div class="kpi-box" style="border:1px solid #93c5fd; background:rgba(2,132,199,0.05)">
@@ -2079,7 +2069,7 @@ function applyUrlQueryParams() {
       const demoPs = { toan_received: 5000000, general_note: "Đợt 1 chốt đối soát mẫu", expenses: [
         { id: "demo_1", title: "Model AI (Gemini/Groq API)", note: "Toàn tự quẹt thẻ cá nhân", amount: 1500000, paid_by: "toan", is_paid: false, created_at: new Date().toISOString() },
         { id: "demo_2", title: "Server Cloud & Thiết bị", note: "Đạt chi từ quỹ doanh thu", amount: 2000000, paid_by: "dat", is_paid: true, created_at: new Date().toISOString() } ]};
-      window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000;
+      window._profitSharingData = demoPs; window._currentTotalRevenue = 20000000; window._currentAgentCommission = 0;
       window._salesData = { settings: {}, orders: [
         { id: "demo_1", order_code: "EX2-DEMO1", owner_name: "Toàn (Demo)", owner_phone: "0333332093", plan_id: "lifetime", final_amount: 2960000, status: "paid", created_at: new Date().toISOString() },
         { id: "demo_2", order_code: "EX2-DEMO2", owner_name: "Khách Demo", owner_phone: "0901234567", plan_id: "yearly", final_amount: 1170000, status: "pending", created_at: new Date().toISOString() }
@@ -3807,6 +3797,7 @@ function computeClientSideStats() {
   const now = new Date(), todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000), thirtyDaysAgo = new Date(now.getTime() - 30 * 86400000), sevenDaysFuture = new Date(now.getTime() + 7 * 86400000);
   let totalRev = 0, revToday = 0, rev7d = 0, rev30d = 0, resellerOrderRev = 0;
+  let totalReal = 0, agentCommission = 0, commissionAlreadyNet = 0; // hoa hồng đại lý chưa chuyển; phần đã bị trừ sẵn khỏi o.amount (xem bridgeCarUsersToOrders)
   let revLifetime = 0, countLifetime = 0, revYearly = 0, countYearly = 0, revQuarter = 0, countQuarter = 0;
   let revComboIcar = 0, countComboIcar = 0, revIcarDiscount = 0, countIcarDiscount = 0;
   let paidOrders = 0, pendingOrders = 0, mismatchOrders = 0, refundedOrders = 0, cancelledOrders = 0, totalOrders = 0;
@@ -3822,25 +3813,28 @@ function computeClientSideStats() {
       paidOrders++;
       const amt = (o.plan_id === "combo_icar" || o.plan_id === "icar_discount") ? Math.max(0, rawAmt - 2730000) : rawAmt;
       totalRev += amt;
-      if (o.price_rule_applied === "reseller_wholesale" || o.reseller_id) resellerOrderRev += amt;
-      if (d >= todayStart) revToday += amt;
-      if (d >= sevenDaysAgo) rev7d += amt;
-      if (d >= thirtyDaysAgo) rev30d += amt;
+      const commAmt = o.price_rule_applied === "reseller_wholesale" ? 0 : Math.max(0, Number(o.reseller_commission) || Number(o.commission_amount) || 0); agentCommission += commAmt;
+      if (o.price_rule_applied === "reseller_commission") commissionAlreadyNet += commAmt; // o.amount đã = gốc - hoa hồng
+      const real = o.price_rule_applied === "reseller_commission" ? amt : Math.max(0, amt - commAmt); totalReal += real; // doanh thu thật của đơn
+      if (o.price_rule_applied === "reseller_wholesale" || (o.reseller_id && !commAmt)) resellerOrderRev += amt; // đơn hoa hồng không phải đơn sỉ: tránh diffRes nuốt doanh thu
+      if (d >= todayStart) revToday += real;
+      if (d >= sevenDaysAgo) rev7d += real;
+      if (d >= thirtyDaysAgo) rev30d += real;
       if (o.owner_phone) uniqueBuyers.add(o.owner_phone);
-      if (o.plan_id === "lifetime") { revLifetime += amt; countLifetime++; }
-      else if (o.plan_id === "quarter") { revQuarter += amt; countQuarter++; }
-      else if (o.plan_id === "combo_icar") { revComboIcar += amt; countComboIcar++; }
-      else if (o.plan_id === "icar_discount") { revIcarDiscount += amt; countIcarDiscount++; }
-      else if (o.plan_id === "yearly") { revYearly += amt; countYearly++; }
+      if (o.plan_id === "lifetime") { revLifetime += real; countLifetime++; }
+      else if (o.plan_id === "quarter") { revQuarter += real; countQuarter++; }
+      else if (o.plan_id === "combo_icar") { revComboIcar += real; countComboIcar++; }
+      else if (o.plan_id === "icar_discount") { revIcarDiscount += real; countIcarDiscount++; }
+      else if (o.plan_id === "yearly") { revYearly += real; countYearly++; }
     } else if (o.status === "pending") pendingOrders++;
     else if (o.status === "payment_mismatch") mismatchOrders++;
     else if (o.status === "refunded") refundedOrders++;
     else if (o.status === "cancelled" || o.status === "expired") cancelledOrders++;
   }
   const resList = window._resellersList || [], totalResSpent = resList.reduce((acc, r) => acc + (typeof getResellerWholesaleSpent === "function" ? getResellerWholesaleSpent(r) : (Number(r.total_wholesale_spent) || 0)), 0);
-  if (totalResSpent > resellerOrderRev) { const diffRes = totalResSpent - resellerOrderRev; totalRev += diffRes; rev30d += Math.min(diffRes, resList.reduce((acc, r) => acc + (Number(r.month_wholesale_spent) || 0), 0)); }
+  if (totalResSpent > resellerOrderRev) { const diffRes = totalResSpent - resellerOrderRev; totalRev += diffRes; totalReal += diffRes; rev30d += Math.min(diffRes, resList.reduce((acc, r) => acc + (Number(r.month_wholesale_spent) || 0), 0)); }
   const icarUnitCost = 2730000, totalIcarCost = (countComboIcar + countIcarDiscount) * icarUnitCost;
-  const netRevenueAfterIcar = Math.max(0, totalRev - totalIcarCost);
+  const netRevenueAfterIcar = Math.max(0, totalReal - totalIcarCost);
   const convRate = totalOrders > 0 ? ((paidOrders / totalOrders) * 100).toFixed(1) : 0;
   let carTotal = 0, carActive = 0, carLife = 0, carYear = 0, carExp = 0, carRev = 0;
   let saleTotal = 0, saleActive = 0, saleExp = 0, saleRev = 0;
@@ -3893,7 +3887,9 @@ function computeClientSideStats() {
     sales: {
       total_orders: totalOrders, paid_orders: paidOrders, pending_orders: pendingOrders, mismatch_orders: mismatchOrders,
       refunded_orders: refundedOrders, cancelled_orders: cancelledOrders, conversion_rate: Number(convRate),
-      total_revenue: totalRev, lifetime_revenue: revLifetime, lifetime_paid_count: countLifetime,
+      gross_incl_agents: totalRev + commissionAlreadyNet, agent_commission_total: agentCommission,
+      total_revenue: totalReal, // doanh thu thật: đã trừ hoa hồng đại lý; mọi ô doanh thu của tab Thống kê dùng số này
+      lifetime_revenue: revLifetime, lifetime_paid_count: countLifetime,
       yearly_revenue: revYearly, yearly_paid_count: countYearly, quarter_revenue: revQuarter, quarter_paid_count: countQuarter,
       combo_icar_revenue: revComboIcar, combo_icar_paid_count: countComboIcar,
       icar_discount_revenue: revIcarDiscount, icar_discount_paid_count: countIcarDiscount,
@@ -4031,13 +4027,14 @@ function renderAnalyticsUI(stats) {
       tbody.appendChild(tr);
     });
   }
-  const totalRev = Number(s.total_revenue) || window._currentTotalRevenue || 0;
+  const hasGross = s.gross_incl_agents !== undefined, totalRev = hasGross ? Number(s.gross_incl_agents) || 0 : (Number(s.total_revenue) || window._currentTotalRevenue || 0);
   window._currentTotalRevenue = totalRev;
+  window._currentAgentCommission = hasGross ? Number(s.agent_commission_total) || 0 : 0;
   renderProfitSharingUI(totalRev);
 }
 // ==================== PHÂN CHIA DOANH THU & QUYẾT TOÁN LỢI NHUẬN (TOÀN 60% — ĐẠT 40%) ====================
 window._profitSharingData = null;
-window._currentTotalRevenue = 0;
+window._currentTotalRevenue = 0; window._currentAgentCommission = 0;
 function ensureProfitSharingData() {
   if (!window._profitSharingData) {
     try {
@@ -4061,7 +4058,9 @@ function renderProfitSharingUI(totalRevenue) {
   if (totalRevenue !== undefined && totalRevenue !== null) {
     window._currentTotalRevenue = Number(totalRevenue) || 0;
   }
-  const grossRev = window._currentTotalRevenue || 0;
+  const grossRev = window._currentTotalRevenue || 0;           // tổng doanh thu bao gồm đại lý
+  const agentCommission = Math.min(Math.max(0, Number(window._currentAgentCommission) || 0), grossRev);
+  const realRev = grossRev - agentCommission;                  // doanh thu thật: Toàn và Đạt chia từ số này
   const totalIcarCost = (window._analyticsData && window._analyticsData.sales && window._analyticsData.sales.total_icar_cost) || 0;
   const expenses = data.expenses || [];
   let totalExpenses = 0, paidExpenses = 0, pendingExpenses = 0;
@@ -4073,10 +4072,11 @@ function renderProfitSharingUI(totalRevenue) {
     else { pendingExpenses += amt; if (paidBy === 'toan') pendingExpensesByToan += amt; else pendingExpensesByDat += amt; }
   }
   const actualIncurredExpenses = paidExpensesByDat + paidExpensesByToan + pendingExpensesByToan;
-  const netProfit = Math.max(0, grossRev - actualIncurredExpenses);
+  const netProfit = Math.max(0, realRev - actualIncurredExpenses);
   const toanShare = Math.round(netProfit * 0.6), datShare = netProfit - toanShare;
   const toanEntitled = toanShare + pendingExpensesByToan, toanReceived = Number(data.toan_received) || 0;
   if ($("psGrossRevenue")) $("psGrossRevenue").textContent = formatVndNumber(grossRev);
+  [["psAgentCommission", agentCommission], ["psRealRevenue", realRev]].forEach(([id, v]) => { if ($(id)) $(id).textContent = formatVndNumber(v); });
   if ($("psTotalExpenses")) $("psTotalExpenses").textContent = formatVndNumber(actualIncurredExpenses);
   if ($("psTotalExpensesHint")) {
     const parts = [];
@@ -4089,8 +4089,8 @@ function renderProfitSharingUI(totalRevenue) {
   if ($("psNetProfit")) $("psNetProfit").textContent = formatVndNumber(netProfit);
   if ($("psNetProfitHint")) {
     $("psNetProfitHint").innerHTML = pendingExpensesByDat > 0
-      ? `= Doanh thu trừ Chi phí thực tế (Dự kiến sau chi: ${formatVndNumber(grossRev - totalExpenses)})`
-      : `= Doanh thu trừ Chi phí thực tế`;
+      ? `= Doanh thu thật trừ Chi phí thực tế (Dự kiến sau chi: ${formatVndNumber(realRev - totalExpenses)})`
+      : `= Doanh thu thật trừ Chi phí thực tế`;
   }
   if ($("psToanShare")) {
     $("psToanShare").textContent = formatVndNumber(toanShare);
